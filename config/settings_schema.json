@@ -4,8 +4,8 @@
     "theme_name": "Mic & Mac",
     "theme_version": "1.0.0",
     "theme_author": "Mic & Mac",
-    "theme_documentation_url": "",
-    "theme_support_url": ""
+    "theme_documentation_url": "https://shopify.dev/",
+    "theme_support_url": "https://shopify.dev/"
   },
   {
     "name": "Global",
@@ -36,19 +36,19 @@
         "type": "color",
         "id": "color_primary",
         "label": "Primary color",
-        "default": "#2D4A3E"
+        "default": "#800020"
       },
       {
         "type": "color",
         "id": "color_accent",
         "label": "Accent color",
-        "default": "#C8A96E"
+        "default": "#D4AF37"
       },
       {
         "type": "color",
         "id": "color_bg",
         "label": "Background color",
-        "default": "#FAF8F4"
+        "default": "#FFFFFF"
       }
     ]
   },

@@ -10,7 +10,7 @@ class CartDrawer {
   private overlay  = $<HTMLElement>('#SiteOverlay');
   private body     = $<HTMLElement>('#CartDrawerBody');
   private totalEl  = $<HTMLElement>('#CartTotal');
-  private countEls = $$<HTMLElement>('[data-cart-count]');
+  private countEls = $$<HTMLElement>('#CartCount');
   private emptyEl  = $<HTMLElement>('#CartEmpty');
   private filledEl = $<HTMLElement>('#CartFilled');
 
