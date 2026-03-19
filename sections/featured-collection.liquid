@@ -1,0 +1,169 @@
+{% comment %}
+  Section: Featured Collection
+  - Displays a grid of products from a chosen collection
+  - Configurable columns, heading, and view-all link
+{% endcomment %}
+
+{%- assign collection = collections[section.settings.collection] -%}
+
+<section class="featured-collection section-padding">
+  <div class="container">
+
+    <!-- Section Heading -->
+    {%- if section.settings.heading != blank -%}
+      <div class="section-heading">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2>{{ section.settings.heading }}</h2>
+        {%- if section.settings.subtext != blank -%}
+          <p>{{ section.settings.subtext }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <!-- Product Grid -->
+    {%- if collection != blank and collection.products_count > 0 -%}
+      <div class="product-grid product-grid--{{ section.settings.columns }}">
+        {%- for product in collection.products limit: section.settings.products_to_show -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <!-- Placeholder when no collection is selected -->
+      <div class="product-grid product-grid--4">
+        {%- for i in (1..4) -%}
+          <div class="product-card product-card--placeholder">
+            <div class="product-card__media">
+              <div class="product-card__no-image">
+                {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            </div>
+            <div class="product-card__body">
+              <p class="product-card__vendor">Mic & Mac</p>
+              <h3 class="product-card__title">
+                <a href="#">Sample Product {{ i }}</a>
+              </h3>
+              <div class="product-card__price">
+                <span class="product-card__price-current">₹599</span>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <!-- View All Button -->
+    {%- if section.settings.show_view_all and collection != blank -%}
+      <div class="featured-collection__footer">
+        <a href="{{ collection.url }}" class="btn btn--secondary btn--lg">
+          {{ section.settings.view_all_text | default: 'View All Products' }}
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+.product-grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.product-grid--2 { grid-template-columns: repeat(2, 1fr); }
+.product-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.product-grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+.featured-collection__footer {
+  text-align: center;
+  margin-top: var(--space-12);
+}
+
+/* Placeholder SVG */
+.placeholder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 1023px) {
+  .product-grid--4 { grid-template-columns: repeat(2, 1fr); }
+  .product-grid--3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 479px) {
+  .product-grid--4,
+  .product-grid--3,
+  .product-grid--2 { grid-template-columns: 1fr; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Our Products"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Bestsellers"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Our most-loved formulas, crafted with the finest natural ingredients."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection to display"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Number of products",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns",
+      "options": [
+        { "value": "2", "label": "2 columns" },
+        { "value": "3", "label": "3 columns" },
+        { "value": "4", "label": "4 columns" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all' button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "'View all' button text",
+      "default": "View All Products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

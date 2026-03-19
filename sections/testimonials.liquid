@@ -1,0 +1,297 @@
+{% comment %}
+  Section: Testimonials
+  - Customer reviews with star ratings
+  - Simple, clean layout aligned with the brand
+{% endcomment %}
+
+<section class="testimonials section-{{ section.id }}-padding">
+  <div class="container">
+    <!-- Header -->
+    <div class="testimonials__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="testimonials__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+    </div>
+
+    <!-- Review Grid -->
+    <div class="testimonials__grid">
+      {%- for block in section.blocks -%}
+        <div class="testimonial-card" {{ block.shopify_attributes }}>
+          <!-- Stars -->
+          <div class="testimonial-card__stars" aria-label="{{ block.settings.rating }} out of 5 stars">
+            {%- for i in (1..5) -%}
+              <span class="star {% if i <= block.settings.rating %}star--filled{% endif %}">★</span>
+            {%- endfor -%}
+          </div>
+
+          <!-- Quote -->
+          {%- if block.settings.quote != blank -%}
+            <blockquote class="testimonial-card__quote">
+              {{ block.settings.quote }}
+            </blockquote>
+          {%- endif -%}
+
+          <!-- Author -->
+          <div class="testimonial-card__author">
+            {%- if block.settings.avatar != blank -%}
+              <img
+                src="{{ block.settings.avatar | image_url: width: 80 }}"
+                alt="{{ block.settings.name }}"
+                width="40"
+                height="40"
+                class="testimonial-card__avatar"
+                loading="lazy"
+              >
+            {%- else -%}
+              <div class="testimonial-card__avatar-placeholder">
+                {{ block.settings.name | slice: 0 | upcase }}
+              </div>
+            {%- endif -%}
+            <div>
+              <strong class="testimonial-card__name">{{ block.settings.name }}</strong>
+              {%- if block.settings.location != blank -%}
+                <span class="testimonial-card__location">{{ block.settings.location }}</span>
+              {%- endif -%}
+            </div>
+          </div>
+
+          {%- if block.settings.product_name != blank -%}
+            <div class="testimonial-card__product">Verified purchase: {{ block.settings.product_name }}</div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+.testimonials {
+  padding-block: var(--space-20, 5rem);
+  background: var(--color-soft, #E8DDD0);
+}
+
+.testimonials__header {
+  text-align: center;
+  margin-bottom: var(--space-12, 3rem);
+}
+
+.eyebrow {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-accent, #C8A96E);
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.testimonials__heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  margin-bottom: 0;
+}
+
+.testimonials__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.testimonial-card {
+  background: var(--color-bg, #FAF8F4);
+  border-radius: var(--radius, 12px);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 2px 12px rgba(44, 74, 62, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(44, 74, 62, 0.12);
+}
+
+.testimonial-card__stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  color: var(--color-soft, #E8DDD0);
+  font-size: 1.1rem;
+}
+
+.star--filled {
+  color: var(--color-accent, #C8A96E);
+}
+
+.testimonial-card__quote {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--color-text, #1C2B25);
+  margin: 0;
+  flex: 1;
+}
+
+.testimonial-card__author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.testimonial-card__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.testimonial-card__avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-primary, #2D4A3E);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.testimonial-card__name {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--color-primary, #2D4A3E);
+}
+
+.testimonial-card__location {
+  font-size: 0.78rem;
+  color: var(--color-text, #1C2B25);
+  opacity: 0.6;
+  display: block;
+}
+
+.testimonial-card__product {
+  font-size: 0.75rem;
+  color: var(--color-accent, #C8A96E);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-top: 1px solid var(--color-soft, #E8DDD0);
+  padding-top: 0.75rem;
+  margin-top: auto;
+}
+
+@media (max-width: 600px) {
+  .testimonials__grid { grid-template-columns: 1fr; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "max_blocks": 9,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Real Results"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Loved by Real People"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Review text",
+          "default": "This product completely transformed my skin routine. I've tried so many things and nothing worked until I found Mic & Mac."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Priya S."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location",
+          "default": "Mumbai, India"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Customer photo"
+        },
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Product name (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "category": "Social Proof",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "This product transformed my skin. I love that everything is clean and natural — I finally know exactly what I'm putting on my face.",
+            "name": "Priya S.",
+            "location": "Mumbai, India"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "My hyperpigmentation has visibly reduced after just 4 weeks. The Rosehip formulation is absolutely incredible.",
+            "name": "Anjali R.",
+            "location": "Bengaluru, India"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "I love reading ingredient labels. Mic & Mac is the only brand where I recognize every single ingredient. That means everything to me.",
+            "name": "Sneha K.",
+            "location": "Delhi, India"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
