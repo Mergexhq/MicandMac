@@ -1,0 +1,43 @@
+{% comment %}
+  Block: product-tab
+  Parent: snippets/product-tabs.liquid
+  Usage: {% render 'product-tab', block: block, forloop: forloop %}
+{% endcomment %}
+
+{%- assign tab_id = 'Tab-' | append: block.id -%}
+{%- assign panel_id = 'Panel-' | append: block.id -%}
+
+<!-- Tab button (rendered inside the nav) -->
+<button
+  id="{{ tab_id }}"
+  class="product-tab__btn {% if forloop.first %}is-active{% endif %}"
+  role="tab"
+  aria-controls="{{ panel_id }}"
+  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+  data-tab-btn="{{ panel_id }}"
+  {{ block.shopify_attributes }}
+>
+  {{ block.settings.label | default: 'Tab' }}
+</button>
+
+<!-- Tab panel -->
+<div
+  id="{{ panel_id }}"
+  class="product-tab__panel {% unless forloop.first %}is-hidden{% endunless %}"
+  role="tabpanel"
+  aria-labelledby="{{ tab_id }}"
+>
+  {%- if block.settings.rich_content != blank -%}
+    <div class="rte">{{ block.settings.rich_content }}</div>
+  {%- elsif block.settings.plain_text != blank -%}
+    <p>{{ block.settings.plain_text }}</p>
+  {%- endif -%}
+</div>
+
+<style>
+.product-tab__btn { background: none; border: none; cursor: pointer; padding: var(--space-3) var(--space-5); font-size: var(--text-sm); font-weight: 500; color: var(--color-text-mid); border-bottom: 2px solid transparent; transition: all var(--transition-fast); white-space: nowrap; }
+.product-tab__btn.is-active { color: var(--color-forest); border-bottom-color: var(--color-forest); }
+.product-tab__btn:hover:not(.is-active) { color: var(--color-text-dark); }
+.product-tab__panel.is-hidden { display: none; }
+.product-tab__panel { padding: var(--space-5) 0; }
+</style>

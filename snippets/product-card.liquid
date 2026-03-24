@@ -1,189 +1,74 @@
-{% comment %}
-  Snippet: product-card
-  Usage: {% render 'product-card', product: product %}
-  Params:
-    - product: product object (required)
-    - show_vendor: boolean (optional, default false)
-    - show_atc: boolean (optional, default true)
-    - lazy: boolean (optional, default true)
-{% endcomment %}
+{%- comment -%}
+  Accepts:
+  - product: {Object} Product Liquid object
+  - show_secondary_image: {Boolean} Show the secondary image on hover. Default: false
+  - show_vendor: {Boolean} Show the product vendor. Default: false
+  - show_rating: {Boolean} Show the product rating. Default: false
 
-{%- liquid
-  assign show_vendor = show_vendor | default: false
-  assign show_atc = show_atc | default: true
-  assign lazy = lazy | default: true
-  assign first_variant = product.selected_or_first_available_variant
-  assign on_sale = false
-  if first_variant.compare_at_price > first_variant.price
-    assign on_sale = true
-  endif
-  assign sold_out = false
-  unless product.available
-    assign sold_out = true
-  endunless
--%}
+  Usage:
+  {% render 'product-card', product: product %}
+{%- endcomment -%}
 
-<div class="product-card" data-product-id="{{ product.id }}">
-
-  <!-- Image Area -->
-  <div class="product-card__media">
-    <a href="{{ product.url }}" aria-label="{{ product.title }}">
-      {%- if product.featured_image -%}
+<a href="{{ product.url | within: collection }}" class="product-card group block relative" data-product-id="{{ product.id }}">
+  <div class="product-card__image-wrapper relative aspect-square overflow-hidden bg-gray-100 rounded-lg mb-4">
+    {%- if product.featured_image -%}
+      <img
+        src="{{ product.featured_image | image_url: width: 600 }}"
+        alt="{{ product.featured_image.alt | escape }}"
+        class="product-card__image object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+        width="600"
+        height="600"
+        loading="lazy"
+      >
+      {%- if product.images[1] != blank and show_secondary_image -%}
         <img
-          src="{{ product.featured_image | image_url: width: 600 }}"
-          srcset="
-            {{ product.featured_image | image_url: width: 300 }} 300w,
-            {{ product.featured_image | image_url: width: 600 }} 600w,
-            {{ product.featured_image | image_url: width: 900 }} 900w
-          "
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          alt="{{ product.featured_image.alt | escape | default: product.title }}"
+          src="{{ product.images[1] | image_url: width: 600 }}"
+          alt="{{ product.images[1].alt | escape }}"
+          class="product-card__image--secondary absolute inset-0 object-cover w-full h-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-white"
           width="600"
           height="600"
-          loading="{% if lazy %}lazy{% else %}eager{% endif %}"
+          loading="lazy"
         >
-        {%- if product.images[1] != blank -%}
-          <img
-            src="{{ product.images[1] | image_url: width: 600 }}"
-            alt="{{ product.images[1].alt | escape | default: product.title }}"
-            width="600"
-            height="600"
-            loading="lazy"
-            class="product-card__hover-img"
-          >
-        {%- endif -%}
-      {%- else -%}
-        <div class="product-card__no-image">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
-          </svg>
-        </div>
       {%- endif -%}
-    </a>
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'w-full h-full text-gray-300 bg-gray-100' }}
+    {%- endif -%}
 
-    <!-- Badges -->
-    <div class="product-card__badges">
-      {%- if sold_out -%}
-        <span class="badge badge--beige">Sold Out</span>
-      {%- elsif on_sale -%}
-        {%- assign savings = first_variant.compare_at_price | minus: first_variant.price | times: 100 | divided_by: first_variant.compare_at_price -%}
-        <span class="badge badge--forest">{{ savings }}% Off</span>
-      {%- endif -%}
-      {%- if product.metafields.custom.is_bestseller == true -%}
-        <span class="badge badge--gold">Bestseller</span>
-      {%- endif -%}
-    </div>
-
-    <!-- Wishlist -->
-    <button class="product-card__wishlist" aria-label="Add to wishlist" data-product-handle="{{ product.handle }}">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-      </svg>
+    {%- if product.compare_at_price > product.price -%}
+      <div class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+        Sale
+      </div>
+    {%- endif -%}
+    {%- unless product.available -%}
+      <div class="absolute top-2 left-2 bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded">
+        Sold Out
+      </div>
+    {%- endunless -%}
+    
+    <!-- Wishlist toggle button (Top Right) -->
+    <button type="button" class="wishlist-toggle absolute top-2 right-2 p-2 bg-white rounded-full shadow-sm text-gray-400 hover:text-red-500 transition-colors" data-product-handle="{{ product.handle }}" aria-label="Add to wishlist">
+      <svg class="w-5 h-5 icon-heart-empty" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+      <svg class="w-5 h-5 icon-heart-filled hidden text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
     </button>
   </div>
 
-  <!-- Body -->
-  <div class="product-card__body">
-
-    {%- if show_vendor and product.vendor != blank -%}
-      <p class="product-card__vendor">{{ product.vendor }}</p>
+  <div class="product-card__content text-center">
+    {%- if show_vendor -%}
+      <p class="product-card__vendor text-xs text-gray-500 uppercase tracking-widest mb-1">{{ product.vendor }}</p>
     {%- endif -%}
 
-    <h3 class="product-card__title">
-      <a href="{{ product.url }}">{{ product.title }}</a>
+    <h3 class="product-card__title text-base font-medium text-gray-900 mb-1 group-hover:underline">
+      {{ product.title | escape }}
     </h3>
 
-    <!-- Star Rating (placeholder — replace with your reviews app snippet) -->
-    {%- if product.metafields.reviews.rating.value != blank -%}
-      <div class="product-card__rating">
-        {%- assign rating = product.metafields.reviews.rating.value -%}
-        {%- assign count  = product.metafields.reviews.rating_count.value -%}
-        <div class="stars" aria-label="{{ rating }} out of 5 stars">
-          {%- for i in (1..5) -%}
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="{% if i <= rating %}currentColor{% else %}none{% endif %}" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </svg>
-          {%- endfor -%}
-        </div>
-        {%- if count != blank -%}
-          <span class="product-card__rating-count">({{ count }})</span>
-        {%- endif -%}
+    {%- if show_rating -%}
+      <div class="product-card__rating text-xs text-yellow-500 mb-2">
+        {% render 'star-rating', rating: product.metafields.reviews.rating.value, count: product.metafields.reviews.rating_count %}
       </div>
     {%- endif -%}
 
-    <!-- Price -->
-    <div class="product-card__price">
-      <span class="product-card__price-current">
-        {{ first_variant.price | money }}
-      </span>
-      {%- if on_sale -%}
-        <span class="product-card__price-compare">
-          {{ first_variant.compare_at_price | money }}
-        </span>
-      {%- endif -%}
+    <div class="product-card__price mb-3">
+      {% render 'price', product: product, use_variant: true %}
     </div>
-
-    <!-- Add to Cart -->
-    {%- if show_atc -%}
-      {%- if sold_out -%}
-        <button class="btn btn--secondary btn--sm btn--full product-card__atc" disabled>
-          Sold Out
-        </button>
-      {%- else -%}
-        <button
-          class="btn btn--primary btn--sm btn--full product-card__atc"
-          data-atc
-          data-variant-id="{{ first_variant.id }}"
-          data-product-title="{{ product.title | escape }}"
-        >
-          Add to Cart
-        </button>
-      {%- endif -%}
-    {%- endif -%}
-
   </div>
-</div>
-
-<style>
-.product-card__hover-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity var(--transition-slow);
-}
-
-.product-card:hover .product-card__hover-img {
-  opacity: 1;
-}
-
-.product-card__no-image {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-beige);
-  color: var(--color-text-light);
-}
-
-.product-card__rating {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin-bottom: var(--space-2);
-  color: var(--color-gold);
-}
-
-.stars {
-  display: flex;
-  gap: 1px;
-}
-
-.product-card__rating-count {
-  font-size: var(--text-xs);
-  color: var(--color-text-light);
-}
-</style>
+</a>

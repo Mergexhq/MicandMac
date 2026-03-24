@@ -1,0 +1,14 @@
+{% comment %}
+  Snippet: overlay
+  Usage: {% render 'overlay' %}
+  Single shared full-screen overlay used by cart-drawer, mobile-nav,
+  search-drawer, and modals. JS adds/removes .is-active + a data-drawer
+  attribute to track which drawer is open so esc-close and click-close work.
+{% endcomment %}
+
+<div
+  class="overlay"
+  id="SiteOverlay"
+  aria-hidden="true"
+  data-overlay
+></div>

@@ -1,0 +1,206 @@
+{% comment %}
+  Snippet: product-gallery
+  Usage: {% render 'product-gallery', product: product %}
+  Main image + thumbnails + mobile swipe + zoom on click
+{% endcomment %}
+
+{%- assign media_count = product.media.size -%}
+
+<div class="product-gallery" id="ProductGallery" data-media-count="{{ media_count }}">
+
+  <!-- Main image -->
+  <div class="product-gallery__main" id="GalleryMain">
+    {%- for media in product.media -%}
+      <div
+        class="product-gallery__slide {% if forloop.first %}is-active{% endif %}"
+        data-index="{{ forloop.index0 }}"
+        id="GallerySlide-{{ forloop.index0 }}"
+      >
+        {%- if media.media_type == 'video' -%}
+          {{ media | video_tag: autoplay: false, loop: false, muted: false, controls: true, class: 'product-gallery__video' }}
+        {%- elsif media.media_type == 'external_video' -%}
+          {{ media | external_video_tag: class: 'product-gallery__video' }}
+        {%- else -%}
+          <img
+            src="{{ media | image_url: width: 900 }}"
+            srcset="
+              {{ media | image_url: width: 600  }} 600w,
+              {{ media | image_url: width: 900  }} 900w,
+              {{ media | image_url: width: 1200 }} 1200w
+            "
+            sizes="(max-width: 767px) 100vw, 50vw"
+            alt="{{ media.alt | escape | default: product.title }}"
+            width="900"
+            height="900"
+            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+            class="product-gallery__img"
+            data-zoom="{{ media | image_url: width: 1800 }}"
+          >
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+
+    <!-- Counter -->
+    {%- if media_count > 1 -%}
+      <div class="product-gallery__counter" id="GalleryCounter">
+        <span id="GalleryCurrentNum">1</span> / {{ media_count }}
+      </div>
+    {%- endif -%}
+
+    <!-- Prev / next arrows -->
+    {%- if media_count > 1 -%}
+      <button class="product-gallery__arrow product-gallery__arrow--prev" id="GalleryPrev" aria-label="Previous image">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <button class="product-gallery__arrow product-gallery__arrow--next" id="GalleryNext" aria-label="Next image">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    {%- endif -%}
+  </div>
+
+  <!-- Thumbnails -->
+  {%- if media_count > 1 -%}
+    <div class="product-gallery__thumbs" id="GalleryThumbs">
+      {%- for media in product.media -%}
+        <button
+          class="product-gallery__thumb {% if forloop.first %}is-active{% endif %}"
+          data-index="{{ forloop.index0 }}"
+          aria-label="View image {{ forloop.index }}"
+        >
+          <img
+            src="{{ media | image_url: width: 120 }}"
+            alt="{{ media.alt | escape | default: product.title }}"
+            width="80"
+            height="80"
+            loading="lazy"
+          >
+        </button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+</div>
+
+<style>
+.product-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: sticky;
+  top: calc(72px + var(--space-4));
+}
+
+.product-gallery__main {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-beige);
+  cursor: zoom-in;
+}
+
+.product-gallery__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+}
+
+.product-gallery__slide.is-active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.product-gallery__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-gallery__video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.product-gallery__counter {
+  position: absolute;
+  bottom: var(--space-4);
+  right: var(--space-4);
+  background: rgba(0,0,0,0.5);
+  color: var(--color-white);
+  font-size: var(--text-xs);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(4px);
+}
+
+.product-gallery__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  color: var(--color-text-dark);
+}
+
+.product-gallery__main:hover .product-gallery__arrow {
+  opacity: 1;
+}
+
+.product-gallery__arrow--prev { left: var(--space-3); }
+.product-gallery__arrow--next { right: var(--space-3); }
+
+.product-gallery__thumbs {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.product-gallery__thumbs::-webkit-scrollbar { display: none; }
+
+.product-gallery__thumb {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: var(--color-beige);
+  padding: 0;
+  transition: border-color var(--transition-fast);
+}
+
+.product-gallery__thumb.is-active {
+  border-color: var(--color-forest);
+}
+
+.product-gallery__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 767px) {
+  .product-gallery { position: static; }
+  .product-gallery__arrow { display: none; }
+}
+</style>

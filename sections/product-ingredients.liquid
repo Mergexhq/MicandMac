@@ -1,0 +1,207 @@
+{% comment %}
+  Section: Product Ingredients Deep-Dive
+  Visual ingredient cards — icon + name + benefit
+  Positioned below the PDP form on the product page
+{% endcomment %}
+
+<section class="product-ingredients section-padding--sm">
+  <div class="container">
+    <div class="section-heading">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2>{{ section.settings.heading | default: 'What's Inside Matters' }}</h2>
+      {%- if section.settings.subtext != blank -%}
+        <p>{{ section.settings.subtext }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="ingredient-cards">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'ingredient' -%}
+          <div class="ingredient-card" {{ block.shopify_attributes }}>
+            <div class="ingredient-card__icon">
+              {%- if block.settings.icon != blank -%}
+                <img
+                  src="{{ block.settings.icon | image_url: width: 120 }}"
+                  alt="{{ block.settings.name }}"
+                  width="60"
+                  height="60"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <span class="ingredient-card__emoji">{{ block.settings.emoji | default: '🌿' }}</span>
+              {%- endif -%}
+            </div>
+            <div class="ingredient-card__content">
+              <h4 class="ingredient-card__name">{{ block.settings.name }}</h4>
+              <p class="ingredient-card__benefit">{{ block.settings.benefit }}</p>
+            </div>
+            {%- if block.settings.badge != blank -%}
+              <span class="ingredient-card__badge badge badge--forest">{{ block.settings.badge }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.sourcing_note != blank -%}
+      <p class="product-ingredients__sourcing text-center">{{ section.settings.sourcing_note }}</p>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+.ingredient-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-bottom: var(--space-8);
+}
+
+.ingredient-card {
+  position: relative;
+  background: var(--color-white);
+  border: 1px solid var(--color-beige);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  text-align: center;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.ingredient-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.ingredient-card__icon {
+  width: 72px;
+  height: 72px;
+  background: var(--color-beige);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-4);
+}
+
+.ingredient-card__emoji {
+  font-size: 2rem;
+}
+
+.ingredient-card__name {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  color: var(--color-text-dark);
+  margin-bottom: var(--space-2);
+}
+
+.ingredient-card__benefit {
+  font-size: var(--text-sm);
+  color: var(--color-text-mid);
+  line-height: 1.6;
+}
+
+.ingredient-card__badge {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  font-size: 10px;
+  padding: 2px 8px;
+}
+
+.product-ingredients__sourcing {
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+  font-style: italic;
+}
+
+@media (max-width: 1023px) {
+  .ingredient-cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 479px) {
+  .ingredient-cards { grid-template-columns: 1fr; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Product ingredients",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Our Actives"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What's Inside Matters"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext"
+    },
+    {
+      "type": "text",
+      "id": "sourcing_note",
+      "label": "Sourcing note",
+      "default": "All ingredients are ethically sourced and cruelty-free tested."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon image"
+        },
+        {
+          "type": "text",
+          "id": "emoji",
+          "label": "Emoji fallback (if no icon)",
+          "default": "🌿"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Ingredient name",
+          "default": "Donkey Milk"
+        },
+        {
+          "type": "text",
+          "id": "benefit",
+          "label": "One-line benefit",
+          "default": "Deep hydration & skin renewal"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge label (optional)",
+          "placeholder": "Key Active"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product ingredients",
+      "blocks": [
+        { "type": "ingredient", "settings": { "emoji": "🍶", "name": "Donkey Milk", "benefit": "Deep hydration, skin renewal & brightening", "badge": "Key Active" } },
+        { "type": "ingredient", "settings": { "emoji": "🍷", "name": "Red Wine Extract", "benefit": "Antioxidant powerhouse, fights free radicals", "badge": "Key Active" } },
+        { "type": "ingredient", "settings": { "emoji": "🪴", "name": "Aloe Vera", "benefit": "Soothes, hydrates & reduces inflammation" } },
+        { "type": "ingredient", "settings": { "emoji": "🌿", "name": "Turmeric", "benefit": "Brightens skin tone & reduces dark spots" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

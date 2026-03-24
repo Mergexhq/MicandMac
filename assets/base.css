@@ -1,47 +1,69 @@
 /* ============================================
    MIC & MAC — BASE DESIGN SYSTEM
-   Clean Beauty · Natural Personal Care
+   Luxury Clean Beauty · Burgundy · Gold · Cream
+   Extracted directly from Mic & Mac packaging.
    ============================================ */
 
 /* ---- CSS VARIABLES (Design Tokens) ---- */
 :root {
-  /* Brand Colors */
-  --color-burgundy:       #800020;   /* Classic Burgundy — primary */
-  --color-burgundy-dark:  #600018;   /* Darker burgundy for hover */
-  --color-burgundy-light: #A52A2A;   /* Reddish brown / light burgundy */
-  --color-gold:           #D4AF37;   /* Metallic gold — accent */
-  --color-gold-light:     #E5C76B;   /* Light gold */
-  --color-merlot:         #73081C;   /* Merlot red — deep accent */
-  --color-wine-blush:     #F4E6E9;   /* Soft pink/wine blush — cards */
-  --color-white:          #FFFFFF;   /* Pure white background */
-  --color-cream:          #FFFAFA;   /* Snow/Off-white */
+  /* ---- Brand colours (from packaging) ---- */
+  --color-burgundy:         #4A1040;  /* Primary — CTAs, header, nav */
+  --color-burgundy-hover:   #7A2060;  /* Button hover */
+  --color-plum:             #2A1520;  /* Body text, headings, darkest bg */
+  --color-gold:             #B8924A;  /* Accent — badges, eyebrows, icons, stars */
+  --color-gold-light:       #D4A96A;  /* Gold on dark backgrounds */
+  --color-gold-dark:        #9C7A4A;  /* Small gold captions */
 
-  /* Aliasing legacy names for compatibility if needed, but updating main refs */
-  --color-forest:       var(--color-burgundy);
-  --color-forest-dark:  var(--color-burgundy-dark);
-  --color-forest-light: var(--color-burgundy-light);
-  --color-beige:        var(--color-wine-blush);
-  --color-cream:        var(--color-white);
+  /* ---- Background colours ---- */
+  --color-bg-page:          #FDFAF6;  /* Pearl white — main page bg */
+  --color-bg-cream:         #F5ECD7;  /* Cream — section bg, cards */
+  --color-bg-warm:          #EDD9B8;  /* Warm cream — hover, selected */
+  --color-bg-blush:         #E8C8C0;  /* Blush — testimonials, subtle sections */
+  --color-bg-dark:          #4A1040;  /* Footer, trust bar, promo sections */
+  --color-bg-darkest:       #2A1520;  /* Announcement bar */
 
-  /* Text Colors */
-  --color-text-dark:    #1A1A1A;   /* Deep charcoal / almost black */
-  --color-text-mid:     #4D4D4D;   /* Dark grey */
-  --color-text-light:   #8C8C8C;   /* Muted text */
-  --color-text-white:   #FFFFFF;
+  /* ---- Text colours ---- */
+  --color-text-primary:     #2A1520;  /* Headings, product titles — 12.4:1 on page */
+  --color-text-secondary:   #5C3D2E;  /* Body text, descriptions — warm brown */
+  --color-text-muted:       #A8957E;  /* Captions, compare price, meta */
+  --color-text-accent:      #B8924A;  /* Eyebrows, vendor labels — decorative only */
+  --color-text-on-dark:     #F5ECD7;  /* Text on burgundy/dark backgrounds */
+  --color-text-gold-on-dark:#D4A96A;  /* Gold text on dark bg — 6.1:1 safe */
 
-  /* Semantic */
-  --color-success:      #3A7D44;
-  --color-error:        #C0392B;
-  --color-warning:      #D4800A;
+  /* ---- Borders ---- */
+  --color-border-default:   #E8DDD0;  /* Cards, inputs, dividers */
+  --color-border-accent:    #D4A96A;  /* Focus states, featured cards */
 
-  /* Typography */
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body:    'DM Sans', -apple-system, sans-serif;
+  /* ---- Semantic colours ---- */
+  --color-success:          #2D7A4A;  /* In stock, success states */
+  --color-error:            #C0392B;  /* Errors, sold out */
+  --color-warning:          #B8924A;  /* Low stock — reuses gold */
+  --color-info:             #4A8FA8;  /* Info banners, tips */
 
-  /* Font Sizes */
+  /* ---- Legacy aliases (keep sections compiling) ---- */
+  /* These map old names to new tokens so older section files still work */
+  --color-forest:           var(--color-burgundy);
+  --color-forest-dark:      var(--color-burgundy-hover);
+  --color-forest-light:     var(--color-gold-dark);
+  --color-beige:            var(--color-bg-cream);
+  --color-white:            var(--color-bg-page);
+  --color-cream:            var(--color-bg-cream);
+  --color-sage:             var(--color-gold-dark);
+  --color-sage-light:       var(--color-bg-warm);
+  --color-text-dark:        var(--color-text-primary);
+  --color-text-mid:         var(--color-text-secondary);
+  --color-text-light:       var(--color-text-muted);
+  --color-text-white:       var(--color-text-on-dark);
+
+  /* ---- Typography ---- */
+  --font-display: 'Cormorant Garamond', Georgia, serif;  /* Headings — luxury serif */
+  --font-script:  'Great Vibes', cursive;                /* First-letter decoration */
+  --font-body:    'DM Sans', -apple-system, sans-serif;  /* UI text — clean sans */
+
+  /* ---- Font scale ---- */
   --text-xs:    0.75rem;    /* 12px */
   --text-sm:    0.875rem;   /* 14px */
-  --text-base:  1rem;       /* 16px */
+  --text-base:  1rem;       /* 16px — minimum body size per India UX rules */
   --text-lg:    1.125rem;   /* 18px */
   --text-xl:    1.25rem;    /* 20px */
   --text-2xl:   1.5rem;     /* 24px */
@@ -51,46 +73,46 @@
   --text-6xl:   3.75rem;    /* 60px */
   --text-7xl:   4.5rem;     /* 72px */
 
-  /* Spacing */
-  --space-1:  0.25rem;
-  --space-2:  0.5rem;
-  --space-3:  0.75rem;
-  --space-4:  1rem;
-  --space-5:  1.25rem;
-  --space-6:  1.5rem;
-  --space-8:  2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
-  --space-24: 6rem;
+  /* ---- Spacing scale ---- */
+  --space-1:  0.25rem;   /*  4px */
+  --space-2:  0.5rem;    /*  8px */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-5:  1.25rem;   /* 20px */
+  --space-6:  1.5rem;    /* 24px */
+  --space-8:  2rem;      /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-20: 5rem;      /* 80px */
+  --space-24: 6rem;      /* 96px */
 
-  /* Layout */
+  /* ---- Layout ---- */
   --container-max:    1280px;
   --container-wide:   1440px;
   --container-narrow: 800px;
   --gutter:           1.5rem;
 
-  /* Border Radius */
+  /* ---- Border radius ---- */
   --radius-sm:   4px;
   --radius-md:   8px;
   --radius-lg:   16px;
   --radius-xl:   24px;
-  --radius-pill: 999px;
+  --radius-pill: 999px;  /* Always use on buttons per design rules */
 
-  /* Shadows */
-  --shadow-sm:  0 1px 3px rgba(128, 0, 32, 0.08);   /* Subtle burgundy tint */
-  --shadow-md:  0 4px 16px rgba(128, 0, 32, 0.12);
-  --shadow-lg:  0 8px 32px rgba(128, 0, 32, 0.16);
-  --shadow-xl:  0 16px 48px rgba(128, 0, 32, 0.20);
+  /* ---- Shadows (burgundy-tinted) ---- */
+  --shadow-sm:  0 1px 3px rgba(74, 16, 64, 0.08);
+  --shadow-md:  0 4px 16px rgba(74, 16, 64, 0.12);
+  --shadow-lg:  0 8px 32px rgba(74, 16, 64, 0.16);
+  --shadow-xl:  0 16px 48px rgba(74, 16, 64, 0.20);
 
-  /* Transitions */
+  /* ---- Transitions ---- */
   --transition-fast:   150ms ease;
   --transition-base:   250ms ease;
   --transition-slow:   400ms ease;
   --transition-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* Z-index layers */
+  /* ---- Z-index layers ---- */
   --z-base:    1;
   --z-above:   10;
   --z-nav:     100;
@@ -118,8 +140,8 @@ body {
   font-size: var(--text-base);
   font-weight: 400;
   line-height: 1.6;
-  color: var(--color-text-dark);
-  background-color: var(--color-cream);
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg-page);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -157,8 +179,8 @@ ul, ol {
   top: -100px;
   left: var(--space-4);
   z-index: var(--z-toast);
-  background: var(--color-forest);
-  color: var(--color-white);
+  background: var(--color-burgundy);
+  color: var(--color-text-on-dark);
   padding: var(--space-3) var(--space-6);
   border-radius: var(--radius-md);
   font-size: var(--text-sm);
@@ -172,35 +194,82 @@ ul, ol {
 /* ---- TYPOGRAPHY ---- */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 300;            /* Cormorant Garamond — light weight is the luxury look */
   line-height: 1.15;
-  color: var(--color-text-dark);
+  color: var(--color-text-primary);
   letter-spacing: -0.01em;
 }
 
 h1 { font-size: clamp(2.5rem, 5vw, var(--text-7xl)); }
 h2 { font-size: clamp(1.875rem, 3.5vw, var(--text-5xl)); }
-h3 { font-size: clamp(1.5rem, 2.5vw, var(--text-3xl)); }
-h4 { font-size: clamp(1.25rem, 2vw, var(--text-2xl)); }
-h5 { font-size: var(--text-xl); }
-h6 { font-size: var(--text-lg); }
+h3 { font-size: clamp(1.5rem, 2.5vw, var(--text-3xl)); font-weight: 400; }
+h4 { font-size: clamp(1.25rem, 2vw, var(--text-2xl)); font-weight: 400; }
+h5 { font-size: var(--text-xl); font-weight: 400; }
+h6 { font-size: var(--text-lg); font-weight: 400; }
 
+/* Eyebrow — gold is safe here as decorative, large text element */
 .eyebrow {
   font-family: var(--font-body);
   font-size: var(--text-xs);
   font-weight: 500;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-gold);   /* SAFE: decorative, not body text */
 }
 
 .text-italic {
   font-style: italic;
 }
 
+/*
+  Split Heading — First letter uses Great Vibes script, rest is Cormorant Garamond.
+  Usage: wrap first letter in <span class="split-heading__letter">C</span>reate coziness...
+  Or use the ::first-letter pseudo on .split-heading for automatic effect.
+*/
+.split-heading {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--color-text-primary);
+}
+
+/* First letter in script font - used via a <span> wrapper */
+.split-heading__letter {
+  font-family: var(--font-script);
+  font-size: 1.35em;
+  font-weight: 400;
+  line-height: 0.8;
+  display: inline-block;
+  vertical-align: baseline;
+  color: inherit;
+}
+
+/* Auto first-letter version using CSS pseudo-element */
+.split-heading--auto::first-letter {
+  font-family: var(--font-script);
+  font-size: 1.4em;
+  font-weight: 400;
+  line-height: 0.8;
+  float: left;
+  margin-right: 0.05em;
+  margin-top: 0.05em;
+}
+
+/* Section eyebrow label style (like "POPULAR PRODUCTS" in reference) */
+.section-label {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  display: block;
+  margin-bottom: var(--space-3);
+}
+
 p {
   line-height: 1.75;
-  color: var(--color-text-mid);
+  color: var(--color-text-secondary);
 }
 
 /* Rich text (product descriptions, page content) */
@@ -209,9 +278,9 @@ p {
 .rte p  { margin-bottom: var(--space-4); }
 .rte ul { list-style: disc; padding-left: var(--space-6); margin-bottom: var(--space-4); }
 .rte ol { list-style: decimal; padding-left: var(--space-6); margin-bottom: var(--space-4); }
-.rte li { margin-bottom: var(--space-2); color: var(--color-text-mid); }
-.rte a  { color: var(--color-forest); text-decoration: underline; }
-.rte strong { font-weight: 500; color: var(--color-text-dark); }
+.rte li { margin-bottom: var(--space-2); color: var(--color-text-secondary); }
+.rte a  { color: var(--color-burgundy); text-decoration: underline; }
+.rte strong { font-weight: 500; color: var(--color-text-primary); }
 
 
 /* ---- LAYOUT ---- */
@@ -289,15 +358,15 @@ p {
   white-space: nowrap;
 }
 
-/* Primary — Forest green fill */
+/* Primary — Burgundy fill · cream text — 9.8:1 contrast */
 .btn--primary {
-  background: var(--color-forest);
-  color: var(--color-white);
-  border-color: var(--color-forest);
+  background: var(--color-burgundy);
+  color: var(--color-text-on-dark);
+  border-color: var(--color-burgundy);
 }
 .btn--primary:hover {
-  background: var(--color-forest-dark);
-  border-color: var(--color-forest-dark);
+  background: var(--color-burgundy-hover);
+  border-color: var(--color-burgundy-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -305,22 +374,22 @@ p {
   transform: translateY(0);
 }
 
-/* Secondary — Outlined */
+/* Secondary — Outlined burgundy */
 .btn--secondary {
   background: transparent;
-  color: var(--color-forest);
-  border-color: var(--color-forest);
+  color: var(--color-burgundy);
+  border-color: var(--color-burgundy);
 }
 .btn--secondary:hover {
-  background: var(--color-forest);
-  color: var(--color-white);
+  background: var(--color-burgundy);
+  color: var(--color-text-on-dark);
   transform: translateY(-1px);
 }
 
-/* Gold accent */
+/* Gold CTA — hero + promo sections only · dark text on gold 5.4:1 */
 .btn--gold {
   background: var(--color-gold);
-  color: var(--color-forest-dark);
+  color: var(--color-plum);
   border-color: var(--color-gold);
 }
 .btn--gold:hover {
@@ -329,15 +398,15 @@ p {
   box-shadow: var(--shadow-md);
 }
 
-/* Ghost / white (for dark backgrounds) */
+/* Ghost — on dark burgundy/plum backgrounds · cream border + text */
 .btn--ghost {
   background: transparent;
-  color: var(--color-white);
-  border-color: rgba(255,255,255,0.6);
+  color: var(--color-text-on-dark);
+  border-color: rgba(245, 236, 215, 0.5);
 }
 .btn--ghost:hover {
-  background: rgba(255,255,255,0.15);
-  border-color: var(--color-white);
+  background: rgba(245, 236, 215, 0.12);
+  border-color: var(--color-text-on-dark);
 }
 
 /* Full width */
@@ -388,31 +457,45 @@ p {
   white-space: nowrap;
 }
 
-.badge--forest {
-  background: var(--color-forest);
-  color: var(--color-white);
+/* Bestseller badge — burgundy bg, gold-light text (6.1:1) */
+.badge--burgundy {
+  background: var(--color-burgundy);
+  color: var(--color-gold-light);
 }
 
+/* % Off badge — gold bg, plum text (5.4:1) */
 .badge--gold {
   background: var(--color-gold);
-  color: var(--color-forest-dark);
+  color: var(--color-plum);
 }
 
-.badge--sage {
-  background: var(--color-sage-light);
-  color: var(--color-forest-dark);
+/* New / Skin-type badge — blush bg, brown text (8.2:1) */
+.badge--blush {
+  background: var(--color-bg-blush);
+  color: var(--color-text-secondary);
 }
 
-.badge--beige {
-  background: var(--color-beige);
-  color: var(--color-text-mid);
+/* Lab certified — plum bg, gold-light text (6.1:1) */
+.badge--plum {
+  background: var(--color-plum);
+  color: var(--color-gold-light);
 }
 
+/* Cruelty Free — outlined gold */
 .badge--outline {
   background: transparent;
-  color: var(--color-forest);
-  border: 1px solid var(--color-sage);
+  color: var(--color-gold-dark);
+  border: 1px solid var(--color-gold);
 }
+
+/* Warm cream badge */
+.badge--cream {
+  background: var(--color-bg-warm);
+  color: var(--color-text-secondary);
+}
+
+/* Legacy alias */
+.badge--forest { background: var(--color-burgundy); color: var(--color-text-on-dark); }
 
 
 /* ---- FORMS ---- */
@@ -435,9 +518,9 @@ p {
   padding: 0.75rem 1rem;
   font-family: var(--font-body);
   font-size: var(--text-base);
-  color: var(--color-text-dark);
-  background: var(--color-white);
-  border: 1.5px solid var(--color-beige);
+  color: var(--color-text-primary);
+  background: var(--color-bg-page);
+  border: 1.5px solid var(--color-border-default);
   border-radius: var(--radius-md);
   outline: none;
   transition: border-color var(--transition-fast);
@@ -448,8 +531,8 @@ p {
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
-  border-color: var(--color-forest);
-  box-shadow: 0 0 0 3px rgba(45, 74, 62, 0.12);
+  border-color: var(--color-burgundy);
+  box-shadow: 0 0 0 3px rgba(74, 16, 64, 0.08);
 }
 
 .form-input::placeholder {
@@ -465,7 +548,7 @@ p {
 .qty-input {
   display: flex;
   align-items: center;
-  border: 1.5px solid var(--color-beige);
+  border: 1.5px solid var(--color-border-default);
   border-radius: var(--radius-md);
   overflow: hidden;
   width: fit-content;
@@ -477,16 +560,16 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-cream);
+  background: var(--color-bg-cream);
   font-size: var(--text-lg);
-  color: var(--color-forest);
+  color: var(--color-burgundy);
   cursor: pointer;
   transition: background var(--transition-fast);
   border: none;
 }
 
 .qty-input__btn:hover {
-  background: var(--color-beige);
+  background: var(--color-bg-warm);
 }
 
 .qty-input__field {
@@ -494,29 +577,31 @@ p {
   height: 44px;
   text-align: center;
   border: none;
-  border-inline: 1.5px solid var(--color-beige);
+  border-inline: 1.5px solid var(--color-border-default);
   font-family: var(--font-body);
   font-size: var(--text-base);
   font-weight: 500;
-  color: var(--color-text-dark);
-  background: var(--color-white);
+  color: var(--color-text-primary);
+  background: var(--color-bg-page);
   outline: none;
 }
 
 
 /* ---- ANNOUNCEMENT BAR ---- */
+/* Deep plum bg · gold-light text (6.1:1 contrast pass) */
 .announcement-bar {
-  background: var(--color-forest);
-  color: var(--color-white);
+  background: var(--color-bg-darkest);
+  color: var(--color-gold-light);
   text-align: center;
   padding: var(--space-2) var(--space-4);
   font-size: var(--text-xs);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 500;
 }
 
 .announcement-bar a {
+  color: var(--color-text-on-dark);
   text-decoration: underline;
 }
 
@@ -524,9 +609,10 @@ p {
 /* ---- PRODUCT CARD ---- */
 .product-card {
   position: relative;
-  background: var(--color-white);
+  background: var(--color-bg-page);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  border: 0.5px solid var(--color-border-default);
   transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
@@ -539,7 +625,7 @@ p {
   position: relative;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  background: var(--color-beige);
+  background: var(--color-bg-cream);
 }
 
 .product-card__media img {
@@ -570,19 +656,21 @@ p {
   z-index: var(--z-above);
   width: 36px;
   height: 36px;
-  background: var(--color-white);
+  background: rgba(253, 250, 246, 0.9);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-sm);
+  border: 0.5px solid var(--color-border-default);
   opacity: 0;
   transform: translateY(4px);
   transition: all var(--transition-base);
   cursor: pointer;
 }
 
-.product-card:hover .product-card__wishlist {
+.product-card:hover .product-card__wishlist,
+.product-card__wishlist.is-active {
   opacity: 1;
   transform: translateY(0);
 }
@@ -593,9 +681,9 @@ p {
 
 .product-card__vendor {
   font-size: var(--text-xs);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-text-light);
+  color: var(--color-gold-dark);  /* Decorative eyebrow — not body text */
   margin-bottom: var(--space-1);
 }
 
@@ -603,13 +691,13 @@ p {
   font-family: var(--font-display);
   font-size: var(--text-xl);
   font-weight: 400;
-  color: var(--color-text-dark);
+  color: var(--color-text-primary);
   margin-bottom: var(--space-3);
   line-height: 1.3;
 }
 
 .product-card__title a:hover {
-  color: var(--color-forest);
+  color: var(--color-burgundy);
 }
 
 .product-card__price {
@@ -621,12 +709,12 @@ p {
 .product-card__price-current {
   font-size: var(--text-lg);
   font-weight: 500;
-  color: var(--color-forest);
+  color: var(--color-burgundy);
 }
 
 .product-card__price-compare {
   font-size: var(--text-sm);
-  color: var(--color-text-light);
+  color: var(--color-text-muted);
   text-decoration: line-through;
 }
 
@@ -671,11 +759,11 @@ p {
   align-items: center;
   gap: var(--space-2);
   font-size: var(--text-sm);
-  color: var(--color-text-mid);
+  color: var(--color-text-secondary);
 }
 
 .trust-icon svg {
-  color: var(--color-forest);
+  color: var(--color-gold);  /* Gold icons — decorative, safe */
   flex-shrink: 0;
 }
 
@@ -709,7 +797,7 @@ p {
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(128, 0, 32, 0.5); /* Burgundy overlay */
+  background: rgba(42, 21, 32, 0.6); /* Deep plum overlay */
   z-index: var(--z-overlay);
   opacity: 0;
   pointer-events: none;
@@ -737,17 +825,25 @@ p {
 .text-left   { text-align: left; }
 .text-right  { text-align: right; }
 
-.text-forest { color: var(--color-forest); }
-.text-gold   { color: var(--color-gold); }
-.text-sage   { color: var(--color-sage); }
-.text-muted  { color: var(--color-text-light); }
-.text-white  { color: var(--color-white); }
+.text-burgundy  { color: var(--color-burgundy); }
+.text-gold      { color: var(--color-gold); }      /* Decorative only — never body text */
+.text-plum      { color: var(--color-plum); }
+.text-muted     { color: var(--color-text-muted); }
+.text-on-dark   { color: var(--color-text-on-dark); }
+/* Legacy */
+.text-forest    { color: var(--color-burgundy); }
+.text-white     { color: var(--color-text-on-dark); }
 
-.bg-forest { background: var(--color-forest); }
-.bg-cream  { background: var(--color-cream); }
-.bg-beige  { background: var(--color-beige); }
-.bg-sage   { background: var(--color-sage-light); }
-.bg-white  { background: var(--color-white); }
+.bg-burgundy    { background: var(--color-burgundy); }
+.bg-page        { background: var(--color-bg-page); }
+.bg-cream       { background: var(--color-bg-cream); }
+.bg-blush       { background: var(--color-bg-blush); }
+.bg-dark        { background: var(--color-bg-dark); }
+.bg-darkest     { background: var(--color-bg-darkest); }
+/* Legacy */
+.bg-forest      { background: var(--color-burgundy); }
+.bg-beige       { background: var(--color-bg-cream); }
+.bg-white       { background: var(--color-bg-page); }
 
 .mt-auto { margin-top: auto; }
 .mb-0    { margin-bottom: 0; }

@@ -1,0 +1,254 @@
+{% comment %}
+  Section: FAQ Accordion
+  - section heading · animated accordion items
+  - Uses faq-item blocks so merchant manages Q&As from theme editor
+{% endcomment %}
+
+<section class="faq-section section-padding">
+  <div class="container container--narrow">
+
+    <div class="section-heading">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2>{{ section.settings.heading | default: 'Frequently Asked Questions' }}</h2>
+    </div>
+
+    <div class="faq-accordion" id="FaqAccordion-{{ section.id }}">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq_item' -%}
+          <div class="faq-item" {{ block.shopify_attributes }}>
+            <button
+              class="faq-item__trigger"
+              aria-expanded="false"
+              aria-controls="faq-answer-{{ block.id }}"
+            >
+              <span class="faq-item__question">{{ block.settings.question }}</span>
+              <span class="faq-item__icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <path d="M12 5v14M5 12h14"/>
+                </svg>
+              </span>
+            </button>
+            <div
+              class="faq-item__answer"
+              id="faq-answer-{{ block.id }}"
+              role="region"
+              aria-hidden="true"
+            >
+              <div class="faq-item__answer-inner rte">
+                {{ block.settings.answer }}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.cta_label != blank -%}
+      <div class="faq-section__footer text-center">
+        <p class="faq-section__cta-text">{{ section.settings.cta_prefix | default: 'Still have questions?' }}</p>
+        <a href="{{ section.settings.cta_url | default: routes.root_url }}" class="btn btn--secondary">
+          {{ section.settings.cta_label }}
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--color-beige);
+  margin-bottom: var(--space-10);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--color-beige);
+}
+
+.faq-item__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5) 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.faq-item__question {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  color: var(--color-text-dark);
+  line-height: 1.3;
+}
+
+.faq-item__icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--color-beige);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-forest);
+  transition: all var(--transition-base);
+}
+
+.faq-item__trigger[aria-expanded="true"] .faq-item__icon {
+  background: var(--color-forest);
+  border-color: var(--color-forest);
+  color: var(--color-white);
+  transform: rotate(45deg);
+}
+
+.faq-item__answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 380ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-item__answer.is-open {
+  max-height: 800px;
+}
+
+.faq-item__answer-inner {
+  padding-bottom: var(--space-5);
+  font-size: var(--text-base);
+  color: var(--color-text-mid);
+  line-height: 1.75;
+}
+
+.faq-section__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.faq-section__cta-text {
+  font-size: var(--text-lg);
+  color: var(--color-text-mid);
+}
+</style>
+
+<script>
+(function () {
+  var accordion = document.getElementById('FaqAccordion-{{ section.id }}');
+  if (!accordion) return;
+
+  accordion.querySelectorAll('.faq-item__trigger').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var isExpanded = this.getAttribute('aria-expanded') === 'true';
+      var answer = document.getElementById(this.getAttribute('aria-controls'));
+
+      // Optional: collapse others (comment out to allow multi-open)
+      accordion.querySelectorAll('.faq-item__trigger[aria-expanded="true"]').forEach(function (other) {
+        if (other !== btn) {
+          other.setAttribute('aria-expanded', 'false');
+          var otherAnswer = document.getElementById(other.getAttribute('aria-controls'));
+          otherAnswer && otherAnswer.classList.remove('is-open');
+          otherAnswer && otherAnswer.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      this.setAttribute('aria-expanded', String(!isExpanded));
+      answer && answer.classList.toggle('is-open', !isExpanded);
+      answer && answer.setAttribute('aria-hidden', String(isExpanded));
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ accordion",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Got Questions?"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "text",
+      "id": "cta_prefix",
+      "label": "CTA prefix text",
+      "default": "Still have questions?"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What makes Mic & Mac products different?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Our formulas are built around Donkey Milk, Red Wine extract, and Aloe Vera — three powerhouse ingredients known for deep hydration, anti-ageing, and skin brightening. No harsh chemicals, ever.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ accordion",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What makes Mic & Mac products different?",
+            "answer": "<p>Our formulas are built around Donkey Milk, Red Wine extract, and Aloe Vera — powerhouse ingredients for deep hydration, anti-ageing, and skin brightening. No harsh chemicals, ever.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Are your products suitable for all skin types?",
+            "answer": "<p>Yes! Our range is designed to work across all skin types — dry, oily, combination, and sensitive. Each product page lists specific skin-type suitability.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Orders are dispatched within 1-2 business days. Standard delivery is 3-7 business days across India. Expedited options are available at checkout.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

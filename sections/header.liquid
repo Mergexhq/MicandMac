@@ -7,87 +7,61 @@
 {% endcomment %}
 
 <header class="site-header" id="SiteHeader">
-  <div class="container">
-    <div class="site-header__inner">
+  <div class="container mx-auto">
+    <div class="site-header__inner flex items-center justify-between py-4">
 
       <!-- Mobile: Hamburger -->
-      <button class="site-header__burger" id="NavToggle" aria-label="Open navigation" aria-expanded="false">
+      <button class="site-header__burger md:hidden" id="NavToggle" aria-label="Open navigation" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
 
-      <!-- Logo -->
-      <a href="{{ routes.root_url }}" class="site-header__logo">
-        {%- if section.settings.logo != blank -%}
-          <img
-            src="{{ section.settings.logo | image_url: width: 200 }}"
-            alt="{{ shop.name }}"
-            width="120"
-            height="40"
-            loading="eager"
-          >
-        {%- else -%}
-          <span class="site-header__logo-text">{{ shop.name }}</span>
-        {%- endif -%}
-      </a>
+      <!-- Left: Logo/Brand Name -->
+      <div class="site-header__logo flex-1 flex justify-start">
+        <a href="{{ routes.root_url }}" class="site-header__logo-link">
+          {%- if section.settings.logo != blank -%}
+             <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}" width="120" height="40" loading="eager">
+          {%- else -%}
+            <span class="site-header__logo-text text-xl font-medium">Mic & Mac</span>
+          {%- endif -%}
+        </a>
+      </div>
 
-      <!-- Desktop Nav -->
-      <nav class="site-nav" aria-label="Main navigation">
-        <ul class="site-nav__list">
+      <!-- Center: Desktop Nav -->
+      <nav class="site-nav hidden md:flex flex-1 justify-center" aria-label="Main navigation">
+        <ul class="site-nav__list flex items-center gap-8">
           {%- for link in section.settings.menu.links -%}
-            <li class="site-nav__item {% if link.links.size > 0 %}has-dropdown{% endif %}">
-              <a href="{{ link.url }}" class="site-nav__link {% if link.active %}is-active{% endif %}">
+            <li class="site-nav__item">
+              <a href="{{ link.url }}" class="site-nav__link text-sm font-medium hover:text-opacity-70 transition-opacity {% if link.active %}is-active{% endif %}">
                 {{ link.title }}
-                {%- if link.links.size > 0 -%}
-                  <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                {%- endif -%}
               </a>
-              {%- if link.links.size > 0 -%}
-                <div class="site-nav__dropdown">
-                  <ul>
-                    {%- for child in link.links -%}
-                      <li>
-                        <a href="{{ child.url }}" class="site-nav__dropdown-link {% if child.active %}is-active{% endif %}">
-                          {{ child.title }}
-                        </a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                </div>
-              {%- endif -%}
             </li>
           {%- endfor -%}
         </ul>
       </nav>
 
-      <!-- Header Actions -->
-      <div class="site-header__actions">
+      <!-- Right: Header Actions -->
+      <div class="site-header__actions flex-1 flex justify-end items-center gap-4">
+        <!-- Sign In -->
+        <a href="{{ routes.account_url }}" class="site-header__action-btn text-sm font-medium" aria-label="Account">
+          Sign in
+        </a>
 
-        <!-- Search -->
-        <button class="site-header__action-btn" id="SearchToggle" aria-label="Search">
+        <!-- Wishlist -->
+        <a href="/pages/wishlist" class="site-header__action-btn" aria-label="Wishlist">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-          </svg>
-        </button>
-
-        <!-- Account -->
-        <a href="{{ routes.account_url }}" class="site-header__action-btn" aria-label="Account">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
           </svg>
         </a>
 
         <!-- Cart -->
-        <button class="site-header__action-btn site-header__cart" id="CartToggle" aria-label="Cart">
+        <button class="site-header__action-btn site-header__cart relative" id="CartToggle" aria-label="Cart">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
           </svg>
           {%- if cart.item_count > 0 -%}
-            <span class="cart-count" id="CartCount">{{ cart.item_count }}</span>
-          {%- else -%}
-            <span class="cart-count cart-count--hidden" id="CartCount">0</span>
+            <span class="cart-count absolute -top-1 -right-1 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">{{ cart.item_count }}</span>
           {%- endif -%}
         </button>
-
       </div>
     </div>
   </div>
@@ -165,10 +139,10 @@
 /* === HEADER === */
 .site-header {
   position: sticky;
-  top: 0;
+  top: 30px; /* Aligned with slimmer announcement bar */
   z-index: var(--z-nav);
-  background: var(--color-cream);
-  border-bottom: 1px solid transparent;
+  background: #FAF9F6;
+  border-bottom: 1px solid #F3F1ED;
   transition: border-color var(--transition-base), box-shadow var(--transition-base), background var(--transition-base);
 }
 

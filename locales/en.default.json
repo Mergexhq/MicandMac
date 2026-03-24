@@ -2,7 +2,9 @@
   "404": {
     "title": "404",
     "not_found": "Page not found.",
-    "back_to_shopping": "Back to shopping"
+    "back_to_shopping": "Back to shopping",
+    "search_label": "Search our store",
+    "search_placeholder": "Search products..."
   },
   "blog": {
     "article_comments": "Comments",
@@ -11,24 +13,132 @@
     "comment_form_email": "Email",
     "comment_form_name": "Name",
     "comment_form_submit": "Post",
-    "comment_form_title": "Add a comment"
+    "comment_form_title": "Add a comment",
+    "read_more": "Read more",
+    "back_to_blog": "Back to Journal"
   },
   "cart": {
     "checkout": "Checkout",
-    "title": "Cart",
+    "title": "Your Cart",
     "update": "Update",
-    "remove": "Remove"
+    "remove": "Remove",
+    "empty": "Your cart is empty — but it doesn't have to be",
+    "item_count_html": "{{ count }} item",
+    "item_count_html_other": "{{ count }} items",
+    "subtotal": "Subtotal",
+    "discount_code_placeholder": "Discount code",
+    "apply": "Apply",
+    "continue_shopping": "Continue Shopping",
+    "shipping_note": "Shipping and taxes calculated at checkout"
+  },
+  "collections": {
+    "title": "Collections",
+    "shop_collection": "Shop Now",
+    "all_products": "All Products",
+    "sort_by_label": "Sort by",
+    "filter_by_label": "Filter",
+    "clear_filters": "Clear all",
+    "active_filters": "Active filters",
+    "product_count_html": "{{ count }} product",
+    "product_count_html_other": "{{ count }} products",
+    "grid_view": "Grid view",
+    "list_view": "List view",
+    "load_more": "Load more",
+    "no_results": "No products found. Try adjusting your filters.",
+    "pagination_next": "Next",
+    "pagination_prev": "Prev"
   },
   "customers": {
     "login": {
       "email": "Email",
       "password": "Password",
       "submit": "Sign in",
-      "title": "Login"
+      "title": "Sign In",
+      "forgot_password": "Forgot your password?",
+      "no_account": "Don't have an account?",
+      "register_link": "Create one here"
+    },
+    "register": {
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create Account",
+      "title": "Create Account",
+      "have_account": "Already have an account?",
+      "login_link": "Sign in"
+    },
+    "recover_password": {
+      "title": "Forgot Password",
+      "subtext": "We'll send you an email to reset your password.",
+      "email": "Email",
+      "submit": "Send Reset Email"
+    },
+    "reset_password": {
+      "title": "Reset Password",
+      "password": "New Password",
+      "password_confirm": "Confirm Password",
+      "submit": "Reset Password"
+    },
+    "account": {
+      "title": "My Account",
+      "welcome_html": "Welcome back, {{ name }}",
+      "logout": "Sign out",
+      "recent_orders": "Recent Orders",
+      "no_orders": "You haven't placed any orders yet.",
+      "start_shopping": "Start Shopping"
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "date_html": "Placed on {{ date }}",
+      "buy_again": "Buy Again",
+      "view_details": "View Details",
+      "shipping_address": "Shipping Address",
+      "billing_address": "Billing Address",
+      "payment_status": "Payment",
+      "fulfillment_status": "Fulfillment",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "total": "Total"
+    },
+    "addresses": {
+      "title": "My Addresses",
+      "default_badge": "Default",
+      "add_new": "Add a New Address",
+      "edit": "Edit",
+      "delete": "Delete",
+      "set_default": "Set as default",
+      "no_addresses": "You haven't saved any addresses yet."
+    },
+    "activate_account": {
+      "title": "Activate Account",
+      "subtext": "Create your password to activate your account.",
+      "password": "Password",
+      "password_confirm": "Confirm Password",
+      "submit": "Activate Account"
     }
   },
-  "collections": {
-    "title": "Collections"
+  "general": {
+    "pagination": {
+      "next": "Next page",
+      "previous": "Previous page"
+    },
+    "breadcrumb": {
+      "home": "Home"
+    },
+    "wishlist": {
+      "add": "Add to wishlist",
+      "remove": "Remove from wishlist",
+      "title": "My Wishlist",
+      "empty": "Your wishlist is empty.",
+      "empty_subtext": "Save products you love and come back to them later.",
+      "guest_nudge": "Sign in to save your wishlist to your account."
+    },
+    "search": {
+      "no_results_html": "No results found for \"{{ terms }}\"",
+      "recent": "Recent searches",
+      "placeholder": "Search for products, ingredients..."
+    }
   },
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",
@@ -42,11 +152,88 @@
     "password": "Password",
     "enter": "Enter"
   },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "buy_now": "Buy Now",
+      "out_of_stock": "Sold Out",
+      "unavailable": "Unavailable",
+      "sold_out_badge": "Sold Out",
+      "sale_badge": "Sale",
+      "quantity": "Quantity",
+      "description": "Description",
+      "pick_variant": "Please select a variant",
+      "vendor": "By {{ vendor }}",
+      "reviews_count_html": "{{ count }} review",
+      "reviews_count_html_other": "{{ count }} reviews"
+    },
+    "tabs": {
+      "description": "Description",
+      "ingredients": "Ingredients",
+      "how_to_use": "How to Use",
+      "full_ingredients": "Full Ingredients List"
+    },
+    "trust": {
+      "free_shipping": "Free Shipping",
+      "free_shipping_note": "On orders above ₹999",
+      "easy_returns": "Easy Returns",
+      "easy_returns_note": "7-day hassle-free returns",
+      "natural": "100% Natural",
+      "natural_note": "No parabens or sulfates",
+      "secure": "Secure Payment",
+      "secure_note": "UPI, Cards & COD accepted"
+    }
+  },
   "search": {
     "title": "Search",
     "placeholder": "Search articles, pages, or products",
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
     "results_for_html": "{{ count }} results found for {{ terms }}"
+  },
+  "sections": {
+    "featured_collection": {
+      "view_all": "View All",
+      "empty": "No products found in this collection."
+    },
+    "collection_tiles": {
+      "title": "Shop by Category"
+    },
+    "hero_banner": {
+      "image_alt": "Hero banner image"
+    },
+    "testimonials": {
+      "heading": "What Our Customers Say",
+      "verified": "Verified Purchase"
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions"
+    },
+    "newsletter": {
+      "heading": "Join the Mic & Mac Community",
+      "subtext": "Get 10% off your first order, plus skincare tips and ingredient stories.",
+      "placeholder": "Your email address",
+      "submit": "Subscribe",
+      "success": "Thanks for subscribing! Check your inbox for your discount code.",
+      "whatsapp": "Join on WhatsApp"
+    },
+    "instagram": {
+      "heading": "Follow Us on Instagram",
+      "follow_cta": "Follow @micandmaccare"
+    },
+    "cart": {
+      "shipping_bar_html": "Add <strong>{{ amount }}</strong> more for free shipping!",
+      "shipping_achieved": "You've unlocked free shipping! 🎉",
+      "upsell_title": "You May Also Like"
+    },
+    "announcement_bar": {
+      "close": "Close announcement"
+    },
+    "related_products": {
+      "title": "You May Also Like"
+    },
+    "recently_viewed": {
+      "title": "Recently Viewed"
+    }
   }
 }

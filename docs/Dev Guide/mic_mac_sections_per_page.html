@@ -1,0 +1,281 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0;font-size:13px}
+.page-block{margin-bottom:1.25rem;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.page-header{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--color-background-secondary);cursor:pointer;user-select:none}
+.page-num{font-size:11px;font-weight:500;color:var(--color-text-tertiary);width:20px;flex-shrink:0}
+.page-name{font-size:13px;font-weight:500;color:var(--color-text-primary);flex:1}
+.page-file{font-family:var(--font-mono);font-size:10px;color:var(--color-text-tertiary)}
+.badge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:3px;font-weight:500}
+.p1{background:var(--color-background-danger);color:var(--color-text-danger)}
+.p2{background:var(--color-background-warning);color:var(--color-text-warning)}
+.p3{background:var(--color-background-info);color:var(--color-text-info)}
+.p4{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.sections-list{padding:0}
+.section-row{display:grid;grid-template-columns:24px 1fr 140px 90px;gap:8px;padding:7px 14px;border-top:0.5px solid var(--color-border-tertiary);align-items:start}
+.section-row:hover{background:var(--color-background-secondary)}
+.s-num{font-size:11px;color:var(--color-text-tertiary);padding-top:1px}
+.s-name{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.s-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.5;margin-top:2px}
+.s-file{font-family:var(--font-mono);font-size:10px;color:var(--color-text-tertiary);padding-top:2px}
+.s-type{font-size:10px;padding:2px 6px;border-radius:3px;font-weight:500;width:fit-content;white-space:nowrap}
+.t-section{background:var(--color-background-info);color:var(--color-text-info)}
+.t-snippet{background:var(--color-background-success);color:var(--color-text-success)}
+.t-global{background:var(--color-background-warning);color:var(--color-text-warning)}
+.t-shopify{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.group-label{font-size:11px;font-weight:500;color:var(--color-text-secondary);padding:8px 14px 4px;background:var(--color-background-tertiary);letter-spacing:0.04em;text-transform:uppercase}
+</style>
+
+<div class="wrap">
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">1</div>
+    <div class="page-name">Homepage</div>
+    <div class="page-file">templates/index.json</div>
+    <span class="badge p1">P1</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">Announcement bar</div><div class="s-desc">Scrolling promo text — "Free shipping ₹999+" · dismissible</div><div class="s-file">sections/announcement-bar.liquid</div></div><div class="s-file">announcement-bar.liquid</div><div><span class="s-type t-global">global</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Hero banner</div><div class="s-desc">Full-screen image/video · eyebrow + H1 + subtext · 2 CTAs · scroll indicator</div><div class="s-file">sections/hero-banner.liquid</div></div><div class="s-file">hero-banner.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">3</div><div><div class="s-name">Trust bar</div><div class="s-desc">4 icons — 100% Natural · Cruelty Free · Made for India · Free Shipping</div><div class="s-file">sections/trust-bar.liquid</div></div><div class="s-file">trust-bar.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">4</div><div><div class="s-name">Featured collection — Bestsellers</div><div class="s-desc">4-col product grid · "Bestsellers" heading · view all link</div><div class="s-file">sections/featured-collection.liquid</div></div><div class="s-file">featured-collection.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">5</div><div><div class="s-name">Category tiles</div><div class="s-desc">4 collection cards — Face Care · Body Care · Hair Care · Combos with hover image</div><div class="s-file">sections/collection-tiles.liquid</div></div><div class="s-file">collection-tiles.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">6</div><div><div class="s-name">Ingredients story</div><div class="s-desc">2-col layout — image left, content right · ingredient pills (Donkey Milk, Red Wine, Aloe, Turmeric)</div><div class="s-file">sections/ingredients-story.liquid</div></div><div class="s-file">ingredients-story.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">7</div><div><div class="s-name">Video / UGC strip</div><div class="s-desc">Horizontal scroll of product videos (already on current site) · autoplay on hover</div><div class="s-file">sections/video-strip.liquid</div></div><div class="s-file">video-strip.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">8</div><div><div class="s-name">Combo offer banner</div><div class="s-desc">Full-width promotional banner — "Buy 2 Get 1 Free" · bold CTA · countdown timer (optional)</div><div class="s-file">sections/promo-banner.liquid</div></div><div class="s-file">promo-banner.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">9</div><div><div class="s-name">Testimonials</div><div class="s-desc">3-col review cards · star rating · customer name + location · verified purchase badge</div><div class="s-file">sections/testimonials.liquid</div></div><div class="s-file">testimonials.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">10</div><div><div class="s-name">FAQ accordion</div><div class="s-desc">6–8 questions inline on homepage — ingredients, shipping, skin types, returns</div><div class="s-file">sections/faq-accordion.liquid</div></div><div class="s-file">faq-accordion.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">11</div><div><div class="s-name">Newsletter / WhatsApp CTA</div><div class="s-desc">Email signup + WhatsApp community join · forest green background</div><div class="s-file">sections/newsletter-cta.liquid</div></div><div class="s-file">newsletter-cta.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">2</div>
+    <div class="page-name">Collection / PLP (all collections reuse this)</div>
+    <div class="page-file">templates/collection.json</div>
+    <span class="badge p1">P1</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">Collection hero</div><div class="s-desc">Collection image · collection title · description · product count</div><div class="s-file">inside sections/main-collection.liquid</div></div><div class="s-file">main-collection.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Filter + sort bar</div><div class="s-desc">Filter by: skin type, price range, ingredient · Sort: featured, price, newest · Active filter pills with remove</div><div class="s-file">snippets/filter-bar.liquid</div></div><div class="s-file">filter-bar.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">3</div><div><div class="s-name">Product grid</div><div class="s-desc">Responsive grid (4-col desktop, 2-col mobile) · product cards · lazy load images</div><div class="s-file">snippets/product-card.liquid</div></div><div class="s-file">product-card.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">4</div><div><div class="s-name">Pagination</div><div class="s-desc">Load more button OR numbered pagination · total count display</div><div class="s-file">snippets/pagination.liquid</div></div><div class="s-file">pagination.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">5</div><div><div class="s-name">Collection testimonials</div><div class="s-desc">2–3 reviews specific to this category — reuses testimonials section</div><div class="s-file">sections/testimonials.liquid</div></div><div class="s-file">testimonials.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">3</div>
+    <div class="page-name">All Collections listing</div>
+    <div class="page-file">templates/list-collections.json</div>
+    <span class="badge p1">P1</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">Page hero</div><div class="s-desc">Simple heading "Shop All" · subtext · breadcrumb</div><div class="s-file">sections/main-list-collections.liquid</div></div><div class="s-file">main-list-collections.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Collections grid</div><div class="s-desc">Large image cards for each collection · hover zoom · title overlay</div><div class="s-file">sections/main-list-collections.liquid</div></div><div class="s-file">main-list-collections.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">4</div>
+    <div class="page-name">Product Detail Page / PDP</div>
+    <div class="page-file">templates/product.json</div>
+    <span class="badge p1">P1</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">Breadcrumb</div><div class="s-desc">Home › Body Care › Donkey Milk Soap</div><div class="s-file">snippets/breadcrumb.liquid</div></div><div class="s-file">breadcrumb.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Product gallery</div><div class="s-desc">Main image + thumbnail strip · image zoom on hover · mobile swipe carousel · video support</div><div class="s-file">snippets/product-gallery.liquid</div></div><div class="s-file">product-gallery.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">3</div><div><div class="s-name">Product info block</div><div class="s-desc">Badges (Bestseller, % off) · Title · Star rating + review count · Price + compare-at · Variant picker · Qty selector · ATC button · Buy Now button · Wishlist</div><div class="s-file">snippets/product-form.liquid</div></div><div class="s-file">product-form.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">4</div><div><div class="s-name">Sticky ATC bar</div><div class="s-desc">Appears when main ATC scrolls out of view · product thumbnail + name + price + ATC</div><div class="s-file">snippets/sticky-atc.liquid</div></div><div class="s-file">sticky-atc.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">5</div><div><div class="s-name">Trust mini-bar</div><div class="s-desc">Inline under ATC — Free shipping · Easy returns · Natural formula · Secure payment</div><div class="s-file">snippets/product-trust.liquid</div></div><div class="s-file">product-trust.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">6</div><div><div class="s-name">Product description tabs</div><div class="s-desc">Tab 1: Description · Tab 2: Key Ingredients (from metafield) · Tab 3: How to use · Tab 4: Full ingredient list</div><div class="s-file">snippets/product-tabs.liquid</div></div><div class="s-file">product-tabs.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">7</div><div><div class="s-name">Ingredients deep-dive</div><div class="s-desc">Visual ingredient cards — Donkey Milk / Red Wine / Aloe etc. · icon + name + benefit per ingredient</div><div class="s-file">sections/product-ingredients.liquid</div></div><div class="s-file">product-ingredients.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">8</div><div><div class="s-name">Reviews section</div><div class="s-desc">Judge.me or Okendo embed · average rating · review list · write review CTA</div><div class="s-file">snippets/product-reviews.liquid</div></div><div class="s-file">product-reviews.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">9</div><div><div class="s-name">FAQ accordion (inline)</div><div class="s-desc">Product-specific questions — is it safe for sensitive skin? shelf life? etc.</div><div class="s-file">sections/faq-accordion.liquid</div></div><div class="s-file">faq-accordion.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">10</div><div><div class="s-name">Related products</div><div class="s-desc">"You may also like" — same collection · 4 product cards horizontal scroll</div><div class="s-file">sections/related-products.liquid</div></div><div class="s-file">related-products.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">11</div><div><div class="s-name">Recently viewed</div><div class="s-desc">Products browsed this session · localStorage powered · horizontal scroll</div><div class="s-file">sections/recently-viewed.liquid</div></div><div class="s-file">recently-viewed.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">5</div>
+    <div class="page-name">Cart page</div>
+    <div class="page-file">templates/cart.json</div>
+    <span class="badge p1">P1</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">Cart header</div><div class="s-desc">Title "Your Cart" · item count</div><div class="s-file">sections/main-cart.liquid</div></div><div class="s-file">main-cart.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Free shipping progress bar</div><div class="s-desc">"You're ₹X away from free shipping" · animated progress fill</div><div class="s-file">snippets/shipping-bar.liquid</div></div><div class="s-file">shipping-bar.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">3</div><div><div class="s-name">Cart line items</div><div class="s-desc">Product image · name · variant · qty stepper · price · remove button</div><div class="s-file">sections/main-cart.liquid</div></div><div class="s-file">main-cart.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">4</div><div><div class="s-name">Upsell / cross-sell strip</div><div class="s-desc">"Frequently bought together" · 3 product cards · quick add button</div><div class="s-file">sections/cart-upsell.liquid</div></div><div class="s-file">cart-upsell.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">5</div><div><div class="s-name">Order summary sidebar</div><div class="s-desc">Subtotal · discount code input · estimated total · checkout CTA · payment icons</div><div class="s-file">sections/main-cart.liquid</div></div><div class="s-file">main-cart.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">6</div><div><div class="s-name">Trust badges row</div><div class="s-desc">Secure checkout · Easy returns · Natural & Safe</div><div class="s-file">snippets/trust-badges.liquid</div></div><div class="s-file">trust-badges.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">7</div><div><div class="s-name">Cart drawer (global)</div><div class="s-desc">Slide-in version of cart — triggered from header cart icon</div><div class="s-file">sections/cart-drawer.liquid</div></div><div class="s-file">cart-drawer.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">8</div>
+    <div class="page-name">Header / Navbar (global — every page)</div>
+    <div class="page-file">sections/header.liquid</div>
+    <span class="badge p1">P1</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">Announcement bar</div><div class="s-desc">Promo text · dismissible · links to offers page</div><div class="s-file">sections/announcement-bar.liquid</div></div><div class="s-file">announcement-bar.liquid</div><div><span class="s-type t-global">global</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Logo</div><div class="s-desc">SVG or image logo · links to homepage</div><div class="s-file">sections/header.liquid</div></div><div class="s-file">header.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">3</div><div><div class="s-name">Desktop navigation</div><div class="s-desc">Home · Shop (mega dropdown: Face Care, Body Care, Hair Care, Combos, All) · About · Blog · Contact</div><div class="s-file">snippets/nav-dropdown.liquid</div></div><div class="s-file">nav-dropdown.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">4</div><div><div class="s-name">Header actions</div><div class="s-desc">Search icon · Account icon · Wishlist icon · Cart icon + badge count</div><div class="s-file">sections/header.liquid</div></div><div class="s-file">header.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">5</div><div><div class="s-name">Search drawer</div><div class="s-desc">Predictive search · recent searches · trending products</div><div class="s-file">sections/search-drawer.liquid</div></div><div class="s-file">search-drawer.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">6</div><div><div class="s-name">Mobile hamburger menu</div><div class="s-desc">Slide-in drawer · full nav · account + WhatsApp links</div><div class="s-file">sections/header.liquid</div></div><div class="s-file">header.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">9</div>
+    <div class="page-name">Footer (global — every page)</div>
+    <div class="page-file">sections/footer.liquid</div>
+    <span class="badge p1">P1</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">Brand column</div><div class="s-desc">Logo · tagline "Love Your Body 365" · short brand description · social icons</div><div class="s-file">sections/footer.liquid</div></div><div class="s-file">footer.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Shop links column</div><div class="s-desc">Face Care · Body Care · Hair Care · Combos · Bestsellers · New Arrivals</div><div class="s-file">sections/footer.liquid</div></div><div class="s-file">footer.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">3</div><div><div class="s-name">Company links column</div><div class="s-desc">About Us · Blog · Ingredients · Contact · WhatsApp link</div><div class="s-file">sections/footer.liquid</div></div><div class="s-file">footer.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">4</div><div><div class="s-name">Help links column</div><div class="s-desc">FAQs · Shipping Policy · Return Policy · Privacy Policy · Track Order</div><div class="s-file">sections/footer.liquid</div></div><div class="s-file">footer.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">5</div><div><div class="s-name">Newsletter signup</div><div class="s-desc">Email input · "Get 10% off your first order" · Klaviyo integration</div><div class="s-file">sections/footer.liquid</div></div><div class="s-file">footer.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">6</div><div><div class="s-name">Bottom bar</div><div class="s-desc">Copyright · payment icons (UPI, Razorpay, Visa, Mastercard, COD) · "Made in India" badge</div><div class="s-file">sections/footer.liquid</div></div><div class="s-file">footer.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">10</div>
+    <div class="page-name">Search results</div>
+    <div class="page-file">templates/search.json</div>
+    <span class="badge p2">P2</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">Search bar</div><div class="s-desc">Pre-filled query · result count · clear button</div><div class="s-file">sections/main-search.liquid</div></div><div class="s-file">main-search.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Search results grid</div><div class="s-desc">Products + blog articles + pages · filter by type tabs</div><div class="s-file">sections/main-search.liquid</div></div><div class="s-file">main-search.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">3</div><div><div class="s-name">No results state</div><div class="s-desc">"No results for X" · suggested searches · popular products</div><div class="s-file">sections/main-search.liquid</div></div><div class="s-file">main-search.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">11</div>
+    <div class="page-name">Auth pages (Login / Register / Forgot / Reset)</div>
+    <div class="page-file">templates/customers/</div>
+    <span class="badge p2">P2</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">Auth layout split</div><div class="s-desc">Left: brand image + testimonial quote · Right: form — consistent across all auth pages</div><div class="s-file">sections/main-login.liquid</div></div><div class="s-file">main-login.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Login form</div><div class="s-desc">Email · Password · Remember me · Forgot password link · Submit</div><div class="s-file">sections/main-login.liquid</div></div><div class="s-file">main-login.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">3</div><div><div class="s-name">Register form</div><div class="s-desc">First name · Last name · Email · Password · Terms checkbox · Submit</div><div class="s-file">sections/main-register.liquid</div></div><div class="s-file">main-register.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">4</div><div><div class="s-name">Forgot / Reset forms</div><div class="s-desc">Email only for forgot · New password + confirm for reset · Shopify handles emails</div><div class="s-file">sections/main-login.liquid</div></div><div class="s-file">main-login.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">12</div>
+    <div class="page-name">Profile / Account dashboard</div>
+    <div class="page-file">templates/customers/account.json</div>
+    <span class="badge p2">P2</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">Account sidebar nav</div><div class="s-desc">Profile · Orders · Addresses · Logout — sticky on desktop</div><div class="s-file">snippets/account-nav.liquid</div></div><div class="s-file">account-nav.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Welcome banner</div><div class="s-desc">"Welcome back, [name]" · member since date · total orders count</div><div class="s-file">sections/main-account.liquid</div></div><div class="s-file">main-account.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">3</div><div><div class="s-name">Recent orders</div><div class="s-desc">Last 3 orders · order number · date · status badge · view details link</div><div class="s-file">sections/main-account.liquid</div></div><div class="s-file">main-account.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">4</div><div><div class="s-name">Saved addresses</div><div class="s-desc">Default address card · add new address · edit / delete</div><div class="s-file">sections/main-account.liquid</div></div><div class="s-file">main-account.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">13</div>
+    <div class="page-name">Order history + Order detail</div>
+    <div class="page-file">templates/customers/order.json</div>
+    <span class="badge p2">P2</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">Order list</div><div class="s-desc">Table: order # · date · items · total · status badge (Processing/Shipped/Delivered)</div><div class="s-file">sections/main-account.liquid</div></div><div class="s-file">main-account.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Order detail header</div><div class="s-desc">Order # · date placed · payment status · fulfillment status</div><div class="s-file">sections/main-order.liquid</div></div><div class="s-file">main-order.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">3</div><div><div class="s-name">Order timeline</div><div class="s-desc">Visual steps — Placed → Confirmed → Shipped → Delivered · tracking number link</div><div class="s-file">snippets/order-timeline.liquid</div></div><div class="s-file">order-timeline.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">4</div><div><div class="s-name">Order line items</div><div class="s-desc">Product image · name · variant · qty · price</div><div class="s-file">sections/main-order.liquid</div></div><div class="s-file">main-order.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">5</div><div><div class="s-name">Order summary + addresses</div><div class="s-desc">Subtotal · discount · shipping · total · shipping address · billing address</div><div class="s-file">sections/main-order.liquid</div></div><div class="s-file">main-order.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">6</div><div><div class="s-name">Reorder CTA</div><div class="s-desc">"Buy again" adds all items to cart in one click</div><div class="s-file">snippets/reorder-btn.liquid</div></div><div class="s-file">reorder-btn.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">14</div>
+    <div class="page-name">About Us</div>
+    <div class="page-file">templates/page.about.json</div>
+    <span class="badge p3">P3</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">About hero</div><div class="s-desc">Full-width image · "Love Your Body 365" headline · brand mission statement</div><div class="s-file">sections/page-about.liquid</div></div><div class="s-file">page-about.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Founder story</div><div class="s-desc">2-col — founder photo + story text · why Mic & Mac was started</div><div class="s-file">sections/page-about.liquid</div></div><div class="s-file">page-about.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">3</div><div><div class="s-name">Brand values</div><div class="s-desc">4 pillars — Natural · Cruelty Free · India Made · Transparent — icon + title + description</div><div class="s-file">sections/page-about.liquid</div></div><div class="s-file">page-about.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">4</div><div><div class="s-name">Milestones / numbers</div><div class="s-desc">X+ happy customers · X+ products · Year founded · Lab certified</div><div class="s-file">sections/page-about.liquid</div></div><div class="s-file">page-about.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">5</div><div><div class="s-name">Ingredients promise</div><div class="s-desc">Reuse ingredients-story section — "Every ingredient has a reason"</div><div class="s-file">sections/ingredients-story.liquid</div></div><div class="s-file">ingredients-story.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">6</div><div><div class="s-name">Testimonials (inline)</div><div class="s-desc">3 customer reviews — reuse testimonials section</div><div class="s-file">sections/testimonials.liquid</div></div><div class="s-file">testimonials.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">7</div><div><div class="s-name">Shop CTA</div><div class="s-desc">Full-width green band — "Ready to feel the difference?" · Shop Now button</div><div class="s-file">sections/cta-banner.liquid</div></div><div class="s-file">cta-banner.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">15</div>
+    <div class="page-name">Contact Us</div>
+    <div class="page-file">templates/page.contact.json</div>
+    <span class="badge p3">P3</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">Contact hero</div><div class="s-desc">Heading "We'd love to hear from you" · subtext</div><div class="s-file">sections/page-contact.liquid</div></div><div class="s-file">page-contact.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Contact methods</div><div class="s-desc">WhatsApp button · Email card · Business hours · Response time promise</div><div class="s-file">sections/page-contact.liquid</div></div><div class="s-file">page-contact.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">3</div><div><div class="s-name">Contact form</div><div class="s-desc">Name · Email · Subject dropdown · Message · Submit — Shopify handles delivery</div><div class="s-file">sections/page-contact.liquid</div></div><div class="s-file">page-contact.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">4</div><div><div class="s-name">FAQ teaser</div><div class="s-desc">"Common questions answered" · 3 quick Q&A with link to full FAQ section on homepage</div><div class="s-file">sections/faq-accordion.liquid</div></div><div class="s-file">faq-accordion.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">16</div>
+    <div class="page-name">Blog listing + Article</div>
+    <div class="page-file">templates/blog.json + article.json</div>
+    <span class="badge p3">P3</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">Blog hero</div><div class="s-desc">Featured article as hero card · title · excerpt · read time · category tag</div><div class="s-file">sections/main-blog.liquid</div></div><div class="s-file">main-blog.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Category filter pills</div><div class="s-desc">All · Skincare Tips · Ingredients · Lifestyle · Product Spotlight</div><div class="s-file">sections/main-blog.liquid</div></div><div class="s-file">main-blog.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">3</div><div><div class="s-name">Article grid</div><div class="s-desc">3-col card grid · image · category · title · excerpt · author + date</div><div class="s-file">snippets/article-card.liquid</div></div><div class="s-file">article-card.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">4</div><div><div class="s-name">Article body</div><div class="s-desc">Hero image · title · meta (author, date, read time) · rich text content · social share</div><div class="s-file">sections/main-article.liquid</div></div><div class="s-file">main-article.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">5</div><div><div class="s-name">Product CTA in article</div><div class="s-desc">Inline product card mid-article — "Shop the product mentioned"</div><div class="s-file">snippets/article-product-cta.liquid</div></div><div class="s-file">article-product-cta.liquid</div><div><span class="s-type t-snippet">snippet</span></div></div>
+    <div class="section-row"><div class="s-num">6</div><div><div class="s-name">Related articles</div><div class="s-desc">3 cards below article — same tag/category</div><div class="s-file">sections/main-article.liquid</div></div><div class="s-file">main-article.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+<div class="page-block">
+  <div class="page-header">
+    <div class="page-num">18–21</div>
+    <div class="page-name">404 · Privacy · Shipping · Return policies</div>
+    <div class="page-file">templates/404.json + templates/page.policy.json</div>
+    <span class="badge p4">P4</span>
+  </div>
+  <div class="sections-list">
+    <div class="section-row"><div class="s-num">1</div><div><div class="s-name">404 — branded error</div><div class="s-desc">Illustrated "oops" · search bar · 4 popular products · back to home</div><div class="s-file">sections/main-404.liquid</div></div><div class="s-file">main-404.liquid</div><div><span class="s-type t-section">section</span></div></div>
+    <div class="section-row"><div class="s-num">2</div><div><div class="s-name">Policy page layout</div><div class="s-desc">All 3 policies reuse one template — sidebar nav (jump links) + rich text content area</div><div class="s-file">sections/main-policy.liquid</div></div><div class="s-file">main-policy.liquid</div><div><span class="s-type t-section">section</span></div></div>
+  </div>
+</div>
+
+</div>

@@ -1,0 +1,41 @@
+{% comment %}
+  Section: Recently Viewed
+  Populated by recently-viewed.ts via localStorage → rendered client-side
+{% endcomment %}
+
+<section class="recently-viewed section-padding--sm" id="RecentlyViewedSection" style="display:none">
+  <div class="container">
+    <h2 class="section-heading__h2">
+      {{ section.settings.heading | default: 'Recently Viewed' }}
+    </h2>
+    <div class="product-grid" id="RecentlyViewedGrid">
+      <!-- JS renders product cards here -->
+    </div>
+  </div>
+</section>
+
+<style>
+#RecentlyViewedSection .product-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 767px) {
+  #RecentlyViewedSection .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Recently viewed",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Recently Viewed"
+    }
+  ]
+}
+{% endschema %}

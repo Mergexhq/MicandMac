@@ -1,0 +1,232 @@
+{% comment %}
+  Snippet: product-form
+  Usage: {% render 'product-form', product: product, section: section %}
+  Variant picker · qty stepper · ATC · Buy Now · wishlist · sold-out / notify-me
+{% endcomment %}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign sold_out = false
+  unless current_variant.available
+    assign sold_out = true
+  endunless
+-%}
+
+{%- form 'product', product, id: 'ProductForm', class: 'product-form', novalidate: 'novalidate' -%}
+  <input type="hidden" name="id" value="{{ current_variant.id }}" id="ProductVariantId">
+
+  <!-- Variant Picker -->
+  {%- unless product.has_only_default_variant -%}
+    <div class="product-form__variants" id="ProductVariants">
+      {%- for option in product.options_with_values -%}
+        <div class="product-form__option">
+          <p class="product-form__option-label">
+            {{ option.name }}: <strong id="OptionValue-{{ forloop.index }}">{{ option.selected_value }}</strong>
+          </p>
+          <div class="product-form__option-pills">
+            {%- for value in option.values -%}
+              {%- liquid
+                assign variant_in_option = product.variants | where: 'option' | first
+                assign is_selected = false
+                if option.selected_value == value
+                  assign is_selected = true
+                endif
+              -%}
+              <button
+                type="button"
+                class="variant-pill {% if is_selected %}is-selected{% endif %}"
+                data-option-index="{{ forloop.parentloop.index0 }}"
+                data-option-value="{{ value | escape }}"
+                aria-pressed="{{ is_selected }}"
+                aria-label="{{ option.name }}: {{ value }}"
+              >
+                {{ value }}
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endunless -%}
+
+  <!-- Quantity -->
+  <div class="product-form__qty-row">
+    <label class="product-form__qty-label" for="ProductQty">Quantity</label>
+    <div class="qty-input">
+      <button type="button" class="qty-input__btn" id="QtyMinus" aria-label="Decrease quantity">−</button>
+      <input
+        type="number"
+        id="ProductQty"
+        name="quantity"
+        value="1"
+        min="1"
+        class="qty-input__field"
+        aria-label="Quantity"
+      >
+      <button type="button" class="qty-input__btn" id="QtyPlus" aria-label="Increase quantity">+</button>
+    </div>
+  </div>
+
+  <!-- ATC / Sold Out / Notify Me -->
+  <div class="product-form__actions">
+    {%- if sold_out -%}
+      <button type="button" class="btn btn--secondary btn--full btn--lg product-form__atc" disabled>
+        Sold Out
+      </button>
+      {%- if section.settings.show_notify_me -%}
+        <div class="product-form__notify">
+          <p>Get notified when this is back in stock:</p>
+          {%- form 'contact', id: 'NotifyForm' -%}
+            <input type="hidden" name="contact[body]" value="Back in stock notification for: {{ product.title }} — {{ current_variant.title }}">
+            <div class="product-form__notify-row">
+              <input type="email" name="contact[email]" class="form-input" placeholder="your@email.com" required aria-label="Email">
+              <button type="submit" class="btn btn--primary btn--sm">Notify Me</button>
+            </div>
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <button
+        type="submit"
+        name="add"
+        class="btn btn--primary btn--full btn--lg product-form__atc"
+        id="ProductATC"
+        data-atc
+        data-variant-id="{{ current_variant.id }}"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        Add to Cart
+      </button>
+
+      {%- if section.settings.show_buy_now -%}
+        {{ form | payment_button }}
+      {%- endif -%}
+    {%- endif -%}
+
+    <!-- Wishlist -->
+    <button
+      type="button"
+      class="product-form__wishlist"
+      aria-label="Add to wishlist"
+      data-wishlist-toggle
+      data-product-handle="{{ product.handle }}"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+      <span>Save to Wishlist</span>
+    </button>
+  </div>
+{%- endform -%}
+
+<style>
+.product-form { display: flex; flex-direction: column; gap: var(--space-5); }
+
+.product-form__option-label {
+  font-size: var(--text-sm);
+  color: var(--color-text-mid);
+  margin-bottom: var(--space-3);
+}
+
+.product-form__option-label strong {
+  color: var(--color-text-dark);
+}
+
+.product-form__option-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.variant-pill {
+  padding: var(--space-2) var(--space-4);
+  border: 1.5px solid var(--color-beige);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-mid);
+  background: var(--color-white);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.variant-pill:hover {
+  border-color: var(--color-forest);
+  color: var(--color-forest);
+}
+
+.variant-pill.is-selected {
+  background: var(--color-forest);
+  border-color: var(--color-forest);
+  color: var(--color-white);
+}
+
+.product-form__qty-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.product-form__qty-label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-dark);
+}
+
+.product-form__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.product-form__atc {
+  gap: var(--space-3);
+}
+
+.product-form__wishlist {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1.5px solid var(--color-beige);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  color: var(--color-text-mid);
+  background: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  width: 100%;
+}
+
+.product-form__wishlist:hover,
+.product-form__wishlist.is-wishlisted {
+  border-color: var(--color-burgundy);
+  color: var(--color-burgundy);
+}
+
+.product-form__wishlist.is-wishlisted svg {
+  fill: var(--color-burgundy);
+  stroke: var(--color-burgundy);
+}
+
+/* Notify me */
+.product-form__notify {
+  background: var(--color-beige);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.product-form__notify p {
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-3);
+  color: var(--color-text-mid);
+}
+
+.product-form__notify-row {
+  display: flex;
+  gap: var(--space-2);
+}
+</style>

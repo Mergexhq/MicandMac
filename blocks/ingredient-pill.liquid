@@ -1,0 +1,63 @@
+{% comment %}
+  Block: ingredient-pill
+  Parent: sections/product-ingredients.liquid
+  Usage: {% render 'ingredient-pill', block: block %}
+{% endcomment %}
+
+<div class="ingredient-pill" {{ block.shopify_attributes }}>
+  {%- if block.settings.icon_emoji != blank -%}
+    <span class="ingredient-pill__emoji" aria-hidden="true">{{ block.settings.icon_emoji }}</span>
+  {%- elsif block.settings.icon_image != blank -%}
+    <img
+      src="{{ block.settings.icon_image | image_url: width: 60 }}"
+      alt=""
+      width="30"
+      height="30"
+      loading="lazy"
+      class="ingredient-pill__img"
+    >
+  {%- endif -%}
+  <span class="ingredient-pill__name">{{ block.settings.name }}</span>
+  {%- if block.settings.benefit != blank -%}
+    <span class="ingredient-pill__benefit">{{ block.settings.benefit }}</span>
+  {%- endif -%}
+</div>
+
+<style>
+.ingredient-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-cream);
+  border: 1px solid var(--color-beige);
+  border-radius: 99px;
+  font-size: var(--text-sm);
+  transition: all var(--transition-fast);
+}
+
+.ingredient-pill:hover {
+  background: var(--color-forest);
+  color: var(--color-white);
+  border-color: var(--color-forest);
+}
+
+.ingredient-pill__emoji { font-size: 1.1em; }
+
+.ingredient-pill__img { width: 20px; height: 20px; object-fit: contain; }
+
+.ingredient-pill__name {
+  font-weight: 500;
+  color: inherit;
+}
+
+.ingredient-pill__benefit {
+  color: var(--color-text-light);
+  font-size: var(--text-xs);
+  margin-left: var(--space-1);
+}
+
+.ingredient-pill:hover .ingredient-pill__benefit {
+  color: rgba(255,255,255,0.7);
+}
+</style>

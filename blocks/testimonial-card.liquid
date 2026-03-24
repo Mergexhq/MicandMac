@@ -1,0 +1,103 @@
+{% comment %}
+  Block: testimonial-card
+  Parent: sections/testimonials.liquid
+  Usage: {% render 'testimonial-card', block: block %}
+{% endcomment %}
+
+<div class="testimonial-card" {{ block.shopify_attributes }}>
+  <blockquote class="testimonial-card__body">
+    <p>{{ block.settings.quote }}</p>
+  </blockquote>
+  <div class="testimonial-card__meta">
+    {% render 'star-rating', rating: block.settings.rating, size: 'sm' %}
+    <div class="testimonial-card__author">
+      {%- if block.settings.avatar != blank -%}
+        <img
+          src="{{ block.settings.avatar | image_url: width: 80 }}"
+          alt="{{ block.settings.name | escape }}"
+          width="40"
+          height="40"
+          loading="lazy"
+          class="testimonial-card__avatar"
+        >
+      {%- else -%}
+        <div class="testimonial-card__avatar testimonial-card__avatar--initials">
+          {{ block.settings.name | slice: 0 }}
+        </div>
+      {%- endif -%}
+      <div>
+        <strong class="testimonial-card__name">{{ block.settings.name }}</strong>
+        {%- if block.settings.location != blank -%}
+          <span class="testimonial-card__loc">{{ block.settings.location }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.testimonial-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-beige);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.testimonial-card__body p {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--color-text-dark);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.testimonial-card__body p::before { content: '\201C'; }
+.testimonial-card__body p::after  { content: '\201D'; }
+
+.testimonial-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.testimonial-card__author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.testimonial-card__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.testimonial-card__avatar--initials {
+  background: var(--color-forest);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+}
+
+.testimonial-card__name {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.testimonial-card__loc {
+  font-size: var(--text-xs);
+  color: var(--color-text-light);
+}
+</style>

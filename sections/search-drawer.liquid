@@ -1,0 +1,333 @@
+{% comment %}
+  Section: Search Drawer
+  - Predictive search (debounced /search/suggest.json)
+  - Recent searches from localStorage
+  - Close on ESC / overlay click
+{% endcomment %}
+
+<div class="search-drawer" id="SearchDrawer" aria-hidden="true" role="dialog" aria-label="Search">
+
+  <div class="search-drawer__header">
+    <form
+      action="{{ routes.search_url }}"
+      method="get"
+      class="search-drawer__form"
+      role="search"
+      id="SearchDrawerForm"
+    >
+      <input type="hidden" name="type" value="product">
+      <svg class="search-drawer__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+      </svg>
+      <input
+        type="search"
+        name="q"
+        id="SearchDrawerInput"
+        class="search-drawer__input"
+        placeholder="Search products, ingredients..."
+        autocomplete="off"
+        aria-label="Search"
+        spellcheck="false"
+      >
+      <button
+        type="button"
+        class="search-drawer__clear"
+        id="SearchDrawerClear"
+        aria-label="Clear search"
+        hidden
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </form>
+    <button class="search-drawer__close" id="SearchDrawerClose" aria-label="Close search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="search-drawer__body">
+
+    <!-- Predictive results (populated by JS) -->
+    <div class="search-drawer__results" id="SearchResults" aria-live="polite"></div>
+
+    <!-- Recent searches -->
+    <div class="search-drawer__recent" id="SearchRecent">
+      <p class="search-drawer__label">Recent searches</p>
+      <div class="search-drawer__recent-list" id="SearchRecentList"></div>
+    </div>
+
+    <!-- Trending / quick links -->
+    {%- if section.settings.show_trending -%}
+      <div class="search-drawer__trending">
+        <p class="search-drawer__label">Popular searches</p>
+        <div class="search-drawer__trending-pills">
+          {%- for i in (1..6) -%}
+            {%- liquid
+              assign label_key = 'trend_' | append: i | append: '_label'
+              assign url_key   = 'trend_' | append: i | append: '_url'
+              assign label = section.settings[label_key]
+              assign url   = section.settings[url_key]
+            -%}
+            {%- if label != blank -%}
+              <a href="{{ url | default: routes.search_url | append: '?q=' | append: label }}" class="search-drawer__pill">{{ label }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+<style>
+.search-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-modal);
+  background: var(--color-white);
+  transform: translateY(-100%);
+  transition: transform var(--transition-slow);
+  box-shadow: var(--shadow-xl);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.search-drawer.is-open {
+  transform: translateY(0);
+}
+
+.search-drawer__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-beige);
+}
+
+.search-drawer__form {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--color-cream);
+  border: 1.5px solid var(--color-beige);
+  border-radius: var(--radius-pill);
+  padding: 0 var(--space-5);
+  transition: border-color var(--transition-fast);
+}
+
+.search-drawer__form:focus-within {
+  border-color: var(--color-forest);
+  box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.08);
+}
+
+.search-drawer__icon {
+  color: var(--color-text-light);
+  flex-shrink: 0;
+}
+
+.search-drawer__input {
+  flex: 1;
+  height: 52px;
+  border: none;
+  background: none;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-dark);
+  outline: none;
+}
+
+.search-drawer__input::placeholder {
+  color: var(--color-text-light);
+}
+
+.search-drawer__clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-light);
+  padding: var(--space-2);
+  display: flex;
+  align-items: center;
+  transition: color var(--transition-fast);
+}
+
+.search-drawer__clear:hover { color: var(--color-forest); }
+
+.search-drawer__close {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--color-text-dark);
+  background: var(--color-cream);
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.search-drawer__close:hover { background: var(--color-beige); }
+
+.search-drawer__body {
+  padding: var(--space-6) var(--space-6) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+.search-drawer__label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  margin-bottom: var(--space-3);
+}
+
+/* Results */
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-beige);
+  text-decoration: none;
+  transition: background var(--transition-fast);
+}
+
+.search-result-item:last-child { border-bottom: none; }
+
+.search-result-item:hover { background: var(--color-cream); border-radius: var(--radius-md); padding-inline: var(--space-3); margin-inline: calc(-1 * var(--space-3)); }
+
+.search-result-img {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  background: var(--color-beige);
+  flex-shrink: 0;
+}
+
+.search-result-info {}
+
+.search-result-title {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-dark);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.search-result-price {
+  font-size: var(--text-xs);
+  color: var(--color-forest);
+  margin-top: 2px;
+}
+
+/* Recent searches */
+.search-drawer__recent-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.search-drawer__recent-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-cream);
+  border: 1px solid var(--color-beige);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  color: var(--color-text-mid);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.search-drawer__recent-tag:hover {
+  border-color: var(--color-forest);
+  color: var(--color-forest);
+}
+
+/* Trending pills */
+.search-drawer__trending-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.search-drawer__pill {
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-beige);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  color: var(--color-text-dark);
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+}
+
+.search-drawer__pill:hover {
+  background: var(--color-forest);
+  color: var(--color-white);
+}
+
+/* No results */
+.search-no-results {
+  text-align: center;
+  padding: var(--space-8);
+  color: var(--color-text-light);
+  font-size: var(--text-sm);
+}
+</style>
+
+{% schema %}
+{
+  "name": "Search drawer",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Popular searches"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trending",
+      "label": "Show popular search pills",
+      "default": true
+    },
+    { "type": "text", "id": "trend_1_label", "label": "Pill 1", "default": "Donkey Milk" },
+    { "type": "url",  "id": "trend_1_url",   "label": "Pill 1 URL" },
+    { "type": "text", "id": "trend_2_label", "label": "Pill 2", "default": "Red Wine" },
+    { "type": "url",  "id": "trend_2_url",   "label": "Pill 2 URL" },
+    { "type": "text", "id": "trend_3_label", "label": "Pill 3", "default": "Face Wash" },
+    { "type": "url",  "id": "trend_3_url",   "label": "Pill 3 URL" },
+    { "type": "text", "id": "trend_4_label", "label": "Pill 4", "default": "Moisturiser" },
+    { "type": "url",  "id": "trend_4_url",   "label": "Pill 4 URL" },
+    { "type": "text", "id": "trend_5_label", "label": "Pill 5", "default": "Combo" },
+    { "type": "url",  "id": "trend_5_url",   "label": "Pill 5 URL" },
+    { "type": "text", "id": "trend_6_label", "label": "Pill 6", "default": "Gift Set" },
+    { "type": "url",  "id": "trend_6_url",   "label": "Pill 6 URL" }
+  ],
+  "presets": [
+    {
+      "name": "Search drawer"
+    }
+  ]
+}
+{% endschema %}

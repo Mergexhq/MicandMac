@@ -1,0 +1,74 @@
+{%- comment -%}
+  Accepts:
+  - menu: {Object} Linklist Liquid object
+{%- endcomment -%}
+
+<ul class="hidden lg:flex items-center gap-6 xl:gap-8 list-none m-0 p-0 text-sm font-medium tracking-wide">
+  {%- for link in menu.links -%}
+    <li class="relative group py-6">
+      <a href="{{ link.url }}" class="flex items-center gap-1 hover:text-primary transition-colors {% if link.active or link.child_active %}text-primary{% else %}text-gray-900{% endif %}">
+        {{ link.title }}
+        {%- if link.links != blank -%}
+          <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        {%- endif -%}
+      </a>
+
+      {%- if link.links != blank -%}
+        <!-- Simple Dropdown (if no grandchildren) or Mega Menu (if grandchildren exist) -->
+        {%- assign has_mega_menu = false -%}
+        {%- for child_link in link.links -%}
+          {%- if child_link.links != blank -%}
+            {%- assign has_mega_menu = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if has_mega_menu -%}
+          <!-- Mega Menu Full Width -->
+          <div class="absolute top-full -left-4 w-screen max-w-4xl bg-white shadow-xl border border-gray-100 rounded-b-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 p-8">
+            <div class="grid grid-cols-4 gap-8">
+              {%- for child_link in link.links -%}
+                <div>
+                  <a href="{{ child_link.url }}" class="block text-base font-semibold text-gray-900 mb-4 hover:text-primary transition-colors border-b border-gray-100 pb-2">
+                    {{ child_link.title }}
+                  </a>
+                  {%- if child_link.links != blank -%}
+                    <ul class="space-y-3">
+                      {%- for grandchild_link in child_link.links -%}
+                        <li>
+                          <a href="{{ grandchild_link.url }}" class="text-sm text-gray-600 hover:text-primary hover:underline transition-all">
+                            {{ grandchild_link.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+              <!-- Optional Promo Block in Mega Menu -->
+              <div class="bg-gray-50 rounded-lg p-6 flex flex-col justify-center items-center text-center">
+                <span class="text-primary font-medium tracking-widest uppercase text-xs mb-2">New Arrival</span>
+                <img src="{{ 'collection-1' | placeholder_svg_tag: 'w-24 h-24 mb-4 text-gray-300' | escape | replace: 'svg', 'svg class="w-24 h-24 mb-4 text-gray-300"' }}" alt="" class="hidden">
+                <div class="w-24 h-24 bg-gray-200 rounded-md mb-4 flex items-center justify-center text-gray-400">Image</div>
+                <a href="#" class="btn btn--secondary btn--sm w-full">Shop Now</a>
+              </div>
+            </div>
+          </div>
+        {%- else -%}
+          <!-- Simple Dropdown -->
+          <div class="absolute top-full left-0 min-w-[220px] bg-white shadow-lg border border-gray-100 rounded-b-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-2">
+            <ul class="space-y-1">
+              {%- for child_link in link.links -%}
+                <li>
+                  <a href="{{ child_link.url }}" class="block px-6 py-2.5 text-sm text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors">
+                    {{ child_link.title }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </li>
+  {%- endfor -%}
+</ul>

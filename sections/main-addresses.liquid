@@ -1,0 +1,82 @@
+{% comment %}Section: Main Addresses{% endcomment %}
+
+<div class="account-page section-padding">
+  <div class="container">
+    <div class="account-page__layout">
+      <aside class="account-page__sidebar">
+        {% render 'account-nav', current: 'addresses' %}
+      </aside>
+      <main class="account-page__main">
+        <h1 class="account-page__title">Addresses</h1>
+
+        <div class="address-grid">
+          {%- for address in customer.addresses -%}
+            <div class="address-card {% if address == customer.default_address %}address-card--default{% endif %}">
+              {%- if address == customer.default_address -%}
+                <span class="badge badge--forest address-card__badge">Default</span>
+              {%- endif -%}
+              <address class="account-address">{{ address | format_address }}</address>
+              <div class="address-card__actions">
+                <a href="{{ routes.account_addresses_url }}/{{ address.id }}/edit" class="btn btn--secondary btn--sm">Edit</a>
+                {%- form 'customer_address', address, id: 'DeleteAddressForm-{{ address.id }}' -%}
+                  <input type="hidden" name="_method" value="delete">
+                  <button type="submit" class="btn btn--ghost btn--sm">Delete</button>
+                {%- endform -%}
+                {%- unless address == customer.default_address -%}
+                  {%- form 'customer_address', customer.default_address, id: 'DefaultAddressForm-{{ address.id }}' -%}
+                    <input type="hidden" name="_method" value="put">
+                    <input type="hidden" name="address[default]" value="true">
+                    <button type="submit" class="btn btn--ghost btn--sm">Set Default</button>
+                  {%- endform -%}
+                {%- endunless -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <!-- Add new -->
+        <div class="address-new">
+          <h2 class="account-section__heading">Add New Address</h2>
+          {%- form 'customer_address', customer.new_address, id: 'AddressForm' -%}
+            <div class="form-group">
+              <label for="AddressFirstName" class="form-label">First name</label>
+              <input type="text" id="AddressFirstName" name="address[first_name]" value="{{ customer.new_address.first_name | escape }}" class="form-input">
+            </div>
+            <div class="form-group">
+              <label for="AddressLastName" class="form-label">Last name</label>
+              <input type="text" id="AddressLastName" name="address[last_name]" value="{{ customer.new_address.last_name | escape }}" class="form-input">
+            </div>
+            <div class="form-group">
+              <label for="AddressAddress1" class="form-label">Address</label>
+              <input type="text" id="AddressAddress1" name="address[address1]" value="{{ customer.new_address.address1 | escape }}" class="form-input">
+            </div>
+            <div class="form-group">
+              <label for="AddressCity" class="form-label">City</label>
+              <input type="text" id="AddressCity" name="address[city]" value="{{ customer.new_address.city | escape }}" class="form-input">
+            </div>
+            <div class="form-group">
+              <label for="AddressCountry" class="form-label">Country</label>
+              <select id="AddressCountry" name="address[country]" class="form-input">
+                {{ all_country_option_tags }}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="AddressPhone" class="form-label">Phone</label>
+              <input type="tel" id="AddressPhone" name="address[phone]" value="{{ customer.new_address.phone | escape }}" class="form-input">
+            </div>
+            <button type="submit" class="btn btn--primary">Add Address</button>
+          {%- endform -%}
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<style>
+.address-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-5); margin-bottom: var(--space-8); }
+.address-card { border: 1px solid var(--color-beige); border-radius: var(--radius-lg); padding: var(--space-5); position: relative; }
+.address-card--default { border-color: var(--color-forest); }
+.address-card__badge { position: absolute; top: var(--space-3); right: var(--space-3); font-size: 10px; }
+.address-card__actions { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-top: var(--space-4); }
+.address-new { padding-top: var(--space-8); border-top: 1px solid var(--color-beige); }
+</style>

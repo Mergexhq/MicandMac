@@ -1,0 +1,91 @@
+{% comment %}
+  Section: Cart Upsell
+  2-3 product recommendations shown on cart page
+{% endcomment %}
+
+<section class="cart-upsell">
+  <div class="container">
+    <h3 class="cart-upsell__title">{{ section.settings.heading | default: 'Add These to Complete Your Routine' }}</h3>
+    <div class="cart-upsell__grid" id="CartUpsellGrid">
+      <p class="cart-upsell__loading">Loading suggestions…</p>
+    </div>
+  </div>
+</section>
+
+<style>
+.cart-upsell {
+  padding-block: var(--space-10);
+  border-top: 1px solid var(--color-beige);
+  margin-top: var(--space-8);
+}
+
+.cart-upsell__title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  margin-bottom: var(--space-6);
+  color: var(--color-text-dark);
+}
+
+.cart-upsell__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+.cart-upsell__loading {
+  color: var(--color-text-light);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 767px) {
+  .cart-upsell__grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+
+<script>
+(function () {
+  var grid = document.getElementById('CartUpsellGrid');
+  if (!grid) return;
+
+  // Fetch from Shopify recommendations API using the first cart item's product
+  var firstProductId = {{ cart.items.first.product.id | json }};
+  if (!firstProductId) { grid.innerHTML = ''; return; }
+
+  fetch('/recommendations/products.json?product_id=' + firstProductId + '&limit=3&intent=related')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var products = data.products || [];
+      if (products.length === 0) { grid.innerHTML = ''; return; }
+      grid.innerHTML = products.map(function (p) {
+        var img = p.images && p.images[0] ? '<img src="' + p.images[0].src + '" alt="' + p.title + '" width="200" height="200" loading="lazy" class="product-card__img product-card__img--primary">' : '';
+        var price = p.variants && p.variants[0] ? '₹' + (p.variants[0].price / 100).toFixed(0) : '';
+        return [
+          '<div class="product-card">',
+          '  <div class="product-card__media"><a href="/products/' + p.handle + '" class="product-card__img-link">' + img + '</a></div>',
+          '  <div class="product-card__info">',
+          '    <h3 class="product-card__title"><a href="/products/' + p.handle + '">' + p.title + '</a></h3>',
+          '    <p class="price__current">' + price + '</p>',
+          '    <button class="btn btn--primary btn--sm btn--full" data-atc data-variant-id="' + (p.variants[0] && p.variants[0].id) + '">Add to Cart</button>',
+          '  </div>',
+          '</div>'
+        ].join('');
+      }).join('');
+    })
+    .catch(function () { grid.innerHTML = ''; });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Cart upsell",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Add These to Complete Your Routine"
+    }
+  ]
+}
+{% endschema %}

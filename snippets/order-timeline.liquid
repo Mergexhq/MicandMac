@@ -1,0 +1,124 @@
+{% comment %}
+  Snippet: order-timeline
+  Usage: {% render 'order-timeline', order: order %}
+  Visual step tracker: Received → Processing → Shipped → Delivered
+{% endcomment %}
+
+{%- liquid
+  assign financial = order.financial_status
+  assign fulfillment = order.fulfillment_status
+
+  assign step = 1
+  if financial == 'paid' or financial == 'partially_paid'
+    assign step = 2
+  endif
+  if fulfillment == 'partial' or fulfillment == 'fulfilled'
+    assign step = 3
+  endif
+  if fulfillment == 'fulfilled' and order.closed_at != blank
+    assign step = 4
+  endif
+-%}
+
+<div class="order-timeline" aria-label="Order progress">
+  {%- assign milestones = "Received,Processing,Shipped,Delivered" | split: "," -%}
+  {%- for milestone in milestones -%}
+    {%- assign idx = forloop.index -%}
+    <div class="order-timeline__step {% if idx <= step %}is-done{% endif %} {% if idx == step %}is-current{% endif %}">
+      <div class="order-timeline__node" aria-hidden="true">
+        {%- if idx < step -%}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        {%- elsif idx == step -%}
+          <span class="order-timeline__pulse"></span>
+        {%- endif -%}
+      </div>
+      {%- unless forloop.last -%}
+        <div class="order-timeline__line {% if idx < step %}is-done{% endif %}"></div>
+      {%- endunless -%}
+      <span class="order-timeline__label">{{ milestone }}</span>
+    </div>
+  {%- endfor -%}
+</div>
+
+<style>
+.order-timeline {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin-block: var(--space-6);
+}
+
+.order-timeline__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.order-timeline__node {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--color-beige);
+  background: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  z-index: 1;
+  transition: all var(--transition-base);
+}
+
+.order-timeline__step.is-done .order-timeline__node {
+  background: var(--color-forest);
+  border-color: var(--color-forest);
+}
+
+.order-timeline__step.is-current .order-timeline__node {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+}
+
+.order-timeline__pulse {
+  width: 8px;
+  height: 8px;
+  background: var(--color-white);
+  border-radius: 50%;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.4); opacity: 0.6; }
+}
+
+.order-timeline__line {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--color-beige);
+  z-index: 0;
+  transition: background var(--transition-base);
+}
+
+.order-timeline__line.is-done {
+  background: var(--color-forest);
+}
+
+.order-timeline__label {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-text-light);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.order-timeline__step.is-done .order-timeline__label  { color: var(--color-forest); }
+.order-timeline__step.is-current .order-timeline__label { color: var(--color-text-dark); }
+</style>

@@ -1,0 +1,45 @@
+{% comment %}
+  Block: footer-column
+  Parent: sections/footer.liquid
+  Usage: {% render 'footer-column', block: block %}
+{% endcomment %}
+
+<div class="footer-col" {{ block.shopify_attributes }}>
+  {%- if block.settings.heading != blank -%}
+    <h4 class="footer-col__heading">{{ block.settings.heading }}</h4>
+  {%- endif -%}
+  {%- if block.settings.menu != blank -%}
+    <ul class="footer-col__list">
+      {%- for link in block.settings.menu.links -%}
+        <li><a href="{{ link.url }}" class="footer-col__link">{{ link.title }}</a></li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+  {%- if block.settings.text != blank -%}
+    <div class="footer-col__text rte">{{ block.settings.text }}</div>
+  {%- endif -%}
+</div>
+
+<style>
+.footer-col__heading {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-dark);
+  margin-bottom: var(--space-4);
+}
+
+.footer-col__list { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.footer-col__link {
+  font-size: var(--text-sm);
+  color: var(--color-text-mid);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer-col__link:hover { color: var(--color-forest); }
+
+.footer-col__text { font-size: var(--text-sm); color: var(--color-text-mid); line-height: 1.7; }
+</style>

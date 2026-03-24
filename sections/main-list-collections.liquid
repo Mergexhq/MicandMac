@@ -1,0 +1,145 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="main-list-collections section-{{ section.id }}-padding" id="MainListCollections-{{ section.id }}">
+  <div class="container px-4">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-light mb-4" style="font-family: var(--font-display);">
+        {{ section.settings.title | default: page_title }}
+      </h1>
+      {%- if section.settings.description != blank -%}
+        <p class="text-gray-600 max-w-2xl mx-auto">{{ section.settings.description }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-{{ section.settings.columns_desktop }} gap-6 md:gap-8">
+      {%- case section.settings.display_type -%}
+        {%- when 'all' -%}
+          {%- for collection in collections -%}
+            {%- render 'collection-card', collection: collection -%}
+          {%- endfor -%}
+        {%- when 'selected' -%}
+          {%- for block in section.blocks -%}
+            {%- if block.settings.collection != blank -%}
+              {%- render 'collection-card', collection: block.settings.collection, custom_image: block.settings.image, custom_title: block.settings.title -%}
+            {%- else -%}
+              <!-- Empty state block -->
+              <div class="collection-card relative aspect-[4/5] bg-gray-100 rounded-xl overflow-hidden group">
+                {{ 'collection-' | append: forloop.index0 | modulo: 6 | plus: 1 | placeholder_svg_tag: 'w-full h-full object-cover transition-transform duration-700 group-hover:scale-105' }}
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+                <div class="absolute inset-x-0 bottom-0 p-6 text-white text-center">
+                  <h3 class="text-2xl font-medium tracking-wide">Select Collection</h3>
+                  <span class="inline-block mt-2 border-b border-white pb-1 text-sm font-medium uppercase tracking-widest transition-transform duration-300 group-hover:-translate-y-1">Shop Now</span>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+      {%- endcase -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collections List Page",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Collections"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "radio",
+      "id": "display_type",
+      "label": "Select collections to show",
+      "options": [
+        {
+          "value": "all",
+          "label": "All"
+        },
+        {
+          "value": "selected",
+          "label": "Selected"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "Number of columns on desktop"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Optional. Replaces the collection image."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Optional. Replaces the collection title."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

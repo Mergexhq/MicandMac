@@ -1,0 +1,49 @@
+{% comment %}
+  Snippet: trust-badges
+  Usage: {% render 'trust-badges' %}
+  Row of 5 badges: 100% Natural · No Sulphates · Dermat Tested · Cruelty Free · Made in India
+{% endcomment %}
+
+<div class="trust-badges">
+  {%- liquid
+    assign badges = "100% Natural,Sulphate Free,Dermat Tested,Cruelty Free,Made in India" | split: ","
+    assign emojis = "🌿,💧,🔬,🐰,🇮🇳" | split: ","
+  -%}
+  {%- for badge in badges -%}
+    <div class="trust-badges__item">
+      <span class="trust-badges__icon" aria-hidden="true">{{ emojis[forloop.index0] }}</span>
+      <span class="trust-badges__label">{{ badge }}</span>
+    </div>
+  {%- endfor -%}
+</div>
+
+<style>
+.trust-badges {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+  padding: var(--space-5) 0;
+}
+
+.trust-badges__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 80px;
+}
+
+.trust-badges__icon {
+  font-size: 1.5rem;
+}
+
+.trust-badges__label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-text-mid);
+  text-align: center;
+  white-space: nowrap;
+}
+</style>

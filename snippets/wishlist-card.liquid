@@ -1,0 +1,81 @@
+{% comment %}
+  Snippet: wishlist-card
+  Usage: {% render 'wishlist-card', product: product %}
+  Like product-card but adds a remove-from-wishlist button
+{% endcomment %}
+
+<div class="product-card wishlist-card" data-product-handle="{{ product.handle }}">
+  <div class="product-card__media">
+    <a href="{{ product.url }}" class="product-card__img-link" tabindex="-1">
+      {%- if product.featured_image -%}
+        <img
+          src="{{ product.featured_image | image_url: width: 600 }}"
+          alt="{{ product.featured_image.alt | escape | default: product.title }}"
+          width="600"
+          height="600"
+          loading="lazy"
+          class="product-card__img product-card__img--primary"
+        >
+        {%- if product.images[1] -%}
+          <img
+            src="{{ product.images[1] | image_url: width: 600 }}"
+            alt="{{ product.images[1].alt | escape | default: product.title }}"
+            width="600"
+            height="600"
+            loading="lazy"
+            class="product-card__img product-card__img--hover"
+          >
+        {%- endif -%}
+      {%- endif -%}
+    </a>
+    <!-- Remove from wishlist -->
+    <button
+      class="product-card__badge-btn wishlist-card__remove"
+      data-wishlist-remove="{{ product.handle }}"
+      aria-label="Remove from wishlist"
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+  <div class="product-card__info">
+    <h3 class="product-card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+    <div>
+      {% render 'price', variant: product.selected_or_first_available_variant %}
+    </div>
+    <button
+      class="btn btn--primary btn--sm btn--full wishlist-card__atc"
+      data-atc
+      data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+    >
+      Add to Cart
+    </button>
+  </div>
+</div>
+
+<style>
+.wishlist-card__remove {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  width: 28px;
+  height: 28px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-mid);
+}
+
+.wishlist-card:hover .wishlist-card__remove { opacity: 1; }
+
+.wishlist-card__atc { margin-top: var(--space-3); }
+</style>

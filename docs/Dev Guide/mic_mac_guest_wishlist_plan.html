@@ -1,0 +1,106 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0;font-size:13px}
+.section-title{font-size:14px;font-weight:500;color:var(--color-text-primary);margin:1.5rem 0 0.75rem;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.section-title:first-child{margin-top:0}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:1rem}
+.card-header{padding:10px 14px;background:var(--color-background-secondary);display:flex;align-items:center;gap:10px}
+.card-title{font-size:13px;font-weight:500;color:var(--color-text-primary);flex:1}
+.badge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:3px;font-weight:500}
+.b-ts{background:var(--color-background-info);color:var(--color-text-info)}
+.b-liquid{background:var(--color-background-success);color:var(--color-text-success)}
+.b-local{background:var(--color-background-warning);color:var(--color-text-warning)}
+.b-shopify{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.b-must{background:var(--color-background-danger);color:var(--color-text-danger)}
+.row{display:grid;grid-template-columns:20px 1fr 120px;gap:8px;padding:8px 14px;border-top:0.5px solid var(--color-border-tertiary);align-items:start}
+.row:hover{background:var(--color-background-secondary)}
+.rn{font-size:11px;color:var(--color-text-tertiary);padding-top:2px}
+.rname{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.rdesc{font-size:11px;color:var(--color-text-secondary);line-height:1.5;margin-top:2px}
+.rfile{font-family:var(--font-mono);font-size:10px;color:var(--color-text-tertiary);margin-top:2px}
+.flow-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 14px;margin:8px 14px;font-size:12px;line-height:1.8;color:var(--color-text-secondary)}
+.flow-box strong{color:var(--color-text-primary);font-weight:500}
+.arrow{color:var(--color-text-tertiary)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.note{font-size:11px;padding:8px 14px;color:var(--color-text-secondary);background:var(--color-background-tertiary);border-top:0.5px solid var(--color-border-tertiary)}
+</style>
+
+<div class="wrap">
+
+<div class="section-title">Guest user — how it works</div>
+
+<div class="card">
+  <div class="card-header"><div class="card-title">Guest checkout + data strategy</div><span class="badge b-ts">TypeScript</span><span class="badge b-local">localStorage</span></div>
+  <div class="flow-box">
+    <strong>Guest lands on site</strong> <span class="arrow">→</span> Cart + Wishlist saved to <strong>localStorage</strong><br>
+    <strong>Guest clicks checkout</strong> <span class="arrow">→</span> Shopify native guest checkout (email only, no account needed)<br>
+    <strong>Guest creates account later</strong> <span class="arrow">→</span> <strong>Merge triggered:</strong> localStorage cart + wishlist copied to Shopify customer account<br>
+    <strong>Guest logs into existing account</strong> <span class="arrow">→</span> Same merge — localStorage data syncs into account then cleared<br>
+    <strong>Result:</strong> Customer sees their full history — orders + wishlist — in one profile
+  </div>
+  <div class="row"><div class="rn">1</div><div><div class="rname">localStorage schema (guest)</div><div class="rdesc">cart: [{variantId, qty, title, price, image}] · wishlist: [{productId, handle, title, image, price}] · recentlyViewed: [handles] · guestEmail: string</div><div class="rfile">src/modules/guest-store.ts</div></div><div><span class="badge b-ts">TypeScript</span></div></div>
+  <div class="row"><div class="rn">2</div><div><div class="rname">Shopify guest checkout</div><div class="rdesc">Zero changes needed — Shopify handles this natively. Customer enters email at checkout, no account required. You get the order, they get confirmation email.</div><div class="rfile">Shopify native — no code</div></div><div><span class="badge b-shopify">Shopify</span></div></div>
+  <div class="row"><div class="rn">3</div><div><div class="rname">Post-login merge trigger</div><div class="rdesc">On successful login/register — read localStorage, POST wishlist items to customer metafields via Storefront API, merge cart via /cart/update.js, then clear localStorage</div><div class="rfile">src/modules/auth-merge.ts</div></div><div><span class="badge b-ts">TypeScript</span></div></div>
+  <div class="row"><div class="rn">4</div><div><div class="rname">Wishlist persistence (logged in)</div><div class="rdesc">Logged-in wishlist stored in Shopify Customer Metafields (namespace: custom, key: wishlist) as JSON array of product handles. Synced on every add/remove.</div><div class="rfile">src/modules/wishlist.ts</div></div><div><span class="badge b-ts">TypeScript</span></div></div>
+  <div class="note">Key rule: always check localStorage FIRST on page load. If user is logged in AND localStorage has data → trigger merge immediately. If guest only → read from localStorage only.</div>
+</div>
+
+<div class="section-title">Wishlist page — new addition to site map</div>
+
+<div class="card">
+  <div class="card-header"><div class="card-title">Wishlist page</div><div style="flex:1"></div><div class="rfile" style="font-size:11px">templates/page.wishlist.json · sections/main-wishlist.liquid</div><span class="badge b-must">new page</span></div>
+  <div class="row"><div class="rn">1</div><div><div class="rname">Wishlist header</div><div class="rdesc">Title "My Wishlist" · item count · "Share wishlist" button (generates shareable URL) · "Add all to cart" button</div><div class="rfile">sections/main-wishlist.liquid</div></div><div><span class="badge b-liquid">section</span></div></div>
+  <div class="row"><div class="rn">2</div><div><div class="rname">Wishlist product grid</div><div class="rdesc">Same product-card layout · heart icon filled (active) · ATC button per card · Remove from wishlist · price + sale badge · stock status</div><div class="rfile">snippets/wishlist-card.liquid + JS render</div></div><div><span class="badge b-ts">TypeScript</span></div></div>
+  <div class="row"><div class="rn">3</div><div><div class="rname">Empty wishlist state</div><div class="rdesc">"Your wishlist is empty" illustration · "Start exploring" CTA → collections page · suggested bestsellers below</div><div class="rfile">sections/main-wishlist.liquid</div></div><div><span class="badge b-liquid">section</span></div></div>
+  <div class="row"><div class="rn">4</div><div><div class="rname">Login nudge banner (guest only)</div><div class="rdesc">"Save your wishlist forever — create a free account" · shown only to guests · dismissible · links to register page</div><div class="rfile">snippets/wishlist-guest-nudge.liquid</div></div><div><span class="badge b-liquid">snippet</span></div></div>
+  <div class="row"><div class="rn">5</div><div><div class="rname">Recently viewed (bottom)</div><div class="rdesc">Reuse recently-viewed section — "You also looked at these"</div><div class="rfile">sections/recently-viewed.liquid</div></div><div><span class="badge b-liquid">section</span></div></div>
+  <div class="note">Since the wishlist page renders product data from localStorage (guest) or metafields (logged in), the Liquid template is minimal — mostly a JS-rendered shell. The page.wishlist template just provides the skeleton HTML + title.</div>
+</div>
+
+<div class="section-title">Wishlist sections added to existing pages</div>
+
+<div class="two-col">
+  <div class="card">
+    <div class="card-header"><div class="card-title">Product card (everywhere)</div><span class="badge b-liquid">snippet update</span></div>
+    <div class="row"><div class="rn">+</div><div><div class="rname">Heart / wishlist toggle button</div><div class="rdesc">Top-right of every product card. Filled heart if in wishlist. Click toggles add/remove. Works for both guest (localStorage) and logged-in (metafield sync).</div><div class="rfile">snippets/product-card.liquid + wishlist.ts</div></div><div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="card-title">Product detail page (PDP)</div><span class="badge b-liquid">section update</span></div>
+    <div class="row"><div class="rn">+</div><div><div class="rname">Wishlist button near ATC</div><div class="rdesc">Heart icon button next to the Add to Cart — "Save to Wishlist" text label on desktop. Updates in real-time. Also appears in sticky ATC bar.</div><div class="rfile">snippets/product-form.liquid + wishlist.ts</div></div><div></div></div>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <div class="card-header"><div class="card-title">Header</div><span class="badge b-liquid">section update</span></div>
+    <div class="row"><div class="rn">+</div><div><div class="rname">Wishlist icon in header actions</div><div class="rdesc">Heart icon between Account and Cart. Shows count badge (number of wishlisted items). Links to /pages/wishlist.</div><div class="rfile">sections/header.liquid + wishlist.ts</div></div><div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="card-title">Account profile page</div><span class="badge b-liquid">section update</span></div>
+    <div class="row"><div class="rn">+</div><div><div class="rname">Wishlist tab in account</div><div class="rdesc">New "Saved items" tab in account sidebar nav. Shows wishlisted products. Links to full wishlist page. Count shown in sidebar nav.</div><div class="rfile">sections/main-account.liquid + wishlist.ts</div></div><div></div></div>
+  </div>
+</div>
+
+<div class="section-title">TypeScript modules needed</div>
+
+<div class="card">
+  <div class="card-header"><div class="card-title">Complete TS module list (updated with guest + wishlist)</div></div>
+  <div class="row"><div class="rn">1</div><div><div class="rname">src/modules/guest-store.ts</div><div class="rdesc">Read/write localStorage for cart, wishlist, recentlyViewed, guestEmail. Single source of truth for guest data. Exported as GuestStore singleton.</div></div><div><span class="badge b-ts">new</span></div></div>
+  <div class="row"><div class="rn">2</div><div><div class="rname">src/modules/wishlist.ts</div><div class="rdesc">add(handle) · remove(handle) · toggle(handle) · getAll() · isWishlisted(handle) · updateCount() · Works for both guest (localStorage) and logged-in (customer metafield via Storefront API).</div></div><div><span class="badge b-ts">new</span></div></div>
+  <div class="row"><div class="rn">3</div><div><div class="rname">src/modules/auth-merge.ts</div><div class="rdesc">Runs immediately after login/register success. Reads GuestStore, merges wishlist into customer metafields, merges cart items via /cart/update.js, clears localStorage. Fire-and-forget with error handling.</div></div><div><span class="badge b-ts">new</span></div></div>
+  <div class="row"><div class="rn">4</div><div><div class="rname">src/modules/cart.ts</div><div class="rdesc">Already built. Add: guest cart reads from localStorage when user is not logged in. On login → auth-merge.ts handles the sync.</div></div><div><span class="badge b-ts">update</span></div></div>
+  <div class="row"><div class="rn">5</div><div><div class="rname">src/modules/recently-viewed.ts</div><div class="rdesc">Tracks last 8 visited product handles in localStorage. Reads on PDP + wishlist page to render "You also looked at" strip. Works for both guest and logged-in.</div></div><div><span class="badge b-ts">new</span></div></div>
+  <div class="row"><div class="rn">6</div><div><div class="rname">src/modules/product.ts · collection.ts · search.ts · auth.ts · account.ts · contact.ts · home.ts · header.ts</div><div class="rdesc">Previously planned — unchanged</div></div><div><span class="badge b-ts">existing</span></div></div>
+</div>
+
+<div class="section-title">Updated header actions order</div>
+<div class="card">
+  <div class="card-header"><div class="card-title">Header icons — left to right</div></div>
+  <div class="flow-box">
+    <strong>Search</strong> (magnifier) <span class="arrow">→</span> <strong>Wishlist</strong> (heart + count badge) <span class="arrow">→</span> <strong>Account</strong> (person icon) <span class="arrow">→</span> <strong>Cart</strong> (bag + count badge)<br><br>
+    Wishlist count badge: gold background, same style as cart badge. Shows 0 when empty (hidden), updates instantly on add/remove.
+  </div>
+</div>
+
+</div>

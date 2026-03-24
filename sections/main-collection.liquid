@@ -1,0 +1,106 @@
+{% comment %}
+  Section: Main Collection
+  Grid of product cards with filter bar and pagination.
+{% endcomment %}
+
+{%- liquid
+  assign products_per_page = section.settings.products_per_page | default: 12
+-%}
+
+<div class="main-collection section-padding">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="main-collection__header">
+      <h1 class="main-collection__title">{{ collection.title }}</h1>
+      {%- if collection.description != blank -%}
+        <p class="main-collection__desc">{{ collection.description }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- Filter bar -->
+    {% render 'filter-bar', collection: collection %}
+
+    <!-- Grid -->
+    {%- paginate collection.products by products_per_page -%}
+      {%- if collection.products.size > 0 -%}
+        <div class="product-grid" id="ProductGrid">
+          {%- for product in collection.products -%}
+            {% render 'product-card', product: product %}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="collection-empty">
+          <p>No products match the selected filters.</p>
+          <a href="{{ collection.url }}" class="btn btn--secondary">Clear filters</a>
+        </div>
+      {%- endif -%}
+
+      {% render 'pagination', paginate: paginate %}
+    {%- endpaginate -%}
+
+  </div>
+</div>
+
+<style>
+.main-collection__header {
+  margin-bottom: var(--space-8);
+  max-width: 600px;
+}
+
+.main-collection__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  color: var(--color-text-dark);
+  margin-bottom: var(--space-3);
+}
+
+.main-collection__desc {
+  font-size: var(--text-base);
+  color: var(--color-text-mid);
+  line-height: 1.7;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+.collection-empty {
+  text-align: center;
+  padding: var(--space-16);
+  color: var(--color-text-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+@media (max-width: 1023px) {
+  .product-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 767px) {
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Collection products",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 12
+    }
+  ]
+}
+{% endschema %}

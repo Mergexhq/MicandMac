@@ -1,0 +1,41 @@
+{% comment %}Section: Main Register{% endcomment %}
+
+<div class="account-auth section-padding">
+  <div class="container container--xs">
+    <h1 class="account-auth__title">Create Account</h1>
+
+    {%- if form.errors -%}
+      <div class="form-error" role="alert">{{ form.errors | default_errors }}</div>
+    {%- endif -%}
+
+    {%- form 'create_customer', id: 'RegisterForm' -%}
+      <div class="form-group">
+        <label for="RegisterFirstName" class="form-label">First name</label>
+        <input type="text" id="RegisterFirstName" name="customer[first_name]" autocomplete="given-name" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="RegisterLastName" class="form-label">Last name</label>
+        <input type="text" id="RegisterLastName" name="customer[last_name]" autocomplete="family-name" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="RegisterEmail" class="form-label">Email</label>
+        <input type="email" id="RegisterEmail" name="customer[email]" autocomplete="email" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="RegisterPassword" class="form-label">Password</label>
+        <input type="password" id="RegisterPassword" name="customer[password]" autocomplete="new-password" class="form-input" required minlength="8">
+        <p class="form-hint">Minimum 8 characters.</p>
+      </div>
+      <button type="submit" class="btn btn--primary btn--full btn--lg">Create Account</button>
+    {%- endform -%}
+
+    <div class="account-auth__alt">
+      <span>Already have an account?</span>
+      <a href="{{ routes.account_login_url }}">Sign in</a>
+    </div>
+  </div>
+</div>
+
+<style>
+.form-hint { font-size: var(--text-xs); color: var(--color-text-light); margin-top: var(--space-1); }
+</style>

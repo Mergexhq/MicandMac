@@ -1,0 +1,312 @@
+{% comment %}
+  Section: Video / UGC Strip
+  Horizontally scrollable row of product/UGC videos
+{% endcomment %}
+
+<section class="video-strip section-padding">
+  <div class="container">
+    <div class="section-heading">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2>{{ section.settings.heading | default: 'Real People, Real Results' }}</h2>
+    </div>
+  </div>
+
+  <div class="video-strip__scroll-wrap">
+    <div class="video-strip__track" id="VideoStripTrack-{{ section.id }}">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'video_item' -%}
+          <div class="video-strip__item" {{ block.shopify_attributes }}>
+            <div class="video-strip__thumb" data-video-url="{{ block.settings.video_url }}">
+              {%- if block.settings.thumbnail != blank -%}
+                <img
+                  src="{{ block.settings.thumbnail | image_url: width: 400 }}"
+                  alt="{{ block.settings.caption | escape | default: 'Product video' }}"
+                  width="300"
+                  height="500"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <div class="video-strip__thumb-placeholder"></div>
+              {%- endif -%}
+              <button class="video-strip__play" aria-label="Play video">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M5 3l14 9-14 9V3z"/>
+                </svg>
+              </button>
+            </div>
+            {%- if block.settings.caption != blank -%}
+              <p class="video-strip__caption">{{ block.settings.caption }}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <!-- Video lightbox (hidden) -->
+  <div class="video-lightbox" id="VideoLightbox-{{ section.id }}" aria-hidden="true">
+    <div class="video-lightbox__overlay" data-lightbox-close></div>
+    <div class="video-lightbox__box">
+      <button class="video-lightbox__close" data-lightbox-close aria-label="Close video">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <div class="video-lightbox__media" id="VideoLightboxMedia-{{ section.id }}"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+.video-strip__scroll-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-inline: max(var(--gutter), calc((100vw - var(--container-max)) / 2));
+}
+
+.video-strip__scroll-wrap::-webkit-scrollbar { display: none; }
+
+.video-strip__track {
+  display: flex;
+  gap: var(--space-4);
+  width: max-content;
+  padding-bottom: var(--space-2);
+}
+
+.video-strip__item {
+  flex-shrink: 0;
+  width: 220px;
+}
+
+.video-strip__thumb {
+  position: relative;
+  aspect-ratio: 9/16;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-beige);
+  cursor: pointer;
+}
+
+.video-strip__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.video-strip__item:hover .video-strip__thumb img {
+  transform: scale(1.04);
+}
+
+.video-strip__thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--color-beige) 0%, var(--color-wine-blush) 100%);
+}
+
+.video-strip__play {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.2);
+  color: var(--color-white);
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-base);
+}
+
+.video-strip__play svg {
+  width: 52px;
+  height: 52px;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+  transition: transform var(--transition-spring);
+}
+
+.video-strip__item:hover .video-strip__play svg {
+  transform: scale(1.1);
+}
+
+.video-strip__caption {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-mid);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Lightbox */
+.video-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+}
+
+.video-lightbox.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.video-lightbox__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  cursor: pointer;
+}
+
+.video-lightbox__box {
+  position: relative;
+  z-index: 1;
+  width: min(360px, 90vw);
+  aspect-ratio: 9/16;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-text-dark);
+}
+
+.video-lightbox__close {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  border: none;
+  cursor: pointer;
+}
+
+.video-lightbox__media {
+  width: 100%;
+  height: 100%;
+}
+
+.video-lightbox__media video,
+.video-lightbox__media iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: none;
+}
+</style>
+
+<script>
+(function () {
+  var lightbox = document.getElementById('VideoLightbox-{{ section.id }}');
+  var mediaWrap = document.getElementById('VideoLightboxMedia-{{ section.id }}');
+
+  if (!lightbox) return;
+
+  // Open on thumb click
+  document.querySelectorAll('#VideoStripTrack-{{ section.id }} .video-strip__thumb').forEach(function (thumb) {
+    thumb.addEventListener('click', function () {
+      var url = this.getAttribute('data-video-url');
+      if (!url) return;
+      mediaWrap.innerHTML = '';
+
+      if (url.includes('youtube') || url.includes('youtu.be')) {
+        var id = url.split(/[?&v=]/).pop();
+        mediaWrap.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+      } else if (url.includes('vimeo')) {
+        var id = url.split('/').pop();
+        mediaWrap.innerHTML = '<iframe src="https://player.vimeo.com/video/' + id + '?autoplay=1" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+      } else {
+        mediaWrap.innerHTML = '<video src="' + url + '" autoplay muted controls playsinline></video>';
+      }
+
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  // Close
+  lightbox.querySelectorAll('[data-lightbox-close]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      mediaWrap.innerHTML = '';
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && lightbox.classList.contains('is-open')) {
+      mediaWrap.innerHTML = '';
+      lightbox.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Video / UGC strip",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "As Seen On"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Real People, Real Results"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video_item",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "thumbnail",
+          "label": "Thumbnail image"
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "Video URL (YouTube / Vimeo / MP4)",
+          "placeholder": "https://youtube.com/watch?v=..."
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video / UGC strip",
+      "blocks": [
+        { "type": "video_item", "settings": { "caption": "My favourite face wash! 🧖‍♀️" } },
+        { "type": "video_item", "settings": { "caption": "60 days in — the results!" } },
+        { "type": "video_item", "settings": { "caption": "Morning glow ritual" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

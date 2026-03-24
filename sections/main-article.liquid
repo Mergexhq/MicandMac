@@ -1,0 +1,120 @@
+{% comment %}Section: Main Article{% endcomment %}
+
+<article class="main-article section-padding">
+  <div class="container container--narrow">
+
+    <!-- Header -->
+    <header class="article-header">
+      {% render 'breadcrumb' %}
+      {%- if article.tags.size > 0 -%}
+        <p class="eyebrow">{{ article.tags.first }}</p>
+      {%- endif -%}
+      <h1 class="article-header__title">{{ article.title }}</h1>
+      <div class="article-header__meta">
+        <span>By {{ article.author }}</span>
+        <span>·</span>
+        <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%B %d, %Y' }}</time>
+      </div>
+    </header>
+
+    <!-- Featured image -->
+    {%- if article.image -%}
+      <figure class="article-hero">
+        <img
+          src="{{ article.image | image_url: width: 1200 }}"
+          alt="{{ article.image.alt | escape | default: article.title }}"
+          width="1200"
+          height="630"
+          loading="eager"
+          class="article-hero__img"
+        >
+      </figure>
+    {%- endif -%}
+
+    <!-- Body -->
+    <div class="article-body rte">
+      {{ article.content }}
+
+      <!-- Mid-article product CTA -->
+      {%- if article.metafields.custom.featured_product != blank -%}
+        {% render 'article-product-cta', product: article.metafields.custom.featured_product.value %}
+      {%- endif -%}
+    </div>
+
+    <!-- Tags -->
+    {%- if article.tags.size > 0 -%}
+      <div class="article-tags">
+        <span class="article-tags__label">Tagged:</span>
+        {%- for tag in article.tags -%}
+          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="filter-pill">{{ tag }}</a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <!-- Share -->
+    <div class="article-share">
+      <span class="article-tags__label">Share:</span>
+      <a href="https://wa.me/?text={{ article.title | url_encode }}%20{{ shop.url }}{{ article.url }}" class="article-share__btn" target="_blank" rel="noopener" aria-label="Share on WhatsApp">WhatsApp</a>
+    </div>
+
+    <!-- Author box -->
+    <div class="author-box">
+      <div class="author-box__avatar">
+        <span>{{ article.author | slice: 0 }}</span>
+      </div>
+      <div>
+        <p class="author-box__name">{{ article.author }}</p>
+        <p class="author-box__bio">Skincare researcher & wellness writer at Mic & Mac.</p>
+      </div>
+    </div>
+
+    <!-- Prev / Next -->
+    <nav class="article-nav" aria-label="More articles">
+      {%- if blog.previous_article -%}
+        <a href="{{ blog.previous_article }}" class="article-nav__link">
+          <span>← Previous</span>
+          <strong>{{ blog.previous_article.title }}</strong>
+        </a>
+      {%- endif -%}
+      {%- if blog.next_article -%}
+        <a href="{{ blog.next_article }}" class="article-nav__link article-nav__link--right">
+          <span>Next →</span>
+          <strong>{{ blog.next_article.title }}</strong>
+        </a>
+      {%- endif -%}
+    </nav>
+
+  </div>
+</article>
+
+<style>
+.article-header { margin-bottom: var(--space-8); }
+.article-header__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--color-text-dark);
+  margin-block: var(--space-3) var(--space-4);
+}
+.article-header__meta { display: flex; gap: var(--space-2); font-size: var(--text-sm); color: var(--color-text-light); }
+.article-hero { margin-bottom: var(--space-8); border-radius: var(--radius-xl); overflow: hidden; }
+.article-hero__img { width: 100%; height: auto; display: block; }
+.article-body { margin-bottom: var(--space-8); }
+.article-tags, .article-share { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-5); }
+.article-tags__label { font-size: var(--text-sm); font-weight: 500; color: var(--color-text-light); }
+
+.author-box { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-5); background: var(--color-cream); border-radius: var(--radius-lg); margin-block: var(--space-8); }
+.author-box__avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--color-forest); color: var(--color-white); display: flex; align-items: center; justify-content: center; font-size: var(--text-xl); font-family: var(--font-display); flex-shrink: 0; }
+.author-box__name { font-weight: 600; color: var(--color-text-dark); margin-bottom: var(--space-1); }
+.author-box__bio { font-size: var(--text-sm); color: var(--color-text-mid); }
+
+.article-nav { display: flex; justify-content: space-between; gap: var(--space-4); border-top: 1px solid var(--color-beige); padding-top: var(--space-6); margin-top: var(--space-6); }
+.article-nav__link { display: flex; flex-direction: column; gap: var(--space-1); text-decoration: none; color: var(--color-text-mid); max-width: 45%; }
+.article-nav__link--right { text-align: right; }
+.article-nav__link span { font-size: var(--text-xs); color: var(--color-text-light); }
+.article-nav__link strong { font-size: var(--text-sm); color: var(--color-text-dark); }
+.article-nav__link:hover strong { color: var(--color-forest); }
+
+.article-share__btn { font-size: var(--text-sm); color: #25D366; text-decoration: underline; cursor: pointer; }
+</style>

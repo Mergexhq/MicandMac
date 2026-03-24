@@ -1,0 +1,51 @@
+{% comment %}Section: Blog{% endcomment %}
+
+{%- paginate blog.articles by section.settings.articles_per_page -%}
+
+<div class="main-blog section-padding">
+  <div class="container">
+    <div class="main-blog__header">
+      <h1 class="main-blog__title">{{ blog.title }}</h1>
+    </div>
+
+    <div class="article-grid">
+      {%- for article in blog.articles -%}
+        {% render 'article-card', article: article %}
+      {%- endfor -%}
+    </div>
+
+    {% render 'pagination', paginate: paginate %}
+  </div>
+</div>
+
+{%- endpaginate -%}
+
+<style>
+.main-blog__header { margin-bottom: var(--space-10); }
+.main-blog__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  color: var(--color-text-dark);
+}
+.article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); margin-bottom: var(--space-8); }
+@media (max-width: 767px) { .article-grid { grid-template-columns: 1fr; } }
+@media (max-width: 1023px) and (min-width: 768px) { .article-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+
+{% schema %}
+{
+  "name": "Blog",
+  "settings": [
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Articles per page",
+      "min": 3,
+      "max": 24,
+      "step": 3,
+      "default": 9
+    }
+  ]
+}
+{% endschema %}

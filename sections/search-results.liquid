@@ -1,0 +1,166 @@
+{% comment %}
+  Section: Search Results
+  Uses Shopify /search route — displays products, pages, articles
+{% endcomment %}
+
+{%- paginate search.results by section.settings.results_per_page -%}
+
+<div class="search-results section-padding">
+  <div class="container">
+
+    <!-- Search header -->
+    <div class="search-results__header">
+      <h1 class="search-results__title">
+        {%- if search.performed -%}
+          Results for <em>&#8220;{{ search.terms | escape }}&#8221;</em>
+        {%- else -%}
+          Search
+        {%- endif -%}
+      </h1>
+
+      <!-- Inline search form (re-run) -->
+      <form action="{{ routes.search_url }}" method="get" class="search-results__form">
+        <input type="hidden" name="type" value="product,page">
+        <div class="search-results__form-row">
+          <input
+            type="search"
+            name="q"
+            class="form-input search-results__input"
+            value="{{ search.terms | escape }}"
+            placeholder="Search again…"
+            autocomplete="off"
+            aria-label="Search"
+          >
+          <button type="submit" class="btn btn--primary">Search</button>
+        </div>
+      </form>
+    </div>
+
+    {%- if search.performed -%}
+      <p class="search-results__count">
+        {%- if search.results_count == 0 -%}
+          No results found
+        {%- elsif search.results_count == 1 -%}
+          1 result
+        {%- else -%}
+          {{ search.results_count }} results
+        {%- endif -%}
+      </p>
+
+      {%- if search.results.size > 0 -%}
+        <div class="product-grid">
+          {%- for result in search.results -%}
+            {%- if result.object_type == 'product' -%}
+              {% render 'product-card', product: result %}
+            {%- elsif result.object_type == 'article' -%}
+              <a href="{{ result.url }}" class="search-result-article-card">
+                <strong>{{ result.title }}</strong>
+                <p>{{ result.content | strip_html | truncate: 80 }}</p>
+              </a>
+            {%- else -%}
+              <a href="{{ result.url }}" class="search-result-page-card">
+                <strong>{{ result.title }}</strong>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {% render 'pagination', paginate: paginate %}
+
+      {%- else -%}
+        <div class="collection-empty">
+          <p>Try a different search term or browse our collections below.</p>
+          <a href="/collections/all" class="btn btn--secondary">Browse All Products</a>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+  </div>
+</div>
+
+{%- endpaginate -%}
+
+<style>
+.search-results__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.search-results__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  font-weight: 300;
+  color: var(--color-text-dark);
+}
+
+.search-results__title em {
+  font-style: italic;
+  color: var(--color-forest);
+}
+
+.search-results__form { flex-shrink: 0; }
+
+.search-results__form-row {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.search-results__input {
+  width: 280px;
+}
+
+.search-results__count {
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+  margin-bottom: var(--space-6);
+}
+
+.search-result-article-card,
+.search-result-page-card {
+  display: block;
+  padding: var(--space-4);
+  background: var(--color-cream);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  color: var(--color-text-dark);
+  transition: box-shadow var(--transition-fast);
+}
+
+.search-result-article-card:hover,
+.search-result-page-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.search-result-article-card p {
+  font-size: var(--text-sm);
+  color: var(--color-text-mid);
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 639px) {
+  .search-results__form { width: 100%; }
+  .search-results__input { width: 100%; flex: 1; }
+  .search-results__header { flex-direction: column; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Search results",
+  "settings": [
+    {
+      "type": "range",
+      "id": "results_per_page",
+      "label": "Results per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 12
+    }
+  ]
+}
+{% endschema %}

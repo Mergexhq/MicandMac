@@ -1,0 +1,151 @@
+{% comment %}Section: Main Account Dashboard{% endcomment %}
+
+<div class="account-page section-padding">
+  <div class="container">
+    <div class="account-page__layout">
+
+      <!-- Sidebar nav -->
+      <aside class="account-page__sidebar">
+        {% render 'account-nav', current: 'dashboard' %}
+      </aside>
+
+      <!-- Main -->
+      <main class="account-page__main">
+        <h1 class="account-page__title">Hello, {{ customer.first_name }}</h1>
+
+        <!-- Recent orders -->
+        <section class="account-section">
+          <h2 class="account-section__heading">Recent Orders</h2>
+          {%- if customer.orders.size > 0 -%}
+            <table class="order-table">
+              <thead>
+                <tr>
+                  <th>Order</th><th>Date</th><th>Status</th><th>Total</th><th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {%- for order in customer.orders limit: 5 -%}
+                  <tr>
+                    <td><a href="{{ order.customer_url }}" class="link-underline">#{{ order.name }}</a></td>
+                    <td>{{ order.created_at | date: '%b %d, %Y' }}</td>
+                    <td>
+                      <span class="order-status badge {% if order.fulfillment_status == 'fulfilled' %}badge--forest{% else %}badge--gold{% endif %}">
+                        {{ order.fulfillment_status | replace: '_', ' ' | capitalize | default: 'Processing' }}
+                      </span>
+                    </td>
+                    <td>{{ order.total_price | money }}</td>
+                    <td><a href="{{ order.customer_url }}" class="btn btn--secondary btn--xs">View</a></td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+          {%- else -%}
+            <p class="text-muted">No orders yet. <a href="{{ routes.all_products_collection_url }}" class="link-underline">Start shopping</a></p>
+          {%- endif -%}
+        </section>
+
+        <!-- Account details -->
+        <section class="account-section">
+          <div class="account-section__header-row">
+            <h2 class="account-section__heading">Account Details</h2>
+            <a href="{{ routes.account_url }}/edit" class="btn btn--secondary btn--sm">Edit</a>
+          </div>
+          <p>{{ customer.email }}</p>
+          {%- if customer.default_address -%}
+            <address class="account-address">
+              {{ customer.default_address | format_address }}
+            </address>
+          {%- else -%}
+            <p class="text-muted">No default address. <a href="{{ routes.account_addresses_url }}" class="link-underline">Add one</a></p>
+          {%- endif -%}
+        </section>
+      </main>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.account-page__layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--space-10);
+  align-items: start;
+}
+
+.account-page__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 300;
+  margin-bottom: var(--space-8);
+}
+
+.account-section {
+  margin-bottom: var(--space-10);
+  padding-bottom: var(--space-10);
+  border-bottom: 1px solid var(--color-beige);
+}
+
+.account-section:last-child { border-bottom: none; }
+
+.account-section__heading {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  margin-bottom: var(--space-5);
+  color: var(--color-text-dark);
+}
+
+.account-section__header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.order-table th {
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-light);
+  border-bottom: 1px solid var(--color-beige);
+}
+
+.order-table td {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-beige);
+  color: var(--color-text-mid);
+  vertical-align: middle;
+}
+
+.account-address {
+  font-style: normal;
+  font-size: var(--text-sm);
+  color: var(--color-text-mid);
+  line-height: 1.7;
+}
+
+.link-underline { color: var(--color-forest); text-decoration: underline; }
+.text-muted { color: var(--color-text-light); font-size: var(--text-sm); }
+
+.btn--xs {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  height: auto;
+}
+
+@media (max-width: 767px) {
+  .account-page__layout {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

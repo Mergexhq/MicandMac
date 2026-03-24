@@ -1,0 +1,89 @@
+{% comment %}
+  Snippet: price
+  Usage: {% render 'price', product: product %}
+         {% render 'price', variant: variant %}
+  Params:
+    - product:  product object (optional) — uses selected_or_first_available_variant
+    - variant:  variant object (optional) — direct variant override
+    - show_badge: boolean (optional, default true) — show "SALE" badge
+{% endcomment %}
+
+{%- liquid
+  assign show_badge = show_badge | default: true
+
+  if variant != blank
+    assign target = variant
+  elsif product != blank
+    assign target = product.selected_or_first_available_variant
+  endif
+
+  assign on_sale = false
+  if target.compare_at_price > target.price
+    assign on_sale = true
+  endif
+
+  assign price_varies = false
+  if product != blank and product.price_varies
+    assign price_varies = true
+  endif
+-%}
+
+<div class="price {% if on_sale %}price--on-sale{% endif %}">
+
+  {%- if price_varies -%}
+    <span class="price__label">From</span>
+  {%- endif -%}
+
+  <span class="price__current">
+    {{ target.price | money }}
+  </span>
+
+  {%- if on_sale -%}
+    <span class="price__compare">
+      {{ target.compare_at_price | money }}
+    </span>
+
+    {%- if show_badge -%}
+      {%- assign savings_pct = target.compare_at_price | minus: target.price | times: 100 | divided_by: target.compare_at_price -%}
+      <span class="price__badge badge badge--forest">{{ savings_pct }}% Off</span>
+    {%- endif -%}
+  {%- endif -%}
+
+</div>
+
+<style>
+.price {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  line-height: 1;
+}
+
+.price__label {
+  font-size: var(--text-xs);
+  color: var(--color-text-light);
+  font-weight: 400;
+}
+
+.price__current {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--color-forest);
+}
+
+.price--on-sale .price__current {
+  color: var(--color-burgundy);
+}
+
+.price__compare {
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+  text-decoration: line-through;
+}
+
+.price__badge {
+  font-size: 10px;
+  padding: 2px 8px;
+}
+</style>

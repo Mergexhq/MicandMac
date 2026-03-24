@@ -1,0 +1,110 @@
+{% comment %}
+  Block: collection-tile
+  Parent: sections/collection-tiles.liquid
+  Usage: {% render 'collection-tile', block: block %}
+{% endcomment %}
+
+{%- assign col = block.settings.collection -%}
+
+<a
+  href="{{ col.url | default: block.settings.custom_url | default: '/collections/all' }}"
+  class="collection-tile"
+  {{ block.shopify_attributes }}
+>
+  <div class="collection-tile__media">
+    {%- if block.settings.image != blank -%}
+      <img
+        src="{{ block.settings.image | image_url: width: 600 }}"
+        alt="{{ block.settings.label | default: col.title | escape }}"
+        width="600"
+        height="700"
+        loading="lazy"
+        class="collection-tile__img"
+      >
+    {%- elsif col.image -%}
+      <img
+        src="{{ col.image | image_url: width: 600 }}"
+        alt="{{ col.title | escape }}"
+        width="600"
+        height="700"
+        loading="lazy"
+        class="collection-tile__img"
+      >
+    {%- else -%}
+      <div class="collection-tile__placeholder" aria-hidden="true">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+      </div>
+    {%- endif -%}
+    <div class="collection-tile__overlay"></div>
+  </div>
+  <div class="collection-tile__content">
+    <h3 class="collection-tile__title">{{ block.settings.label | default: col.title }}</h3>
+    <span class="collection-tile__cta">Shop Now ↗</span>
+  </div>
+</a>
+
+<style>
+.collection-tile {
+  display: block;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  text-decoration: none;
+  position: relative;
+  aspect-ratio: 3/4;
+}
+
+.collection-tile__media {
+  position: absolute;
+  inset: 0;
+}
+
+.collection-tile__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.collection-tile:hover .collection-tile__img { transform: scale(1.06); }
+
+.collection-tile__placeholder {
+  width: 100%;
+  height: 100%;
+  background: var(--color-beige);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collection-tile__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(26,0,8,0.65) 0%, rgba(26,0,8,0) 55%);
+}
+
+.collection-tile__content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--space-5);
+  color: var(--color-white);
+}
+
+.collection-tile__title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 300;
+  margin-bottom: var(--space-1);
+}
+
+.collection-tile__cta {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.75;
+  transition: opacity var(--transition-fast);
+}
+
+.collection-tile:hover .collection-tile__cta { opacity: 1; }
+</style>

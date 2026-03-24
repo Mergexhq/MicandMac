@@ -1,251 +1,96 @@
-{% comment %}
-  Section: Hero Banner
-  - Full-screen hero with image or video
-  - Eyebrow + headline + subtext + CTA
-  - Customizable via theme editor
-{% endcomment %}
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
 
-<section class="hero {% if section.settings.full_height %}hero--full{% endif %}"
-  style="
-    {% if section.settings.overlay_opacity > 0 %}--overlay: {{ section.settings.overlay_opacity | divided_by: 100.0 }};{% endif %}
-    {% if section.settings.text_color == 'light' %}--hero-text: #FFFFFF;{% else %}--hero-text: #1C2B25;{% endif %}
-  "
->
-
-  <!-- Background Media -->
-  <div class="hero__media">
-    {%- if section.settings.video != blank -%}
-      <video autoplay muted loop playsinline class="hero__video">
-        <source src="{{ section.settings.video }}" type="video/mp4">
-      </video>
-    {%- elsif section.settings.image != blank -%}
-      <img
-        src="{{ section.settings.image | image_url: width: 1600 }}"
-        srcset="
-          {{ section.settings.image | image_url: width: 640 }} 640w,
-          {{ section.settings.image | image_url: width: 1024 }} 1024w,
-          {{ section.settings.image | image_url: width: 1600 }} 1600w
-        "
-        sizes="100vw"
-        alt="{{ section.settings.image.alt | escape }}"
-        loading="eager"
-        fetchpriority="high"
-        class="hero__img"
-      >
-    {%- else -%}
-      <div class="hero__placeholder"></div>
-    {%- endif -%}
-
-    <!-- Overlay -->
-    <div class="hero__overlay"></div>
-  </div>
-
-  <!-- Content -->
-  <div class="container">
-    <div class="hero__content hero__content--{{ section.settings.text_align }}">
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="eyebrow hero__eyebrow">{{ section.settings.eyebrow }}</p>
-      {%- endif -%}
-
-      {%- if section.settings.heading != blank -%}
-        <h1 class="hero__heading">{{ section.settings.heading }}</h1>
-      {%- endif -%}
-
-      {%- if section.settings.subtext != blank -%}
-        <p class="hero__subtext">{{ section.settings.subtext }}</p>
-      {%- endif -%}
-
-      <div class="hero__ctas">
-        {%- if section.settings.cta_text != blank -%}
-          <a href="{{ section.settings.cta_link }}" class="btn btn--primary btn--lg">
-            {{ section.settings.cta_text }}
-          </a>
-        {%- endif -%}
-        {%- if section.settings.cta2_text != blank -%}
-          <a href="{{ section.settings.cta2_link }}" class="btn btn--ghost btn--lg">
-            {{ section.settings.cta2_text }}
-          </a>
-        {%- endif -%}
-      </div>
-    </div>
-  </div>
-
-  <!-- Scroll indicator -->
-  {%- if section.settings.show_scroll_indicator -%}
-    <div class="hero__scroll">
-      <span>Scroll</span>
-      <div class="hero__scroll-line"></div>
-    </div>
+<div class="hero-banner relative flex items-center justify-center overflow-hidden min-h-[70vh] md:min-h-[85vh] bg-gray-900 section-{{ section.id }}-padding" id="HeroBanner-{{ section.id }}">
+  {%- if section.settings.image != blank -%}
+    <img
+      src="{{ section.settings.image | image_url: width: 2000 }}"
+      alt="{{ section.settings.image.alt | escape }}"
+      class="absolute inset-0 w-full h-full object-cover object-center z-0"
+      width="2000"
+      height="{{ 2000 | divided_by: section.settings.image.aspect_ratio | round }}"
+      fetchpriority="high"
+    >
+  {%- endif -%}
+  
+  {%- if section.settings.video_url != blank -%}
+    <video class="absolute inset-0 w-full h-full object-cover z-0" autoplay loop muted playsinline>
+      <source src="{{ section.settings.video_url }}" type="video/mp4">
+    </video>
   {%- endif -%}
 
-</section>
+  <!-- Overlay -->
+  <div class="absolute inset-0 z-10" style="background-color: {{ section.settings.overlay_color }}; opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
 
-<style>
-.hero {
-  position: relative;
-  min-height: 600px;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-}
+  <div class="container relative z-20 text-center px-4 md:px-8 max-w-4xl text-white">
+    {%- if section.settings.subheading != blank -%}
+      <p class="text-sm md:text-base font-medium tracking-widest uppercase mb-4" style="color: {{ section.settings.text_color_secondary }};">
+        {{ section.settings.subheading }}
+      </p>
+    {%- endif -%}
+    
+    {%- if section.settings.heading != blank -%}
+      <h1 class="text-4xl md:text-6xl lg:text-7xl font-light leading-tight mb-6" style="color: {{ section.settings.text_color }}; font-family: var(--font-display);">
+        {{ section.settings.heading }}
+      </h1>
+    {%- endif -%}
 
-.hero--full {
-  min-height: 100svh;
-}
+    {%- if section.settings.text != blank -%}
+      <div class="text-lg md:text-xl font-light mb-8 max-w-2xl mx-auto" style="color: {{ section.settings.text_color_secondary }};">
+        {{ section.settings.text }}
+      </div>
+    {%- endif -%}
 
-.hero__media {
-  position: absolute;
-  inset: 0;
-}
-
-.hero__img,
-.hero__video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-.hero__placeholder {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, var(--color-forest) 0%, var(--color-forest-light) 50%, var(--color-sage) 100%);
-}
-
-.hero__overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(28, 43, 37, var(--overlay, 0.35));
-}
-
-.hero__content {
-  position: relative;
-  z-index: 2;
-  max-width: 680px;
-  padding-block: var(--space-20);
-  color: var(--hero-text, #1C2B25);
-}
-
-.hero__content--center {
-  margin-inline: auto;
-  text-align: center;
-}
-
-.hero__content--right {
-  margin-left: auto;
-}
-
-.hero__eyebrow {
-  color: var(--color-gold-light);
-  margin-bottom: var(--space-4);
-  animation: fadeIn 0.6s ease 0.1s both;
-}
-
-.hero__heading {
-  font-size: clamp(3rem, 6vw, 5.5rem);
-  font-weight: 300;
-  color: inherit;
-  line-height: 1.05;
-  margin-bottom: var(--space-6);
-  animation: fadeIn 0.6s ease 0.2s both;
-}
-
-.hero__subtext {
-  font-size: clamp(1rem, 2vw, var(--text-xl));
-  color: inherit;
-  opacity: 0.85;
-  margin-bottom: var(--space-8);
-  line-height: 1.7;
-  animation: fadeIn 0.6s ease 0.3s both;
-}
-
-.hero__ctas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  animation: fadeIn 0.6s ease 0.4s both;
-}
-
-.hero__content--center .hero__ctas {
-  justify-content: center;
-}
-
-/* Scroll indicator */
-.hero__scroll {
-  position: absolute;
-  bottom: var(--space-8);
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-  color: rgba(255,255,255,0.6);
-  font-size: var(--text-xs);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  z-index: 2;
-  animation: fadeIn 0.6s ease 0.8s both;
-}
-
-.hero__scroll-line {
-  width: 1px;
-  height: 40px;
-  background: rgba(255,255,255,0.4);
-  position: relative;
-  overflow: hidden;
-}
-
-.hero__scroll-line::after {
-  content: '';
-  position: absolute;
-  top: -40px;
-  left: 0;
-  width: 1px;
-  height: 40px;
-  background: rgba(255,255,255,0.9);
-  animation: scrollLine 1.5s ease-in-out infinite;
-}
-
-@keyframes scrollLine {
-  to { top: 40px; }
-}
-
-@media (max-width: 767px) {
-  .hero__ctas { flex-direction: column; }
-  .hero__ctas .btn { width: 100%; justify-content: center; }
-  .hero--full { min-height: 90svh; }
-}
-</style>
+    {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+      <a href="{{ section.settings.button_link }}" class="btn btn--primary btn--lg inline-block">
+        {{ section.settings.button_label }}
+      </a>
+    {%- endif -%}
+  </div>
+</div>
 
 {% schema %}
 {
   "name": "Hero Banner",
+  "tag": "section",
+  "class": "section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Media"
-    },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Background image"
+      "label": "Background Image"
     },
     {
-      "type": "text",
-      "id": "video",
-      "label": "Video URL (MP4)",
-      "info": "Hosted video URL. Leave blank to use image."
+      "type": "url",
+      "id": "video_url",
+      "label": "Background Video URL (MP4)",
+      "info": "Overrides image if provided"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000000"
     },
     {
       "type": "range",
       "id": "overlay_opacity",
-      "label": "Overlay darkness",
       "min": 0,
-      "max": 70,
+      "max": 100,
       "step": 5,
-      "default": 35,
-      "unit": "%"
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 40
     },
     {
       "type": "header",
@@ -253,86 +98,69 @@
     },
     {
       "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow text",
-      "default": "Clean. Natural. Honest."
-    },
-    {
-      "type": "textarea",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Beauty That's Good For You"
-    },
-    {
-      "type": "textarea",
-      "id": "subtext",
-      "label": "Subtext",
-      "default": "100% natural ingredients. No hidden chemicals. Formulated for Indian skin & climate."
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "New Arrival"
     },
     {
       "type": "text",
-      "id": "cta_text",
-      "label": "Primary button text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Elevate Your Wellness"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Discover our new range of natural, cruelty-free products for holistic wellness.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
       "default": "Shop Now"
     },
     {
       "type": "url",
-      "id": "cta_link",
-      "label": "Primary button link"
+      "id": "button_link",
+      "label": "Button Link"
     },
     {
-      "type": "text",
-      "id": "cta2_text",
-      "label": "Secondary button text",
-      "default": "Our Story"
-    },
-    {
-      "type": "url",
-      "id": "cta2_link",
-      "label": "Secondary button link"
-    },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "select",
-      "id": "text_align",
-      "label": "Text alignment",
-      "options": [
-        { "value": "left",   "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right",  "label": "Right" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "select",
+      "type": "color",
       "id": "text_color",
-      "label": "Text color",
-      "options": [
-        { "value": "light", "label": "Light (for dark images)" },
-        { "value": "dark",  "label": "Dark (for light images)" }
-      ],
-      "default": "light"
+      "label": "Heading Color",
+      "default": "#ffffff"
     },
     {
-      "type": "checkbox",
-      "id": "full_height",
-      "label": "Full screen height",
-      "default": true
+      "type": "color",
+      "id": "text_color_secondary",
+      "label": "Text Color",
+      "default": "#e5e7eb"
     },
     {
-      "type": "checkbox",
-      "id": "show_scroll_indicator",
-      "label": "Show scroll indicator",
-      "default": true
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
     }
   ],
   "presets": [
     {
-      "name": "Hero Banner",
-      "category": "Image"
+      "name": "Hero Banner"
     }
   ]
 }

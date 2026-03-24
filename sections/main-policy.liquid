@@ -1,0 +1,22 @@
+{% comment %}Section: Policy{% endcomment %}
+
+<div class="main-policy section-padding">
+  <div class="container container--narrow">
+    {% render 'breadcrumb' %}
+    <h1 class="main-policy__title split-heading--auto">{{ page.title }}</h1>
+    <div class="rte main-policy__body">
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+
+<style>
+.main-policy__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  color: var(--color-text-dark);
+  margin-bottom: var(--space-8);
+}
+.main-policy__body { color: var(--color-text-mid); line-height: 1.8; }
+</style>

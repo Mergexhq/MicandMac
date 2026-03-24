@@ -1,0 +1,50 @@
+{%- comment -%}
+  Accepts:
+  - order: {Object} Order Liquid object
+  
+  Usage:
+  {% render 'reorder-btn', order: order %}
+{%- endcomment -%}
+
+<button 
+  type="button" 
+  class="btn btn--outline btn--full justify-center gap-2 reorder-btn" 
+  data-order-id="{{ order.id }}"
+  onclick="reorderItems_{{ order.id }}()"
+>
+  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+  {{ 'customer.order.buy_again' | t | default: 'Buy Again' }}
+</button>
+
+<script>
+  function reorderItems_{{ order.id }}() {
+    const btn = document.querySelector('.reorder-btn[data-order-id="{{ order.id }}"]');
+    if (btn) btn.classList.add('loading');
+    
+    const items = [
+      {%- for line_item in order.line_items -%}
+        {
+          id: {{ line_item.variant_id }},
+          quantity: {{ line_item.quantity }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ];
+
+    fetch(window.Shopify.routes.root + 'cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify({ items: items })
+    })
+    .then(response => {
+      window.location.href = window.Shopify.routes.root + 'cart';
+    })
+    .catch(error => {
+      console.error('Error adding items to cart:', error);
+      if (btn) btn.classList.remove('loading');
+      alert('Error adding items to cart. Some products may be out of stock.');
+    });
+  }
+</script>

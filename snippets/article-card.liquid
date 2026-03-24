@@ -1,0 +1,104 @@
+{% comment %}
+  Snippet: article-card
+  Usage: {% render 'article-card', article: article, show_image: true %}
+{% endcomment %}
+
+<a href="{{ article.url }}" class="article-card">
+  {%- if show_image != false and article.image -%}
+    <div class="article-card__media">
+      <img
+        src="{{ article.image | image_url: width: 600 }}"
+        alt="{{ article.image.alt | escape | default: article.title }}"
+        width="600"
+        height="400"
+        loading="lazy"
+        class="article-card__img"
+      >
+    </div>
+  {%- endif -%}
+  <div class="article-card__content">
+    {%- if article.tags.size > 0 -%}
+      <p class="article-card__tag eyebrow">{{ article.tags.first }}</p>
+    {%- endif -%}
+    <h3 class="article-card__title">{{ article.title }}</h3>
+    {%- if article.excerpt_or_content != blank -%}
+      <p class="article-card__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 100 }}</p>
+    {%- endif -%}
+    <div class="article-card__meta">
+      <span>{{ article.author }}</span>
+      <span>·</span>
+      <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+        {{ article.published_at | date: '%b %d, %Y' }}
+      </time>
+      {%- if article.read_time -%}
+        <span>· {{ article.read_time }} min read</span>
+      {%- endif -%}
+    </div>
+  </div>
+</a>
+
+<style>
+.article-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-white);
+  border: 1px solid var(--color-beige);
+  transition: all var(--transition-base);
+}
+
+.article-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.article-card__media {
+  aspect-ratio: 3/2;
+  overflow: hidden;
+}
+
+.article-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.article-card:hover .article-card__img { transform: scale(1.05); }
+
+.article-card__content {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.article-card__tag { margin-bottom: var(--space-1); }
+
+.article-card__title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  color: var(--color-text-dark);
+  line-height: 1.3;
+}
+
+.article-card__excerpt {
+  font-size: var(--text-sm);
+  color: var(--color-text-mid);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.article-card__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-light);
+  margin-top: var(--space-2);
+}
+</style>

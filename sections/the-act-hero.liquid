@@ -1,0 +1,427 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .the-act-hero {
+    position: relative;
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  .hero-card {
+    position: relative;
+    border-radius: 40px;
+    overflow: hidden;
+    min-height: 500px;
+    height: 80vh;
+    background-color: #f3f4f6;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .hero-card {
+      height: 90vh;
+      border-radius: 60px;
+    }
+  }
+
+  .hero-bg-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.1) 100%);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    height: 100%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .hero-content {
+      padding: 3rem 4rem;
+    }
+  }
+
+  .hero-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .hero-logo {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .hero-nav {
+    display: none;
+  }
+  
+  @media screen and (min-width: 768px) {
+    .hero-nav {
+      display: flex;
+      gap: 1.5rem;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(8px);
+      padding: 0.5rem 1.5rem;
+      border-radius: 100px;
+      align-items: center;
+    }
+  }
+
+  .hero-nav a {
+    font-size: 0.875rem;
+    color: #1a1a1a;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .hero-nav a:hover {
+    opacity: 0.7;
+  }
+
+  .contact-btn {
+    background: #1a1a1a;
+    color: white !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+  }
+
+  .hero-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 500px;
+  }
+
+  .hero-heading {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    line-height: 1.1;
+    color: #1a1a1a;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .hero-heading .script-letter {
+    font-family: var(--font-script);
+    font-size: 1.35em;
+    font-weight: 400;
+    line-height: 0.8;
+    display: inline-block;
+    vertical-align: baseline;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .hero-heading {
+      font-size: 4rem;
+    }
+  }
+
+  .hero-heading span {
+    font-weight: 700;
+  }
+
+  .floating-mission {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    max-width: 400px;
+    align-items: center;
+    margin-top: auto;
+  }
+
+  .mission-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+
+  .mission-text {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: #1a1a1a;
+  }
+
+  .mission-text b {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .floating-product {
+    position: absolute;
+    right: 2rem;
+    bottom: 4rem;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 1.5rem;
+    width: 240px;
+    display: none;
+    z-index: 20;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .floating-product {
+      display: block;
+    }
+  }
+
+  .product-tag {
+    font-size: 0.70rem;
+    background: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #666;
+  }
+
+  .product-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .product-image-container {
+    background: white;
+    border-radius: 16px;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .product-image-container img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .arrow-icon {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+{%- endstyle -%}
+
+<div class="the-act-hero section-{{ section.id }}-padding">
+  <div class="hero-card">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 2000 }}"
+        alt="{{ section.settings.image.alt | escape }}"
+        class="hero-bg-image"
+        width="2000"
+        height="{{ 2000 | divided_by: section.settings.image.aspect_ratio | round }}"
+      >
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-bg-image placeholder-svg' }}
+    {%- endif -%}
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <header class="hero-header">
+        <div class="hero-logo">
+          {%- if section.settings.logo != blank -%}
+            <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}" width="100" height="40">
+          {%- else -%}
+            the act
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.show_hero_nav -%}
+          <nav class="hero-nav">
+            <a href="{{ routes.all_products_collection_url }}">Catalog</a>
+            <a href="/pages/about">About Us</a>
+            <a href="/pages/reviews">Reviews</a>
+            <a href="/pages/contact" class="contact-btn">Contact Us</a>
+          </nav>
+        {%- endif -%}
+      </header>
+
+      <div class="hero-main">
+        <h1 class="hero-heading">
+          {%- assign heading_text = section.settings.heading -%}
+          {%- if heading_text != blank -%}
+            {%- assign first_char = heading_text | slice: 0 -%}
+            {%- assign rest_text = heading_text | remove_first: first_char -%}
+            <span class="script-letter">{{ first_char }}</span>{{ rest_text }}
+          {%- endif -%}
+        </h1>
+
+        <div class="floating-mission">
+          {%- if section.settings.mission_image != blank -%}
+            <img src="{{ section.settings.mission_image | image_url: width: 120 }}" class="mission-thumb" alt="Mission" width="60" height="60">
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'mission-thumb' }}
+          {%- endif -%}
+          <div class="mission-text">
+            <b>{{ section.settings.mission_title }}</b>
+            {{ section.settings.mission_text }}
+          </div>
+        </div>
+      </div>
+
+      <div class="floating-product">
+        <div class="product-tag">{{ section.settings.product_tag }}</div>
+        <div class="arrow-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"></path></svg>
+        </div>
+        <h2 class="product-title">{{ section.settings.product_title }}</h2>
+        <div class="product-image-container">
+          {%- if section.settings.featured_product_image != blank -%}
+            <img src="{{ section.settings.featured_product_image | image_url: width: 400 }}" alt="{{ section.settings.product_title }}" width="200" height="150">
+          {%- else -%}
+             {{ 'product-1' | placeholder_svg_tag: 'w-full h-full' }}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "The Act Hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Hero Logo (Overlay)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hero_nav",
+      "label": "Show Hero internal navigation",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Cosmetics for the whole body. *For every body.#",
+      "info": "Wrap bold text in * and #"
+    },
+    {
+      "type": "header",
+      "content": "Mission Card"
+    },
+    {
+      "type": "image_picker",
+      "id": "mission_image",
+      "label": "Mission Portrait"
+    },
+    {
+      "type": "text",
+      "id": "mission_title",
+      "label": "Mission Title",
+      "default": "We were inspired by you..."
+    },
+    {
+      "type": "textarea",
+      "id": "mission_text",
+      "label": "Mission Text",
+      "default": "In the moment of realizing our value, the moment where we are in the first place"
+    },
+    {
+      "type": "header",
+      "content": "Product Card"
+    },
+    {
+      "type": "text",
+      "id": "product_tag",
+      "label": "Product Tag",
+      "default": "( sale -15% )"
+    },
+    {
+      "type": "text",
+      "id": "product_title",
+      "label": "Product Title",
+      "default": "Coconut body butter"
+    },
+    {
+      "type": "image_picker",
+      "id": "featured_product_image",
+      "label": "Featured Product Image"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "The Act Hero"
+    }
+  ]
+}
+{% endschema %}

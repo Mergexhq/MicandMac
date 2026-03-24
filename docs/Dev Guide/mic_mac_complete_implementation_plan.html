@@ -1,0 +1,282 @@
+
+<style>
+*{box-sizing:border-box}
+.wrap{padding:1rem 0;font-size:13px}
+.section-title{font-size:14px;font-weight:500;color:var(--color-text-primary);margin:1.5rem 0 0.75rem;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.section-title:first-child{margin-top:0}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-align:left;padding:6px 10px;border-bottom:0.5px solid var(--color-border-tertiary);white-space:nowrap}
+td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;color:var(--color-text-primary)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--color-background-secondary)}
+.num{font-weight:500;color:var(--color-text-tertiary);width:28px}
+.name{font-weight:500;width:130px}
+.file{font-family:var(--font-mono);font-size:11px;color:var(--color-text-secondary);width:220px}
+.section-col{font-size:11px;color:var(--color-text-tertiary)}
+.ts-col{font-size:11px;color:var(--color-text-secondary)}
+.badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;font-weight:500;margin-right:3px;white-space:nowrap}
+.p1{background:var(--color-background-danger);color:var(--color-text-danger)}
+.p2{background:var(--color-background-warning);color:var(--color-text-warning)}
+.p3{background:var(--color-background-info);color:var(--color-text-info)}
+.p4{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.shopify-note{font-size:11px;color:var(--color-text-tertiary);font-style:italic}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:1rem;padding:10px 12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)}
+.legend span{font-size:11px;color:var(--color-text-secondary)}
+</style>
+
+<div class="wrap">
+
+<div class="legend">
+  <span><span class="badge p1">P1</span> Phase 1 — Core (wk 1–2)</span>
+  <span><span class="badge p2">P2</span> Phase 2 — Conversion (wk 3–4)</span>
+  <span><span class="badge p3">P3</span> Phase 3 — Brand (wk 5–6)</span>
+  <span><span class="badge p4">P4</span> Phase 4 — System (style only)</span>
+</div>
+
+<div class="section-title">Storefront pages</div>
+<table>
+  <tr><th class="num">#</th><th>Page</th><th>Template / section files</th><th>Key sections to build</th><th>TS module</th></tr>
+
+  <tr>
+    <td class="num">1</td>
+    <td class="name">Homepage <span class="badge p1">P1</span></td>
+    <td class="file">templates/index.json<br>sections/hero-banner.liquid<br>sections/featured-collection.liquid<br>sections/trust-bar.liquid<br>sections/ingredients-story.liquid<br>sections/testimonials.liquid<br>sections/instagram-feed.liquid</td>
+    <td class="section-col">Hero · Trust bar · Bestsellers grid · Ingredient story · Testimonials (inline) · FAQ accordion (inline) · Instagram UGC</td>
+    <td class="ts-col">src/modules/home.ts</td>
+  </tr>
+
+  <tr>
+    <td class="num">2</td>
+    <td class="name">PLP — Collection <span class="badge p1">P1</span></td>
+    <td class="file">templates/collection.json<br>sections/main-collection.liquid<br>snippets/product-card.liquid<br>snippets/filter-drawer.liquid</td>
+    <td class="section-col">Collection hero · Filter sidebar/drawer · Sort dropdown · Product grid · Pagination · Active filter pills</td>
+    <td class="ts-col">src/modules/collection.ts</td>
+  </tr>
+
+  <tr>
+    <td class="num">3</td>
+    <td class="name">All collections <span class="badge p1">P1</span></td>
+    <td class="file">templates/list-collections.json<br>sections/main-list-collections.liquid</td>
+    <td class="section-col">Collections grid with hero images — Face Care, Body Care, Hair Care, Combos, All</td>
+    <td class="ts-col">—</td>
+  </tr>
+
+  <tr>
+    <td class="num">3b</td>
+    <td class="name">Combo offers <span class="badge p1">P1</span></td>
+    <td class="file">templates/collection.json<br>(same file, different collection handle)<br>sections/main-collection.liquid</td>
+    <td class="section-col">Same collection template, combo-offers collection handle — no extra file needed. Add combo-specific banner via section settings.</td>
+    <td class="ts-col">same as #2</td>
+  </tr>
+
+  <tr>
+    <td class="num">4</td>
+    <td class="name">PDP — Product <span class="badge p1">P1</span></td>
+    <td class="file">templates/product.json<br>sections/main-product.liquid<br>snippets/product-gallery.liquid<br>snippets/product-form.liquid<br>snippets/ingredients-accordion.liquid<br>snippets/sticky-atc.liquid</td>
+    <td class="section-col">Image gallery · Variant picker · Qty selector · Sticky ATC bar · Key ingredients accordion · Reviews (Judge.me) · FAQ accordion (inline) · Related products · Recently viewed</td>
+    <td class="ts-col">src/modules/product.ts</td>
+  </tr>
+
+  <tr>
+    <td class="num">5</td>
+    <td class="name">Cart page <span class="badge p1">P1</span></td>
+    <td class="file">templates/cart.json<br>sections/main-cart.liquid<br>sections/cart-drawer.liquid</td>
+    <td class="section-col">Cart line items · Qty controls · Free shipping progress bar · Order note · Promo code · Upsell products · Checkout CTA · Cart drawer (Ajax slide-in)</td>
+    <td class="ts-col">src/modules/cart.ts (already built)</td>
+  </tr>
+
+  <tr>
+    <td class="num">6</td>
+    <td class="name">Checkout + gift card <span class="badge p4">P4</span></td>
+    <td class="file">layout/checkout.liquid (Shopify Plus only)<br>templates/gift_card.liquid</td>
+    <td class="section-col">Checkout is fully Shopify-controlled — you cannot customize it on Basic/Shopify plan. Gift card template needs brand logo + styling only.</td>
+    <td class="ts-col">—</td>
+  </tr>
+
+  <tr>
+    <td class="num">7</td>
+    <td class="name">Order confirmation <span class="badge p4">P4</span></td>
+    <td class="file">Shopify-controlled (thank_you page)<br>No Liquid access on Basic plan</td>
+    <td class="section-col">Shopify controls this page entirely. You can add custom content via Shopify Admin → Settings → Checkout → Order status page — add HTML/JS there for thank-you messaging.</td>
+    <td class="ts-col">—</td>
+  </tr>
+
+  <tr>
+    <td class="num">10</td>
+    <td class="name">Search results <span class="badge p2">P2</span></td>
+    <td class="file">templates/search.json<br>sections/main-search.liquid</td>
+    <td class="section-col">Search input · Predictive search dropdown · Results grid (products + pages) · No-results state with suggestions</td>
+    <td class="ts-col">src/modules/search.ts</td>
+  </tr>
+</table>
+
+<div class="section-title">Global layout (every page)</div>
+<table>
+  <tr><th class="num">#</th><th>Page</th><th>Template / section files</th><th>Key sections to build</th><th>TS module</th></tr>
+
+  <tr>
+    <td class="num">8</td>
+    <td class="name">Header / Navbar <span class="badge p1">P1</span></td>
+    <td class="file">sections/header.liquid<br>sections/header-group.json<br>snippets/nav-dropdown.liquid</td>
+    <td class="section-col">Announcement bar · Logo · Desktop mega nav (Face/Body/Hair/Combos) · Search icon · Account icon · Cart icon + count · Mobile hamburger · Mobile drawer · Cart drawer trigger</td>
+    <td class="ts-col">src/modules/header.ts (already built)</td>
+  </tr>
+
+  <tr>
+    <td class="num">9</td>
+    <td class="name">Footer <span class="badge p1">P1</span></td>
+    <td class="file">sections/footer.liquid<br>sections/footer-group.json</td>
+    <td class="section-col">Logo + tagline · Nav columns (Shop / Company / Help) · Newsletter signup · Social links (Instagram, WhatsApp, YouTube) · Payment icons · Policy links · Copyright</td>
+    <td class="ts-col">—</td>
+  </tr>
+</table>
+
+<div class="section-title">Customer auth pages</div>
+<table>
+  <tr><th class="num">#</th><th>Page</th><th>Template / section files</th><th>Notes</th><th>TS module</th></tr>
+
+  <tr>
+    <td class="num">11a</td>
+    <td class="name">Login <span class="badge p2">P2</span></td>
+    <td class="file">templates/customers/login.json<br>sections/main-login.liquid</td>
+    <td class="section-col">Email + password form · "Remember me" · Forgot password link · Register link · Social proof quote on side</td>
+    <td class="ts-col">src/modules/auth.ts</td>
+  </tr>
+
+  <tr>
+    <td class="num">11b</td>
+    <td class="name">Register / Signup <span class="badge p2">P2</span></td>
+    <td class="file">templates/customers/register.json<br>sections/main-register.liquid</td>
+    <td class="section-col">Name + email + password · Terms checkbox · Benefits of account (order tracking, early access)</td>
+    <td class="ts-col">same as auth.ts</td>
+  </tr>
+
+  <tr>
+    <td class="num">11c</td>
+    <td class="name">Forgot password <span class="badge p2">P2</span></td>
+    <td class="file">sections/main-login.liquid<br>(same file — toggled by URL param)</td>
+    <td class="section-col">Email field only · "Send reset link" · Shopify handles the email automatically</td>
+    <td class="ts-col">same as auth.ts</td>
+  </tr>
+
+  <tr>
+    <td class="num">11d</td>
+    <td class="name">Password reset <span class="badge p2">P2</span></td>
+    <td class="file">templates/customers/reset_password.json<br>sections/main-reset-password.liquid</td>
+    <td class="section-col">New password + confirm · Shopify sends the reset URL via email automatically</td>
+    <td class="ts-col">same as auth.ts</td>
+  </tr>
+
+  <tr>
+    <td class="num">11e</td>
+    <td class="name">Activate account <span class="badge p4">P4</span></td>
+    <td class="file">templates/customers/activate_account.json</td>
+    <td class="section-col">One-time page when customer clicks activation email. Shopify handles logic — just needs styling.</td>
+    <td class="ts-col">—</td>
+  </tr>
+</table>
+
+<div class="section-title">Customer account pages</div>
+<table>
+  <tr><th class="num">#</th><th>Page</th><th>Template / section files</th><th>Key sections to build</th><th>TS module</th></tr>
+
+  <tr>
+    <td class="num">12</td>
+    <td class="name">Profile / Dashboard <span class="badge p2">P2</span></td>
+    <td class="file">templates/customers/account.json<br>sections/main-account.liquid</td>
+    <td class="section-col">Welcome greeting · Recent orders summary · Saved addresses · Edit profile link · Logout</td>
+    <td class="ts-col">src/modules/account.ts</td>
+  </tr>
+
+  <tr>
+    <td class="num">12b</td>
+    <td class="name">Addresses <span class="badge p2">P2</span></td>
+    <td class="file">templates/customers/addresses.json<br>sections/main-addresses.liquid</td>
+    <td class="section-col">List saved addresses · Add / edit / delete · Set default · Shopify handles form logic</td>
+    <td class="ts-col">same as account.ts</td>
+  </tr>
+
+  <tr>
+    <td class="num">13</td>
+    <td class="name">Order history + details <span class="badge p2">P2</span></td>
+    <td class="file">templates/customers/account.json (list)<br>templates/customers/order.json (detail)</td>
+    <td class="section-col">Order list with status badges · Order detail: line items, shipping address, timeline, tracking link, reorder button</td>
+    <td class="ts-col">same as account.ts</td>
+  </tr>
+</table>
+
+<div class="section-title">Brand / content pages</div>
+<table>
+  <tr><th class="num">#</th><th>Page</th><th>Template / section files</th><th>Key sections to build</th><th>TS module</th></tr>
+
+  <tr>
+    <td class="num">14</td>
+    <td class="name">About us <span class="badge p3">P3</span></td>
+    <td class="file">templates/page.about.json<br>sections/page-about.liquid</td>
+    <td class="section-col">Founder story · "Love Your Body 365" brand mission · Timeline / milestones · Values (natural, cruelty-free, India-made) · Team photos · Press mentions</td>
+    <td class="ts-col">—</td>
+  </tr>
+
+  <tr>
+    <td class="num">15</td>
+    <td class="name">Contact us <span class="badge p3">P3</span></td>
+    <td class="file">templates/page.contact.json<br>sections/page-contact.liquid</td>
+    <td class="section-col">Contact form · WhatsApp CTA button · Email + phone · Business hours · Google Maps embed (optional) · Social links</td>
+    <td class="ts-col">src/modules/contact.ts</td>
+  </tr>
+
+  <tr>
+    <td class="num">16</td>
+    <td class="name">Blog listing <span class="badge p3">P3</span></td>
+    <td class="file">templates/blog.json<br>sections/main-blog.liquid<br>snippets/article-card.liquid</td>
+    <td class="section-col">Blog grid with hero image, title, excerpt, date, author · Category filter pills · Featured article hero · Pagination</td>
+    <td class="ts-col">—</td>
+  </tr>
+
+  <tr>
+    <td class="num">16b</td>
+    <td class="name">Blog article <span class="badge p3">P3</span></td>
+    <td class="file">templates/article.json<br>sections/main-article.liquid</td>
+    <td class="section-col">Article hero image · Author + date · Rich text content · Related articles · Social share · Comments (optional) · Product CTA at end</td>
+    <td class="ts-col">—</td>
+  </tr>
+</table>
+
+<div class="section-title">System / policy pages</div>
+<table>
+  <tr><th class="num">#</th><th>Page</th><th>Template / section files</th><th>Notes</th><th>TS module</th></tr>
+
+  <tr>
+    <td class="num">18</td>
+    <td class="name">404 page <span class="badge p4">P4</span></td>
+    <td class="file">templates/404.json<br>sections/main-404.liquid</td>
+    <td class="section-col">Branded error message · Search bar · Suggested products · Back to home CTA</td>
+    <td class="ts-col">—</td>
+  </tr>
+
+  <tr>
+    <td class="num">19</td>
+    <td class="name">Privacy policy <span class="badge p4">P4</span></td>
+    <td class="file">templates/page.policy.json<br>sections/main-policy.liquid</td>
+    <td class="section-col">All policy pages reuse same template. Shopify auto-generates content at Admin → Settings → Policies. Just brand the layout.</td>
+    <td class="ts-col">—</td>
+  </tr>
+
+  <tr>
+    <td class="num">20</td>
+    <td class="name">Shipping policy <span class="badge p4">P4</span></td>
+    <td class="file">templates/page.policy.json<br>(same template as #19)</td>
+    <td class="section-col">Same policy template. Content managed in Shopify Admin → Settings → Policies → Shipping policy.</td>
+    <td class="ts-col">—</td>
+  </tr>
+
+  <tr>
+    <td class="num">21</td>
+    <td class="name">Return / Refund / Replacement <span class="badge p4">P4</span></td>
+    <td class="file">templates/page.policy.json<br>(same template as #19)</td>
+    <td class="section-col">Return policy · Refund policy · Terms of service — all reuse same template. Shopify admin manages the content.</td>
+    <td class="ts-col">—</td>
+  </tr>
+</table>
+
+</div>

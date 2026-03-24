@@ -27,10 +27,10 @@
 
   {{ content_for_header }}
 
-  <!-- Google Fonts: Cormorant Garamond (display) + DM Sans (body) -->
+  <!-- Google Fonts: Great Vibes (script) + Cormorant Garamond (display) + DM Sans (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
   <!-- Base CSS -->
   {{ 'base.css' | asset_url | stylesheet_tag }}
@@ -47,12 +47,8 @@
   <!-- Skip to content (accessibility) -->
   <a class="skip-to-content" href="#MainContent">Skip to content</a>
 
-  <!-- Announcement Bar -->
-  {%- if settings.announcement_text != blank -%}
-    <div class="announcement-bar">
-      <p>{{ settings.announcement_text }}</p>
-    </div>
-  {%- endif -%}
+  <!-- Announcement Bar Section -->
+  {%- section 'announcement-bar' -%}
 
   <!-- Header -->
   {%- section 'header' -%}

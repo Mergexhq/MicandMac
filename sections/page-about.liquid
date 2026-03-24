@@ -1,0 +1,126 @@
+{% comment %}Section: Page About{% endcomment %}
+
+<div class="page-about">
+
+  <!-- Hero -->
+  <section class="about-hero">
+    {%- if section.settings.hero_image != blank -%}
+      <div class="about-hero__bg">
+        <img src="{{ section.settings.hero_image | image_url: width: 1440 }}" alt="" width="1440" height="560" loading="eager" aria-hidden="true">
+        <div class="about-hero__overlay"></div>
+      </div>
+    {%- else -%}
+      <div class="about-hero__bg about-hero__bg--color" style="background: var(--color-burgundy)"></div>
+    {%- endif -%}
+    <div class="container about-hero__content">
+      <p class="eyebrow" style="color: var(--color-gold)">{{ section.settings.eyebrow | default: 'Our Story' }}</p>
+      <h1 class="about-hero__title">{{ section.settings.heading | default: 'Skin-deep Science, Nature-first Values' }}</h1>
+      <p class="about-hero__sub">{{ section.settings.subtext }}</p>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="about-mission section-padding">
+    <div class="container">
+      <div class="about-mission__grid">
+        <div class="about-mission__copy">
+          <p class="eyebrow">{{ section.settings.mission_eyebrow | default: 'Why we exist' }}</p>
+          <h2>{{ section.settings.mission_heading | default: 'Bridging Ancient Wisdom with Modern Skincare' }}</h2>
+          <div class="rte">{{ section.settings.mission_text }}</div>
+        </div>
+        {%- if section.settings.mission_image != blank -%}
+          <div class="about-mission__img-wrap">
+            <img src="{{ section.settings.mission_image | image_url: width: 800 }}" alt="" width="800" height="900" loading="lazy">
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  {%- if section.blocks.size > 0 -%}
+    <section class="about-values section-padding" style="background: var(--color-beige)">
+      <div class="container">
+        <div class="section-heading">
+          <h2>{{ section.settings.values_heading | default: 'What We Stand For' }}</h2>
+        </div>
+        <div class="about-values__grid">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'value' -%}
+              <div class="about-value-card" {{ block.shopify_attributes }}>
+                <div class="about-value-card__icon">{{ block.settings.emoji | default: '✦' }}</div>
+                <h3 class="about-value-card__title">{{ block.settings.title }}</h3>
+                <p class="about-value-card__text">{{ block.settings.text }}</p>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  <!-- CTA -->
+  {% section 'cta-banner' %}
+
+</div>
+
+<style>
+.about-hero { position: relative; min-height: 520px; display: flex; align-items: center; color: var(--color-white); }
+.about-hero__bg { position: absolute; inset: 0; }
+.about-hero__bg img { width: 100%; height: 100%; object-fit: cover; }
+.about-hero__overlay { position: absolute; inset: 0; background: rgba(26,0,8,0.55); }
+.about-hero__content { position: relative; z-index: 1; max-width: 680px; }
+.about-hero__title { font-family: var(--font-display); font-size: clamp(2.5rem,5vw,4rem); font-weight: 300; line-height: 1.15; color: var(--color-white); margin-block: var(--space-4) var(--space-4); }
+.about-hero__sub { font-size: var(--text-lg); opacity: .8; line-height: 1.7; }
+.about-mission__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); align-items: center; }
+.about-mission__copy h2 { font-family: var(--font-display); font-size: clamp(2rem,3.5vw,3rem); font-weight: 300; margin-block: var(--space-3) var(--space-5); }
+.about-mission__img-wrap { border-radius: var(--radius-xl); overflow: hidden; }
+.about-mission__img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.about-values__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+.about-value-card { text-align: center; padding: var(--space-6); background: var(--color-white); border-radius: var(--radius-lg); }
+.about-value-card__icon { font-size: 2.5rem; margin-bottom: var(--space-4); }
+.about-value-card__title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 400; margin-bottom: var(--space-3); }
+.about-value-card__text { font-size: var(--text-sm); color: var(--color-text-mid); line-height: 1.7; }
+@media (max-width: 767px) {
+  .about-mission__grid { grid-template-columns: 1fr; }
+  .about-values__grid { grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+}
+</style>
+
+{% schema %}
+{
+  "name": "About page",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
+    { "type": "text", "id": "eyebrow", "label": "Hero eyebrow" },
+    { "type": "text", "id": "heading", "label": "Hero heading" },
+    { "type": "text", "id": "subtext", "label": "Hero subtext" },
+    { "type": "image_picker", "id": "mission_image", "label": "Mission image" },
+    { "type": "text", "id": "mission_eyebrow", "label": "Mission eyebrow" },
+    { "type": "text", "id": "mission_heading", "label": "Mission heading" },
+    { "type": "richtext", "id": "mission_text", "label": "Mission text" },
+    { "type": "text", "id": "values_heading", "label": "Values heading", "default": "What We Stand For" }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        { "type": "text", "id": "emoji", "label": "Emoji", "default": "✦" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Transparency" },
+        { "type": "text", "id": "text", "label": "Description" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About page",
+      "blocks": [
+        { "type": "value", "settings": { "emoji": "🌿", "title": "Natural Ingredients" } },
+        { "type": "value", "settings": { "emoji": "🔬", "title": "Science Backed" } },
+        { "type": "value", "settings": { "emoji": "🐰", "title": "Cruelty Free" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,158 @@
+{% comment %}
+  Snippet: product-tabs
+  Usage: {% render 'product-tabs', product: product %}
+  Tab nav: Description · Ingredients · How to use · Full list
+  Mobile falls back to accordion
+{% endcomment %}
+
+<div class="product-tabs" id="ProductTabs">
+  <div class="product-tabs__nav" role="tablist">
+    {%- liquid
+      assign tabs = 'Description,Ingredients,How to Use,Full Ingredients List' | split: ','
+    -%}
+    {%- for tab in tabs -%}
+      <button
+        class="product-tabs__tab {% if forloop.first %}is-active{% endif %}"
+        role="tab"
+        aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+        aria-controls="ProductTab-{{ forloop.index }}"
+        id="ProductTabBtn-{{ forloop.index }}"
+        data-tab-index="{{ forloop.index }}"
+      >
+        {{ tab }}
+      </button>
+    {%- endfor -%}
+  </div>
+
+  <!-- Tab panels -->
+  <div class="product-tabs__body">
+
+    <div class="product-tabs__panel is-active" id="ProductTab-1" role="tabpanel" aria-labelledby="ProductTabBtn-1">
+      <div class="rte">
+        {{ product.description }}
+      </div>
+    </div>
+
+    <div class="product-tabs__panel" id="ProductTab-2" role="tabpanel" aria-labelledby="ProductTabBtn-2">
+      <div class="rte">
+        {%- if product.metafields.custom.ingredients_description != blank -%}
+          {{ product.metafields.custom.ingredients_description }}
+        {%- else -%}
+          <p>Donkey Milk · Red Wine Extract · Aloe Vera · Turmeric. All natural, no sulphates, no parabens.</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="product-tabs__panel" id="ProductTab-3" role="tabpanel" aria-labelledby="ProductTabBtn-3">
+      <div class="rte">
+        {%- if product.metafields.custom.how_to_use != blank -%}
+          {{ product.metafields.custom.how_to_use }}
+        {%- else -%}
+          <ol>
+            <li>Cleanse your face with water.</li>
+            <li>Apply a small amount and gently massage in circular motions.</li>
+            <li>Rinse well. Pat dry. Follow with moisturiser.</li>
+          </ol>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="product-tabs__panel" id="ProductTab-4" role="tabpanel" aria-labelledby="ProductTabBtn-4">
+      <div class="rte product-tabs__ingredients-list">
+        {%- if product.metafields.custom.full_ingredients != blank -%}
+          {{ product.metafields.custom.full_ingredients }}
+        {%- else -%}
+          <p class="text-muted">Full INCI list will be available here once the merchant fills in the <code>custom.full_ingredients</code> metafield.</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.product-tabs {
+  margin-top: var(--space-8);
+  border-top: 1px solid var(--color-beige);
+}
+
+.product-tabs__nav {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--color-beige);
+  gap: 0;
+}
+
+.product-tabs__nav::-webkit-scrollbar { display: none; }
+
+.product-tabs__tab {
+  flex-shrink: 0;
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-light);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  position: relative;
+  bottom: -1px;
+}
+
+.product-tabs__tab:hover { color: var(--color-forest); }
+
+.product-tabs__tab.is-active {
+  color: var(--color-forest);
+  border-bottom-color: var(--color-forest);
+}
+
+.product-tabs__body {
+  padding: var(--space-6) 0;
+}
+
+.product-tabs__panel {
+  display: none;
+}
+
+.product-tabs__panel.is-active {
+  display: block;
+  animation: fadeIn 0.25s ease;
+}
+
+.product-tabs__ingredients-list {
+  font-size: var(--text-xs);
+  line-height: 2;
+  color: var(--color-text-light);
+}
+</style>
+
+<script>
+(function () {
+  var tabs = document.getElementById('ProductTabs');
+  if (!tabs) return;
+
+  tabs.querySelectorAll('.product-tabs__tab').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var idx = this.getAttribute('aria-controls');
+
+      // Deactivate all
+      tabs.querySelectorAll('.product-tabs__tab').forEach(function (b) {
+        b.classList.remove('is-active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabs.querySelectorAll('.product-tabs__panel').forEach(function (p) {
+        p.classList.remove('is-active');
+      });
+
+      // Activate selected
+      this.classList.add('is-active');
+      this.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById(idx);
+      panel && panel.classList.add('is-active');
+    });
+  });
+})();
+</script>

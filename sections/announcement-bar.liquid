@@ -1,0 +1,194 @@
+{% comment %}
+  Section: Announcement Bar
+  - Rolling multi-offer text via Blocks
+  - BG color + text customizable from theme editor
+{% endcomment %}
+
+{%- if section.blocks.size > 0 -%}
+  <div
+    class="announcement-bar"
+    id="AnnouncementBar"
+    role="text"
+    style="
+      background: {{ section.settings.bg_color }};
+      color: {{ section.settings.text_color }};
+    "
+  >
+    <div class="announcement-bar__container container">
+      <div class="announcement-bar__slider" style="--total-items: {{ section.blocks.size }};">
+        {%- for block in section.blocks -%}
+          <div class="announcement-bar__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.link != blank -%}
+              <a href="{{ block.settings.link }}" class="announcement-bar__link">
+                {{ block.settings.text }}
+              </a>
+            {%- else -%}
+              <span>{{ block.settings.text }}</span>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+        
+        <!-- Duplicate the first item for seamless loop animation if more than 1 item -->
+        {%- if section.blocks.size > 1 -%}
+          <div class="announcement-bar__item" aria-hidden="true">
+            {%- assign first_block = section.blocks.first -%}
+            {%- if first_block.settings.link != blank -%}
+              <a href="{{ first_block.settings.link }}" class="announcement-bar__link">
+                {{ first_block.settings.text }}
+              </a>
+            {%- else -%}
+              <span>{{ first_block.settings.text }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<style>
+.announcement-bar {
+  position: sticky;
+  top: 0;
+  z-index: calc(var(--z-nav) + 2);
+  padding-block: 0; /* Managed by item height */
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  overflow: hidden;
+  height: 30px; /* Fixed height for animation stability */
+}
+
+.announcement-bar__container {
+  height: 100%;
+}
+
+.announcement-bar__slider {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  {% if section.blocks.size > 1 %}
+    animation: announcement-roll {{ section.blocks.size | times: 3 }}s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  {% endif %}
+}
+
+.announcement-bar__item {
+  height: 30px;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-inline: var(--space-4);
+  flex-shrink: 0;
+}
+
+.announcement-bar__link {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  opacity: 0.9;
+  transition: opacity var(--transition-fast);
+}
+
+.announcement-bar__link:hover {
+  opacity: 1;
+}
+
+/* 
+  Vertical Rolling Animation 
+  Example for 3 items (+ 1 clone):
+  0-25%: Item 1
+  33-58%: Item 2
+  66-91%: Item 3
+  100%: Item 1 (Clone)
+*/
+@keyframes announcement-roll {
+  {%- if section.blocks.size == 2 -%}
+    0%, 45% { transform: translateY(0); }
+    50%, 95% { transform: translateY(-100%); }
+    100% { transform: translateY(-200%); }
+  {%- elsif section.blocks.size == 3 -%}
+    0%, 30% { transform: translateY(0); }
+    33%, 63% { transform: translateY(-100%); }
+    66%, 96% { transform: translateY(-200%); }
+    100% { transform: translateY(-300%); }
+  {%- else -%}
+    0%, 20% { transform: translateY(0); }
+    25%, 45% { transform: translateY(-100%); }
+    50%, 70% { transform: translateY(-200%); }
+    75%, 95% { transform: translateY(-300%); }
+    100% { transform: translateY(-400%); }
+  {%- endif -%}
+}
+
+/* Pause animation on hover */
+.announcement-bar:hover .announcement-bar__slider {
+  animation-play-state: paused;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background colour",
+      "default": "#800020"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#FFFFFF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Announcement text",
+          "default": "Free Shipping on Orders Over ₹999 + Use Code: WELCOME15"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar",
+      "blocks": [
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "🍷 Free Shipping on Orders Over ₹999"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "✨ Use Code: WELCOME15 for 15% OFF"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "🌿 Luxury Spa Care at Home · Shop Now"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

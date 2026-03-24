@@ -1,0 +1,469 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.ds{padding:1.5rem 0;font-size:13px}
+.sec{margin-bottom:2.5rem}
+.sec-title{font-size:13px;font-weight:500;color:var(--color-text-secondary);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1rem;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary)}
+
+/* PALETTE */
+.palette-row{display:flex;gap:6px;margin-bottom:8px;align-items:flex-end}
+.swatch-col{display:flex;flex-direction:column;gap:3px;flex:1}
+.swatch{height:40px;border-radius:6px;position:relative}
+.swatch.main{height:64px;border-radius:8px}
+.swatch-label{font-size:10px;color:var(--color-text-tertiary);text-align:center;margin-top:3px}
+.swatch-hex{font-size:9px;color:var(--color-text-tertiary);text-align:center;font-family:var(--font-mono)}
+
+/* TOKEN TABLE */
+.token-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.token-card{border:0.5px solid var(--color-border-tertiary);border-radius:10px;overflow:hidden}
+.token-header{padding:8px 12px;font-size:11px;font-weight:500;color:var(--color-text-secondary);background:var(--color-background-secondary)}
+.token-row{display:flex;align-items:center;gap:10px;padding:6px 12px;border-top:0.5px solid var(--color-border-tertiary)}
+.t-dot{width:20px;height:20px;border-radius:4px;flex-shrink:0;border:0.5px solid rgba(0,0,0,0.06)}
+.t-name{font-size:11px;font-weight:500;color:var(--color-text-primary);flex:1}
+.t-hex{font-size:10px;color:var(--color-text-tertiary);font-family:var(--font-mono)}
+.t-use{font-size:10px;color:var(--color-text-tertiary);text-align:right}
+
+/* TYPOGRAPHY */
+.type-showcase{border:0.5px solid var(--color-border-tertiary);border-radius:10px;padding:20px 24px;margin-bottom:12px;background:var(--color-background-primary)}
+.type-eyebrow{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+.type-h1{font-size:36px;font-weight:300;line-height:1.1;letter-spacing:-0.02em;margin-bottom:6px}
+.type-h2{font-size:24px;font-weight:300;line-height:1.2;letter-spacing:-0.01em;margin-bottom:6px}
+.type-h3{font-size:18px;font-weight:400;line-height:1.3;margin-bottom:6px}
+.type-body{font-size:14px;line-height:1.75;margin-bottom:6px}
+.type-small{font-size:12px;line-height:1.5}
+.type-label{font-size:10px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:4px}
+
+/* BUTTONS */
+.btn-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 22px;font-size:12px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;border-radius:999px;border:1.5px solid transparent;cursor:pointer;white-space:nowrap;font-family:var(--font-sans)}
+.btn-primary{background:#4A1040;color:#F5ECD7;border-color:#4A1040}
+.btn-secondary{background:transparent;color:#4A1040;border-color:#4A1040}
+.btn-gold{background:#B8924A;color:#FAF5EC;border-color:#B8924A}
+.btn-ghost-light{background:transparent;color:#F5ECD7;border-color:rgba(245,236,215,0.5)}
+.btn-sm{padding:7px 16px;font-size:11px}
+
+/* BADGES */
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.bdg{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:10px;font-weight:500;letter-spacing:0.04em}
+
+/* CARDS */
+.card-showcase{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.prod-card{border-radius:12px;overflow:hidden;border:0.5px solid rgba(0,0,0,0.06)}
+.prod-card-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase}
+.prod-card-body{padding:10px 12px;background:#FDFAF6}
+.prod-card-vendor{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#9C7A4A;margin-bottom:3px}
+.prod-card-title{font-size:13px;line-height:1.3;color:#2A1520;margin-bottom:6px;font-weight:400}
+.prod-card-price{font-size:13px;font-weight:500;color:#4A1040}
+.prod-card-compare{font-size:11px;color:#A8957E;text-decoration:line-through;margin-left:4px}
+.prod-card-atc{width:100%;padding:7px;background:#4A1040;color:#F5ECD7;border:none;border-radius:6px;font-size:10px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;margin-top:8px;font-family:var(--font-sans)}
+.prod-card-heart{float:right;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;border:0.5px solid rgba(0,0,0,0.08);margin-top:-4px}
+
+/* FORM ELEMENTS */
+.form-showcase{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.f-group{display:flex;flex-direction:column;gap:4px}
+.f-label{font-size:10px;font-weight:500;color:#7A5C42;letter-spacing:0.04em;text-transform:uppercase}
+.f-input{padding:10px 14px;border:1.5px solid #E8DDD0;border-radius:8px;font-size:13px;color:#2A1520;background:#FDFAF6;outline:none;font-family:var(--font-sans)}
+.f-input-focus{border-color:#4A1040;box-shadow:0 0 0 3px rgba(74,16,64,0.08)}
+
+/* SPACING SCALE */
+.spacing-row{display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.sp-item{display:flex;flex-direction:column;align-items:center;gap:4px}
+.sp-bar{background:#B8924A;border-radius:2px;width:24px}
+.sp-label{font-size:9px;color:var(--color-text-tertiary);font-family:var(--font-mono)}
+
+/* TRUST BAR PREVIEW */
+.trust-preview{background:#4A1040;border-radius:10px;padding:16px 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+.trust-item{display:flex;align-items:flex-start;gap:8px}
+.trust-icon{width:20px;height:20px;border-radius:50%;background:rgba(184,146,74,0.25);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center}
+.trust-icon-dot{width:6px;height:6px;border-radius:50%;background:#B8924A}
+.trust-text strong{display:block;font-size:10px;font-weight:500;color:#F5ECD7;letter-spacing:0.03em}
+.trust-text span{font-size:9px;color:rgba(245,236,215,0.55)}
+
+/* ANNOUNCEMENT BAR */
+.ann-bar{background:#2A1520;border-radius:6px;padding:7px 16px;text-align:center;font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#B8924A;margin-bottom:12px}
+
+/* HEADER PREVIEW */
+.header-preview{background:#FDFAF6;border:0.5px solid #E8DDD0;border-radius:10px;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.header-logo{font-size:15px;letter-spacing:0.12em;text-transform:uppercase;color:#2A1520;font-weight:400}
+.header-logo span{color:#B8924A}
+.header-nav{display:flex;gap:16px}
+.header-nav a{font-size:11px;color:#5C3D2E;font-weight:500;letter-spacing:0.04em;text-decoration:none}
+.header-actions{display:flex;gap:10px;align-items:center}
+.h-icon{width:30px;height:30px;border-radius:50%;background:transparent;border:0.5px solid #E8DDD0;display:flex;align-items:center;justify-content:center}
+.h-icon-dot{width:8px;height:8px;border-radius:50%;background:#5C3D2E}
+.h-cart-badge{background:#B8924A;color:#FAF5EC;font-size:9px;font-weight:700;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:absolute;top:-3px;right:-3px}
+
+/* CONTRAST CHECKER */
+.contrast-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.contrast-swatch{border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:4px}
+.contrast-label{font-size:9px;font-weight:500;letter-spacing:0.04em;opacity:0.6}
+.contrast-text{font-size:12px;font-weight:500}
+.contrast-score{font-size:9px;font-weight:500;padding:2px 6px;border-radius:3px;width:fit-content;margin-top:2px}
+.pass{background:rgba(0,150,80,0.15);color:#005c30}
+.fail-score{background:rgba(200,0,0,0.12);color:#7a0000}
+
+/* GRADIENTS SECTION */
+.grad-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.grad-chip{height:60px;border-radius:8px;display:flex;align-items:flex-end;padding:8px 10px;font-size:10px;font-weight:500}
+
+/* DO / DONT */
+.rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.rule-card{border-radius:8px;padding:12px 14px;border:0.5px solid var(--color-border-tertiary)}
+.rule-tag{font-size:10px;font-weight:500;margin-bottom:8px;padding:2px 8px;border-radius:3px;width:fit-content}
+.do-tag{background:#d1fae5;color:#065f46}
+.dont-tag{background:#fee2e2;color:#7f1d1d}
+.rule-item{font-size:11px;color:var(--color-text-secondary);line-height:1.6;padding-left:10px;border-left:2px solid var(--color-border-tertiary);margin-bottom:5px}
+.rule-item:last-child{margin-bottom:0}
+</style>
+
+<div class="ds">
+
+<div class="sec">
+  <div class="sec-title">Colour palette — extracted from Mic & Mac packaging</div>
+
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:6px">
+    <div>
+      <div class="swatch main" style="background:#4A1040"></div>
+      <div class="swatch-label">Burgundy</div>
+      <div class="swatch-hex">#4A1040</div>
+    </div>
+    <div>
+      <div class="swatch main" style="background:#B8924A"></div>
+      <div class="swatch-label">Gold</div>
+      <div class="swatch-hex">#B8924A</div>
+    </div>
+    <div>
+      <div class="swatch main" style="background:#F5ECD7"></div>
+      <div class="swatch-label">Cream</div>
+      <div class="swatch-hex">#F5ECD7</div>
+    </div>
+    <div>
+      <div class="swatch main" style="background:#E8C8C0"></div>
+      <div class="swatch-label">Blush</div>
+      <div class="swatch-hex">#E8C8C0</div>
+    </div>
+    <div>
+      <div class="swatch main" style="background:#2A1520"></div>
+      <div class="swatch-label">Deep plum</div>
+      <div class="swatch-hex">#2A1520</div>
+    </div>
+    <div>
+      <div class="swatch main" style="background:#FDFAF6"></div>
+      <div class="swatch-label">Pearl white</div>
+      <div class="swatch-hex">#FDFAF6</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px">
+    <div>
+      <div class="swatch" style="background:#7A2060"></div>
+      <div class="swatch-hex">#7A2060 hover</div>
+    </div>
+    <div>
+      <div class="swatch" style="background:#D4A96A"></div>
+      <div class="swatch-hex">#D4A96A light</div>
+    </div>
+    <div>
+      <div class="swatch" style="background:#EDD9B8"></div>
+      <div class="swatch-hex">#EDD9B8 warm</div>
+    </div>
+    <div>
+      <div class="swatch" style="background:#F2D8D0"></div>
+      <div class="swatch-hex">#F2D8D0 light</div>
+    </div>
+    <div>
+      <div class="swatch" style="background:#5C3D2E"></div>
+      <div class="swatch-hex">#5C3D2E text</div>
+    </div>
+    <div>
+      <div class="swatch" style="background:#E8DDD0"></div>
+      <div class="swatch-hex">#E8DDD0 border</div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-title">Design tokens — CSS variables</div>
+  <div class="token-grid">
+    <div class="token-card">
+      <div class="token-header">Brand colours</div>
+      <div class="token-row"><div class="t-dot" style="background:#4A1040"></div><div class="t-name">--color-burgundy</div><div class="t-hex">#4A1040</div><div class="t-use">Primary CTA, header text, nav</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#7A2060"></div><div class="t-name">--color-burgundy-hover</div><div class="t-hex">#7A2060</div><div class="t-use">Button hover state</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#2A1520"></div><div class="t-name">--color-plum</div><div class="t-hex">#2A1520</div><div class="t-use">Body text, headings</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#B8924A"></div><div class="t-name">--color-gold</div><div class="t-hex">#B8924A</div><div class="t-use">Accent, badges, eyebrow, icons</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#D4A96A"></div><div class="t-name">--color-gold-light</div><div class="t-hex">#D4A96A</div><div class="t-use">Gold on dark backgrounds</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#9C7A4A"></div><div class="t-name">--color-gold-dark</div><div class="t-hex">#9C7A4A</div><div class="t-use">Small gold text, captions</div></div>
+    </div>
+    <div class="token-card">
+      <div class="token-header">Background colours</div>
+      <div class="token-row"><div class="t-dot" style="background:#FDFAF6"></div><div class="t-name">--color-bg-page</div><div class="t-hex">#FDFAF6</div><div class="t-use">Page background (pearl white)</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#F5ECD7"></div><div class="t-name">--color-bg-cream</div><div class="t-hex">#F5ECD7</div><div class="t-use">Section backgrounds, cards</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#EDD9B8"></div><div class="t-name">--color-bg-warm</div><div class="t-hex">#EDD9B8</div><div class="t-use">Hover states, selected items</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#E8C8C0"></div><div class="t-name">--color-bg-blush</div><div class="t-hex">#E8C8C0</div><div class="t-use">Testimonials bg, subtle sections</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#4A1040"></div><div class="t-name">--color-bg-dark</div><div class="t-hex">#4A1040</div><div class="t-use">Footer, trust bar, promo sections</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#2A1520"></div><div class="t-name">--color-bg-darkest</div><div class="t-hex">#2A1520</div><div class="t-use">Announcement bar</div></div>
+    </div>
+    <div class="token-card">
+      <div class="token-header">Text colours</div>
+      <div class="token-row"><div class="t-dot" style="background:#2A1520"></div><div class="t-name">--color-text-primary</div><div class="t-hex">#2A1520</div><div class="t-use">Headings, product titles</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#5C3D2E"></div><div class="t-name">--color-text-secondary</div><div class="t-hex">#5C3D2E</div><div class="t-use">Body text, descriptions</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#A8957E"></div><div class="t-name">--color-text-muted</div><div class="t-hex">#A8957E</div><div class="t-use">Captions, compare price, meta</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#B8924A"></div><div class="t-name">--color-text-accent</div><div class="t-hex">#B8924A</div><div class="t-use">Eyebrows, vendor labels, links</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#F5ECD7"></div><div class="t-name">--color-text-on-dark</div><div class="t-hex">#F5ECD7</div><div class="t-use">Text on burgundy/dark backgrounds</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#D4A96A;border:0.5px solid #ccc"></div><div class="t-name">--color-text-gold-on-dark</div><div class="t-hex">#D4A96A</div><div class="t-use">Gold text on dark bg (contrast safe)</div></div>
+    </div>
+    <div class="token-card">
+      <div class="token-header">Border + semantic</div>
+      <div class="token-row"><div class="t-dot" style="background:#E8DDD0"></div><div class="t-name">--color-border-default</div><div class="t-hex">#E8DDD0</div><div class="t-use">Cards, inputs, dividers</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#D4A96A"></div><div class="t-name">--color-border-accent</div><div class="t-hex">#D4A96A</div><div class="t-use">Focus states, featured cards</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#2D7A4A"></div><div class="t-name">--color-success</div><div class="t-hex">#2D7A4A</div><div class="t-use">In stock, success states</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#C0392B"></div><div class="t-name">--color-error</div><div class="t-hex">#C0392B</div><div class="t-use">Errors, sold out</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#B8924A"></div><div class="t-name">--color-warning</div><div class="t-hex">#B8924A</div><div class="t-use">Low stock, "only 3 left"</div></div>
+      <div class="token-row"><div class="t-dot" style="background:#4A8FA8"></div><div class="t-name">--color-info</div><div class="t-hex">#4A8FA8</div><div class="t-use">Info banners, tips</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-title">Typography system</div>
+  <div class="type-showcase">
+    <div style="margin-bottom:16px">
+      <div class="type-label" style="color:#A8957E">Display font — Cormorant Garamond (headings)</div>
+      <div class="type-eyebrow" style="color:#B8924A;font-family:var(--font-sans)">Clean beauty · Lab certified</div>
+      <div class="type-h1" style="color:#2A1520;font-family:var(--font-serif)">Love Your Body 365</div>
+      <div class="type-h2" style="color:#2A1520;font-family:var(--font-serif)">Luxury from nature, proven by science</div>
+      <div class="type-h3" style="color:#4A1040;font-family:var(--font-serif)">Donkey Milk Deep Hydration Soap</div>
+    </div>
+    <div style="border-top:0.5px solid #E8DDD0;padding-top:14px">
+      <div class="type-label" style="color:#A8957E">Body font — DM Sans (UI text)</div>
+      <div class="type-body" style="color:#5C3D2E;font-family:var(--font-sans)">Formulated with pure donkey milk, rich in vitamins A, C and E. Each bar is cold-pressed and lab-certified to nourish every skin type without stripping natural oils.</div>
+      <div class="type-small" style="color:#A8957E;font-family:var(--font-sans)">Free shipping on orders above ₹999 · Easy 7-day returns · Cruelty free</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;border:0.5px solid var(--color-border-tertiary);border-radius:10px;padding:14px 16px">
+    <div><div class="type-label" style="color:#A8957E">Eyebrow</div><div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;color:#B8924A">Clean beauty</div></div>
+    <div><div class="type-label" style="color:#A8957E">H1 / Display</div><div style="font-size:22px;font-weight:300;color:#2A1520;font-family:var(--font-serif);line-height:1.1">36px / 300</div></div>
+    <div><div class="type-label" style="color:#A8957E">H2 / Section</div><div style="font-size:17px;font-weight:300;color:#2A1520;font-family:var(--font-serif)">24px / 300</div></div>
+    <div><div class="type-label" style="color:#A8957E">H3 / Card</div><div style="font-size:14px;font-weight:400;color:#2A1520;font-family:var(--font-serif)">18px / 400</div></div>
+    <div><div class="type-label" style="color:#A8957E">Body / UI</div><div style="font-size:13px;color:#5C3D2E">14px / 400</div></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-title">Buttons</div>
+  <div class="btn-row">
+    <button class="btn btn-primary">Add to Cart</button>
+    <button class="btn btn-secondary">View Details</button>
+    <button class="btn btn-gold">Shop Bestsellers</button>
+    <div style="background:#4A1040;padding:10px 14px;border-radius:8px;display:inline-flex;gap:8px">
+      <button class="btn btn-ghost-light btn-sm">Our Story</button>
+    </div>
+    <button class="btn btn-primary btn-sm">Quick Add</button>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;border:0.5px solid var(--color-border-tertiary);border-radius:10px;padding:12px 14px">
+    <div><div class="type-label" style="color:#A8957E">Primary</div><div style="font-size:11px;color:#5C3D2E">Burgundy fill · cream text · pill shape · 44px height</div></div>
+    <div><div class="type-label" style="color:#A8957E">Secondary</div><div style="font-size:11px;color:#5C3D2E">Transparent · burgundy border + text · same pill</div></div>
+    <div><div class="type-label" style="color:#A8957E">Gold CTA</div><div style="font-size:11px;color:#5C3D2E">Gold fill · dark text · hero + promo sections only</div></div>
+    <div><div class="type-label" style="color:#A8957E">Ghost</div><div style="font-size:11px;color:#5C3D2E">On dark bg · cream border + text</div></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-title">Badges + labels</div>
+  <div class="badge-row">
+    <span class="bdg" style="background:#4A1040;color:#D4A96A">Bestseller</span>
+    <span class="bdg" style="background:#B8924A;color:#2A1520">37% Off</span>
+    <span class="bdg" style="background:#F2D8D0;color:#5C3D2E">New</span>
+    <span class="bdg" style="background:#2A1520;color:#D4A96A">Lab Certified</span>
+    <span class="bdg" style="background:transparent;border:1px solid #B8924A;color:#9C7A4A">Cruelty Free</span>
+    <span class="bdg" style="background:#EDD9B8;color:#5C3D2E">For Dry Skin</span>
+    <span class="bdg" style="background:#E8C8C0;color:#5C3D2E">For Sensitive</span>
+    <span class="bdg" style="background:#d1fae5;color:#065f46">In Stock</span>
+    <span class="bdg" style="background:#fee2e2;color:#7f1d1d">Sold Out</span>
+    <span class="bdg" style="background:#FEF3C7;color:#92400E">Only 3 left</span>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-title">Product card</div>
+  <div class="card-showcase">
+    <div class="prod-card">
+      <div class="prod-card-img" style="background:#E8C8C0;color:#5C3D2E;position:relative">
+        <span style="font-size:9px;letter-spacing:0.08em">Donkey Milk Soap</span>
+        <div style="position:absolute;top:8px;left:8px;display:flex;flex-direction:column;gap:4px">
+          <span class="bdg" style="background:#4A1040;color:#D4A96A;font-size:9px;padding:2px 7px">Bestseller</span>
+          <span class="bdg" style="background:#B8924A;color:#2A1520;font-size:9px;padding:2px 7px">37% Off</span>
+        </div>
+        <div class="prod-card-heart" style="position:absolute;top:8px;right:8px">
+          <div style="width:10px;height:10px;border-radius:50%;background:#4A1040;opacity:0.3"></div>
+        </div>
+      </div>
+      <div class="prod-card-body">
+        <div class="prod-card-vendor">Mic & Mac</div>
+        <div class="prod-card-title">Donkey Milk Soap · Deep Hydration</div>
+        <div><span class="prod-card-price">₹199</span><span class="prod-card-compare">₹320</span></div>
+        <div style="display:flex;gap:2px;margin:4px 0"><span style="color:#B8924A;font-size:11px">★★★★★</span><span style="font-size:10px;color:#A8957E"> (142)</span></div>
+        <button class="prod-card-atc">Add to Cart</button>
+      </div>
+    </div>
+    <div class="prod-card">
+      <div class="prod-card-img" style="background:#F2D8D0;color:#5C3D2E;position:relative">
+        <span style="font-size:9px;letter-spacing:0.08em">Red Wine Soap</span>
+        <div style="position:absolute;top:8px;left:8px">
+          <span class="bdg" style="background:#B8924A;color:#2A1520;font-size:9px;padding:2px 7px">50% Off</span>
+        </div>
+      </div>
+      <div class="prod-card-body">
+        <div class="prod-card-vendor">Mic & Mac</div>
+        <div class="prod-card-title">Red Wine Radiance Soap · Luxury Formula</div>
+        <div><span class="prod-card-price">₹149</span><span class="prod-card-compare">₹300</span></div>
+        <div style="display:flex;gap:2px;margin:4px 0"><span style="color:#B8924A;font-size:11px">★★★★☆</span><span style="font-size:10px;color:#A8957E"> (89)</span></div>
+        <button class="prod-card-atc">Add to Cart</button>
+      </div>
+    </div>
+    <div class="prod-card">
+      <div class="prod-card-img" style="background:#EDD9B8;color:#5C3D2E;position:relative">
+        <span style="font-size:9px;letter-spacing:0.08em">Combo Pack</span>
+        <div style="position:absolute;top:8px;left:8px">
+          <span class="bdg" style="background:#2A1520;color:#D4A96A;font-size:9px;padding:2px 7px">Best Value</span>
+        </div>
+      </div>
+      <div class="prod-card-body">
+        <div class="prod-card-vendor">Mic & Mac</div>
+        <div class="prod-card-title">Donkey Milk + Red Wine Combo</div>
+        <div><span class="prod-card-price">₹499</span><span class="prod-card-compare">₹930</span></div>
+        <div style="display:flex;gap:2px;margin:4px 0"><span style="color:#B8924A;font-size:11px">★★★★★</span><span style="font-size:10px;color:#A8957E"> (203)</span></div>
+        <button class="prod-card-atc">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-title">Global components — announcement bar + header + trust bar</div>
+  <div class="ann-bar">Free shipping on all orders above ₹999 · Use code NATURAL10 for 10% off</div>
+  <div class="header-preview">
+    <div class="header-logo">Mic <span>&</span> Mac</div>
+    <div class="header-nav">
+      <a href="#">Home</a>
+      <a href="#">Shop</a>
+      <a href="#">About</a>
+      <a href="#">Blog</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="header-actions">
+      <div class="h-icon"><div class="h-icon-dot"></div></div>
+      <div class="h-icon" style="position:relative"><div class="h-icon-dot"></div><div class="h-cart-badge">2</div></div>
+      <button class="btn btn-primary btn-sm">Cart (2)</button>
+    </div>
+  </div>
+  <div class="trust-preview">
+    <div class="trust-item"><div class="trust-icon"><div class="trust-icon-dot"></div></div><div class="trust-text"><strong>100% Natural</strong><span>No parabens or sulfates</span></div></div>
+    <div class="trust-item"><div class="trust-icon"><div class="trust-icon-dot"></div></div><div class="trust-text"><strong>Cruelty Free</strong><span>PETA certified</span></div></div>
+    <div class="trust-item"><div class="trust-icon"><div class="trust-icon-dot"></div></div><div class="trust-text"><strong>Made for India</strong><span>Indian skin & climate</span></div></div>
+    <div class="trust-item"><div class="trust-icon"><div class="trust-icon-dot"></div></div><div class="trust-text"><strong>Free Shipping</strong><span>On orders above ₹999</span></div></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-title">Form inputs</div>
+  <div class="form-showcase">
+    <div class="f-group"><div class="f-label">Email address</div><input class="f-input" placeholder="priya@email.com"></div>
+    <div class="f-group"><div class="f-label">Password</div><input class="f-input" type="password" placeholder="••••••••"></div>
+    <div class="f-group"><div class="f-label">Search products</div><input class="f-input f-input-focus" placeholder="Search ingredients, products..."></div>
+    <div class="f-group"><div class="f-label">Discount code</div><input class="f-input" placeholder="NATURAL10"></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-title">Spacing scale</div>
+  <div class="spacing-row">
+    <div class="sp-item"><div class="sp-bar" style="height:4px"></div><div class="sp-label">4px</div><div class="sp-label">--sp-1</div></div>
+    <div class="sp-item"><div class="sp-bar" style="height:8px"></div><div class="sp-label">8px</div><div class="sp-label">--sp-2</div></div>
+    <div class="sp-item"><div class="sp-bar" style="height:12px"></div><div class="sp-label">12px</div><div class="sp-label">--sp-3</div></div>
+    <div class="sp-item"><div class="sp-bar" style="height:16px"></div><div class="sp-label">16px</div><div class="sp-label">--sp-4</div></div>
+    <div class="sp-item"><div class="sp-bar" style="height:20px"></div><div class="sp-label">20px</div><div class="sp-label">--sp-5</div></div>
+    <div class="sp-item"><div class="sp-bar" style="height:24px"></div><div class="sp-label">24px</div><div class="sp-label">--sp-6</div></div>
+    <div class="sp-item"><div class="sp-bar" style="height:32px"></div><div class="sp-label">32px</div><div class="sp-label">--sp-8</div></div>
+    <div class="sp-item"><div class="sp-bar" style="height:40px"></div><div class="sp-label">40px</div><div class="sp-label">--sp-10</div></div>
+    <div class="sp-item"><div class="sp-bar" style="height:48px"></div><div class="sp-label">48px</div><div class="sp-label">--sp-12</div></div>
+    <div class="sp-item"><div class="sp-bar" style="height:64px"></div><div class="sp-label">64px</div><div class="sp-label">--sp-16</div></div>
+    <div class="sp-item"><div class="sp-bar" style="height:80px"></div><div class="sp-label">80px</div><div class="sp-label">--sp-20</div></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-title">Contrast safety check (WCAG AA 4.5:1 minimum)</div>
+  <div class="contrast-grid">
+    <div class="contrast-swatch" style="background:#FDFAF6;border:0.5px solid #E8DDD0">
+      <div class="contrast-label" style="color:#A8957E">Pearl white bg</div>
+      <div class="contrast-text" style="color:#2A1520">Deep plum text</div>
+      <div class="contrast-score pass">12.4:1 Pass</div>
+    </div>
+    <div class="contrast-swatch" style="background:#4A1040">
+      <div class="contrast-label" style="color:#D4A96A">Burgundy bg</div>
+      <div class="contrast-text" style="color:#F5ECD7">Cream text</div>
+      <div class="contrast-score pass" style="background:rgba(255,255,255,0.15);color:#d4a96a">9.8:1 Pass</div>
+    </div>
+    <div class="contrast-swatch" style="background:#2A1520">
+      <div class="contrast-label" style="color:#B8924A">Plum bg</div>
+      <div class="contrast-text" style="color:#D4A96A">Gold text</div>
+      <div class="contrast-score pass" style="background:rgba(255,255,255,0.1);color:#d4a96a">6.1:1 Pass</div>
+    </div>
+    <div class="contrast-swatch" style="background:#F5ECD7;border:0.5px solid #E8DDD0">
+      <div class="contrast-label" style="color:#A8957E">Cream bg</div>
+      <div class="contrast-text" style="color:#4A1040">Burgundy text</div>
+      <div class="contrast-score pass">8.7:1 Pass</div>
+    </div>
+    <div class="contrast-swatch" style="background:#F5ECD7;border:0.5px solid #E8DDD0">
+      <div class="contrast-label" style="color:#A8957E">Cream bg</div>
+      <div class="contrast-text" style="color:#B8924A">Gold text</div>
+      <div class="contrast-score fail-score">3.1:1 Fail — never use gold for body text</div>
+    </div>
+    <div class="contrast-swatch" style="background:#E8C8C0;border:0.5px solid #E8DDD0">
+      <div class="contrast-label" style="color:#A8957E">Blush bg</div>
+      <div class="contrast-text" style="color:#2A1520">Deep plum text</div>
+      <div class="contrast-score pass">8.2:1 Pass</div>
+    </div>
+    <div class="contrast-swatch" style="background:#EDD9B8;border:0.5px solid #E8DDD0">
+      <div class="contrast-label" style="color:#A8957E">Warm cream bg</div>
+      <div class="contrast-text" style="color:#5C3D2E">Brown text</div>
+      <div class="contrast-score pass">5.6:1 Pass</div>
+    </div>
+    <div class="contrast-swatch" style="background:#B8924A">
+      <div class="contrast-label" style="color:#FAF5EC">Gold bg</div>
+      <div class="contrast-text" style="color:#2A1520">Dark text on gold badge</div>
+      <div class="contrast-score pass" style="background:rgba(0,0,0,0.15);color:#FAF5EC">5.4:1 Pass</div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-title">Usage rules — do and don't</div>
+  <div class="rule-grid">
+    <div class="rule-card">
+      <div class="rule-tag do-tag">Do</div>
+      <div class="rule-item">Use Cormorant Garamond for all headings — it carries the luxury feel from packaging</div>
+      <div class="rule-item">Use gold (#B8924A) for eyebrows, icons, star ratings, badges on dark backgrounds</div>
+      <div class="rule-item">Use burgundy (#4A1040) for primary CTAs, nav text, section accents</div>
+      <div class="rule-item">Use cream (#F5ECD7) and blush (#E8C8C0) for alternating section backgrounds</div>
+      <div class="rule-item">Keep body text #5C3D2E on pearl white — warm brown, never cold black</div>
+      <div class="rule-item">Always use pill-shaped buttons (border-radius: 999px)</div>
+      <div class="rule-item">Use generous whitespace — luxury brands breathe</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-tag dont-tag">Don't</div>
+      <div class="rule-item">Never use gold (#B8924A) as body text on light backgrounds — fails contrast at 3.1:1</div>
+      <div class="rule-item">Never use Inter, Roboto or Arial — use DM Sans for all UI text</div>
+      <div class="rule-item">Never use pure black (#000000) or pure white (#FFFFFF) — use plum and pearl</div>
+      <div class="rule-item">Never mix burgundy and blush heavily — keep one dominant per section</div>
+      <div class="rule-item">Never use forest green (#2D4A3E) from old system — the brand is burgundy/gold</div>
+      <div class="rule-item">Never use sharp corners on buttons — always pill or rounded (8px min)</div>
+      <div class="rule-item">Never use gold for error / success states — those have dedicated semantic colours</div>
+    </div>
+  </div>
+</div>
+
+</div>

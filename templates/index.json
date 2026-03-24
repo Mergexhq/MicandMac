@@ -2,51 +2,35 @@
   "sections": {
     "hero": {
       "type": "hero-banner",
-      "settings": {
-        "eyebrow": "Clean. Natural. Honest.",
-        "heading": "Beauty That's Good For You",
-        "subtext": "100% natural ingredients. No hidden chemicals. Formulated for Indian skin & climate.",
-        "cta_text": "Shop Now",
-        "cta_link": "/collections/all",
-        "cta2_text": "Our Story",
-        "cta2_link": "/pages/about",
-        "text_align": "left",
-        "text_color": "light",
-        "full_height": true,
-        "overlay_opacity": 40,
-        "show_scroll_indicator": true
-      }
+      "settings": {}
     },
-    "trust-bar": {
+    "trust": {
       "type": "trust-bar",
       "settings": {}
     },
-    "bestsellers": {
+    "featured_collection": {
       "type": "featured-collection",
-      "settings": {
-        "eyebrow": "Our Products",
-        "heading": "Bestsellers",
-        "subtext": "Our most-loved formulas, crafted with the finest natural ingredients.",
-        "products_to_show": 4,
-        "columns": "4",
-        "show_view_all": true,
-        "view_all_text": "View All Products"
-      }
+      "settings": {}
     },
-    "ingredients-story": {
+    "ingredients": {
       "type": "ingredients-story",
       "settings": {}
     },
     "testimonials": {
       "type": "testimonials",
       "settings": {}
+    },
+    "instagram": {
+      "type": "instagram-feed",
+      "settings": {}
     }
   },
   "order": [
     "hero",
-    "trust-bar",
-    "bestsellers",
-    "ingredients-story",
-    "testimonials"
+    "trust",
+    "featured_collection",
+    "ingredients",
+    "testimonials",
+    "instagram"
   ]
 }

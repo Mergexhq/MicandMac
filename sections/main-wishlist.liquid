@@ -1,0 +1,62 @@
+{% comment %}
+  Section: Main Wishlist Page
+  Logged-in: loads saved handles from customer metafields (via app or custom approach)
+  Guest:     loads from localStorage via wishlist.ts + shows nudge
+{% endcomment %}
+
+<div class="main-wishlist section-padding">
+  <div class="container">
+    <h1 class="main-wishlist__title">My Wishlist</h1>
+
+    <!-- Guest nudge (hidden for logged-in users by wishlist.ts) -->
+    {%- unless customer -%}
+      {% render 'wishlist-guest-nudge' %}
+    {%- endunless -%}
+
+    <!-- Grid — populated by wishlist.ts from localStorage -->
+    <div class="wishlist-grid" id="WishlistGrid">
+      <div class="wishlist-empty" id="WishlistEmpty" style="display:none">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3" aria-hidden="true">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <p>Your wishlist is empty.</p>
+        <a href="/collections/all" class="btn btn--secondary">Discover Products</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.main-wishlist__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  margin-bottom: var(--space-8);
+}
+
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+}
+
+.wishlist-empty {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--color-text-light);
+}
+
+@media (max-width: 1023px) {
+  .wishlist-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 767px) {
+  .wishlist-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>

@@ -1,0 +1,71 @@
+{% comment %}
+  Snippet: shipping-bar
+  Usage: {% render 'shipping-bar', cart: cart %}
+  Progress bar towards free shipping threshold
+{% endcomment %}
+
+{%- liquid
+  assign threshold = section.settings.threshold_cents | default: 99900
+  assign cart_total = cart.total_price
+  assign remaining = threshold | minus: cart_total
+  assign pct = cart_total | times: 100 | divided_by: threshold
+  if pct > 100
+    assign pct = 100
+  endif
+-%}
+
+{%- unless section.settings.hide_when_empty and cart.item_count == 0 -%}
+  <div class="shipping-bar">
+    {%- if remaining > 0 -%}
+      <p class="shipping-bar__msg">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+        Add {{ remaining | money }} more for <strong>free delivery</strong>
+      </p>
+    {%- else -%}
+      <p class="shipping-bar__msg shipping-bar__msg--achieved">
+        🎉 You've unlocked <strong>free delivery!</strong>
+      </p>
+    {%- endif -%}
+    <div class="shipping-bar__track">
+      <div class="shipping-bar__fill" style="width: {{ pct }}%"></div>
+    </div>
+  </div>
+{%- endunless -%}
+
+<style>
+.shipping-bar {
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-cream);
+  border-bottom: 1px solid var(--color-beige);
+}
+
+.shipping-bar__msg {
+  font-size: var(--text-xs);
+  color: var(--color-text-mid);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.shipping-bar__msg--achieved {
+  color: var(--color-forest);
+  font-weight: 500;
+}
+
+.shipping-bar__track {
+  height: 4px;
+  background: var(--color-beige);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.shipping-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-forest) 0%, var(--color-gold) 100%);
+  border-radius: 99px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+</style>

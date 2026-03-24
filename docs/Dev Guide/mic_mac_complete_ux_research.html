@@ -1,0 +1,428 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0;font-size:13px;line-height:1.6}
+.section{margin-bottom:2rem}
+.section-title{font-size:15px;font-weight:500;color:var(--color-text-primary);padding:8px 0;border-bottom:2px solid var(--color-border-secondary);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.section-num{width:26px;height:26px;border-radius:50%;background:var(--color-background-info);color:var(--color-text-info);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px}
+.card-title{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px}
+.card-body{font-size:11px;color:var(--color-text-secondary);line-height:1.6}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:3px;font-weight:500;margin-right:4px;margin-bottom:3px}
+.b-red{background:var(--color-background-danger);color:var(--color-text-danger)}
+.b-green{background:var(--color-background-success);color:var(--color-text-success)}
+.b-amber{background:var(--color-background-warning);color:var(--color-text-warning)}
+.b-blue{background:var(--color-background-info);color:var(--color-text-info)}
+.b-gray{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.issue-row{display:flex;gap:10px;padding:8px 12px;border-bottom:0.5px solid var(--color-border-tertiary);align-items:flex-start}
+.issue-row:last-child{border-bottom:none}
+.issue-loc{font-size:10px;font-weight:500;color:var(--color-text-info);width:90px;flex-shrink:0;padding-top:1px}
+.issue-problem{font-size:11px;color:var(--color-text-danger);flex:1}
+.issue-fix{font-size:11px;color:var(--color-text-success);flex:1}
+.persona-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px;height:100%}
+.persona-name{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+.persona-tag{font-size:11px;color:var(--color-text-tertiary);margin-bottom:10px}
+.persona-row{display:flex;gap:8px;margin-bottom:6px}
+.persona-label{font-size:10px;font-weight:500;color:var(--color-text-tertiary);width:52px;flex-shrink:0;padding-top:1px}
+.persona-val{font-size:11px;color:var(--color-text-secondary)}
+.journey-step{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;position:relative}
+.journey-phase{font-size:10px;font-weight:500;color:var(--color-text-info);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em}
+.journey-action{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.journey-thought{font-size:11px;color:var(--color-text-secondary);font-style:italic;margin-bottom:6px}
+.journey-pain{font-size:10px;color:var(--color-text-danger);margin-bottom:2px}
+.journey-opp{font-size:10px;color:var(--color-text-success)}
+.metric-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center}
+.metric-val{font-size:20px;font-weight:500;color:var(--color-text-primary);line-height:1}
+.metric-label{font-size:10px;color:var(--color-text-secondary);margin-top:4px}
+.metric-note{font-size:10px;color:var(--color-text-tertiary);margin-top:2px}
+.priority-row{display:grid;grid-template-columns:100px 1fr 80px 80px;gap:8px;padding:7px 12px;border-bottom:0.5px solid var(--color-border-tertiary);align-items:center}
+.priority-row:last-child{border-bottom:none}
+.priority-name{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.priority-desc{font-size:11px;color:var(--color-text-secondary)}
+.bar-bg{width:100%;height:6px;background:var(--color-border-tertiary);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px}
+.heatmap-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:8px}
+.hm-cell{padding:8px 4px;border-radius:var(--border-radius-md);text-align:center;font-size:10px;font-weight:500}
+.hm-high{background:#dcfce7;color:#166534}
+.hm-med{background:#fef9c3;color:#854d0e}
+.hm-low{background:#fee2e2;color:#991b1b}
+.sep{border:none;border-top:0.5px solid var(--color-border-tertiary);margin:1rem 0}
+</style>
+
+<div class="wrap">
+
+<div class="section">
+  <div class="section-title"><div class="section-num">1</div>Current site audit — what's broken right now</div>
+  <div class="card" style="margin-bottom:10px">
+    <div style="display:grid;grid-template-columns:90px 1fr 1fr;gap:0">
+      <div style="font-size:10px;font-weight:500;color:var(--color-text-tertiary);padding:6px 12px 6px 0;border-bottom:0.5px solid var(--color-border-tertiary)">Location</div>
+      <div style="font-size:10px;font-weight:500;color:var(--color-text-danger);padding:6px 12px;border-bottom:0.5px solid var(--color-border-tertiary);border-left:0.5px solid var(--color-border-tertiary)">Current problem</div>
+      <div style="font-size:10px;font-weight:500;color:var(--color-text-success);padding:6px 12px;border-bottom:0.5px solid var(--color-border-tertiary);border-left:0.5px solid var(--color-border-tertiary)">Fix in rebuild</div>
+    </div>
+    <div class="issue-row"><div class="issue-loc">Navigation</div><div class="issue-problem">Links go directly to single product URLs — "Hair Shamboo" typo, "Combo Offer's" typo, no collections structure</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Collection-based nav: Face Care · Body Care · Hair Care · Combos — no product links in nav</div></div>
+    <div class="issue-row"><div class="issue-loc">Homepage hero</div><div class="issue-problem">No hero section — page starts with a plain "Love Your Body 365" text with no visual, no CTA, no brand statement</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Full-screen hero with product image, strong headline, 2 CTAs, scroll indicator</div></div>
+    <div class="issue-row"><div class="issue-loc">Product cards</div><div class="issue-problem">No Add to Cart on homepage grid — customer must click into PDP just to buy a bestseller they already want</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">ATC button on hover + quick-add on product cards across all grids</div></div>
+    <div class="issue-row"><div class="issue-loc">PDP</div><div class="issue-problem">Description is generic filler text ("Donkey milk soap typically contains…") — reads like Wikipedia, not a brand</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Brand voice descriptions + metafield-driven ingredients deep-dive per product</div></div>
+    <div class="issue-row"><div class="issue-loc">PDP</div><div class="issue-problem">"Pickup availability" widget showing "Couldn't load" — confuses online-only customers</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Remove pickup entirely — replace with delivery timeline + free shipping threshold</div></div>
+    <div class="issue-row"><div class="issue-loc">PDP</div><div class="issue-problem">No star ratings visible anywhere on the site — zero social proof at point of purchase</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Judge.me integration — ratings on product cards + full review section on PDP</div></div>
+    <div class="issue-row"><div class="issue-loc">PDP</div><div class="issue-problem">Subscription/recurring purchase text shown even for one-time products — creates confusion and trust issues</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Clean ATC button only — subscription only shown if product actually has subscription variant</div></div>
+    <div class="issue-row"><div class="issue-loc">Trust</div><div class="issue-problem">No trust signals below ATC — no "lab certified", no return policy, no delivery promise</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">4-icon trust strip inline below ATC on every product page</div></div>
+    <div class="issue-row"><div class="issue-loc">Mobile</div><div class="issue-problem">Navigation duplicated (appears twice on page) on mobile — massive usability bug</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Single header with hamburger → slide-in drawer — zero duplication</div></div>
+    <div class="issue-row"><div class="issue-loc">About page</div><div class="issue-problem">About content duplicated twice — same paragraph appears at top and bottom of page</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Single structured about layout: hero → founder → values → milestones → CTA</div></div>
+    <div class="issue-row"><div class="issue-loc">Cart</div><div class="issue-problem">No cart drawer — clicking cart icon takes you to a separate /cart page, breaking the shopping flow</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Ajax cart drawer — add to cart → drawer slides in → customer continues browsing</div></div>
+    <div class="issue-row"><div class="issue-loc">Search</div><div class="issue-problem">Search bar appears but no predictive results — customer types and sees nothing until hitting enter</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Predictive search drawer with live product results as you type</div></div>
+    <div class="issue-row"><div class="issue-loc">Footer</div><div class="issue-problem">Bare footer — only copyright, powered by Shopify, and two policy links. No social, no nav, no trust</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Full footer: 4 link columns + newsletter + social icons + payment methods</div></div>
+    <div class="issue-row"><div class="issue-loc">SEO</div><div class="issue-problem">No breadcrumbs, no structured data, page titles include "– MIC & MAC" raw template string format</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Breadcrumbs + JSON-LD structured data + clean page titles on every page</div></div>
+    <div class="issue-row"><div class="issue-loc">Speed</div><div class="issue-problem">"Suggested products" section is 8 raw image links with no product data, no alt text, no lazy loading</div><div class="issue-fix" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Proper product grid with srcset, lazy loading, meaningful alt text</div></div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<div class="section">
+  <div class="section-title"><div class="section-num">2</div>Target user personas — who buys from Mic & Mac</div>
+  <div class="grid3">
+    <div class="persona-card">
+      <div class="persona-name">Priya, 24</div>
+      <div class="persona-tag">The Ingredient-Conscious Millennial</div>
+      <div class="persona-row"><div class="persona-label">Location</div><div class="persona-val">Chennai, Bengaluru, Mumbai</div></div>
+      <div class="persona-row"><div class="persona-label">Income</div><div class="persona-val">₹30k–60k/month, working professional</div></div>
+      <div class="persona-row"><div class="persona-label">Motivation</div><div class="persona-val">Reads ingredient lists, avoids parabens/SLS, follows skincare creators on YouTube</div></div>
+      <div class="persona-row"><div class="persona-label">Pain</div><div class="persona-val">Doesn't trust brands that hide ingredient details. Skeptical of "natural" claims without proof.</div></div>
+      <div class="persona-row"><div class="persona-label">Decision</div><div class="persona-val">Will buy if she can see full ingredient list + lab certification claim</div></div>
+      <div class="persona-row"><div class="persona-label">Device</div><div class="persona-val">90% mobile (Instagram → site)</div></div>
+      <div style="margin-top:8px"><span class="badge b-blue">Needs: Ingredient transparency</span><span class="badge b-blue">Reviews</span><span class="badge b-blue">Lab certified</span></div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-name">Anita, 35</div>
+      <div class="persona-tag">The Busy Mom Buyer</div>
+      <div class="persona-row"><div class="persona-label">Location</div><div class="persona-val">Tier 1 + Tier 2 cities</div></div>
+      <div class="persona-row"><div class="persona-label">Income</div><div class="persona-val">₹50k–80k HH income, family-focused</div></div>
+      <div class="persona-row"><div class="persona-label">Motivation</div><div class="persona-val">Wants safe products for family use. Buys in combos to save money. Trusts WhatsApp recommendations.</div></div>
+      <div class="persona-row"><div class="persona-label">Pain</div><div class="persona-val">Can't spend too long on a site. Needs fast answers — "Is this safe for sensitive skin?"</div></div>
+      <div class="persona-row"><div class="persona-label">Decision</div><div class="persona-val">Will buy if she sees combo value + shipping speed + easy returns</div></div>
+      <div class="persona-row"><div class="persona-label">Device</div><div class="persona-val">Mixed mobile + desktop</div></div>
+      <div style="margin-top:8px"><span class="badge b-amber">Needs: Speed</span><span class="badge b-amber">Combo value</span><span class="badge b-amber">Safe for family</span></div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-name">Rahul, 28</div>
+      <div class="persona-tag">The First-Time Gifter</div>
+      <div class="persona-row"><div class="persona-label">Location</div><div class="persona-val">Urban metros</div></div>
+      <div class="persona-row"><div class="persona-label">Income</div><div class="persona-val">₹40k–70k/month</div></div>
+      <div class="persona-row"><div class="persona-label">Motivation</div><div class="persona-val">Buying a gift for partner or mom. Attracted by premium packaging + "natural/artisan" positioning.</div></div>
+      <div class="persona-row"><div class="persona-label">Pain</div><div class="persona-val">Doesn't know which product to pick. Needs guidance — "What's good for dry skin?"</div></div>
+      <div class="persona-row"><div class="persona-label">Decision</div><div class="persona-val">Will buy if site looks premium + has gift combo + clear product benefits</div></div>
+      <div class="persona-row"><div class="persona-label">Device</div><div class="persona-val">Desktop + mobile mixed</div></div>
+      <div style="margin-top:8px"><span class="badge b-gray">Needs: Gift combos</span><span class="badge b-gray">Premium look</span><span class="badge b-gray">Guidance</span></div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<div class="section">
+  <div class="section-title"><div class="section-num">3</div>User journey map — Priya discovering and buying</div>
+  <div class="grid3" style="margin-bottom:0">
+    <div class="journey-step">
+      <div class="journey-phase">Discovery</div>
+      <div class="journey-action">Sees Instagram Reel of Donkey Milk Soap</div>
+      <div class="journey-thought">"Interesting — Donkey Milk? Let me check this brand out"</div>
+      <div class="journey-pain">❌ Clicks link → lands on homepage with no hero, no clear brand identity</div>
+      <div class="journey-opp">✓ Fix: Hero with "Lab certified clean beauty" + product imagery → instant brand credibility</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-phase">Exploration</div>
+      <div class="journey-action">Tries to navigate to the soap product</div>
+      <div class="journey-thought">"Where are the soaps? I see 'Hand Made Soap's' in nav…"</div>
+      <div class="journey-pain">❌ Nav links to individual products, no collections. Typos reduce trust. Mobile nav appears twice.</div>
+      <div class="journey-opp">✓ Fix: Clean mega-nav → Body Care → Handmade Soaps collection with all variants</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-phase">Consideration</div>
+      <div class="journey-action">Opens Donkey Milk Soap PDP</div>
+      <div class="journey-thought">"₹199 for ₹320 item — sounds good. But what's actually in it?"</div>
+      <div class="journey-pain">❌ Ingredients section is generic Wikipedia text. No reviews. "Couldn't load pickup" error shows.</div>
+      <div class="journey-opp">✓ Fix: Real ingredient story + lab cert claim + star ratings + trust strip below ATC</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-phase">Intent</div>
+      <div class="journey-action">Wants to add to cart + browse more</div>
+      <div class="journey-thought">"Let me also check the Red Wine soap — maybe get both"</div>
+      <div class="journey-pain">❌ No cart drawer — adding to cart redirects to /cart page, losing browsing context entirely</div>
+      <div class="journey-opp">✓ Fix: Ajax cart drawer — slides in, shows item added, she continues browsing without losing her place</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-phase">Purchase</div>
+      <div class="journey-action">Goes to checkout</div>
+      <div class="journey-thought">"Do I need to create an account? I just want to buy…"</div>
+      <div class="journey-pain">❌ No guest checkout messaging — unclear if she needs an account. No UPI/Razorpay badge visible before checkout.</div>
+      <div class="journey-opp">✓ Fix: "No account needed" messaging on cart + payment icons visible + trust badges</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-phase">Post-purchase</div>
+      <div class="journey-action">Receives order + wants to reorder</div>
+      <div class="journey-thought">"I loved it! Where do I buy again quickly?"</div>
+      <div class="journey-pain">❌ No account = no order history. No reorder link in confirmation email. No loyalty incentive.</div>
+      <div class="journey-opp">✓ Fix: Post-purchase account creation nudge + Klaviyo reorder email at day 25 + loyalty points</div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<div class="section">
+  <div class="section-title"><div class="section-num">4</div>India D2C beauty market context</div>
+  <div class="grid4" style="margin-bottom:12px">
+    <div class="metric-card"><div class="metric-val">30.5%</div><div class="metric-label">Skincare share of India D2C BPC market 2025</div></div>
+    <div class="metric-card"><div class="metric-val">63.9%</div><div class="metric-label">Online-only D2C brands dominate distribution</div></div>
+    <div class="metric-card"><div class="metric-val">75%</div><div class="metric-label">Beauty shoppers browse + buy on mobile</div></div>
+    <div class="metric-card"><div class="metric-val">87%</div><div class="metric-label">Skin quiz completion rate (Beauty of Joseon)</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">What Indian clean beauty shoppers demand in 2025</div>
+      <div class="card-body">
+        <span class="badge b-blue">Ingredient transparency</span> Full lists, no vague "botanical extracts"<br>
+        <span class="badge b-blue">Lab / dermat certification</span> Proof beats promise<br>
+        <span class="badge b-blue">Skin-type specificity</span> "For oily skin" beats "for all skin types"<br>
+        <span class="badge b-blue">Indian skin formulation</span> Humidity + pollution + pigmentation concerns<br>
+        <span class="badge b-blue">UPI + COD availability</span> Trust signals at checkout<br>
+        <span class="badge b-blue">WhatsApp access</span> Preferred support channel in India<br>
+        <span class="badge b-blue">Social proof</span> UGC reviews carry more weight than brand copy
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">What kills conversions for Indian D2C beauty sites</div>
+      <div class="card-body">
+        <span class="badge b-red">Forced account creation</span> Before purchase — kills guest buyers<br>
+        <span class="badge b-red">No COD option</span> High distrust for prepaid-only brands<br>
+        <span class="badge b-red">Slow mobile load</span> Bounce rate spikes above 3s load time<br>
+        <span class="badge b-red">Vague "natural" claims</span> Without proof — skeptical Indian consumer<br>
+        <span class="badge b-red">No Hindi/regional option</span> Tier 2/3 cities need language flexibility<br>
+        <span class="badge b-red">Complex checkout</span> Too many steps = cart abandonment<br>
+        <span class="badge b-red">No WhatsApp CTA</span> Missing the #1 support expectation
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<div class="section">
+  <div class="section-title"><div class="section-num">5</div>Page-by-page UX requirements</div>
+
+  <div class="card" style="margin-bottom:10px">
+    <div class="card-title" style="margin-bottom:8px">Homepage — first impression goals</div>
+    <div class="grid3" style="margin-bottom:0">
+      <div><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">Above the fold (0–3 sec)</div>
+        <div class="card-body">Hero must answer: WHO are you, WHAT do you sell, WHY should I trust you — in 3 seconds. Brand name visible, product image clear, one primary CTA ("Shop Bestsellers"), trust eyebrow ("Lab Certified · Natural · India Made")</div>
+      </div>
+      <div><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">Trust bar (3–8 sec)</div>
+        <div class="card-body">Immediately below hero. 4 icons — Natural · Cruelty Free · Made for India · Free shipping ₹999+. Forest green background — signals premium, natural. This section reduces bounce for skeptical visitors.</div>
+      </div>
+      <div><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">Social proof (scroll 1)</div>
+        <div class="card-body">Bestsellers grid with real review counts. "4.8★ (243 reviews)" on each card drives more conversion than any copy. Customers trust other customers — not brand claims.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:10px">
+    <div class="card-title" style="margin-bottom:8px">PDP — the highest-value page in the site</div>
+    <div class="grid3" style="margin-bottom:0">
+      <div><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">Above the fold on mobile</div>
+        <div class="card-body">Product image takes 60% of screen. Price + sale price immediately visible. ATC button reachable with thumb — not hidden below fold. Badge (Bestseller / % off) builds urgency. Reviews score visible before scrolling.</div>
+      </div>
+      <div><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">The ingredients section</div>
+        <div class="card-body">This is Mic & Mac's biggest differentiator vs generic soap brands. Visual ingredient cards (Donkey Milk · Red Wine · Aloe) with icon + benefit each. Not a wall of text — scannable cards. Priya reads this. Anita skips it. Both need to be served.</div>
+      </div>
+      <div><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">Sticky ATC bar</div>
+        <div class="card-body">When main ATC scrolls out of view: sticky bar appears at bottom. Contains: thumbnail + name + price + ATC. Eliminates scroll-up friction. Especially critical on mobile where PDP can be very long. Never let the buy button be unreachable.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:10px">
+    <div class="card-title" style="margin-bottom:8px">Cart + checkout flow — reduce friction at maximum intent</div>
+    <div class="grid3" style="margin-bottom:0">
+      <div><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">Cart drawer vs page</div>
+        <div class="card-body">Cart drawer keeps customer in shopping context. They add soap → drawer slides in → see "₹201 away from free shipping" → add another product. This single change increases AOV more than any upsell strategy.</div>
+      </div>
+      <div><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">Free shipping progress bar</div>
+        <div class="card-body">"Add ₹201 more for free shipping" with animated bar fill is one of the highest ROI features in D2C ecommerce. Avg order value increases by 15–30% when this is implemented. Threshold: ₹999 (aligns with current announcement).</div>
+      </div>
+      <div><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">Guest checkout messaging</div>
+        <div class="card-body">"No account needed — checkout as guest" must be visually clear. Below checkout button: show UPI + Razorpay + Visa + COD icons. These payment icons serve as micro-trust signals that significantly reduce checkout abandonment for first-time buyers.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="margin-bottom:8px">Auth pages — make registration feel rewarding, not required</div>
+    <div class="grid2" style="margin-bottom:0">
+      <div><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">Login / Register UX principle</div>
+        <div class="card-body">Never force login to purchase. Show account benefits on the register page: "Track your orders · Save your wishlist · Exclusive member discounts · Reorder in one click." Make account creation a reward, not a gate.</div>
+      </div>
+      <div><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">Post-purchase account nudge</div>
+        <div class="card-body">After guest checkout: confirmation page shows "Create your account to track this order" with email pre-filled from checkout. Conversion rate for this nudge is 35–40% — far better than pre-purchase forced registration.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<div class="section">
+  <div class="section-title"><div class="section-num">6</div>Mobile UX requirements — 75% of traffic is mobile</div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Critical mobile rules for Mic & Mac</div>
+      <div class="card-body">
+        <strong style="font-weight:500;color:var(--color-text-primary)">Thumb zone design.</strong> ATC button, nav items, cart icon — all reachable in the bottom 2/3 of screen. Nothing important top-left on mobile.<br><br>
+        <strong style="font-weight:500;color:var(--color-text-primary)">Touch targets minimum 44px.</strong> Every button, link, form input — minimum 44×44px. Smaller targets cause mis-taps and frustration.<br><br>
+        <strong style="font-weight:500;color:var(--color-text-primary)">No hover-dependent interactions.</strong> Every hover effect must have a touch equivalent. Wishlist on product card: visible on mobile without hover.<br><br>
+        <strong style="font-weight:500;color:var(--color-text-primary)">Product gallery swipeable.</strong> Horizontal swipe on PDP image gallery. Bullet dots show progress. No tap-only thumbnails on mobile.<br><br>
+        <strong style="font-weight:500;color:var(--color-text-primary)">Sticky ATC always visible.</strong> On mobile PDP, the add-to-cart must be reachable at ALL times while reading the description.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Mobile performance targets</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+        <div class="metric-card"><div class="metric-val" style="font-size:16px">&lt; 2.5s</div><div class="metric-label">LCP target (Largest Contentful Paint)</div></div>
+        <div class="metric-card"><div class="metric-val" style="font-size:16px">&lt; 100ms</div><div class="metric-label">INP target (interaction delay)</div></div>
+        <div class="metric-card"><div class="metric-val" style="font-size:16px">&lt; 0.1</div><div class="metric-label">CLS (layout shift score)</div></div>
+        <div class="metric-card"><div class="metric-val" style="font-size:16px">70+</div><div class="metric-label">Google PageSpeed mobile score</div></div>
+      </div>
+      <div class="card-body" style="margin-top:8px">Achieve with: srcset images, lazy loading below fold, defer non-critical JS, inline critical CSS, use Shopify CDN for all assets.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<div class="section">
+  <div class="section-title"><div class="section-num">7</div>Conversion optimisation priorities</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:110px 1fr 90px 90px;gap:0;margin-bottom:0">
+      <div style="font-size:10px;font-weight:500;color:var(--color-text-tertiary);padding:6px 12px 6px 0;border-bottom:0.5px solid var(--color-border-tertiary)">Feature</div>
+      <div style="font-size:10px;font-weight:500;color:var(--color-text-tertiary);padding:6px 12px;border-bottom:0.5px solid var(--color-border-tertiary);border-left:0.5px solid var(--color-border-tertiary)">Why it matters for Mic & Mac</div>
+      <div style="font-size:10px;font-weight:500;color:var(--color-text-tertiary);padding:6px 12px;border-bottom:0.5px solid var(--color-border-tertiary);border-left:0.5px solid var(--color-border-tertiary)">Impact</div>
+      <div style="font-size:10px;font-weight:500;color:var(--color-text-tertiary);padding:6px 12px;border-bottom:0.5px solid var(--color-border-tertiary);border-left:0.5px solid var(--color-border-tertiary)">Effort</div>
+    </div>
+    <div class="priority-row"><div class="priority-name">Ajax cart drawer</div><div class="priority-desc" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Keeps customer in flow — biggest single conversion improvement possible</div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:95%;background:#16a34a"></div></div><div style="font-size:10px;color:var(--color-text-success);margin-top:2px">Very high</div></div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:60%;background:#d97706"></div></div><div style="font-size:10px;color:var(--color-text-warning);margin-top:2px">Medium</div></div></div>
+    <div class="priority-row"><div class="priority-name">Free shipping bar</div><div class="priority-desc" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">AOV uplift 15–30% — customers add items to hit ₹999 threshold</div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:90%;background:#16a34a"></div></div><div style="font-size:10px;color:var(--color-text-success);margin-top:2px">Very high</div></div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:25%;background:#16a34a"></div></div><div style="font-size:10px;color:var(--color-text-success);margin-top:2px">Low</div></div></div>
+    <div class="priority-row"><div class="priority-name">Product reviews</div><div class="priority-desc" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Zero social proof is the #1 reason first-time visitors don't buy. Even 10 reviews change everything.</div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:88%;background:#16a34a"></div></div><div style="font-size:10px;color:var(--color-text-success);margin-top:2px">Very high</div></div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:20%;background:#16a34a"></div></div><div style="font-size:10px;color:var(--color-text-success);margin-top:2px">Low (app)</div></div></div>
+    <div class="priority-row"><div class="priority-name">Sticky ATC bar</div><div class="priority-desc" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Mobile users read product description then can't find the buy button — sticky bar eliminates this</div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:82%;background:#16a34a"></div></div><div style="font-size:10px;color:var(--color-text-success);margin-top:2px">High</div></div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:30%;background:#16a34a"></div></div><div style="font-size:10px;color:var(--color-text-success);margin-top:2px">Low</div></div></div>
+    <div class="priority-row"><div class="priority-name">Guest checkout</div><div class="priority-desc" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">23% of shoppers abandon if forced to create account — Mic & Mac loses these buyers today</div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#16a34a"></div></div><div style="font-size:10px;color:var(--color-text-success);margin-top:2px">High</div></div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:35%;background:#16a34a"></div></div><div style="font-size:10px;color:var(--color-text-success);margin-top:2px">Low-med</div></div></div>
+    <div class="priority-row"><div class="priority-name">Combo upsell</div><div class="priority-desc" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">"Buy 2 get discount" on PDP + cart — combos are already a product strength for Mic & Mac</div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:75%;background:#16a34a"></div></div><div style="font-size:10px;color:var(--color-text-success);margin-top:2px">High</div></div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:45%;background:#d97706"></div></div><div style="font-size:10px;color:var(--color-text-warning);margin-top:2px">Medium</div></div></div>
+    <div class="priority-row"><div class="priority-name">WhatsApp CTA</div><div class="priority-desc" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Indian customers expect WhatsApp support. Removes pre-purchase hesitation for first-timers.</div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:70%;background:#16a34a"></div></div><div style="font-size:10px;color:var(--color-text-success);margin-top:2px">High</div></div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:10%;background:#16a34a"></div></div><div style="font-size:10px;color:var(--color-text-success);margin-top:2px">Very low</div></div></div>
+    <div class="priority-row"><div class="priority-name">Wishlist</div><div class="priority-desc" style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px">Captures intent for visitors not ready to buy. Wishlist → email retargeting is high-value sequence.</div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:60%;background:#d97706"></div></div><div style="font-size:10px;color:var(--color-text-warning);margin-top:2px">Medium</div></div><div style="border-left:0.5px solid var(--color-border-tertiary);padding-left:10px"><div class="bar-bg"><div class="bar-fill" style="width:55%;background:#d97706"></div></div><div style="font-size:10px;color:var(--color-text-warning);margin-top:2px">Medium</div></div></div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<div class="section">
+  <div class="section-title"><div class="section-num">8</div>Accessibility + inclusivity requirements</div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">WCAG 2.1 AA — minimum standard</div>
+      <div class="card-body">
+        All images need descriptive alt text (current site has product name only — not descriptive)<br><br>
+        Colour contrast ratio minimum 4.5:1 — forest green (#2D4A3E) on cream (#FAF8F4) passes. Gold (#C8A96E) on white fails — never use gold for body text.<br><br>
+        Focus states visible on all interactive elements — keyboard navigation must work completely<br><br>
+        Form inputs need associated labels — not just placeholder text<br><br>
+        Skip to content link at top of every page (already in our layout — keep it)
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">India-specific inclusivity</div>
+      <div class="card-body">
+        Price always in ₹ — never "$" or generic currency symbol<br><br>
+        Amounts formatted Indian style — ₹1,00,000 not ₹100,000 for large numbers. Use Intl.NumberFormat('en-IN')<br><br>
+        COD (Cash on Delivery) option — still used by 40%+ of Indian online shoppers, especially Tier 2+<br><br>
+        WhatsApp contact as primary support — not just email or phone<br><br>
+        Page load optimized for 4G mobile — not assuming high-speed WiFi<br><br>
+        Font size minimum 16px body — many users have older phones with smaller screens
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<div class="section">
+  <div class="section-title"><div class="section-num">9</div>Content + copywriting UX rules</div>
+  <div class="grid3">
+    <div class="card">
+      <div class="card-title">Voice and tone</div>
+      <div class="card-body">
+        Current voice: Corporate, generic, Wikipedia-style<br><br>
+        New voice: Warm, knowledgeable, direct. Like a friend who happens to know skincare chemistry.<br><br>
+        "Formulated for maximum purity" → "Made with one goal: skin that feels like yours again"<br><br>
+        "Donkey milk soap typically contains…" → "What's inside our Donkey Milk Soap — and why each ingredient is there"
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Product description structure</div>
+      <div class="card-body">
+        1. One-line brand promise specific to this product<br>
+        2. "Best for" — skin type + concern (oily, dry, pigmentation, sensitive)<br>
+        3. 3 key benefits — scannable bullets<br>
+        4. Ingredient story — not a list, a narrative<br>
+        5. How to use — numbered, simple<br>
+        6. Lab certification claim + cruelty-free badge<br><br>
+        Never use "high-quality" or "premium" — show, don't tell
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Microcopy that converts</div>
+      <div class="card-body">
+        ATC button: "Add to Cart" (not "Buy Now" — too aggressive for first touch)<br><br>
+        Cart empty: "Your cart is empty — but it doesn't have to be" + bestsellers<br><br>
+        Checkout: "You're almost there — just 2 steps to go"<br><br>
+        After add to cart: "Great choice! Also loved by people who bought this:"<br><br>
+        Wishlist: "Saved for later" not "Added to wishlist"<br><br>
+        Stock: "Only 5 left" — not "Low stock" (specific = more urgency)
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<div class="section">
+  <div class="section-title"><div class="section-num">10</div>Navigation + information architecture</div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="card-title" style="margin-bottom:8px">New navigation structure (flat, collection-based)</div>
+    <div style="font-size:12px;color:var(--color-text-secondary);font-family:var(--font-mono);line-height:2;padding:8px 0">
+      Home &nbsp;|&nbsp; <strong style="color:var(--color-text-primary)">Shop ▾</strong> (Face Care · Body Care · Hair Care · Combos · All Products) &nbsp;|&nbsp; About &nbsp;|&nbsp; Blog &nbsp;|&nbsp; Contact<br>
+      <span style="font-size:11px;color:var(--color-text-tertiary)">Current: Home · "Combo Offer's" · Best Seller's (with sub-products) · Contact Us · About Us — completely restructured</span>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">3-click rule — every product reachable in 3 clicks</div>
+      <div class="card-body">
+        Click 1: Homepage → Shop dropdown → Face Care<br>
+        Click 2: Collection page → click product card<br>
+        Click 3: PDP → Add to Cart<br><br>
+        Current site violates this — you need 4–5 clicks because nav goes to products, not collections, and there's no collection browsing.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Footer navigation — help customers who scroll to the bottom</div>
+      <div class="card-body">
+        Customers who reach the footer are either lost or highly interested. Give them everything:<br><br>
+        Shop: All 4 categories + combos<br>
+        Company: About · Blog · Ingredients page<br>
+        Help: Shipping · Returns · FAQ · Track order · Contact · WhatsApp<br><br>
+        "Love Your Body 365" tagline in footer brand column — reinforce brand voice at every touchpoint.
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>

@@ -1,0 +1,197 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .large-text-product-container {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .large-text-product-container {
+      min-height: 600px;
+    }
+  }
+
+  .bg-text {
+    font-size: 20vw;
+    font-weight: 700;
+    color: #f3f4f6;
+    line-height: 0.8;
+    text-transform: lowercase;
+    user-select: none;
+    white-space: nowrap;
+    z-index: 1;
+  }
+
+  .floating-product-large {
+    position: relative;
+    z-index: 10;
+    margin-top: -5vw;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 1.5rem;
+    width: 280px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+  }
+
+  @media screen and (min-width: 1024px) {
+    .floating-product-large {
+      position: absolute;
+      left: 15%;
+      bottom: 10%;
+      margin-top: 0;
+    }
+  }
+
+  .product-img-main {
+    position: absolute;
+    right: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 40vw;
+    max-width: 500px;
+    pointer-events: none;
+    display: none;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .product-img-main {
+      display: block;
+    }
+  }
+
+  .product-img-main img {
+    width: 100%;
+    height: auto;
+  }
+
+  .price-tag {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-right: 1rem;
+  }
+
+  .buy-now-btn {
+    background: #1a1a1a;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 100px;
+    font-size: 0.875rem;
+    text-decoration: none;
+  }
+{%- endstyle -%}
+
+<div class="large-text-product-container section-{{ section.id }}-padding">
+  <div class="bg-text">{{ section.settings.bg_text }}</div>
+  
+  <div class="product-img-main">
+    {%- if section.settings.main_image != blank -%}
+      <img src="{{ section.settings.main_image | image_url: width: 800 }}" alt="Main product" width="500" height="500">
+    {%- endif -%}
+  </div>
+
+  <div class="floating-product-large">
+    <div class="product-tag">{{ section.settings.product_tag }}</div>
+    <div class="arrow-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"></path></svg>
+    </div>
+    <h2 class="product-title">{{ section.settings.product_title }}</h2>
+    <div class="flex items-center mt-4">
+      <span class="price-tag">{{ section.settings.price }}</span>
+      <a href="{{ section.settings.product_link }}" class="buy-now-btn">Buy now</a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Large Text with Product",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "bg_text",
+      "label": "Background Text",
+      "default": "the act"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main Product Image (Right)"
+    },
+    {
+      "type": "header",
+      "content": "Product Card"
+    },
+    {
+      "type": "text",
+      "id": "product_tag",
+      "label": "Product Tag",
+      "default": "( for body )"
+    },
+    {
+      "type": "text",
+      "id": "product_title",
+      "label": "Product Title",
+      "default": "Body scrub coconut"
+    },
+    {
+      "type": "text",
+      "id": "price",
+      "label": "Price",
+      "default": "8 $"
+    },
+    {
+      "type": "url",
+      "id": "product_link",
+      "label": "Product Link"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Large Text with Product"
+    }
+  ]
+}
+{% endschema %}

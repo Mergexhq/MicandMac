@@ -1,128 +1,116 @@
-{% comment %}
-  Section: Trust Bar
-  - Displays brand trust signals below the hero
-  - Configurable icons and text
-{% endcomment %}
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
 
-<section class="trust-bar-section">
-  <div class="container">
-    <div class="trust-bar-grid">
-
-      <div class="trust-item">
-        <div class="trust-item__icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
+<div class="trust-bar bg-{{ section.settings.color_scheme }} section-{{ section.id }}-padding border-y border-gray-200" id="TrustBar-{{ section.id }}">
+  <div class="container px-4">
+    <div class="flex flex-wrap items-center justify-center gap-6 md:gap-12 lg:gap-24 text-center">
+      {%- for block in section.blocks -%}
+        <div class="trust-bar__item flex flex-col items-center max-w-[120px]" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon != blank -%}
+            <span class="trust-bar__icon text-2xl lg:text-3xl mb-2 text-primary" aria-hidden="true">{{ block.settings.icon }}</span>
+          {%- elsif block.settings.image != blank -%}
+            <img src="{{ block.settings.image | image_url: width: 60 }}" alt="" width="30" height="30" class="mb-2" loading="lazy">
+          {%- endif -%}
+          <span class="trust-bar__text text-xs md:text-sm font-medium tracking-wide uppercase">{{ block.settings.title }}</span>
         </div>
-        <div>
-          <strong>{{ section.settings.trust1_title | default: '100% Natural' }}</strong>
-          <p>{{ section.settings.trust1_sub | default: 'No parabens, sulfates or toxins' }}</p>
-        </div>
-      </div>
-
-      <div class="trust-item">
-        <div class="trust-item__icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-        </div>
-        <div>
-          <strong>{{ section.settings.trust2_title | default: 'Cruelty Free' }}</strong>
-          <p>{{ section.settings.trust2_sub | default: 'PETA certified, never tested on animals' }}</p>
-        </div>
-      </div>
-
-      <div class="trust-item">
-        <div class="trust-item__icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
-          </svg>
-        </div>
-        <div>
-          <strong>{{ section.settings.trust3_title | default: 'Made for India' }}</strong>
-          <p>{{ section.settings.trust3_sub | default: 'Formulated for Indian skin & climate' }}</p>
-        </div>
-      </div>
-
-      <div class="trust-item">
-        <div class="trust-item__icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
-          </svg>
-        </div>
-        <div>
-          <strong>{{ section.settings.trust4_title | default: 'Free Shipping' }}</strong>
-          <p>{{ section.settings.trust4_sub | default: 'On all orders above ₹999' }}</p>
-        </div>
-      </div>
-
+      {%- endfor -%}
     </div>
   </div>
-</section>
-
-<style>
-.trust-bar-section {
-  background: var(--color-forest);
-  padding-block: var(--space-10);
-}
-
-.trust-bar-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-8);
-}
-
-.trust-item {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-4);
-  color: var(--color-white);
-}
-
-.trust-item__icon {
-  flex-shrink: 0;
-  color: var(--color-gold-light);
-  margin-top: 2px;
-}
-
-.trust-item strong {
-  display: block;
-  font-size: var(--text-sm);
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  margin-bottom: var(--space-1);
-  color: var(--color-white);
-}
-
-.trust-item p {
-  font-size: var(--text-xs);
-  color: rgba(255,255,255,0.65);
-  line-height: 1.5;
-  margin: 0;
-}
-
-@media (max-width: 1023px) {
-  .trust-bar-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 479px) {
-  .trust-bar-grid { grid-template-columns: 1fr; gap: var(--space-6); }
-}
-</style>
+</div>
 
 {% schema %}
 {
   "name": "Trust Bar",
+  "tag": "section",
+  "class": "section",
   "settings": [
-    { "type": "text", "id": "trust1_title", "label": "Trust 1 — Title", "default": "100% Natural" },
-    { "type": "text", "id": "trust1_sub",   "label": "Trust 1 — Subtitle", "default": "No parabens, sulfates or toxins" },
-    { "type": "text", "id": "trust2_title", "label": "Trust 2 — Title", "default": "Cruelty Free" },
-    { "type": "text", "id": "trust2_sub",   "label": "Trust 2 — Subtitle", "default": "PETA certified, never tested on animals" },
-    { "type": "text", "id": "trust3_title", "label": "Trust 3 — Title", "default": "Made for India" },
-    { "type": "text", "id": "trust3_sub",   "label": "Trust 3 — Subtitle", "default": "Formulated for Indian skin & climate" },
-    { "type": "text", "id": "trust4_title", "label": "Trust 4 — Title", "default": "Free Shipping" },
-    { "type": "text", "id": "trust4_sub",   "label": "Trust 4 — Subtitle", "default": "On all orders above ₹999" }
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "gray-50",
+          "label": "Light Gray"
+        },
+        {
+          "value": "primary-light",
+          "label": "Primary Light"
+        }
+      ],
+      "default": "gray-50",
+      "label": "Color Scheme"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
   ],
-  "presets": [{ "name": "Trust Bar" }]
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Trust Item",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Emoji/Text Icon",
+          "default": "🌿"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom Image Icon (Overrides Emoji)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label",
+          "default": "100% Natural"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Bar",
+      "blocks": [
+        { "type": "trust_item", "settings": { "icon": "🌿", "title": "Vegan & Natural" } },
+        { "type": "trust_item", "settings": { "icon": "🐰", "title": "Cruelty Free" } },
+        { "type": "trust_item", "settings": { "icon": "🇮🇳", "title": "Made in India" } },
+        { "type": "trust_item", "settings": { "icon": "♻️", "title": "Sustainable" } }
+      ]
+    }
+  ]
 }
 {% endschema %}

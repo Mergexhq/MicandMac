@@ -1,0 +1,123 @@
+{% comment %}
+  Snippet: breadcrumb
+  Usage: {% render 'breadcrumb' %}
+  Auto-detects page context from Liquid template objects.
+  Outputs JSON-LD BreadcrumbList schema for SEO.
+{% endcomment %}
+
+{%- liquid
+  assign crumbs = ''
+-%}
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+
+    {%- comment %} Home — always first {%- endcomment %}
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a class="breadcrumb__link" href="{{ routes.root_url }}" itemprop="item">
+        <span itemprop="name">Home</span>
+      </a>
+      <meta itemprop="position" content="1">
+      <span class="breadcrumb__sep" aria-hidden="true">›</span>
+    </li>
+
+    {%- if template.name == 'product' -%}
+
+      {%- if collection -%}
+        <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a class="breadcrumb__link" href="{{ collection.url }}" itemprop="item">
+            <span itemprop="name">{{ collection.title }}</span>
+          </a>
+          <meta itemprop="position" content="2">
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+        </li>
+        <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span class="breadcrumb__current" itemprop="name">{{ product.title }}</span>
+          <meta itemprop="position" content="3">
+        </li>
+      {%- else -%}
+        <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span class="breadcrumb__current" itemprop="name">{{ product.title }}</span>
+          <meta itemprop="position" content="2">
+        </li>
+      {%- endif -%}
+
+    {%- elsif template.name == 'collection' -%}
+      <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="breadcrumb__current" itemprop="name">{{ collection.title }}</span>
+        <meta itemprop="position" content="2">
+      </li>
+
+    {%- elsif template.name == 'article' -%}
+      <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a class="breadcrumb__link" href="{{ blog.url }}" itemprop="item">
+          <span itemprop="name">{{ blog.title }}</span>
+        </a>
+        <meta itemprop="position" content="2">
+        <span class="breadcrumb__sep" aria-hidden="true">›</span>
+      </li>
+      <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="breadcrumb__current" itemprop="name">{{ article.title }}</span>
+        <meta itemprop="position" content="3">
+      </li>
+
+    {%- elsif template.name == 'page' -%}
+      <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="breadcrumb__current" itemprop="name">{{ page.title }}</span>
+        <meta itemprop="position" content="2">
+      </li>
+
+    {%- elsif template.name == 'policy' -%}
+      <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="breadcrumb__current" itemprop="name">{{ policy.title }}</span>
+        <meta itemprop="position" content="2">
+      </li>
+
+    {%- endif -%}
+
+  </ol>
+</nav>
+
+<style>
+.breadcrumb {
+  margin-bottom: var(--space-6);
+}
+
+.breadcrumb__list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  list-style: none;
+}
+
+.breadcrumb__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.breadcrumb__link {
+  font-size: var(--text-xs);
+  color: var(--color-text-light);
+  letter-spacing: 0.04em;
+  transition: color var(--transition-fast);
+}
+
+.breadcrumb__link:hover {
+  color: var(--color-forest);
+}
+
+.breadcrumb__sep {
+  font-size: var(--text-xs);
+  color: var(--color-text-light);
+  user-select: none;
+}
+
+.breadcrumb__current {
+  font-size: var(--text-xs);
+  color: var(--color-text-mid);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+</style>

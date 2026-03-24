@@ -1,0 +1,108 @@
+{% comment %}
+  Snippet: account-nav
+  Usage: {% render 'account-nav', current: 'orders' %}
+  Left sidebar navigation on all account pages
+{% endcomment %}
+
+{%- assign current = current | default: 'dashboard' -%}
+
+<nav class="account-nav" aria-label="Account navigation">
+  <ul class="account-nav__list">
+    <li>
+      <a
+        href="{{ routes.account_url }}"
+        class="account-nav__link {% if current == 'dashboard' %}is-active{% endif %}"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Dashboard
+      </a>
+    </li>
+    <li>
+      <a
+        href="{{ routes.account_url }}?tab=orders"
+        class="account-nav__link {% if current == 'orders' %}is-active{% endif %}"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        Orders
+      </a>
+    </li>
+    <li>
+      <a
+        href="/pages/wishlist"
+        class="account-nav__link {% if current == 'wishlist' %}is-active{% endif %}"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        Wishlist
+      </a>
+    </li>
+    <li>
+      <a
+        href="{{ routes.account_addresses_url }}"
+        class="account-nav__link {% if current == 'addresses' %}is-active{% endif %}"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+        Addresses
+      </a>
+    </li>
+    <li>
+      <a
+        href="{{ routes.account_logout_url }}"
+        class="account-nav__link account-nav__link--logout"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Log Out
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<style>
+.account-nav__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.account-nav__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-mid);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.account-nav__link:hover {
+  background: var(--color-cream);
+  color: var(--color-text-dark);
+}
+
+.account-nav__link.is-active {
+  background: var(--color-forest);
+  color: var(--color-white);
+}
+
+.account-nav__link--logout {
+  color: var(--color-burgundy);
+  margin-top: var(--space-4);
+}
+
+.account-nav__link--logout:hover {
+  background: rgba(128,0,32,0.08);
+  color: var(--color-burgundy);
+}
+</style>

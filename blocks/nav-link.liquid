@@ -1,0 +1,58 @@
+{% comment %}
+  Block: nav-link
+  Parent: sections/header.liquid mega-nav
+  Usage: {% render 'nav-link', block: block %}
+{% endcomment %}
+
+<li class="nav-link" {{ block.shopify_attributes }}>
+  {%- if block.settings.url != blank -%}
+    <a
+      href="{{ block.settings.url }}"
+      class="nav-link__anchor {% if block.settings.highlight %}nav-link__anchor--highlight{% endif %}"
+      {% if block.settings.new_window %}target="_blank" rel="noopener"{% endif %}
+    >
+      {%- if block.settings.badge != blank -%}
+        <span class="nav-link__badge badge badge--gold">{{ block.settings.badge }}</span>
+      {%- endif -%}
+      {{ block.settings.label }}
+    </a>
+  {%- else -%}
+    <span class="nav-link__anchor nav-link__anchor--heading">{{ block.settings.label }}</span>
+  {%- endif -%}
+</li>
+
+<style>
+.nav-link { list-style: none; }
+
+.nav-link__anchor {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-mid);
+  text-decoration: none;
+  padding: var(--space-2) 0;
+  transition: color var(--transition-fast);
+}
+
+.nav-link__anchor:hover { color: var(--color-forest); }
+
+.nav-link__anchor--highlight {
+  color: var(--color-burgundy);
+  font-weight: 500;
+}
+
+.nav-link__anchor--heading {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-light);
+  pointer-events: none;
+}
+
+.nav-link__badge {
+  font-size: 10px;
+  padding: 2px 6px;
+}
+</style>
