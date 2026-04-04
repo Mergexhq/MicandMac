@@ -7,7 +7,8 @@ const isDev = process.argv.includes('--watch');
 const buildOptions = {
   entryPoints: {
     'assets/theme': 'src/theme.ts',
-    'assets/cart':  'src/modules/cart.ts',
+    'assets/cart': 'src/modules/cart.ts',
+    'assets/hero-parallax': 'src/modules/hero-parallax.ts',
   },
   bundle: true,
   minify: !isDev,

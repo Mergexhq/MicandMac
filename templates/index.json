@@ -1,8 +1,19 @@
 {
   "sections": {
     "hero": {
-      "type": "hero-banner",
-      "settings": {}
+      "type": "the-act-hero",
+      "settings": {
+        "heading": "Your skin deserves more than promises.",
+        "show_hero_nav": false,
+        "mission_title": "Artisan-formulated. Lab-certified.",
+        "mission_text": "Every formula is a proprietary Owner's Blend — made in Coimbatore, tested in a lab.",
+        "product_tag": "BESTSELLER",
+        "product_title": "Donkey Milk Deep Hydration Soap",
+        "cta_label": "Shop Best Sellers",
+        "cta_url": "/collections/all",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
     },
     "trust": {
       "type": "trust-bar",
@@ -10,6 +21,10 @@
     },
     "featured_collection": {
       "type": "featured-collection",
+      "settings": {}
+    },
+    "brand_mission": {
+      "type": "brand-mission",
       "settings": {}
     },
     "ingredients": {
@@ -20,8 +35,12 @@
       "type": "testimonials",
       "settings": {}
     },
-    "instagram": {
-      "type": "instagram-feed",
+    "faq": {
+      "type": "faq-accordion",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter-cta",
       "settings": {}
     }
   },
@@ -29,8 +48,10 @@
     "hero",
     "trust",
     "featured_collection",
+    "brand_mission",
     "ingredients",
     "testimonials",
-    "instagram"
+    "faq",
+    "newsletter"
   ]
 }

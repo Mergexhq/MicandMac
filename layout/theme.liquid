@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#2D4A3E">
+  <meta name="theme-color" content="#4B2A31">
 
   <title>
     {{ page_title }}
@@ -69,6 +69,15 @@
 
   <!-- Cart JS -->
   <script src="{{ 'cart.js' | asset_url }}" defer></script>
+
+  <!-- Cinematic Animation Engine: GSAP + Three.js + Scroll Reveals -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.min.js"></script>
+  <script src="{{ 'cinematic.js' | asset_url }}" defer></script>
+
+  <!-- WhatsApp Sticky CTA -->
+  {%- render 'whatsapp-sticky' -%}
 
 </body>
 </html>

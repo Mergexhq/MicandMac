@@ -1,462 +1,215 @@
 {% comment %}
-  Section: Header
-  - Sticky header with scroll effect
-  - Desktop nav + mobile hamburger
-  - Cart icon with item count
-  - Search toggle
+  Section: Header — 3-Tier Layout
+  - Announcement bar: sits above (separate section)
+  - Middle tier: Logo strip on Soft Blush bg
+  - Bottom tier: Desktop nav on Deep Garnet bg
+  - All CSS lives in assets/base.css
 {% endcomment %}
-
-<header class="site-header" id="SiteHeader">
-  <div class="container mx-auto">
-    <div class="site-header__inner flex items-center justify-between py-4">
-
-      <!-- Mobile: Hamburger -->
-      <button class="site-header__burger md:hidden" id="NavToggle" aria-label="Open navigation" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-
-      <!-- Left: Logo/Brand Name -->
-      <div class="site-header__logo flex-1 flex justify-start">
-        <a href="{{ routes.root_url }}" class="site-header__logo-link">
-          {%- if section.settings.logo != blank -%}
-             <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}" width="120" height="40" loading="eager">
-          {%- else -%}
-            <span class="site-header__logo-text text-xl font-medium">Mic & Mac</span>
-          {%- endif -%}
-        </a>
-      </div>
-
-      <!-- Center: Desktop Nav -->
-      <nav class="site-nav hidden md:flex flex-1 justify-center" aria-label="Main navigation">
-        <ul class="site-nav__list flex items-center gap-8">
-          {%- for link in section.settings.menu.links -%}
-            <li class="site-nav__item">
-              <a href="{{ link.url }}" class="site-nav__link text-sm font-medium hover:text-opacity-70 transition-opacity {% if link.active %}is-active{% endif %}">
-                {{ link.title }}
-              </a>
-            </li>
-          {%- endfor -%}
-        </ul>
-      </nav>
-
-      <!-- Right: Header Actions -->
-      <div class="site-header__actions flex-1 flex justify-end items-center gap-4">
-        <!-- Sign In -->
-        <a href="{{ routes.account_url }}" class="site-header__action-btn text-sm font-medium" aria-label="Account">
-          Sign in
-        </a>
-
-        <!-- Wishlist -->
-        <a href="/pages/wishlist" class="site-header__action-btn" aria-label="Wishlist">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-        </a>
-
-        <!-- Cart -->
-        <button class="site-header__action-btn site-header__cart relative" id="CartToggle" aria-label="Cart">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
-          </svg>
-          {%- if cart.item_count > 0 -%}
-            <span class="cart-count absolute -top-1 -right-1 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">{{ cart.item_count }}</span>
-          {%- endif -%}
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Search Bar (hidden by default) -->
-  <div class="site-header__search" id="SearchBar" aria-hidden="true">
-    <div class="container">
-      <form action="{{ routes.search_url }}" method="get" class="search-form" role="search">
-        <input type="hidden" name="type" value="product">
-        <input
-          class="search-form__input"
-          type="search"
-          name="q"
-          placeholder="Search for products, ingredients..."
-          autocomplete="off"
-          aria-label="Search"
-        >
-        <button type="submit" class="search-form__btn" aria-label="Submit search">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-          </svg>
-        </button>
-        <button type="button" class="search-form__close" id="SearchClose" aria-label="Close search">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <path d="M18 6L6 18M6 6l12 12"/>
-          </svg>
-        </button>
-      </form>
-    </div>
-  </div>
-
-</header>
 
 <!-- Mobile Navigation Drawer -->
 <div class="mobile-nav" id="MobileNav" aria-hidden="true">
   <div class="mobile-nav__header">
-    <a href="{{ routes.root_url }}" class="site-header__logo-text">{{ shop.name }}</a>
+    <a href="{{ routes.root_url }}" class="mobile-nav__logo">MIC & MAC</a>
     <button class="mobile-nav__close" id="NavClose" aria-label="Close menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
         <path d="M18 6L6 18M6 6l12 12"/>
       </svg>
     </button>
   </div>
-  <nav>
+  <nav class="mobile-nav__nav">
     <ul class="mobile-nav__list">
-      {%- for link in section.settings.menu.links -%}
-        <li class="mobile-nav__item">
-          <a href="{{ link.url }}" class="mobile-nav__link {% if link.active %}is-active{% endif %}">
-            {{ link.title }}
-          </a>
-          {%- if link.links.size > 0 -%}
-            <ul class="mobile-nav__sub">
-              {%- for child in link.links -%}
-                <li>
-                  <a href="{{ child.url }}" class="mobile-nav__sub-link {% if child.active %}is-active{% endif %}">
-                    {{ child.title }}
-                  </a>
-                </li>
-              {%- endfor -%}
-            </ul>
-          {%- endif -%}
-        </li>
-      {%- endfor -%}
+      <li class="mobile-nav__item">
+        <a href="{{ routes.root_url }}" class="mobile-nav__link{% if request.path == '/' %} is-active{% endif %}">Home</a>
+      </li>
+      <li class="mobile-nav__item">
+        <a href="/collections/combo-offers" class="mobile-nav__link{% if request.path contains 'combo' %} is-active{% endif %}">Combo Offers</a>
+      </li>
+      <li class="mobile-nav__item">
+        <a href="/collections/all" class="mobile-nav__link{% if request.path contains 'collections' %} is-active{% endif %}">Best Sellers</a>
+        <ul class="mobile-nav__sub">
+          <li><a href="/products/donkey-milk-soap-100gm" class="mobile-nav__sub-link">Donkey Milk Soap</a></li>
+          <li><a href="/products/redwine-soap-100gm" class="mobile-nav__sub-link">Red Wine Radiance</a></li>
+          <li><a href="/products/skjn-whitening-soap-100gm" class="mobile-nav__sub-link">Skin Radiance Glow</a></li>
+        </ul>
+      </li>
+      <li class="mobile-nav__item">
+        <a href="/pages/about-us" class="mobile-nav__link{% if request.path contains 'about' %} is-active{% endif %}">About Us</a>
+      </li>
+      <li class="mobile-nav__item">
+        <a href="/pages/contact-us" class="mobile-nav__link{% if request.path contains 'contact' %} is-active{% endif %}">Contact</a>
+      </li>
     </ul>
   </nav>
   <div class="mobile-nav__footer">
-    <a href="{{ routes.account_url }}" class="btn btn--secondary btn--full">My Account</a>
+    <a href="{{ routes.account_url }}" class="mobile-nav__account">My Account</a>
   </div>
 </div>
 
 <!-- Overlay -->
 <div class="overlay" id="SiteOverlay"></div>
 
-<style>
-/* === HEADER === */
-.site-header {
-  position: sticky;
-  top: 30px; /* Aligned with slimmer announcement bar */
-  z-index: var(--z-nav);
-  background: #FAF9F6;
-  border-bottom: 1px solid #F3F1ED;
-  transition: border-color var(--transition-base), box-shadow var(--transition-base), background var(--transition-base);
-}
+<!-- ===== HEADER ===== -->
+<header class="site-header" id="SiteHeader">
 
-.site-header.is-scrolled {
-  border-color: var(--color-beige);
-  box-shadow: var(--shadow-sm);
-  background: rgba(250, 248, 244, 0.97);
-  backdrop-filter: blur(8px);
-}
+  <!-- Tier 2: Logo strip (Soft Blush bg) -->
+  <div class="site-header__middle">
+    <div class="container">
+      <div class="site-header__inner">
 
-.site-header__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 72px;
-  gap: var(--space-8);
-}
+        <!-- Mobile: Hamburger -->
+        <button class="site-header__burger" id="NavToggle" aria-label="Open navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
 
-/* Logo */
-.site-header__logo {
-  flex-shrink: 0;
-}
+        <!-- Left: Tagline (desktop only) -->
+        <div class="site-header__tagline">
+          <span class="tagline-text">LOVE YOUR SKIN. EVERY DAY. 365.</span>
+        </div>
 
-.site-header__logo-text {
-  font-family: var(--font-display);
-  font-size: var(--text-2xl);
-  font-weight: 300;
-  color: var(--color-forest);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
+        <!-- Center: Logo -->
+        <div class="site-header__logo">
+          <a href="{{ routes.root_url }}" class="site-header__logo-link">
+            {%- if section.settings.logo != blank -%}
+              <img
+                src="{{ section.settings.logo | image_url: width: 280 }}"
+                alt="{{ shop.name }}"
+                width="{{ section.settings.logo_width | default: 160 }}"
+                height="auto"
+                loading="eager"
+                class="site-logo-img"
+              >
+            {%- else -%}
+              <span class="site-header__logo-text">MIC &amp; MAC</span>
+            {%- endif -%}
+          </a>
+        </div>
 
-/* Desktop Nav */
-.site-nav {
-  display: none;
-  flex: 1;
-  justify-content: center;
-}
+        <!-- Right: Action icons -->
+        <div class="site-header__actions">
+          <!-- Search -->
+          <button class="site-header__action-btn" id="SearchToggle" aria-label="Search">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+            </svg>
+          </button>
 
-.site-nav__list {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-}
+          <!-- Wishlist (desktop only) -->
+          <a href="/pages/wishlist" class="site-header__action-btn wishlist-btn" aria-label="Wishlist">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </a>
 
-.site-nav__item {
-  position: relative;
-}
+          <!-- Cart -->
+          <button class="site-header__action-btn site-header__cart" id="CartToggle" aria-label="Cart">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+            {%- if cart.item_count > 0 -%}
+              <span class="cart-count" id="CartCount">{{ cart.item_count }}</span>
+            {%- else -%}
+              <span class="cart-count cart-count--hidden" id="CartCount"></span>
+            {%- endif -%}
+          </button>
+        </div>
 
-.site-nav__link {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: var(--space-2) var(--space-4);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: var(--color-text-dark);
-  border-radius: var(--radius-pill);
-  transition: color var(--transition-fast), background var(--transition-fast);
-}
+      </div>
+    </div>
+  </div>
 
-.site-nav__link:hover,
-.site-nav__link.is-active {
-  color: var(--color-forest);
-  background: rgba(45, 74, 62, 0.06);
-}
+  <!-- Tier 3: Navigation strip (Deep Garnet bg) — desktop only -->
+  <div class="site-header__bottom">
+    <div class="container">
+      <nav class="site-nav" aria-label="Main navigation">
+        <ul class="site-nav__list">
 
-/* Dropdown */
-.site-nav__dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
-  min-width: 200px;
-  background: var(--color-white);
-  border: 1px solid var(--color-beige);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  padding: var(--space-2);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(-50%) translateY(8px);
-  transition: all var(--transition-base);
-  pointer-events: none;
-}
+          <!-- Home -->
+          <li class="site-nav__item">
+            <a href="{{ routes.root_url }}" class="site-nav__link{% if request.path == '/' %} is-active{% endif %}">Home</a>
+          </li>
 
-.site-nav__item.has-dropdown:hover .site-nav__dropdown {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
-  pointer-events: all;
-}
+          <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
-.site-nav__dropdown-link {
-  display: block;
-  padding: var(--space-3) var(--space-4);
-  font-size: var(--text-sm);
-  color: var(--color-text-dark);
-  border-radius: var(--radius-md);
-  transition: background var(--transition-fast), color var(--transition-fast);
-}
+          <!-- Combo Offers -->
+          <li class="site-nav__item">
+            <a href="/collections/combo-offers" class="site-nav__link{% if request.path contains 'combo' %} is-active{% endif %}">Combo Offers</a>
+          </li>
 
-.site-nav__dropdown-link:hover {
-  background: var(--color-cream);
-  color: var(--color-forest);
-}
+          <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
-/* Actions */
-.site-header__actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
+          <!-- Best Sellers (dropdown) -->
+          <li class="site-nav__item">
+            <a href="/collections/all" class="site-nav__link{% if request.path contains 'collections' %} is-active{% endif %}">
+              Best Sellers
+              <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </a>
+            <ul class="site-nav__dropdown">
+              <div class="site-nav__dropdown-bridge"></div>
+              <li>
+                <a href="/products/donkey-milk-soap-100gm" class="site-nav__dropdown-link">Donkey Milk Soap</a>
+              </li>
+              <li>
+                <a href="/products/redwine-soap-100gm" class="site-nav__dropdown-link">Red Wine Radiance</a>
+              </li>
+              <li>
+                <a href="/products/skjn-whitening-soap-100gm" class="site-nav__dropdown-link">Skin Radiance Glow</a>
+              </li>
+            </ul>
+          </li>
 
-.site-header__action-btn {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  color: var(--color-text-dark);
-  transition: background var(--transition-fast), color var(--transition-fast);
-  position: relative;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
+          <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
-.site-header__action-btn:hover {
-  background: rgba(45, 74, 62, 0.08);
-  color: var(--color-forest);
-}
+          <!-- About Us -->
+          <li class="site-nav__item">
+            <a href="/pages/about-us" class="site-nav__link{% if request.path contains 'about' %} is-active{% endif %}">About Us</a>
+          </li>
 
-/* Cart Count Badge */
-.cart-count {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 16px;
-  height: 16px;
-  background: var(--color-gold);
-  color: var(--color-forest-dark);
-  font-size: 10px;
-  font-weight: 700;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  transition: transform var(--transition-spring);
-}
+          <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
-.cart-count--hidden {
-  display: none;
-}
+          <!-- Contact -->
+          <li class="site-nav__item">
+            <a href="/pages/contact-us" class="site-nav__link{% if request.path contains 'contact' %} is-active{% endif %}">Contact</a>
+          </li>
 
-.cart-count.bump {
-  transform: scale(1.4);
-}
+        </ul>
+      </nav>
+    </div>
+  </div>
 
-/* Search Bar */
-.site-header__search {
-  border-top: 1px solid var(--color-beige);
-  padding-block: var(--space-4);
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height var(--transition-base), padding var(--transition-base);
-}
+  <!-- Search bar (slides open) -->
+  <div class="site-header__search" id="SearchBar" aria-hidden="true">
+    <div class="container">
+      <form action="{{ routes.search_url }}" method="get" class="search-form" role="search">
+        <input type="hidden" name="type" value="product">
+        <div class="search-form__inner">
+          <input
+            class="search-form__input"
+            type="search"
+            name="q"
+            placeholder="Search for skincare, body care..."
+            autocomplete="off"
+            aria-label="Search"
+          >
+          <button type="submit" class="search-form__btn" aria-label="Submit search">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+            </svg>
+          </button>
+          <button type="button" class="search-form__close" id="SearchClose" aria-label="Close search">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-.site-header__search.is-open {
-  max-height: 80px;
-}
-
-.search-form {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  background: var(--color-white);
-  border: 1.5px solid var(--color-beige);
-  border-radius: var(--radius-pill);
-  padding: 0 var(--space-4);
-  max-width: 600px;
-  margin-inline: auto;
-}
-
-.search-form__input {
-  flex: 1;
-  height: 48px;
-  border: none;
-  background: none;
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  color: var(--color-text-dark);
-  outline: none;
-}
-
-.search-form__input::placeholder { color: var(--color-text-light); }
-.search-form__btn, .search-form__close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--color-text-mid);
-  display: flex;
-  align-items: center;
-  padding: var(--space-2);
-  transition: color var(--transition-fast);
-}
-.search-form__btn:hover, .search-form__close:hover { color: var(--color-forest); }
-
-/* Burger */
-.site-header__burger {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  width: 28px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: var(--space-2);
-}
-
-.site-header__burger span {
-  display: block;
-  height: 1.5px;
-  background: var(--color-text-dark);
-  border-radius: 2px;
-  transition: all var(--transition-base);
-  transform-origin: center;
-}
-
-.site-header__burger.is-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-.site-header__burger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.site-header__burger.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-/* Mobile Nav Drawer */
-.mobile-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: min(320px, 85vw);
-  height: 100vh;
-  background: var(--color-white);
-  z-index: var(--z-modal);
-  transform: translateX(-100%);
-  transition: transform var(--transition-slow);
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-}
-
-.mobile-nav.is-open {
-  transform: translateX(0);
-  box-shadow: var(--shadow-xl);
-}
-
-.mobile-nav__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-6) var(--space-6) var(--space-4);
-  border-bottom: 1px solid var(--color-beige);
-}
-
-.mobile-nav__close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--color-text-dark);
-  padding: var(--space-2);
-}
-
-.mobile-nav__list {
-  padding: var(--space-4) var(--space-6);
-  flex: 1;
-}
-
-.mobile-nav__link {
-  display: block;
-  padding: var(--space-4) 0;
-  font-size: var(--text-lg);
-  font-family: var(--font-display);
-  color: var(--color-text-dark);
-  border-bottom: 1px solid var(--color-beige);
-  transition: color var(--transition-fast);
-}
-
-.mobile-nav__link:hover, .mobile-nav__link.is-active { color: var(--color-forest); }
-
-.mobile-nav__sub {
-  padding: var(--space-2) 0 var(--space-2) var(--space-4);
-}
-
-.mobile-nav__sub-link {
-  display: block;
-  padding: var(--space-2) 0;
-  font-size: var(--text-base);
-  color: var(--color-text-mid);
-}
-
-.mobile-nav__sub-link:hover { color: var(--color-forest); }
-
-.mobile-nav__footer {
-  padding: var(--space-6);
-  border-top: 1px solid var(--color-beige);
-}
-
-/* Responsive */
-@media (min-width: 1024px) {
-  .site-header__burger { display: none; }
-  .site-nav { display: flex; }
-}
-</style>
+</header>
 
 {% schema %}
 {
@@ -470,12 +223,12 @@
     {
       "type": "range",
       "id": "logo_width",
-      "label": "Logo width",
+      "label": "Logo width (px)",
       "min": 80,
-      "max": 240,
+      "max": 280,
       "step": 10,
       "unit": "px",
-      "default": 120
+      "default": 160
     },
     {
       "type": "link_list",

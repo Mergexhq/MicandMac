@@ -6,44 +6,50 @@
 
 /* ---- CSS VARIABLES (Design Tokens) ---- */
 :root {
-  /* ---- Brand colours (from packaging) ---- */
-  --color-burgundy:         #4A1040;  /* Primary — CTAs, header, nav */
-  --color-burgundy-hover:   #7A2060;  /* Button hover */
-  --color-plum:             #2A1520;  /* Body text, headings, darkest bg */
-  --color-gold:             #B8924A;  /* Accent — badges, eyebrows, icons, stars */
-  --color-gold-light:       #D4A96A;  /* Gold on dark backgrounds */
-  --color-gold-dark:        #9C7A4A;  /* Small gold captions */
+  /* ---- Mic & Mac Brand Palette (from Layout Guide) ---- */
+  --mm-soft-blush:       #F3E8E4;  /* Page & header middle strip bg */
+  --mm-dark-espresso:    #2E1F1A;  /* Body text, footer bg, announcement bar bg */
+  --mm-deep-garnet:      #4B2A31;  /* Logo, headlines, nav strip bg, CTA buttons */
+  --mm-terracotta-rose:  #D18E82;  /* Hover states, accents, sale tags */
+  --mm-champagne-gold:   #D4AF37;  /* Dividers, icons, active nav, star ratings */
+
+  /* ---- Semantic aliases (used by all sections) ---- */
+  --color-burgundy:         var(--mm-deep-garnet);
+  --color-burgundy-hover:   var(--mm-terracotta-rose);
+  --color-plum:             var(--mm-dark-espresso);
+  --color-gold:             var(--mm-champagne-gold);
+  --color-gold-light:       #E0C96A;  /* Gold on dark backgrounds */
+  --color-gold-dark:        #B89A2A;  /* Small gold captions */
 
   /* ---- Background colours ---- */
-  --color-bg-page:          #FDFAF6;  /* Pearl white — main page bg */
-  --color-bg-cream:         #F5ECD7;  /* Cream — section bg, cards */
-  --color-bg-warm:          #EDD9B8;  /* Warm cream — hover, selected */
-  --color-bg-blush:         #E8C8C0;  /* Blush — testimonials, subtle sections */
-  --color-bg-dark:          #4A1040;  /* Footer, trust bar, promo sections */
-  --color-bg-darkest:       #2A1520;  /* Announcement bar */
+  --color-bg-page:          var(--mm-soft-blush);   /* Main page background */
+  --color-bg-cream:         #F5ECD7;  /* Section bg, cards */
+  --color-bg-warm:          #EDD9B8;  /* Hover, selected states */
+  --color-bg-blush:         var(--mm-soft-blush);  /* Testimonials, subtle sections */
+  --color-bg-dark:          var(--mm-deep-garnet); /* Footer, trust bar — Deep Garnet */
+  --color-bg-darkest:       var(--mm-dark-espresso); /* Announcement bar */
 
   /* ---- Text colours ---- */
-  --color-text-primary:     #2A1520;  /* Headings, product titles — 12.4:1 on page */
-  --color-text-secondary:   #5C3D2E;  /* Body text, descriptions — warm brown */
+  --color-text-primary:     var(--mm-dark-espresso); /* Headings, product titles */
+  --color-text-secondary:   #5C3D2E;  /* Body text, descriptions */
   --color-text-muted:       #A8957E;  /* Captions, compare price, meta */
-  --color-text-accent:      #B8924A;  /* Eyebrows, vendor labels — decorative only */
-  --color-text-on-dark:     #F5ECD7;  /* Text on burgundy/dark backgrounds */
-  --color-text-gold-on-dark:#D4A96A;  /* Gold text on dark bg — 6.1:1 safe */
+  --color-text-accent:      var(--mm-champagne-gold); /* Decorative eyebrows */
+  --color-text-on-dark:     var(--mm-soft-blush);  /* Text on dark backgrounds */
+  --color-text-gold-on-dark:var(--mm-champagne-gold); /* Gold on dark */
 
   /* ---- Borders ---- */
-  --color-border-default:   #E8DDD0;  /* Cards, inputs, dividers */
-  --color-border-accent:    #D4A96A;  /* Focus states, featured cards */
+  --color-border-default:   #E8DDD0;
+  --color-border-accent:    var(--mm-champagne-gold);
 
   /* ---- Semantic colours ---- */
-  --color-success:          #2D7A4A;  /* In stock, success states */
-  --color-error:            #C0392B;  /* Errors, sold out */
-  --color-warning:          #B8924A;  /* Low stock — reuses gold */
-  --color-info:             #4A8FA8;  /* Info banners, tips */
+  --color-success:          #2D7A4A;
+  --color-error:            #C0392B;
+  --color-warning:          var(--mm-champagne-gold);
+  --color-info:             #4A8FA8;
 
-  /* ---- Legacy aliases (keep sections compiling) ---- */
-  /* These map old names to new tokens so older section files still work */
-  --color-forest:           var(--color-burgundy);
-  --color-forest-dark:      var(--color-burgundy-hover);
+  /* ---- Legacy aliases (keep older sections compiling) ---- */
+  --color-forest:           var(--mm-deep-garnet);
+  --color-forest-dark:      var(--mm-terracotta-rose);
   --color-forest-light:     var(--color-gold-dark);
   --color-beige:            var(--color-bg-cream);
   --color-white:            var(--color-bg-page);
@@ -588,21 +594,471 @@ p {
 
 
 /* ---- ANNOUNCEMENT BAR ---- */
-/* Deep plum bg · gold-light text (6.1:1 contrast pass) */
+/* Dark Espresso bg · Champagne Gold text */
 .announcement-bar {
-  background: var(--color-bg-darkest);
-  color: var(--color-gold-light);
+  background: var(--mm-dark-espresso);
+  color: var(--mm-champagne-gold);
   text-align: center;
-  padding: var(--space-2) var(--space-4);
   font-size: var(--text-xs);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 500;
 }
-
+.announcement-bar__link,
 .announcement-bar a {
-  color: var(--color-text-on-dark);
-  text-decoration: underline;
+  color: var(--mm-champagne-gold);
+  opacity: 0.9;
+  text-decoration: none;
+}
+.announcement-bar__link:hover,
+.announcement-bar a:hover {
+  opacity: 1;
+}
+
+/* ============================================
+   SITE HEADER — 3-TIER LAYOUT
+   Tier 1: Announcement bar (handled above)
+   Tier 2: Middle logo strip (Soft Blush bg)
+   Tier 3: Bottom nav strip (Deep Garnet bg)
+   ============================================ */
+
+.site-header {
+  position: sticky;
+  top: 30px;
+  z-index: var(--z-nav);
+  background: var(--mm-soft-blush);
+  transition: box-shadow var(--transition-base), background var(--transition-base);
+}
+.site-header.is-scrolled {
+  box-shadow: 0 4px 15px rgba(46, 31, 26, 0.1);
+  background: rgba(243, 232, 228, 0.98);
+  backdrop-filter: blur(8px);
+}
+
+/* Middle tier: Logo strip */
+.site-header__middle {
+  background: var(--mm-soft-blush);
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+}
+
+/* Tagline — desktop only */
+.site-header__tagline {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+.tagline-text {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-weight: 500;
+  color: var(--mm-dark-espresso);
+  opacity: 0.45;
+  font-family: var(--font-body);
+}
+
+/* Logo */
+.site-header__logo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.site-header__logo-link {
+  text-decoration: none;
+}
+.site-logo-img {
+  object-fit: contain;
+  max-height: 48px;
+  width: auto;
+}
+.site-header__logo-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mm-deep-garnet);
+  text-decoration: none;
+  display: block;
+}
+
+/* Actions (search, wishlist, cart) */
+.site-header__actions {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.site-header__action-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--mm-deep-garnet);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  text-decoration: none;
+}
+.site-header__action-btn:hover {
+  background: rgba(46, 31, 26, 0.06);
+  transform: translateY(-1px);
+}
+
+/* Cart badge */
+.cart-count {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  font-size: 9px;
+  border-radius: 50%;
+  width: 17px;
+  height: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  line-height: 1;
+  background-color: var(--mm-champagne-gold);
+  color: var(--mm-dark-espresso);
+  transition: transform var(--transition-spring);
+}
+.cart-count--hidden { display: none; }
+.cart-count.bump { transform: scale(1.4); }
+
+/* Bottom tier: desktop nav strip */
+.site-header__bottom {
+  background-color: var(--mm-deep-garnet);
+}
+.site-nav {
+  padding: 13px 0;
+}
+.site-nav__list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+}
+.site-nav__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.site-nav__link {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+  color: var(--mm-soft-blush);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 2px;
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+}
+.site-nav__link.is-active {
+  color: var(--mm-champagne-gold);
+}
+.site-nav__link:hover {
+  color: var(--mm-terracotta-rose);
+}
+.nav-chevron {
+  opacity: 0.7;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+/* Dropdown */
+.site-nav__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 12px;
+  width: 220px;
+  background-color: var(--mm-soft-blush);
+  border: 1px solid rgba(46, 31, 26, 0.1);
+  box-shadow: 0 12px 24px rgba(46, 31, 26, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+  transform: translateX(-50%) translateY(4px);
+  z-index: 50;
+  border-radius: 6px;
+  list-style: none;
+  padding: 8px 0;
+  pointer-events: none;
+}
+.site-nav__item:hover .site-nav__dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: all;
+}
+.site-nav__dropdown-bridge {
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  height: 12px;
+}
+.site-nav__dropdown-link {
+  display: block;
+  padding: 10px 18px;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  color: var(--mm-dark-espresso);
+  text-decoration: none;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.site-nav__dropdown-link:hover {
+  background-color: var(--mm-deep-garnet);
+  color: var(--mm-soft-blush);
+}
+
+/* Separator dot */
+.site-nav__separator {
+  margin: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.site-nav__separator span {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: var(--mm-champagne-gold);
+  opacity: 0.55;
+  display: inline-block;
+}
+
+/* Search bar */
+.site-header__search {
+  background-color: var(--mm-soft-blush);
+  border-top: 1px solid rgba(46, 31, 26, 0.1);
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease;
+}
+.site-header__search.is-open {
+  max-height: 110px;
+}
+.search-form {
+  padding: 20px 0;
+}
+.search-form__inner {
+  display: flex;
+  align-items: center;
+  max-width: 780px;
+  margin: 0 auto;
+  border-bottom: 2px solid var(--mm-deep-garnet);
+  padding-bottom: 6px;
+  position: relative;
+}
+.search-form__input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--mm-dark-espresso);
+  font-size: 18px;
+  font-weight: 400;
+  font-family: var(--font-body);
+  height: 44px;
+}
+.search-form__input::placeholder {
+  color: var(--mm-dark-espresso);
+  opacity: 0.4;
+}
+.search-form__btn {
+  background: none;
+  border: none;
+  color: var(--mm-deep-garnet);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+}
+.search-form__close {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 0;
+  top: -20px;
+  color: var(--mm-dark-espresso);
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+.search-form__close:hover { opacity: 1; }
+
+/* Hamburger burger button */
+.site-header__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 8px;
+  flex-shrink: 0;
+}
+.site-header__burger span {
+  display: block;
+  height: 1.5px;
+  width: 100%;
+  background: var(--mm-deep-garnet);
+  border-radius: 2px;
+  transition: all var(--transition-base);
+  transform-origin: left center;
+}
+.site-header__burger.is-open span:nth-child(1) { transform: rotate(42deg); }
+.site-header__burger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.site-header__burger.is-open span:nth-child(3) { transform: rotate(-42deg); }
+
+/* Mobile nav drawer */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: min(320px, 85vw);
+  height: 100vh;
+  background-color: var(--mm-soft-blush);
+  z-index: var(--z-modal);
+  transform: translateX(-100%);
+  transition: transform var(--transition-slow);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.mobile-nav.is-open {
+  transform: translateX(0);
+  box-shadow: 10px 0 30px rgba(46, 31, 26, 0.12);
+}
+.mobile-nav__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid rgba(46, 31, 26, 0.1);
+}
+.mobile-nav__logo {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 20px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mm-deep-garnet);
+  text-decoration: none;
+}
+.mobile-nav__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--mm-deep-garnet);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+.mobile-nav__nav {
+  flex: 1;
+  padding-top: 8px;
+}
+.mobile-nav__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.mobile-nav__item {
+  border-bottom: 1px solid rgba(46, 31, 26, 0.06);
+  margin: 0 24px;
+}
+.mobile-nav__link {
+  display: block;
+  padding: 18px 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+  color: var(--mm-dark-espresso);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  font-family: var(--font-body);
+}
+.mobile-nav__link.is-active,
+.mobile-nav__link:hover { color: var(--mm-terracotta-rose); }
+.mobile-nav__sub {
+  list-style: none;
+  padding: 0 0 12px 12px;
+  margin: 0;
+}
+.mobile-nav__sub-link {
+  display: block;
+  padding: 10px 0;
+  font-size: 13px;
+  color: var(--mm-dark-espresso);
+  opacity: 0.65;
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+.mobile-nav__sub-link.is-active,
+.mobile-nav__sub-link:hover { opacity: 1; color: var(--mm-terracotta-rose); }
+.mobile-nav__footer {
+  padding: 20px 24px;
+  border-top: 1px solid rgba(46, 31, 26, 0.1);
+}
+.mobile-nav__account {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 14px 0;
+  background-color: var(--mm-deep-garnet);
+  color: var(--mm-soft-blush);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  font-size: 11px;
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+.mobile-nav__account:hover { opacity: 0.88; }
+
+/* Wishlist btn hidden on mobile by default */
+.wishlist-btn { display: none; }
+
+/* Responsive */
+@media (min-width: 1024px) {
+  .site-header__burger { display: none !important; }
+  .site-header__bottom { display: block; }
+  .site-header__tagline { display: flex; }
+  .wishlist-btn { display: flex; }
+  .site-header__logo { justify-content: center; }
+}
+@media (max-width: 1023px) {
+  .site-header__burger { display: flex; }
+  .site-header__bottom { display: none; }
+  .site-header__tagline { display: none; }
+  .site-header__logo { justify-content: flex-start; }
 }
 
 

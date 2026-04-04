@@ -23,7 +23,7 @@
             >
           </a>
         {%- else -%}
-          <a href="{{ routes.root_url }}" class="footer__logo-text">{{ shop.name }}</a>
+          <a href="{{ routes.root_url }}" class="footer__logo-text" data-footer-3d>{{ shop.name }}</a>
         {%- endif -%}
 
         {%- if section.settings.brand_desc != blank -%}
@@ -146,11 +146,28 @@
 
     </div><!-- /.footer__top -->
 
+    <!-- Trust seals row -->
+    <div class="footer__trust-seals">
+      <span class="footer__seal">✦ Lab-Certified</span>
+      <span class="footer__seal-divider">·</span>
+      <span class="footer__seal">✦ Sulfate-Free</span>
+      <span class="footer__seal-divider">·</span>
+      <span class="footer__seal">✦ Cruelty-Free</span>
+      <span class="footer__seal-divider">·</span>
+      <span class="footer__seal">✦ Made in India 🇮🇳</span>
+    </div>
+
     <!-- Bottom: copyright + payment -->
     <div class="footer__bottom">
       <p class="footer__copyright">
-        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved. &nbsp;·&nbsp; Made in India 🇮🇳
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.
       </p>
+
+      <!-- Operational Status -->
+      <div class="footer__status">
+        <span class="footer__status-dot" aria-hidden="true"></span>
+        <span class="footer__status-text">Orders dispatching within 48 hrs</span>
+      </div>
 
       <div class="footer__policy-links">
         <a href="{{ shop.privacy_policy.url }}">Privacy</a>
@@ -197,6 +214,19 @@
   text-transform: uppercase;
   display: block;
   margin-bottom: var(--space-4);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), text-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-style: preserve-3d;
+  will-change: transform, text-shadow;
+}
+
+.footer__logo-text:hover {
+  transform: translateY(-2px) scale(1.02);
+  text-shadow: 
+    0px 1px 0px rgba(0,0,0,0.8),
+    0px 2px 0px rgba(0,0,0,0.6),
+    0px 3px 0px rgba(0,0,0,0.4),
+    0px 4px 5px rgba(0,0,0,0.2),
+    0px 8px 10px rgba(0,0,0,0.1);
 }
 
 .footer__brand-desc {
@@ -291,6 +321,33 @@
 .footer__newsletter-error { color: #ff8080; font-size: var(--text-xs); margin-top: var(--space-2); }
 .footer__newsletter-success { color: #7ed8a4; font-size: var(--text-xs); margin-top: var(--space-2); }
 
+/* Trust seals */
+.footer__trust-seals {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-5) 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: var(--space-6);
+}
+
+.footer__seal {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+
+.footer__seal-divider {
+  color: rgba(255,255,255,0.2);
+  font-size: 10px;
+}
+
 /* Bottom bar */
 .footer__bottom {
   display: flex;
@@ -298,13 +355,43 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: var(--space-4);
-  padding-top: var(--space-6);
+  padding-top: var(--space-4);
 }
 
 .footer__copyright {
   font-size: var(--text-xs);
   color: rgba(255,255,255,0.35);
   line-height: 1;
+}
+
+/* Operational status */
+.footer__status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer__status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  flex-shrink: 0;
+  animation: mm-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4);
+}
+
+@keyframes mm-pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); opacity: 1; }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); opacity: 0.6; }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); opacity: 1; }
+}
+
+.footer__status-text {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.4);
 }
 
 .footer__policy-links {
@@ -372,7 +459,7 @@
       "type": "textarea",
       "id": "brand_desc",
       "label": "Brand description",
-      "default": "Wine & wellness rituals for your daily glow. Handcrafted with Donkey Milk, Red Wine & Aloe Vera."
+      "default": "Artisan-formulated, lab-certified skincare. Born in Coimbatore. Honest ingredients. Gentle results."
     },
     {
       "type": "header",
@@ -413,13 +500,13 @@
       "type": "text",
       "id": "newsletter_heading",
       "label": "Newsletter heading",
-      "default": "Stay in the loop"
+      "default": "Get 15% off your first order"
     },
     {
       "type": "text",
       "id": "newsletter_sub",
       "label": "Newsletter subtext",
-      "default": "Get skincare tips & exclusive offers."
+      "default": "Plus skincare education and early access to new formulas. No spam, ever."
     },
     {
       "type": "header",

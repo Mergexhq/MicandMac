@@ -22,9 +22,15 @@
     overflow: hidden;
     min-height: 500px;
     height: 80vh;
-    background-color: #f3f4f6;
+    background-color: var(--mm-deep-garnet);
     display: flex;
     flex-direction: column;
+  }
+
+  .hero-bg-placeholder {
+    position: absolute;
+    inset: 0;
+    background: var(--mm-deep-garnet);
   }
 
   @media screen and (min-width: 1024px) {
@@ -46,7 +52,12 @@
   .hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.1) 100%);
+    background: linear-gradient(
+      to top,
+      rgba(46, 31, 26, 0.80) 0%,
+      rgba(46, 31, 26, 0.45) 45%,
+      rgba(46, 31, 26, 0.10) 100%
+    );
     z-index: 1;
   }
 
@@ -117,16 +128,28 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    max-width: 500px;
+    justify-content: flex-end;
+    padding-bottom: 2rem;
+    max-width: 560px;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--mm-champagne-gold);
+    margin-bottom: 1rem;
+    display: block;
   }
 
   .hero-heading {
     font-family: var(--font-display);
     font-size: 2.5rem;
     line-height: 1.1;
-    color: #1a1a1a;
-    margin-bottom: 2rem;
+    color: var(--mm-soft-blush);
+    margin-bottom: 1.5rem;
     font-weight: 300;
   }
 
@@ -137,16 +160,48 @@
     line-height: 0.8;
     display: inline-block;
     vertical-align: baseline;
+    color: var(--mm-champagne-gold);
   }
 
   @media screen and (min-width: 1024px) {
     .hero-heading {
-      font-size: 4rem;
+      font-size: 4.25rem;
     }
   }
 
-  .hero-heading span {
-    font-weight: 700;
+  .hero-subhead {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(243, 232, 228, 0.72);
+    max-width: 420px;
+    margin-bottom: 2rem;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--mm-champagne-gold);
+    color: var(--mm-dark-espresso);
+    padding: 14px 28px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                background 250ms ease,
+                box-shadow 250ms ease;
+    align-self: flex-start;
+  }
+
+  .hero-cta:hover {
+    background: var(--color-gold-light);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 24px rgba(46, 31, 26, 0.3);
   }
 
   .floating-mission {
@@ -158,7 +213,7 @@
     gap: 1rem;
     max-width: 400px;
     align-items: center;
-    margin-top: auto;
+    margin-top: 1.5rem;
   }
 
   .mission-thumb {
@@ -171,7 +226,7 @@
   .mission-text {
     font-size: 0.75rem;
     line-height: 1.4;
-    color: #1a1a1a;
+    color: var(--mm-dark-espresso);
   }
 
   .mission-text b {
@@ -246,8 +301,27 @@
 {%- endstyle -%}
 
 <div class="the-act-hero section-{{ section.id }}-padding">
-  <div class="hero-card">
-    {%- if section.settings.image != blank -%}
+  <div class="hero-card" data-has-video="{{ section.settings.video_url != blank or section.settings.background_video != blank }}">
+
+    {%- comment -%} Layer 0: Video background (highest priority) {%- endcomment -%}
+    {%- if section.settings.background_video != blank -%}
+      <video
+        class="hero-bg-image"
+        autoplay muted loop playsinline
+        style="object-fit:cover;"
+      >
+        {%- for source in section.settings.background_video.sources -%}
+          <source src="{{ source.url }}" type="{{ source.mime_type }}">
+        {%- endfor -%}
+      </video>
+    {%- elsif section.settings.video_url != blank -%}
+      <video
+        class="hero-bg-image"
+        src="{{ section.settings.video_url }}"
+        autoplay muted loop playsinline
+        style="object-fit:cover;"
+      ></video>
+    {%- elsif section.settings.image != blank -%}
       <img
         src="{{ section.settings.image | image_url: width: 2000 }}"
         alt="{{ section.settings.image.alt | escape }}"
@@ -256,7 +330,12 @@
         height="{{ 2000 | divided_by: section.settings.image.aspect_ratio | round }}"
       >
     {%- else -%}
-      {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-bg-image placeholder-svg' }}
+      {%- comment -%}
+        No image or video set yet — brand film coming.
+        The Three.js particle canvas in cinematic.js will render
+        on top of the deep garnet CSS background.
+      {%- endcomment -%}
+      <div class="hero-bg-placeholder" aria-hidden="true"></div>
     {%- endif -%}
 
     <div class="hero-overlay"></div>
@@ -282,6 +361,10 @@
       </header>
 
       <div class="hero-main">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="hero-eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+
         <h1 class="hero-heading">
           {%- assign heading_text = section.settings.heading -%}
           {%- if heading_text != blank -%}
@@ -291,17 +374,32 @@
           {%- endif -%}
         </h1>
 
-        <div class="floating-mission">
-          {%- if section.settings.mission_image != blank -%}
-            <img src="{{ section.settings.mission_image | image_url: width: 120 }}" class="mission-thumb" alt="Mission" width="60" height="60">
-          {%- else -%}
-            {{ 'image' | placeholder_svg_tag: 'mission-thumb' }}
-          {%- endif -%}
-          <div class="mission-text">
-            <b>{{ section.settings.mission_title }}</b>
-            {{ section.settings.mission_text }}
+        {%- if section.settings.subheading != blank -%}
+          <p class="hero-subhead">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.cta_label != blank -%}
+          <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="hero-cta">
+            {{ section.settings.cta_label }}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.mission_title != blank -%}
+          <div class="floating-mission">
+            {%- if section.settings.mission_image != blank -%}
+              <img src="{{ section.settings.mission_image | image_url: width: 120 }}" class="mission-thumb" alt="Mission" width="60" height="60">
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'mission-thumb' }}
+            {%- endif -%}
+            <div class="mission-text">
+              <b>{{ section.settings.mission_title }}</b>
+              {{ section.settings.mission_text }}
+            </div>
           </div>
-        </div>
+        {%- endif -%}
       </div>
 
       <div class="floating-product">
@@ -329,9 +427,24 @@
   "class": "section",
   "settings": [
     {
+      "type": "header",
+      "content": "Background Media"
+    },
+    {
+      "type": "video",
+      "id": "background_video",
+      "label": "Background video (upload MP4 via Files)"
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "Background video URL (paste CDN link)",
+      "info": "Alternative: paste a direct .mp4 URL if not uploading via Shopify Files"
+    },
+    {
       "type": "image_picker",
       "id": "image",
-      "label": "Hero Background Image"
+      "label": "Background image (fallback if no video)"
     },
     {
       "type": "image_picker",
@@ -345,15 +458,37 @@
       "default": true
     },
     {
-      "type": "inline_richtext",
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Artisan-Formulated · Lab-Certified · India"
+    },
+    {
+      "type": "textarea",
       "id": "heading",
       "label": "Heading",
-      "default": "Cosmetics for the whole body. *For every body.#",
-      "info": "Wrap bold text in * and #"
+      "default": "Your skin deserves more than promises."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Clinical-organic skincare born in Coimbatore. Proprietary owner's blends. Lab-certified safe. Made with love — proven by science."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Button label",
+      "default": "Shop Best Sellers"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA Button link"
     },
     {
       "type": "header",
-      "content": "Mission Card"
+      "content": "Mission Card (optional)"
     },
     {
       "type": "image_picker",
@@ -364,13 +499,13 @@
       "type": "text",
       "id": "mission_title",
       "label": "Mission Title",
-      "default": "We were inspired by you..."
+      "default": "Artisan-formulated. Lab-certified."
     },
     {
       "type": "textarea",
       "id": "mission_text",
       "label": "Mission Text",
-      "default": "In the moment of realizing our value, the moment where we are in the first place"
+      "default": "Every formula is a proprietary Owner's Blend — made in Coimbatore, tested in a lab."
     },
     {
       "type": "header",
@@ -380,13 +515,13 @@
       "type": "text",
       "id": "product_tag",
       "label": "Product Tag",
-      "default": "( sale -15% )"
+      "default": "BESTSELLER"
     },
     {
       "type": "text",
       "id": "product_title",
       "label": "Product Title",
-      "default": "Coconut body butter"
+      "default": "Donkey Milk Deep Hydration Soap"
     },
     {
       "type": "image_picker",
