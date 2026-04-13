@@ -1,65 +1,257 @@
 {% comment %}
-  Section: Header — 3-Tier Layout
-  - Announcement bar: sits above (separate section)
-  - Middle tier: Logo strip on Soft Blush bg
-  - Bottom tier: Desktop nav on Deep Garnet bg
-  - All CSS lives in assets/base.css
+  Section: Header — 3-Tier Layout (Desktop) + Full Mobile System
+  Desktop:
+    - Announcement bar: sits above (separate section)
+    - Middle tier: Logo strip on Soft Blush bg
+    - Bottom tier: Desktop nav on Deep Garnet bg
+  Mobile:
+    - Top bar: hamburger | logo | cart + search
+    - Sidebar drawer: tabbed sections with full nav
+    - Bottom dock: Home | Shop | Wishlist | Cart | Account
+  All CSS lives in assets/base.css
 {% endcomment %}
 
-<!-- Mobile Navigation Drawer -->
-<div class="mobile-nav" id="MobileNav" aria-hidden="true">
-  <div class="mobile-nav__header">
-    <a href="{{ routes.root_url }}" class="mobile-nav__logo">MIC & MAC</a>
-    <button class="mobile-nav__close" id="NavClose" aria-label="Close menu">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-        <path d="M18 6L6 18M6 6l12 12"/>
-      </svg>
+<!-- =============================================
+     MOBILE: Sidebar Drawer — Full Screen, Accordion
+     ============================================= -->
+<div class="mnav" id="MobileNav" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation menu">
+
+  <!-- Header: Garnet strip with logo + close -->
+  <div class="mnav__head">
+    <a href="{{ routes.root_url }}" class="mnav__logo" onclick="document.getElementById('MobileNav').classList.remove('is-open')">
+      <img src="{{ 'MicandMac_Monogram.webp' | asset_url }}" alt="Mic &amp; Mac" width="24" height="24">
+      <span>MIC &amp; MAC</span>
+    </a>
+    <button class="mnav__close" id="MNavClose" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
-  <nav class="mobile-nav__nav">
-    <ul class="mobile-nav__list">
-      <li class="mobile-nav__item">
-        <a href="{{ routes.root_url }}" class="mobile-nav__link{% if request.path == '/' %} is-active{% endif %}">Home</a>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="/collections/combo-offers" class="mobile-nav__link{% if request.path contains 'combo' %} is-active{% endif %}">Combo Offers</a>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="/collections/all" class="mobile-nav__link{% if request.path contains 'collections' %} is-active{% endif %}">Best Sellers</a>
-        <ul class="mobile-nav__sub">
-          <li><a href="/products/donkey-milk-soap-100gm" class="mobile-nav__sub-link">Donkey Milk Soap</a></li>
-          <li><a href="/products/redwine-soap-100gm" class="mobile-nav__sub-link">Red Wine Radiance</a></li>
-          <li><a href="/products/skjn-whitening-soap-100gm" class="mobile-nav__sub-link">Skin Radiance Glow</a></li>
+
+  <!-- Scrollable body: all sections sequential -->
+  <div class="mnav__body">
+
+    <!-- ── Primary links ── -->
+    <div class="mnav__primary">
+      <a href="{{ routes.root_url }}" class="mnav__primary-link{% if request.path == '/' %} is-active{% endif %}">
+        Home
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="{{ routes.collections_url }}/combo-offers" class="mnav__primary-link">
+        Combo Offers
+        <span class="mnav__pill">Hot</span>
+      </a>
+    </div>
+
+    <div class="mnav__divider-heavy"></div>
+
+    <!-- ── ACCORDION: Shop ── -->
+    <div class="mnav__accordion" data-accordion>
+      <button class="mnav__accordion-trigger" aria-expanded="true" data-trigger>
+        <span class="mnav__accordion-label">
+          <span class="mnav__acc-eyebrow">CATEGORY</span>
+          Shop
+        </span>
+        <svg class="mnav__acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="mnav__accordion-body" data-body>
+        <ul class="mnav__sub-links">
+          <li>
+            <a href="{{ routes.collections_url }}/face-care" class="mnav__sub-link">
+              <span class="mnav__sub-dot"></span>Face Care
+            </a>
+          </li>
+          <li>
+            <a href="{{ routes.collections_url }}/body-care" class="mnav__sub-link">
+              <span class="mnav__sub-dot"></span>Body Care
+            </a>
+          </li>
+          <li>
+            <a href="{{ routes.collections_url }}/lip-care" class="mnav__sub-link">
+              <span class="mnav__sub-dot"></span>Lip Care
+            </a>
+          </li>
+          <li>
+            <a href="{{ routes.collections_url }}/combo-offers" class="mnav__sub-link">
+              <span class="mnav__sub-dot"></span>Combos &amp; Offers
+              <span class="mnav__pill mnav__pill--gold">Hot</span>
+            </a>
+          </li>
         </ul>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="/pages/about-us" class="mobile-nav__link{% if request.path contains 'about' %} is-active{% endif %}">About Us</a>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="/pages/contact-us" class="mobile-nav__link{% if request.path contains 'contact' %} is-active{% endif %}">Contact</a>
-      </li>
-    </ul>
-  </nav>
-  <div class="mobile-nav__footer">
-    <a href="{{ routes.account_url }}" class="mobile-nav__account">My Account</a>
+        <a href="{{ routes.all_products_collection_url }}" class="mnav__view-all">View All Products →</a>
+      </div>
+    </div>
+
+    <div class="mnav__divider"></div>
+
+    <!-- ── Direct links: Highlights ── -->
+    <div class="mnav__group">
+      <p class="mnav__group-label">HIGHLIGHTS</p>
+      <ul class="mnav__flat-links">
+        <li>
+          <a href="{{ routes.collections_url }}/best-sellers" class="mnav__flat-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Bestsellers
+          </a>
+        </li>
+        <li>
+          <a href="{{ routes.collections_url }}/new-arrivals" class="mnav__flat-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+            New Arrivals
+            <span class="mnav__pill mnav__pill--gold">New</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="mnav__divider"></div>
+
+    <!-- ── Direct links: About ── -->
+    <div class="mnav__group">
+      <p class="mnav__group-label">ABOUT</p>
+      <ul class="mnav__flat-links">
+        <li><a href="/pages/about-us" class="mnav__flat-link">Our Story</a></li>
+        <li><a href="/pages/ingredients" class="mnav__flat-link">Ingredients Philosophy</a></li>
+        <li><a href="/blogs/journal" class="mnav__flat-link">Journal</a></li>
+      </ul>
+    </div>
+
+    <div class="mnav__divider"></div>
+
+    <!-- ── ACCORDION: Support ── -->
+    <div class="mnav__accordion" data-accordion>
+      <button class="mnav__accordion-trigger" aria-expanded="false" data-trigger>
+        <span class="mnav__accordion-label">
+          <span class="mnav__acc-eyebrow">HELP</span>
+          Support
+        </span>
+        <svg class="mnav__acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="mnav__accordion-body mnav__accordion-body--closed" data-body>
+        <ul class="mnav__sub-links">
+          <li>
+            <a href="/pages/track-order" class="mnav__sub-link">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Track Order
+            </a>
+          </li>
+          <li>
+            <a href="/pages/shipping-policy" class="mnav__sub-link">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              Shipping Policy
+            </a>
+          </li>
+          <li>
+            <a href="/pages/returns" class="mnav__sub-link">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+              Returns &amp; Refunds
+            </a>
+          </li>
+          <li>
+            <a href="/pages/faq" class="mnav__sub-link">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+              FAQ
+            </a>
+          </li>
+          <li>
+            <a href="/pages/contact-us" class="mnav__sub-link">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Contact Us
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mnav__divider"></div>
+
+    <!-- ── CONNECT: Social icons ── -->
+    <div class="mnav__group">
+      <p class="mnav__group-label">CONNECT</p>
+      <div class="mnav__social-row">
+        <a href="https://instagram.com/micandmac" class="mnav__social-btn" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          <span>Instagram</span>
+        </a>
+        <a href="https://wa.me/919999999999" class="mnav__social-btn" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a href="https://youtube.com/@micandmac" class="mnav__social-btn" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          <span>YouTube</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="mnav__divider"></div>
+
+    <!-- ── Brand quote ── -->
+    <div class="mnav__brand-quote">
+      <p>"Artisan-formulated. Lab-certified.<br>Made in Coimbatore."</p>
+    </div>
+
+    <!-- bottom spacer so last item clears dock -->
+    <div style="height: 24px;"></div>
+
+  </div><!-- /mnav__body -->
+
+  <!-- Footer: Account actions pinned at bottom -->
+  <div class="mnav__footer">
+    <a href="{{ routes.account_login_url }}" class="mnav__footer-btn mnav__footer-btn--primary">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Sign In
+    </a>
+    <a href="{{ routes.account_register_url }}" class="mnav__footer-btn">
+      Create Account
+    </a>
   </div>
-</div>
+
+</div><!-- /mnav -->
 
 <!-- Overlay -->
 <div class="overlay" id="SiteOverlay"></div>
 
-<!-- ===== HEADER ===== -->
+<!-- =============================================
+     MOBILE: Top Bar (mobile only, ≤1023px)
+     ============================================= -->
+<div class="mobile-topbar" id="MobileTopBar">
+  <!-- Left: Hamburger -->
+  <button class="mtb__burger" id="NavToggle" aria-label="Open navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- Center: Logo -->
+  <a href="{{ routes.root_url }}" class="mtb__logo">
+    <img src="{{ 'MicandMac_Monogram.webp' | asset_url }}" alt="Mic &amp; Mac" width="28" height="28" loading="eager">
+    <span>MIC &amp; MAC</span>
+  </a>
+
+  <!-- Right: Search + Cart -->
+  <div class="mtb__actions">
+    <button class="mtb__btn" id="SearchToggleMobile" aria-label="Search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    </button>
+    <button class="mtb__btn mtb__cart" id="CartToggleMobile" aria-label="Cart">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      {%- if cart.item_count > 0 -%}
+        <span class="mtb__cart-badge" id="MtbCartCount">{{ cart.item_count }}</span>
+      {%- else -%}
+        <span class="mtb__cart-badge mtb__cart-badge--hidden" id="MtbCartCount"></span>
+      {%- endif -%}
+    </button>
+  </div>
+</div>
+
+
+<!-- =============================================
+     DESKTOP: Full Header (≥1024px)
+     ============================================= -->
 <header class="site-header" id="SiteHeader">
 
   <!-- Tier 2: Logo strip (Soft Blush bg) -->
   <div class="site-header__middle">
-    <div class="container">
+    <div class="container container--fluid">
       <div class="site-header__inner">
-
-        <!-- Mobile: Hamburger -->
-        <button class="site-header__burger" id="NavToggle" aria-label="Open navigation" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
 
         <!-- Left: Tagline (desktop only) -->
         <div class="site-header__tagline">
@@ -79,12 +271,15 @@
                 class="site-logo-img"
               >
             {%- else -%}
-              <span class="site-header__logo-text">MIC &amp; MAC</span>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="{{ 'MicandMac_Monogram.webp' | asset_url }}" alt="Mic &amp; Mac Monogram" width="36" height="36" style="object-fit: contain;">
+                <span class="site-header__logo-text" style="margin-top: 4px;">MIC &amp; MAC</span>
+              </div>
             {%- endif -%}
           </a>
         </div>
 
-        <!-- Right: Action icons -->
+        <!-- Right: Action icons (desktop) -->
         <div class="site-header__actions">
           <!-- Search -->
           <button class="site-header__action-btn" id="SearchToggle" aria-label="Search">
@@ -99,6 +294,23 @@
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
             </svg>
           </a>
+
+          <!-- Account (Desktop with Dropdown) -->
+          <div class="account-menu-wrapper" style="position: relative; display: flex; align-items: center;">
+            <a href="{{ routes.account_login_url }}" class="site-header__action-btn" aria-label="Account">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </a>
+            <ul class="account-dropdown">
+              <div class="account-dropdown-bridge"></div>
+              <li><a href="{{ routes.account_login_url }}" class="account-dropdown-link">Sign in</a></li>
+              <li><a href="{{ routes.account_register_url }}" class="account-dropdown-link">Create Account</a></li>
+              <li><a href="/pages/contact-us" class="account-dropdown-link">Contact Us</a></li>
+              <li><a href="/pages/track-order" class="account-dropdown-link">Track Order</a></li>
+            </ul>
+          </div>
 
           <!-- Cart -->
           <button class="site-header__action-btn site-header__cart" id="CartToggle" aria-label="Cart">
@@ -119,60 +331,95 @@
     </div>
   </div>
 
-  <!-- Tier 3: Navigation strip (Deep Garnet bg) — desktop only -->
+  <!-- Tier 3: Navigation strip — desktop only -->
   <div class="site-header__bottom">
     <div class="container">
       <nav class="site-nav" aria-label="Main navigation">
         <ul class="site-nav__list">
 
-          <!-- Home -->
           <li class="site-nav__item">
-            <a href="{{ routes.root_url }}" class="site-nav__link{% if request.path == '/' %} is-active{% endif %}">Home</a>
+            <a href="{{ routes.all_products_collection_url }}" class="site-nav__link site-nav__link--white{% if request.path == '/collections/all' %} is-active{% endif %}">All Products</a>
           </li>
 
           <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
-          <!-- Combo Offers -->
           <li class="site-nav__item">
-            <a href="/collections/combo-offers" class="site-nav__link{% if request.path contains 'combo' %} is-active{% endif %}">Combo Offers</a>
-          </li>
-
-          <li class="site-nav__separator" aria-hidden="true"><span></span></li>
-
-          <!-- Best Sellers (dropdown) -->
-          <li class="site-nav__item">
-            <a href="/collections/all" class="site-nav__link{% if request.path contains 'collections' %} is-active{% endif %}">
-              Best Sellers
+            <a href="{{ routes.collections_url }}/face-care" class="site-nav__link{% if request.path contains 'face-care' %} is-active{% endif %}">
+              Cleansing Bars
               <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                 <path d="M6 9l6 6 6-6"/>
               </svg>
             </a>
-            <ul class="site-nav__dropdown">
+            <div class="site-nav__dropdown site-nav__megamenu">
               <div class="site-nav__dropdown-bridge"></div>
-              <li>
-                <a href="/products/donkey-milk-soap-100gm" class="site-nav__dropdown-link">Donkey Milk Soap</a>
-              </li>
-              <li>
-                <a href="/products/redwine-soap-100gm" class="site-nav__dropdown-link">Red Wine Radiance</a>
-              </li>
-              <li>
-                <a href="/products/skjn-whitening-soap-100gm" class="site-nav__dropdown-link">Skin Radiance Glow</a>
-              </li>
-            </ul>
+              <div class="site-nav__megamenu-left">
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                  <li><a href="/products/donkey-milk-soap-100gm" class="site-nav__dropdown-link">Donkey Milk Soap</a></li>
+                  <li><a href="/products/redwine-soap-100gm" class="site-nav__dropdown-link">Red Wine Radiance</a></li>
+                  <li><a href="/products/skjn-whitening-soap-100gm" class="site-nav__dropdown-link">Skin Radiance Glow</a></li>
+                  <li class="site-nav__dropdown-divider"></li>
+                  <li><a href="{{ routes.collections_url }}/face-care" class="site-nav__dropdown-link" style="font-weight: 600;">Shop All Bars</a></li>
+                </ul>
+              </div>
+              <div class="site-nav__megamenu-right">
+                <a href="{{ routes.collections_url }}/face-care" class="site-nav__megamenu-promo">
+                  <div class="site-nav__megamenu-promo-img bg-placeholder"></div>
+                  <span class="site-nav__megamenu-promo-text">Discover Cleansing Bars</span>
+                </a>
+              </div>
+            </div>
           </li>
 
           <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
-          <!-- About Us -->
           <li class="site-nav__item">
-            <a href="/pages/about-us" class="site-nav__link{% if request.path contains 'about' %} is-active{% endif %}">About Us</a>
+            <a href="{{ routes.collections_url }}/lip-care" class="site-nav__link{% if request.path contains 'lip-care' %} is-active{% endif %}">
+              Lip Care
+              <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </a>
+            <div class="site-nav__dropdown site-nav__megamenu">
+              <div class="site-nav__dropdown-bridge"></div>
+              <div class="site-nav__megamenu-left">
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                  <li><a href="{{ routes.collections_url }}/lip-care" class="site-nav__dropdown-link">Lip Balms</a></li>
+                  <li><a href="{{ routes.collections_url }}/lip-care" class="site-nav__dropdown-link">Lip Scrubs</a></li>
+                  <li class="site-nav__dropdown-divider"></li>
+                  <li><a href="{{ routes.collections_url }}/lip-care" class="site-nav__dropdown-link" style="font-weight: 600;">Shop All Lip Care</a></li>
+                </ul>
+              </div>
+              <div class="site-nav__megamenu-right">
+                <a href="{{ routes.collections_url }}/lip-care" class="site-nav__megamenu-promo">
+                  <div class="site-nav__megamenu-promo-img bg-placeholder"></div>
+                  <span class="site-nav__megamenu-promo-text">Nourish Your Lips</span>
+                </a>
+              </div>
+            </div>
           </li>
 
           <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
-          <!-- Contact -->
           <li class="site-nav__item">
-            <a href="/pages/contact-us" class="site-nav__link{% if request.path contains 'contact' %} is-active{% endif %}">Contact</a>
+            <a href="{{ routes.collections_url }}/new-arrivals" class="site-nav__link{% if request.path contains 'new-arrivals' %} is-active{% endif %}">New Arrivals</a>
+          </li>
+
+          <li class="site-nav__separator" aria-hidden="true"><span></span></li>
+
+          <li class="site-nav__item">
+            <a href="{{ routes.collections_url }}/bestsellers" class="site-nav__link{% if request.path contains 'bestsellers' %} is-active{% endif %}">Bestsellers</a>
+          </li>
+
+          <li class="site-nav__separator" aria-hidden="true"><span></span></li>
+
+          <li class="site-nav__item">
+            <a href="{{ routes.collections_url }}/combo-offers" class="site-nav__link{% if request.path contains 'combo' %} is-active{% endif %}">Combos</a>
+          </li>
+
+          <li class="site-nav__separator" aria-hidden="true"><span></span></li>
+
+          <li class="site-nav__item">
+            <a href="/pages/about-us" class="site-nav__link{% if request.path contains 'about' %} is-active{% endif %}">Our Story</a>
           </li>
 
         </ul>
@@ -211,6 +458,41 @@
 
 </header>
 
+
+<!-- =============================================
+     MOBILE: Bottom Dock
+     ============================================= -->
+<nav class="bottom-dock" id="BottomDock" aria-label="Mobile navigation">
+  <a href="{{ routes.root_url }}" class="bdock__item{% if request.path == '/' %} is-active{% endif %}" aria-label="Home">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="{{ routes.all_products_collection_url }}" class="bdock__item{% if request.path contains 'collections' %} is-active{% endif %}" aria-label="Shop">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    <span>Shop</span>
+  </a>
+  <a href="/pages/wishlist" class="bdock__item{% if request.path contains 'wishlist' %} is-active{% endif %}" aria-label="Wishlist">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    <span>Wishlist</span>
+  </a>
+  <button class="bdock__item" id="CartToggleDock" aria-label="Cart">
+    <span class="bdock__cart-wrap">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      {%- if cart.item_count > 0 -%}
+        <span class="bdock__badge" id="DockCartCount">{{ cart.item_count }}</span>
+      {%- else -%}
+        <span class="bdock__badge bdock__badge--hidden" id="DockCartCount"></span>
+      {%- endif -%}
+    </span>
+    <span>Cart</span>
+  </button>
+  <a href="{{ routes.account_login_url }}" class="bdock__item{% if request.path contains 'account' %} is-active{% endif %}" aria-label="Account">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Account</span>
+  </a>
+</nav>
+
+
 {% schema %}
 {
   "name": "Header",
@@ -229,12 +511,6 @@
       "step": 10,
       "unit": "px",
       "default": 160
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Navigation menu",
-      "default": "main-menu"
     }
   ]
 }

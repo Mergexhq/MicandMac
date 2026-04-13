@@ -9,8 +9,6 @@
  *  - ESC key closes all drawers
  */
 
-import { Overlay } from './overlay';
-
 const SELECTORS = {
   header:       '#SiteHeader',
   burger:       '#NavToggle',
@@ -29,7 +27,7 @@ export class Header {
   private navClose: HTMLButtonElement | null;
   private cartToggle: HTMLButtonElement | null;
   private cartDrawer: HTMLElement | null;
-  private _scrollBound: () => void;
+  private _scrollBound: () => void = () => {};
 
   constructor() {
     this.header     = document.querySelector(SELECTORS.header) as HTMLElement;

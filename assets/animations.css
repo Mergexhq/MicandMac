@@ -1,0 +1,125 @@
+/* ============================================
+   MIC & MAC — ANIMATIONS & UTILITIES
+   Keyframes, animation classes, utility helpers,
+   and responsive breakpoint overrides.
+   Import order: 8 of 8
+   ============================================ */
+
+
+/* ---- KEYFRAMES ---- */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes slideInUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+
+/* ---- UTILITY CLASSES ---- */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.text-center { text-align: center; }
+.text-left   { text-align: left; }
+.text-right  { text-align: right; }
+
+.text-burgundy  { color: var(--color-burgundy); }
+.text-gold      { color: var(--color-gold); }      /* Decorative only — never body text */
+.text-plum      { color: var(--color-plum); }
+.text-muted     { color: var(--color-text-muted); }
+.text-on-dark   { color: var(--color-text-on-dark); }
+/* Legacy */
+.text-forest    { color: var(--color-burgundy); }
+.text-white     { color: var(--color-text-on-dark); }
+
+.bg-burgundy    { background: var(--color-burgundy); }
+.bg-page        { background: var(--color-bg-page); }
+.bg-cream       { background: var(--color-bg-cream); }
+.bg-blush       { background: var(--color-bg-blush); }
+.bg-dark        { background: var(--color-bg-dark); }
+.bg-darkest     { background: var(--color-bg-darkest); }
+/* Legacy */
+.bg-forest      { background: var(--color-burgundy); }
+.bg-beige       { background: var(--color-bg-cream); }
+.bg-white       { background: var(--color-bg-page); }
+/* Placeholder background for megamenu promo images */
+.bg-placeholder { background-color: rgba(46, 31, 26, 0.1); }
+
+.mt-auto { margin-top: auto; }
+.mb-0    { margin-bottom: 0; }
+
+.hidden { display: none !important; }
+
+
+/* ---- RESPONSIVE BREAKPOINTS ---- */
+/* Mobile first — breakpoints go UP */
+
+/* sm: 640px+ */
+@media (min-width: 640px) {
+  :root { --gutter: 2rem; }
+}
+
+/* md: 768px+ */
+@media (min-width: 768px) {
+  .grid--2-md { grid-template-columns: repeat(2, 1fr); }
+  .grid--3-md { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* lg: 1024px+ */
+@media (min-width: 1024px) {
+  :root { --gutter: 3rem; }
+  .grid--4-lg { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* xl: 1280px+ */
+@media (min-width: 1280px) {
+  :root { --gutter: 4rem; }
+}
+
+/* Mobile overrides */
+@media (max-width: 767px) {
+  .grid--2,
+  .grid--3,
+  .grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+
+  .grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .section-padding {
+    padding-block: var(--space-12);
+  }
+}
+
+@media (max-width: 479px) {
+  .grid--2,
+  .grid--3,
+  .grid--4 {
+    grid-template-columns: 1fr;
+  }
+}

@@ -31,7 +31,7 @@
         >
       {%- endif -%}
     {%- else -%}
-      {{ 'product-1' | placeholder_svg_tag: 'w-full h-full text-gray-300 bg-gray-100' }}
+      <div class="w-full h-full bg-gray-100"></div>
     {%- endif -%}
 
     {%- if product.compare_at_price > product.price -%}

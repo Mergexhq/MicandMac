@@ -1,0 +1,355 @@
+{% comment %}
+  Section: Ritual Story (Philosophy / Brand Moat)
+  2-column split — image left, brand philosophy right.
+  All content is merchant-controlled via Shopify customiser.
+  No hardcoded copy.
+{% endcomment %}
+
+{%- style -%}
+  .ritual-story-{{ section.id }} {
+    background: {{ section.settings.bg_color | default: '#F5ECD7' }};
+    padding-top: {{ section.settings.padding_top | default: 80 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ritual-story-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | default: 80 | times: 0.65 | round }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 80 | times: 0.65 | round }}px;
+    }
+  }
+
+  .ritual-story-{{ section.id }} .ritual-story__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 0;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  @media screen and (max-width: 899px) {
+    .ritual-story-{{ section.id }} .ritual-story__inner {
+      grid-template-columns: 1fr;
+    }
+    .ritual-story-{{ section.id }} .ritual-story__img-col {
+      order: {% if section.settings.image_position == 'right' %}2{% else %}0{% endif %};
+    }
+  }
+
+  .ritual-story-{{ section.id }} .ritual-story__img-col {
+    position: relative;
+    {% if section.settings.image_position == 'right' %}order: 2;{% endif %}
+  }
+
+  .ritual-story-{{ section.id }} .ritual-story__media-wrap {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background: #E8C8C0;
+  }
+
+  .ritual-story-{{ section.id }} .ritual-story__media-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+
+  .ritual-story-{{ section.id }}:hover .ritual-story__media-wrap img {
+    transform: scale(1.04);
+  }
+
+  .ritual-story-{{ section.id }} .ritual-story__text-col {
+    padding: 5rem 4rem;
+  }
+
+  @media screen and (max-width: 1099px) {
+    .ritual-story-{{ section.id }} .ritual-story__text-col {
+      padding: 3rem 2.5rem;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ritual-story-{{ section.id }} .ritual-story__text-col {
+      padding: 2.5rem 1.5rem;
+    }
+  }
+
+  .ritual-story-{{ section.id }} .ritual-story__eyebrow {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #B8924A;
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+
+  .ritual-story-{{ section.id }} .ritual-story__heading {
+    font-family: var(--font-display, Georgia, serif);
+    font-size: clamp(2rem, 3.5vw, 3.25rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: #2A1520;
+    margin-bottom: 1.75rem;
+  }
+
+  .ritual-story-{{ section.id }} .ritual-story__body {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #5C3D2E;
+    margin-bottom: 1.25rem;
+  }
+
+  .ritual-story-{{ section.id }} .ritual-story__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #4A1040;
+    text-decoration: none;
+    border-bottom: 1px solid #4A1040;
+    padding-bottom: 3px;
+    margin-top: 0.75rem;
+    transition: opacity 0.2s ease, gap 0.2s ease;
+  }
+
+  .ritual-story-{{ section.id }} .ritual-story__cta:hover {
+    opacity: 0.7;
+    gap: 10px;
+  }
+
+  .ritual-story-{{ section.id }} .ritual-story__pillars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .ritual-story-{{ section.id }} .ritual-story__pillar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #2A1520;
+  }
+
+  .ritual-story-{{ section.id }} .pillar-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #B8924A;
+    flex-shrink: 0;
+  }
+{%- endstyle -%}
+
+<section
+  class="ritual-story-{{ section.id }}"
+  id="RitualStory-{{ section.id }}"
+  aria-labelledby="ritual-heading-{{ section.id }}"
+>
+  <div class="ritual-story__inner">
+
+    {%- comment -%} Image Column {%- endcomment -%}
+    <div class="ritual-story__img-col">
+      <div class="ritual-story__media-wrap">
+        {%- if section.settings.image != blank -%}
+          <img
+            src="{{ section.settings.image | image_url: width: 900 }}"
+            alt="{{ section.settings.image.alt | escape | default: shop.name }}"
+            width="900"
+            height="{{ 900 | divided_by: section.settings.image.aspect_ratio | round }}"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} Text Column {%- endcomment -%}
+    <div class="ritual-story__text-col">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="ritual-story__eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="ritual-story__heading" id="ritual-heading-{{ section.id }}">
+          {{ section.settings.heading }}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.settings.body_1 != blank -%}
+        <p class="ritual-story__body">{{ section.settings.body_1 }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.body_2 != blank -%}
+        <p class="ritual-story__body">{{ section.settings.body_2 }}</p>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="ritual-story__pillars">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'pillar' and block.settings.label != blank -%}
+              <div class="ritual-story__pillar" {{ block.shopify_attributes }}>
+                <span class="pillar-dot" aria-hidden="true"></span>
+                {{ block.settings.label }}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
+        <a href="{{ section.settings.cta_url }}" class="ritual-story__cta">
+          {{ section.settings.cta_label }}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ritual Story",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Brand / lifestyle image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image side (desktop)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Copy"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "A Ritual, Not a Routine"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Crafted to be the best part of your day."
+    },
+    {
+      "type": "textarea",
+      "id": "body_1",
+      "label": "Body paragraph 1"
+    },
+    {
+      "type": "textarea",
+      "id": "body_2",
+      "label": "Body paragraph 2 (optional)"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA link text",
+      "default": "Discover our process"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link destination",
+      "info": "E.g. /pages/about"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background colour",
+      "default": "#F5ECD7"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Trust Pillar",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Cold Pressed"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ritual Story",
+      "settings": {
+        "eyebrow": "A Ritual, Not a Routine",
+        "heading": "Crafted to be the best part of your day.",
+        "cta_label": "Discover our process",
+        "cta_url": "/pages/about"
+      },
+      "blocks": [
+        { "type": "pillar", "settings": { "label": "Cold Pressed" } },
+        { "type": "pillar", "settings": { "label": "Lab Certified" } },
+        { "type": "pillar", "settings": { "label": "100% Natural" } },
+        { "type": "pillar", "settings": { "label": "Handmade in India" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -301,7 +301,7 @@
 {%- endstyle -%}
 
 <div class="the-act-hero section-{{ section.id }}-padding">
-  <div class="hero-card" data-has-video="{{ section.settings.video_url != blank or section.settings.background_video != blank }}">
+  <div class="hero-card" data-has-video="{% if section.settings.video_url != blank or section.settings.background_video != blank %}true{% else %}false{% endif %}">
 
     {%- comment -%} Layer 0: Video background (highest priority) {%- endcomment -%}
     {%- if section.settings.background_video != blank -%}
@@ -379,7 +379,7 @@
         {%- endif -%}
 
         {%- if section.settings.cta_label != blank -%}
-          <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="hero-cta">
+          <a href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}" class="hero-cta">
             {{ section.settings.cta_label }}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -391,8 +391,6 @@
           <div class="floating-mission">
             {%- if section.settings.mission_image != blank -%}
               <img src="{{ section.settings.mission_image | image_url: width: 120 }}" class="mission-thumb" alt="Mission" width="60" height="60">
-            {%- else -%}
-              {{ 'image' | placeholder_svg_tag: 'mission-thumb' }}
             {%- endif -%}
             <div class="mission-text">
               <b>{{ section.settings.mission_title }}</b>
@@ -411,8 +409,6 @@
         <div class="product-image-container">
           {%- if section.settings.featured_product_image != blank -%}
             <img src="{{ section.settings.featured_product_image | image_url: width: 400 }}" alt="{{ section.settings.product_title }}" width="200" height="150">
-          {%- else -%}
-             {{ 'product-1' | placeholder_svg_tag: 'w-full h-full' }}
           {%- endif -%}
         </div>
       </div>
@@ -460,26 +456,22 @@
     {
       "type": "text",
       "id": "eyebrow",
-      "label": "Eyebrow label",
-      "default": "Artisan-Formulated · Lab-Certified · India"
+      "label": "Eyebrow label"
     },
     {
       "type": "textarea",
       "id": "heading",
-      "label": "Heading",
-      "default": "Your skin deserves more than promises."
+      "label": "Heading"
     },
     {
       "type": "textarea",
       "id": "subheading",
-      "label": "Subheading",
-      "default": "Clinical-organic skincare born in Coimbatore. Proprietary owner's blends. Lab-certified safe. Made with love — proven by science."
+      "label": "Subheading"
     },
     {
       "type": "text",
       "id": "cta_label",
-      "label": "CTA Button label",
-      "default": "Shop Best Sellers"
+      "label": "CTA Button label"
     },
     {
       "type": "url",
@@ -498,14 +490,12 @@
     {
       "type": "text",
       "id": "mission_title",
-      "label": "Mission Title",
-      "default": "Artisan-formulated. Lab-certified."
+      "label": "Mission Title"
     },
     {
       "type": "textarea",
       "id": "mission_text",
-      "label": "Mission Text",
-      "default": "Every formula is a proprietary Owner's Blend — made in Coimbatore, tested in a lab."
+      "label": "Mission Text"
     },
     {
       "type": "header",
@@ -514,14 +504,12 @@
     {
       "type": "text",
       "id": "product_tag",
-      "label": "Product Tag",
-      "default": "BESTSELLER"
+      "label": "Product Tag"
     },
     {
       "type": "text",
       "id": "product_title",
-      "label": "Product Title",
-      "default": "Donkey Milk Deep Hydration Soap"
+      "label": "Product Title"
     },
     {
       "type": "image_picker",

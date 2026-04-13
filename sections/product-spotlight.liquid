@@ -1,0 +1,451 @@
+{% comment %}
+  Section: Product Spotlight
+  Single-product editorial focus. Large image one side, content the other.
+  Reusable: supports image-left and image-right via `image_position` setting.
+  All product data is fetched from the Shopify product — no hardcoded text.
+{% endcomment %}
+
+{%- assign spotlight_product = section.settings.product -%}
+
+{%- style -%}
+  .product-spotlight-{{ section.id }} {
+    background: {{ section.settings.bg_color | default: '#FDFAF6' }};
+    padding-top: {{ section.settings.padding_top | default: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 0 }}px;
+  }
+
+  .product-spotlight-{{ section.id }} .ps__inner {
+    display: grid;
+    grid-template-columns: {{ section.settings.image_ratio | default: '62fr 38fr' }};
+    min-height: {{ section.settings.min_height | default: 560 }}px;
+    align-items: stretch;
+  }
+
+  @media screen and (max-width: 899px) {
+    .product-spotlight-{{ section.id }} .ps__inner {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .product-spotlight-{{ section.id }} .ps__img-col {
+      order: 0;
+      aspect-ratio: 4/3;
+    }
+    .product-spotlight-{{ section.id }} .ps__content-col {
+      order: 1;
+    }
+  }
+
+  .product-spotlight-{{ section.id }} .ps__img-col {
+    position: relative;
+    overflow: hidden;
+    background: {{ section.settings.img_bg_color | default: '#EDD9B8' }};
+    {% if section.settings.image_position == 'right' %}order: 2;{% endif %}
+  }
+
+  .product-spotlight-{{ section.id }} .ps__img-col img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.9s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+
+  .product-spotlight-{{ section.id }}:hover .ps__img-col img {
+    transform: scale(1.04);
+  }
+
+  .product-spotlight-{{ section.id }} .ps__content-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 3.5rem;
+    {% if section.settings.image_position == 'right' %}order: 1;{% endif %}
+  }
+
+  @media screen and (max-width: 1099px) {
+    .product-spotlight-{{ section.id }} .ps__content-col {
+      padding: 3rem 2.5rem;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-spotlight-{{ section.id }} .ps__content-col {
+      padding: 2.5rem 1.5rem;
+    }
+  }
+
+  .product-spotlight-{{ section.id }} .ps__eyebrow {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #B8924A;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .product-spotlight-{{ section.id }} .ps__badge {
+    display: inline-block;
+    background: #4A1040;
+    color: #D4A96A;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+
+  .product-spotlight-{{ section.id }} .ps__title {
+    font-family: var(--font-display, Georgia, serif);
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: #2A1520;
+    margin-bottom: 0.75rem;
+  }
+
+  .product-spotlight-{{ section.id }} .ps__sub {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: #A8957E;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .product-spotlight-{{ section.id }} .ps__description {
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    color: #5C3D2E;
+    margin-bottom: 2rem;
+  }
+
+  .product-spotlight-{{ section.id }} .ps__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 2rem;
+  }
+
+  .product-spotlight-{{ section.id }} .ps__price {
+    font-family: var(--font-body);
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: #4A1040;
+  }
+
+  .product-spotlight-{{ section.id }} .ps__compare-price {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: #A8957E;
+    text-decoration: line-through;
+  }
+
+  .product-spotlight-{{ section.id }} .ps__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 320px;
+  }
+
+  .product-spotlight-{{ section.id }} .ps__btn-atc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #4A1040;
+    color: #F5ECD7;
+    border: none;
+    padding: 15px 28px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    width: 100%;
+  }
+
+  .product-spotlight-{{ section.id }} .ps__btn-atc:hover {
+    background: #2A1520;
+    transform: translateY(-1px);
+  }
+
+  .product-spotlight-{{ section.id }} .ps__btn-learn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    color: #4A1040;
+    border: 1px solid #4A1040;
+    padding: 13px 28px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+    width: 100%;
+    text-align: center;
+  }
+
+  .product-spotlight-{{ section.id }} .ps__btn-learn:hover {
+    background: #4A1040;
+    color: #F5ECD7;
+  }
+{%- endstyle -%}
+
+<section
+  class="product-spotlight-{{ section.id }}"
+  id="ProductSpotlight-{{ section.id }}"
+>
+  <div class="ps__inner">
+
+    {%- comment -%} Image column {%- endcomment -%}
+    <div class="ps__img-col">
+      {%- if spotlight_product != blank and spotlight_product.featured_image != blank -%}
+        {%- assign product_image = spotlight_product.featured_image -%}
+        <img
+          src="{{ product_image | image_url: width: 1200 }}"
+          alt="{{ product_image.alt | escape | default: spotlight_product.title }}"
+          width="1200"
+          height="{{ 1200 | divided_by: product_image.aspect_ratio | round }}"
+          loading="lazy"
+        >
+      {%- elsif section.settings.fallback_image != blank -%}
+        <img
+          src="{{ section.settings.fallback_image | image_url: width: 1200 }}"
+          alt="{{ section.settings.fallback_image.alt | escape }}"
+          width="1200"
+          height="{{ 1200 | divided_by: section.settings.fallback_image.aspect_ratio | round }}"
+          loading="lazy"
+        >
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Content column {%- endcomment -%}
+    <div class="ps__content-col">
+
+      <p class="ps__eyebrow">
+        {%- if section.settings.badge_label != blank -%}
+          <span class="ps__badge">{{ section.settings.badge_label }}</span>
+        {%- endif -%}
+        {%- if section.settings.eyebrow != blank -%}
+          {{ section.settings.eyebrow }}
+        {%- endif -%}
+      </p>
+
+      {%- if spotlight_product != blank -%}
+        <h2 class="ps__title">{{ spotlight_product.title }}</h2>
+
+        {%- if section.settings.sub_text != blank -%}
+          <p class="ps__sub">{{ section.settings.sub_text }}</p>
+        {%- elsif spotlight_product.metafields.custom.short_description != blank -%}
+          <p class="ps__sub">{{ spotlight_product.metafields.custom.short_description }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.show_description and spotlight_product.description != blank -%}
+          <div class="ps__description">
+            {{ spotlight_product.description | strip_html | truncatewords: 40 }}
+          </div>
+        {%- endif -%}
+
+        {%- assign current_variant = spotlight_product.selected_or_first_available_variant -%}
+        {%- if current_variant != blank -%}
+          <div class="ps__price-row">
+            <span class="ps__price">{{ current_variant.price | money }}</span>
+            {%- if current_variant.compare_at_price > current_variant.price -%}
+              <span class="ps__compare-price">{{ current_variant.compare_at_price | money }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        <div class="ps__actions">
+          {%- if current_variant.available -%}
+            <form method="post" action="{{ routes.cart_add_url }}">
+              <input type="hidden" name="id" value="{{ current_variant.id }}">
+              <input type="hidden" name="quantity" value="1">
+              <button type="submit" class="ps__btn-atc">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <path d="M16 10a4 4 0 01-8 0"/>
+                </svg>
+                Add to Cart
+              </button>
+            </form>
+          {%- else -%}
+            <button class="ps__btn-atc" disabled style="opacity:0.5;cursor:not-allowed;">Sold Out</button>
+          {%- endif -%}
+
+          <a href="{{ spotlight_product.url }}" class="ps__btn-learn">
+            Learn More
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+
+      {%- else -%}
+        <h2 class="ps__title">{{ section.settings.placeholder_title }}</h2>
+        {%- if section.settings.sub_text != blank -%}
+          <p class="ps__sub">{{ section.settings.sub_text }}</p>
+        {%- endif -%}
+      {%- endif -%}
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Spotlight",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Featured product"
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Fallback image (if product has none)"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "badge_label",
+      "label": "Badge (e.g. Bestseller / New Launch)",
+      "default": "Bestseller"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Cold Pressed"
+    },
+    {
+      "type": "textarea",
+      "id": "sub_text",
+      "label": "Sub-text (skin type / use case)",
+      "info": "Short 1-line description shown under the product title. Falls back to metafield if blank."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show product description excerpt",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "placeholder_title",
+      "label": "Placeholder title (shown when no product selected)",
+      "default": "Select a product in the customiser"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image side (desktop)",
+      "options": [
+        { "value": "left", "label": "Left (image · content)" },
+        { "value": "right", "label": "Right (content · image)" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image-to-content column ratio",
+      "options": [
+        { "value": "62fr 38fr", "label": "62 / 38 (editorial – default)" },
+        { "value": "55fr 45fr", "label": "55 / 45 (balanced)" },
+        { "value": "50fr 50fr", "label": "50 / 50" }
+      ],
+      "default": "62fr 38fr"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "min": 400,
+      "max": 900,
+      "step": 20,
+      "unit": "px",
+      "label": "Minimum section height (desktop)",
+      "default": 560
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section background",
+      "default": "#FDFAF6"
+    },
+    {
+      "type": "color",
+      "id": "img_bg_color",
+      "label": "Image column background",
+      "default": "#EDD9B8"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Spotlight",
+      "settings": {
+        "badge_label": "Bestseller",
+        "eyebrow": "Cold Pressed",
+        "image_position": "left",
+        "bg_color": "#FDFAF6",
+        "img_bg_color": "#EDD9B8"
+      }
+    }
+  ]
+}
+{% endschema %}

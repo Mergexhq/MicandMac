@@ -1,23 +1,32 @@
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    padding-bottom: 0px !important;
   }
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
+      padding-bottom: 0px !important;
     }
+  }
+
+  /* ── Kill the Shopify wrapper gap ── */
+  #shopify-section-{{ section.id }} {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    display: block;
+    background: var(--mm-soft-blush); /* #F3E8E4 */
   }
 {%- endstyle -%}
 
-<div class="instagram-feed section-{{ section.id }}-padding overflow-hidden" id="InstagramFeed-{{ section.id }}">
+<div class="instagram-feed section-{{ section.id }}-padding" id="InstagramFeed-{{ section.id }}" style="background: var(--mm-soft-blush);">
+
   <div class="container px-4 text-center mb-8">
     {%- if section.settings.heading != blank -%}
-      <h2 class="text-2xl md:text-4xl font-light mb-2" style="font-family: var(--font-display);">{{ section.settings.heading }}</h2>
+      <h2 class="text-2xl md:text-4xl font-light mb-2" style="font-family: var(--font-display); color: #3a1f25;">{{ section.settings.heading }}</h2>
     {%- endif -%}
     {%- if section.settings.instagram_handle != blank -%}
-      <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener" class="text-sm font-medium uppercase tracking-widest text-primary hover:underline">
+      <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener" class="text-sm font-medium uppercase tracking-widest text-primary hover:underline" style="color: #3a1f25;">
         @{{ section.settings.instagram_handle }}
       </a>
     {%- endif -%}
@@ -26,22 +35,20 @@
   <div class="relative min-w-full">
     <div class="flex flex-nowrap overflow-x-auto snap-x hide-scrollbar">
       {%- for block in section.blocks -%}
-        <div class="w-1/2 md:w-1/4 lg:w-1/5 xl:w-[16.666%] shrink-0 snap-center aspect-square flex-grow-0" {{ block.shopify_attributes }}>
-          <a href="{{ block.settings.link | default: section.settings.instagram_url }}" target="_blank" rel="noopener" class="block relative w-full h-full group overflow-hidden bg-gray-100">
-            {%- if block.settings.image != blank -%}
+        {%- if block.settings.image != blank -%}
+          <div class="w-1/2 md:w-1/4 lg:w-1/5 xl:w-[16.666%] shrink-0 snap-center aspect-square flex-grow-0" {{ block.shopify_attributes }}>
+            <a href="{{ block.settings.link | default: section.settings.instagram_url }}" target="_blank" rel="noopener" class="block relative w-full h-full group overflow-hidden bg-gray-100">
               <img src="{{ block.settings.image | image_url: width: 600 }}" alt="Instagram posted image" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" width="400" height="400" loading="lazy">
-            {%- else -%}
-              {{ 'image' | placeholder_svg_tag: 'w-full h-full object-cover text-gray-400 transition-transform duration-700 group-hover:scale-110' }}
-            {%- endif -%}
-            
-            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-            </div>
-          </a>
-        </div>
+              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              </div>
+            </a>
+          </div>
+        {%- endif -%}
       {%- endfor -%}
     </div>
   </div>
+
 </div>
 
 {% schema %}
@@ -53,14 +60,12 @@
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
-      "default": "Join our community"
+      "label": "Heading"
     },
     {
       "type": "text",
       "id": "instagram_handle",
-      "label": "Instagram Handle",
-      "default": "wineandwellness"
+      "label": "Instagram Handle"
     },
     {
       "type": "url",

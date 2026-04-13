@@ -7,7 +7,7 @@
 <footer class="site-footer" role="contentinfo">
   <div class="container">
 
-    <!-- Top: Brand + Columns + Newsletter -->
+    <!-- Top: Brand + Columns -->
     <div class="footer__top">
 
       <!-- Brand Column -->
@@ -23,126 +23,75 @@
             >
           </a>
         {%- else -%}
-          <a href="{{ routes.root_url }}" class="footer__logo-text" data-footer-3d>{{ shop.name }}</a>
+          <a href="{{ routes.root_url }}" class="footer__logo-text" data-footer-3d>MIC & MAC</a>
         {%- endif -%}
 
-        {%- if section.settings.brand_desc != blank -%}
-          <p class="footer__brand-desc">{{ section.settings.brand_desc }}</p>
-        {%- endif -%}
+        <p class="footer__brand-desc">
+          A formulation-led skincare brand rooted in botanical science and modern refinement.<br>
+          Every product is developed with intention and brought to life through trusted expertise.<br><br>
+          Designed for your daily ritual.<br>
+          Love Your Skin. Every Day. 365.
+        </p>
 
-        <!-- Social Icons -->
-        <div class="footer__social">
-          {%- if section.settings.instagram != blank -%}
-            <a href="{{ section.settings.instagram }}" aria-label="Instagram" target="_blank" rel="noopener" class="footer__social-link">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
-              </svg>
-            </a>
-          {%- endif -%}
-          {%- if section.settings.facebook != blank -%}
-            <a href="{{ section.settings.facebook }}" aria-label="Facebook" target="_blank" rel="noopener" class="footer__social-link">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-              </svg>
-            </a>
-          {%- endif -%}
-          {%- if section.settings.youtube != blank -%}
-            <a href="{{ section.settings.youtube }}" aria-label="YouTube" target="_blank" rel="noopener" class="footer__social-link">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
-              </svg>
-            </a>
-          {%- endif -%}
-          {%- if section.settings.whatsapp != blank -%}
-            <a href="https://wa.me/{{ section.settings.whatsapp }}" aria-label="WhatsApp" target="_blank" rel="noopener" class="footer__social-link">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-              </svg>
-            </a>
-          {%- endif -%}
-        </div>
+        <p class="footer__ritual">
+          A daily ritual of clean, conscious skincare.
+        </p>
+
       </div>
 
-      <!-- Link Columns (from blocks) -->
-      {%- if section.blocks.size > 0 -%}
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'link_column' -%}
-            <div class="footer__col" {{ block.shopify_attributes }}>
-              <h4 class="footer__col-title">{{ block.settings.heading }}</h4>
-              <ul class="footer__col-links">
-                {%- for i in (1..5) -%}
-                  {%- liquid
-                    assign label_key = 'link_' | append: i | append: '_label'
-                    assign url_key   = 'link_' | append: i | append: '_url'
-                    assign label = block.settings[label_key]
-                    assign url   = block.settings[url_key]
-                  -%}
-                  {%- if label != blank and url != blank -%}
-                    <li><a href="{{ url }}" class="footer__col-link">{{ label }}</a></li>
-                  {%- endif -%}
-                {%- endfor -%}
-              </ul>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-      {%- else -%}
-        <!-- Default columns when no blocks set -->
-        <div class="footer__col">
-          <h4 class="footer__col-title">Shop</h4>
-          <ul class="footer__col-links">
-            <li><a href="{{ routes.all_products_collection_url }}" class="footer__col-link">All Products</a></li>
-            <li><a href="{{ routes.collections_url }}/bestsellers" class="footer__col-link">Bestsellers</a></li>
-            <li><a href="{{ routes.collections_url }}/new-arrivals" class="footer__col-link">New Arrivals</a></li>
-            <li><a href="{{ routes.collections_url }}/combos" class="footer__col-link">Combos</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4 class="footer__col-title">Company</h4>
-          <ul class="footer__col-links">
-            <li><a href="/pages/about" class="footer__col-link">About Us</a></li>
-            <li><a href="/blogs/news" class="footer__col-link">Journal</a></li>
-            <li><a href="/pages/contact" class="footer__col-link">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4 class="footer__col-title">Help</h4>
-          <ul class="footer__col-links">
-            <li><a href="/policies/shipping-policy" class="footer__col-link">Shipping Policy</a></li>
-            <li><a href="/policies/refund-policy" class="footer__col-link">Returns & Refunds</a></li>
-            <li><a href="/policies/privacy-policy" class="footer__col-link">Privacy Policy</a></li>
-            <li><a href="/pages/faq" class="footer__col-link">FAQ</a></li>
-          </ul>
-        </div>
-      {%- endif -%}
+      <!-- Link Columns -->
+      <div class="footer__col">
+        <h4 class="footer__col-title">Shop</h4>
+        <ul class="footer__col-links">
+          <li><a href="{{ routes.all_products_collection_url }}" class="footer__col-link">All Products</a></li>
+          <li><a href="{{ routes.collections_url }}/bestsellers" class="footer__col-link">Bestsellers</a></li>
+          <li><a href="{{ routes.collections_url }}/combos" class="footer__col-link">Combos</a></li>
+          <li><a href="{{ routes.collections_url }}/face-care" class="footer__col-link">Face Care</a></li>
+          <li><a href="{{ routes.collections_url }}/body-care" class="footer__col-link">Body Care</a></li>
+          <li><a href="{{ routes.collections_url }}/lip-care" class="footer__col-link">Lip Care</a></li>
+        </ul>
+      </div>
 
-      <!-- Newsletter -->
-      {%- if section.settings.show_newsletter -%}
-        <div class="footer__newsletter">
-          <h4 class="footer__col-title">{{ section.settings.newsletter_heading | default: 'Stay in the loop' }}</h4>
-          <p class="footer__newsletter-sub">{{ section.settings.newsletter_sub | default: 'Get skincare tips & exclusive offers.' }}</p>
-          {%- form 'customer', class: 'footer__newsletter-form' -%}
-            <input type="hidden" name="contact[tags]" value="newsletter">
-            <div class="footer__newsletter-row">
-              <input
-                type="email"
-                name="contact[email]"
-                class="footer__newsletter-input"
-                placeholder="your@email.com"
-                autocomplete="email"
-                aria-label="Email address"
-                required
-              >
-              <button type="submit" class="btn btn--primary btn--sm">Subscribe</button>
-            </div>
-            {%- if form.errors -%}
-              <p class="footer__newsletter-error">{{ form.errors | default_errors }}</p>
-            {%- endif -%}
-            {%- if form.posted_successfully? -%}
-              <p class="footer__newsletter-success">You're subscribed! 🎉</p>
-            {%- endif -%}
-          {%- endform -%}
-        </div>
-      {%- endif -%}
+      <div class="footer__col">
+        <h4 class="footer__col-title">Company</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/our-story" class="footer__col-link">Our Story</a></li>
+          <li><a href="/pages/ingredients-philosophy" class="footer__col-link">Ingredients Philosophy</a></li>
+          <li><a href="/blogs/journal" class="footer__col-link">Journal</a></li>
+          <li><a href="/pages/contact" class="footer__col-link">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__col-title">Support</h4>
+        <ul class="footer__col-links">
+          <li><a href="/policies/shipping-policy" class="footer__col-link">Shipping Policy</a></li>
+          <li><a href="/policies/refund-policy" class="footer__col-link">Returns & Refunds</a></li>
+          <li><a href="/pages/track-order" class="footer__col-link">Track Order</a></li>
+          <li><a href="/pages/faq" class="footer__col-link">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__col-title">Community</h4>
+        <ul class="footer__col-links">
+          {%- if section.settings.instagram != blank -%}
+            <li><a href="{{ section.settings.instagram }}" target="_blank" rel="noopener" class="footer__col-link">Instagram</a></li>
+          {%- else -%}
+            <li><a href="#" class="footer__col-link">Instagram</a></li>
+          {%- endif -%}
+          {%- if section.settings.whatsapp != blank -%}
+            <li><a href="https://wa.me/{{ section.settings.whatsapp }}" target="_blank" rel="noopener" class="footer__col-link">WhatsApp</a></li>
+          {%- else -%}
+            <li><a href="#" class="footer__col-link">WhatsApp</a></li>
+          {%- endif -%}
+          {%- if section.settings.youtube != blank -%}
+            <li><a href="{{ section.settings.youtube }}" target="_blank" rel="noopener" class="footer__col-link">YouTube</a></li>
+          {%- else -%}
+            <li><a href="#" class="footer__col-link">YouTube</a></li>
+          {%- endif -%}
+        </ul>
+      </div>
 
     </div><!-- /.footer__top -->
 
@@ -160,14 +109,8 @@
     <!-- Bottom: copyright + payment -->
     <div class="footer__bottom">
       <p class="footer__copyright">
-        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.
+        &copy; 2026 Mic & Mac. All rights reserved. <span class="footer__copyright-divider">|</span> CRAFTED BY <a href="https://mergex.in" target="_blank" rel="noopener" class="footer__mergex-link">MERGEX</a>
       </p>
-
-      <!-- Operational Status -->
-      <div class="footer__status">
-        <span class="footer__status-dot" aria-hidden="true"></span>
-        <span class="footer__status-text">Orders dispatching within 48 hrs</span>
-      </div>
 
       <div class="footer__policy-links">
         <a href="{{ shop.privacy_policy.url }}">Privacy</a>
@@ -177,10 +120,12 @@
       </div>
 
       {%- if section.settings.show_payment_icons -%}
-        <div class="footer__payment">
-          {%- for type in shop.enabled_payment_types -%}
-            {{ type | payment_type_svg_tag: class: 'footer__payment-icon' }}
-          {%- endfor -%}
+        <div class="footer__payment" title="Secured by Razorpay">
+          {{ 'upi' | payment_type_svg_tag: class: 'footer__payment-icon' }}
+          {{ 'google_pay' | payment_type_svg_tag: class: 'footer__payment-icon' }}
+          {{ 'visa' | payment_type_svg_tag: class: 'footer__payment-icon' }}
+          {{ 'master' | payment_type_svg_tag: class: 'footer__payment-icon' }}
+          {{ 'rupay' | payment_type_svg_tag: class: 'footer__payment-icon' }}
         </div>
       {%- endif -%}
     </div>
@@ -189,18 +134,82 @@
 </footer>
 
 <style>
+/* ── Zero the footer's own Shopify wrapper top spacing ── */
+#shopify-section-footer {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
 .site-footer {
-  background: var(--color-text-dark);
-  color: rgba(255,255,255,0.75);
-  padding-top: var(--space-16);
+  position: relative;
+  background-image: linear-gradient(rgba(58, 31, 37, 0.95), rgba(58, 31, 37, 0.95)), url('{{ "footerbg.png" | asset_url }}');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #3a1f25;
+  overflow: hidden;
+  color: rgba(255,255,255,0.65);
+  padding-top: var(--space-8);
   padding-bottom: var(--space-8);
-  margin-top: var(--space-20);
+  margin-top: 0;
+}
+
+/* ── Seamless blend: fade from page cream (#F3E8E4) down into the dark footer ── */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 280px;
+  background: linear-gradient(
+    to bottom,
+    #F3E8E4                   0%,
+    rgba(243,232,228,0.82)   20%,
+    rgba(243,232,228,0.45)   50%,
+    rgba(243,232,228,0.12)   75%,
+    rgba(243,232,228,0)     100%
+  );
+  pointer-events: none;
+  z-index: 1; /* Places the fade below the footer content */
+}
+
+/* Depth lighting only */
+.site-footer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at 20% 0%,
+      rgba(255,255,255,0.06) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 80% 100%,
+      rgba(74,16,64,0.3) 0%,
+      transparent 55%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure footer content sits above overlay pseudo-elements */
+.site-footer > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes foamFloat {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 }
 
 .footer__top {
   display: grid;
-  grid-template-columns: 1.4fr repeat(3, 1fr);
-  gap: var(--space-10);
+  grid-template-columns: 1.6fr repeat(4, 1fr);
+  gap: var(--space-8);
   padding-bottom: var(--space-12);
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
@@ -210,7 +219,7 @@
   font-size: var(--text-2xl);
   font-weight: 300;
   color: var(--color-white);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   display: block;
   margin-bottom: var(--space-4);
@@ -232,8 +241,17 @@
 .footer__brand-desc {
   font-size: var(--text-sm);
   line-height: 1.7;
-  color: rgba(255,255,255,0.55);
-  max-width: 240px;
+  color: rgba(255,255,255,0.65);
+  max-width: 300px;
+  margin-bottom: var(--space-2);
+}
+
+.footer__ritual {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(255,255,255,0.6);
+  margin-top: 8px;
   margin-bottom: var(--space-5);
 }
 
@@ -257,15 +275,16 @@
 .footer__social-link:hover {
   border-color: var(--color-gold);
   color: var(--color-gold);
+  background: rgba(212,175,55,0.1);
+  box-shadow: 0 0 10px rgba(212,175,55,0.2);
 }
 
 .footer__col-title {
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-white);
+  color: rgba(255,255,255,0.85);
   margin-bottom: var(--space-5);
 }
 
@@ -276,50 +295,16 @@
 }
 
 .footer__col-link {
+  display: inline-block;
   font-size: var(--text-sm);
   color: rgba(255,255,255,0.55);
-  transition: color var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
 .footer__col-link:hover {
   color: var(--color-gold);
+  transform: translateX(2px);
 }
-
-/* Newsletter */
-.footer__newsletter-sub {
-  font-size: var(--text-sm);
-  color: rgba(255,255,255,0.55);
-  margin-bottom: var(--space-4);
-  line-height: 1.6;
-}
-
-.footer__newsletter-row {
-  display: flex;
-  gap: var(--space-2);
-}
-
-.footer__newsletter-input {
-  flex: 1;
-  padding: 0.625rem 1rem;
-  background: rgba(255,255,255,0.08);
-  border: 1.5px solid rgba(255,255,255,0.15);
-  border-radius: var(--radius-pill);
-  font-size: var(--text-sm);
-  color: var(--color-white);
-  outline: none;
-  transition: border-color var(--transition-fast);
-}
-
-.footer__newsletter-input::placeholder {
-  color: rgba(255,255,255,0.3);
-}
-
-.footer__newsletter-input:focus {
-  border-color: var(--color-gold);
-}
-
-.footer__newsletter-error { color: #ff8080; font-size: var(--text-xs); margin-top: var(--space-2); }
-.footer__newsletter-success { color: #7ed8a4; font-size: var(--text-xs); margin-top: var(--space-2); }
 
 /* Trust seals */
 .footer__trust-seals {
@@ -341,6 +326,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.45);
+  opacity: 0.6;
 }
 
 .footer__seal-divider {
@@ -362,6 +348,23 @@
   font-size: var(--text-xs);
   color: rgba(255,255,255,0.35);
   line-height: 1;
+}
+
+.footer__copyright-divider {
+  margin: 0 4px;
+  color: rgba(255,255,255,0.15);
+}
+
+.footer__mergex-link {
+  color: var(--color-white);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer__mergex-link:hover {
+  color: var(--color-gold);
 }
 
 /* Operational status */

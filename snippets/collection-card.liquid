@@ -21,7 +21,7 @@
       loading="lazy"
     >
   {%- else -%}
-    {{ 'collection-1' | placeholder_svg_tag: 'w-full h-full object-cover text-gray-300 transition-transform duration-700 group-hover:scale-105' }}
+    <div class="w-full h-full bg-gray-100"></div>
   {%- endif -%}
 
   <!-- Gradient Overlay -->
@@ -34,7 +34,7 @@
     </h3>
     
     <span class="inline-block border-b border-white pb-1 text-sm font-medium uppercase tracking-widest opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-      {{ 'collections.general.shop_collection' | t | default: 'Shop Now' }}
+      Shop Now
     </span>
   </div>
 </a>

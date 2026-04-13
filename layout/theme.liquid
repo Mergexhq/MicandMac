@@ -28,13 +28,22 @@
   {{ content_for_header }}
 
   <!-- Google Fonts: Great Vibes (script) + Cormorant Garamond (display) + DM Sans (body) -->
+  {% comment %}theme-check-disable{% endcomment %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  {% comment %}theme-check-enable{% endcomment %}
 
-  <!-- Base CSS -->
-  {{ 'base.css' | asset_url | stylesheet_tag }}
-  {{ 'theme.css' | asset_url | stylesheet_tag }}
+  <!-- Modular CSS — load order matters (tokens → reset → … → animations) -->
+  {{ 'tokens.css'     | asset_url | stylesheet_tag }}
+  {{ 'reset.css'      | asset_url | stylesheet_tag }}
+  {{ 'typography.css' | asset_url | stylesheet_tag }}
+  {{ 'layout.css'     | asset_url | stylesheet_tag }}
+  {{ 'components.css' | asset_url | stylesheet_tag }}
+  {{ 'header.css'     | asset_url | stylesheet_tag }}
+  {{ 'mobile-nav.css' | asset_url | stylesheet_tag }}
+  {{ 'animations.css' | asset_url | stylesheet_tag }}
+  {{ 'theme.css'      | asset_url | stylesheet_tag }}
 
   <link rel="canonical" href="{{ canonical_url }}">
   {%- if settings.favicon != blank -%}
@@ -64,16 +73,28 @@
   <!-- Footer -->
   {%- section 'footer' -%}
 
+  <!-- Global JS data (read by theme modules) -->
+  <script>
+    window.productHandle    = {{ product.handle | json | default: 'null' }};
+    window.customerLoggedIn = {% if customer %}true{% else %}false{% endif %};
+    window.wishlistSyncUrl  = '';
+  </script>
+
   <!-- Global JS -->
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+  <!-- Mobile Navigation JS (top bar, drawer, bottom dock) -->
+  <script src="{{ 'mobile-nav.js' | asset_url }}" defer></script>
 
   <!-- Cart JS -->
   <script src="{{ 'cart.js' | asset_url }}" defer></script>
 
   <!-- Cinematic Animation Engine: GSAP + Three.js + Scroll Reveals -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.min.js"></script>
+  {% comment %}theme-check-disable{% endcomment %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.min.js" defer></script>
+  {% comment %}theme-check-enable{% endcomment %}
   <script src="{{ 'cinematic.js' | asset_url }}" defer></script>
 
   <!-- WhatsApp Sticky CTA -->

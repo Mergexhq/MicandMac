@@ -1,0 +1,127 @@
+/* ============================================
+   MIC & MAC — DESIGN TOKENS
+   All CSS custom properties live here.
+   Import order: 1 of 8
+   ============================================ */
+
+:root {
+  /* ---- Mic & Mac Brand Palette (from Layout Guide) ---- */
+  --mm-soft-blush:       #F3E8E4;  /* Page & header middle strip bg */
+  --mm-dark-espresso:    #2E1F1A;  /* Body text, footer bg, announcement bar bg */
+  --mm-deep-garnet:      #4B2A31;  /* Logo, headlines, nav strip bg, CTA buttons */
+  --mm-terracotta-rose:  #D18E82;  /* Hover states, accents, sale tags */
+  --mm-champagne-gold:   #D4AF37;  /* Dividers, icons, active nav, star ratings */
+
+  /* ---- Semantic aliases (used by all sections) ---- */
+  --color-burgundy:         var(--mm-deep-garnet);
+  --color-burgundy-hover:   var(--mm-terracotta-rose);
+  --color-plum:             var(--mm-dark-espresso);
+  --color-gold:             var(--mm-champagne-gold);
+  --color-gold-light:       #E0C96A;  /* Gold on dark backgrounds */
+  --color-gold-dark:        #B89A2A;  /* Small gold captions */
+
+  /* ---- Background colours ---- */
+  --color-bg-page:          var(--mm-soft-blush);   /* Main page background */
+  --color-bg-cream:         #F5ECD7;  /* Section bg, cards */
+  --color-bg-warm:          #EDD9B8;  /* Hover, selected states */
+  --color-bg-blush:         var(--mm-soft-blush);  /* Testimonials, subtle sections */
+  --color-bg-dark:          var(--mm-deep-garnet); /* Footer, trust bar — Deep Garnet */
+  --color-bg-darkest:       var(--mm-dark-espresso); /* Announcement bar */
+
+  /* ---- Text colours ---- */
+  --color-text-primary:     var(--mm-dark-espresso); /* Headings, product titles */
+  --color-text-secondary:   #5C3D2E;  /* Body text, descriptions */
+  --color-text-muted:       #A8957E;  /* Captions, compare price, meta */
+  --color-text-accent:      var(--mm-champagne-gold); /* Decorative eyebrows */
+  --color-text-on-dark:     var(--mm-soft-blush);  /* Text on dark backgrounds */
+  --color-text-gold-on-dark:var(--mm-champagne-gold); /* Gold on dark */
+
+  /* ---- Borders ---- */
+  --color-border-default:   #E8DDD0;
+  --color-border-accent:    var(--mm-champagne-gold);
+
+  /* ---- Semantic colours ---- */
+  --color-success:          #2D7A4A;
+  --color-error:            #C0392B;
+  --color-warning:          var(--mm-champagne-gold);
+  --color-info:             #4A8FA8;
+
+  /* ---- Legacy aliases (keep older sections compiling) ---- */
+  --color-forest:           var(--mm-deep-garnet);
+  --color-forest-dark:      var(--mm-terracotta-rose);
+  --color-forest-light:     var(--color-gold-dark);
+  --color-beige:            var(--color-bg-cream);
+  --color-white:            var(--color-bg-page);
+  --color-cream:            var(--color-bg-cream);
+  --color-sage:             var(--color-gold-dark);
+  --color-sage-light:       var(--color-bg-warm);
+  --color-text-dark:        var(--color-text-primary);
+  --color-text-mid:         var(--color-text-secondary);
+  --color-text-light:       var(--color-text-muted);
+  --color-text-white:       var(--color-text-on-dark);
+
+  /* ---- Typography ---- */
+  --font-display: 'Cormorant Garamond', Georgia, serif;  /* Headings — luxury serif */
+  --font-script:  'Great Vibes', cursive;                /* First-letter decoration */
+  --font-body:    'DM Sans', -apple-system, sans-serif;  /* UI text — clean sans */
+
+  /* ---- Font scale ---- */
+  --text-xs:    0.75rem;    /* 12px */
+  --text-sm:    0.875rem;   /* 14px */
+  --text-base:  1rem;       /* 16px — minimum body size per India UX rules */
+  --text-lg:    1.125rem;   /* 18px */
+  --text-xl:    1.25rem;    /* 20px */
+  --text-2xl:   1.5rem;     /* 24px */
+  --text-3xl:   1.875rem;   /* 30px */
+  --text-4xl:   2.25rem;    /* 36px */
+  --text-5xl:   3rem;       /* 48px */
+  --text-6xl:   3.75rem;    /* 60px */
+  --text-7xl:   4.5rem;     /* 72px */
+
+  /* ---- Spacing scale ---- */
+  --space-1:  0.25rem;   /*  4px */
+  --space-2:  0.5rem;    /*  8px */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-5:  1.25rem;   /* 20px */
+  --space-6:  1.5rem;    /* 24px */
+  --space-8:  2rem;      /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-20: 5rem;      /* 80px */
+  --space-24: 6rem;      /* 96px */
+
+  /* ---- Layout ---- */
+  --container-max:    1280px;
+  --container-wide:   1440px;
+  --container-narrow: 800px;
+  --gutter:           1.5rem;
+
+  /* ---- Border radius ---- */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-pill: 999px;  /* Always use on buttons per design rules */
+
+  /* ---- Shadows (burgundy-tinted) ---- */
+  --shadow-sm:  0 1px 3px rgba(74, 16, 64, 0.08);
+  --shadow-md:  0 4px 16px rgba(74, 16, 64, 0.12);
+  --shadow-lg:  0 8px 32px rgba(74, 16, 64, 0.16);
+  --shadow-xl:  0 16px 48px rgba(74, 16, 64, 0.20);
+
+  /* ---- Transitions ---- */
+  --transition-fast:   150ms ease;
+  --transition-base:   250ms ease;
+  --transition-slow:   400ms ease;
+  --transition-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ---- Z-index layers ---- */
+  --z-base:    1;
+  --z-above:   10;
+  --z-nav:     100;
+  --z-overlay: 200;
+  --z-modal:   300;
+  --z-toast:   400;
+}

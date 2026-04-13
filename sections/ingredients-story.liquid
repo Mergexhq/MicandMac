@@ -28,8 +28,6 @@
               height="{{ 800 | divided_by: section.settings.image.aspect_ratio | round }}"
               loading="lazy"
             >
-          {%- else -%}
-            {{ 'image' | placeholder_svg_tag: 'w-full h-full text-gray-300' }}
           {%- endif -%}
           
           {%- if section.settings.badge_text != blank -%}
@@ -115,32 +113,27 @@
     {
       "type": "text",
       "id": "badge_text",
-      "label": "Badge Text (Bottom corner of image)",
-      "default": "100% Transparency"
+      "label": "Badge Text (Bottom corner of image)"
     },
     {
       "type": "text",
       "id": "subheading",
-      "label": "Subheading",
-      "default": "Our Philosophy"
+      "label": "Subheading"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
-      "default": "Sourced from nature, backed by science."
+      "label": "Heading"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Text",
-      "default": "<p>We believe in the power of natural ingredients to transform your skin and overall wellness without harmful side effects.</p>"
+      "label": "Text"
     },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Button Label",
-      "default": "Learn more about ingredients"
+      "label": "Button Label"
     },
     {
       "type": "url",
@@ -197,20 +190,17 @@
         {
           "type": "text",
           "id": "icon",
-          "label": "Emoji/Text Icon",
-          "default": "💧"
+          "label": "Emoji/Text Icon"
         },
         {
           "type": "text",
           "id": "title",
-          "label": "Title",
-          "default": "Hyaluronic Acid"
+          "label": "Title"
         },
         {
           "type": "textarea",
           "id": "description",
-          "label": "Description",
-          "default": "Deeply moisturizes and plumps the skin."
+          "label": "Description"
         }
       ]
     }
@@ -219,8 +209,8 @@
     {
       "name": "Ingredients Story",
       "blocks": [
-        { "type": "feature", "settings": { "icon": "🌿", "title": "Aloe Vera", "description": "Soothes and hydrates." } },
-        { "type": "feature", "settings": { "icon": "🍊", "title": "Vitamin C", "description": "Brightens and evens tone." } }
+        { "type": "feature" },
+        { "type": "feature" }
       ]
     }
   ]

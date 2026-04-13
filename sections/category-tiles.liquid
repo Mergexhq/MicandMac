@@ -98,8 +98,6 @@
         <div class="tile-image-container">
           {%- if block.settings.image != blank -%}
             <img src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ block.settings.title }}" width="200" height="200">
-          {%- else -%}
-             {{ 'product-apparel-1' | placeholder_svg_tag: 'w-full h-full grayscale opacity-20' }}
           {%- endif -%}
         </div>
       </a>
@@ -143,8 +141,7 @@
         {
           "type": "text",
           "id": "title",
-          "label": "Title",
-          "default": "Body"
+          "label": "Title"
         },
         {
           "type": "image_picker",
@@ -163,10 +160,10 @@
     {
       "name": "Category Tiles",
       "blocks": [
-        { "type": "category", "settings": { "title": "Body" } },
-        { "type": "category", "settings": { "title": "Face" } },
-        { "type": "category", "settings": { "title": "Hair" } },
-        { "type": "category", "settings": { "title": "Other" } }
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" }
       ]
     }
   ]

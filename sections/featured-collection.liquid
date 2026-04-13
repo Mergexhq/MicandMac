@@ -46,20 +46,6 @@
               %}
             </div>
           {%- endfor -%}
-        {%- else -%}
-          {%- for i in (1..section.settings.products_to_show) -%}
-            <div class="w-[280px] md:w-full snap-start shrink-0">
-              <div class="product-card group block relative">
-                <div class="aspect-square bg-gray-100 flex items-center justify-center mb-4">
-                  {{ 'product-' | append: i | placeholder_svg_tag: 'w-full h-full text-gray-300 bg-gray-100' }}
-                </div>
-                <div class="text-center">
-                  <h3 class="text-base font-medium text-gray-900 mb-1">Example Product Title</h3>
-                  <div class="text-sm text-gray-500">$19.99</div>
-                </div>
-              </div>
-            </div>
-          {%- endfor -%}
         {%- endif -%}
       </div>
     </div>
