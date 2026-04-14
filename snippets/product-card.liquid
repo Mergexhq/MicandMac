@@ -1,74 +1,78 @@
-{%- comment -%}
-  Accepts:
-  - product: {Object} Product Liquid object
-  - show_secondary_image: {Boolean} Show the secondary image on hover. Default: false
-  - show_vendor: {Boolean} Show the product vendor. Default: false
-  - show_rating: {Boolean} Show the product rating. Default: false
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
 
-  Usage:
-  {% render 'product-card', product: product %}
-{%- endcomment -%}
+{%- liquid
+  assign badge = blank
+  if product.tags contains 'Bestseller' or product.tags contains 'bestseller'
+    assign badge = 'Bestseller'
+  elsif product.available and product.variants.first.inventory_quantity > 0 and product.variants.first.inventory_quantity < 20
+    assign badge = 'Limited'
+  elsif product.published_at != blank
+    assign date_created = product.published_at | date: '%s'
+    assign date_now = 'now' | date: '%s'
+    assign diff_seconds = date_now | minus: date_created
+    if diff_seconds < 2592000
+      assign badge = 'New'
+    endif
+  endif
 
-<a href="{{ product.url | within: collection }}" class="product-card group block relative" data-product-id="{{ product.id }}">
-  <div class="product-card__image-wrapper relative aspect-square overflow-hidden bg-gray-100 rounded-lg mb-4">
+  assign p_type = product.metafields.custom.process_type | default: 'Cold Process'
+  assign p_benefit = product.metafields.custom.primary_benefit | default: 'Deep Nourishment'
+  assign reviews_count = product.metafields.reviews.rating_count | default: 0
+-%}
+
+<div class="pc" data-product-id="{{ product.id }}">
+
+  {%- comment -%} IMAGE BLOCK — self-contained, no card wrapper -%}{%- endcomment -%}
+  <a href="{{ product.url | within: collection }}" class="pc__media">
+    {%- if badge != blank -%}
+      <span class="pc__badge">{{ badge }}</span>
+    {%- endif -%}
+    
+    <button type="button" class="pc__wishlist-btn" data-product-handle="{{ product.handle }}" aria-label="Add to wishlist">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+    </button>
+    
     {%- if product.featured_image -%}
       <img
         src="{{ product.featured_image | image_url: width: 600 }}"
         alt="{{ product.featured_image.alt | escape }}"
-        class="product-card__image object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+        class="pc__img"
         width="600"
         height="600"
         loading="lazy"
       >
-      {%- if product.images[1] != blank and show_secondary_image -%}
-        <img
-          src="{{ product.images[1] | image_url: width: 600 }}"
-          alt="{{ product.images[1].alt | escape }}"
-          class="product-card__image--secondary absolute inset-0 object-cover w-full h-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-white"
-          width="600"
-          height="600"
-          loading="lazy"
-        >
-      {%- endif -%}
     {%- else -%}
-      <div class="w-full h-full bg-gray-100"></div>
+      <div class="pc__img-placeholder"></div>
     {%- endif -%}
+  </a>
 
-    {%- if product.compare_at_price > product.price -%}
-      <div class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-        Sale
-      </div>
-    {%- endif -%}
-    {%- unless product.available -%}
-      <div class="absolute top-2 left-2 bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded">
-        Sold Out
-      </div>
-    {%- endunless -%}
-    
-    <!-- Wishlist toggle button (Top Right) -->
-    <button type="button" class="wishlist-toggle absolute top-2 right-2 p-2 bg-white rounded-full shadow-sm text-gray-400 hover:text-red-500 transition-colors" data-product-handle="{{ product.handle }}" aria-label="Add to wishlist">
-      <svg class="w-5 h-5 icon-heart-empty" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-      <svg class="w-5 h-5 icon-heart-filled hidden text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
-    </button>
-  </div>
-
-  <div class="product-card__content text-center">
-    {%- if show_vendor -%}
-      <p class="product-card__vendor text-xs text-gray-500 uppercase tracking-widest mb-1">{{ product.vendor }}</p>
-    {%- endif -%}
-
-    <h3 class="product-card__title text-base font-medium text-gray-900 mb-1 group-hover:underline">
+  {%- comment -%} TEXT BLOCK — sits on page background, no wrapper -%}{%- endcomment -%}
+  <div class="pc__info">
+    <a href="{{ product.url | within: collection }}" class="pc__name">
       {{ product.title | escape }}
-    </h3>
+    </a>
 
-    {%- if show_rating -%}
-      <div class="product-card__rating text-xs text-yellow-500 mb-2">
-        {% render 'star-rating', rating: product.metafields.reviews.rating.value, count: product.metafields.reviews.rating_count %}
+    <p class="pc__context">{{ p_type }} &bull; {{ p_benefit }}</p>
+
+    <div class="pc__pricing">
+      <span class="pc__price">{{ product.price | money }}</span>
+      {%- if product.compare_at_price > product.price -%}
+        <span class="pc__mrp">{{ product.compare_at_price | money }}</span>
+      {%- endif -%}
+    </div>
+
+    {%- if reviews_count >= 5 -%}
+      <div class="pc__rating">
+        <span class="pc__stars">★★★★★</span>
+        <span class="pc__rating-val">{{ product.metafields.reviews.rating.value | default: '4.8' }}</span>
       </div>
     {%- endif -%}
 
-    <div class="product-card__price mb-3">
-      {% render 'price', product: product, use_variant: true %}
-    </div>
+    <form method="post" action="{{ routes.cart_add_url }}" class="pc__form">
+      <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+      <button type="submit" class="pc__atc" {% unless product.available %}disabled{% endunless %}>
+        {% if product.available %}Add to Bag{% else %}Sold Out{% endif %}
+      </button>
+    </form>
   </div>
-</a>
+</div>

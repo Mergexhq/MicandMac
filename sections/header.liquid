@@ -343,57 +343,78 @@
 
           <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
-          <li class="site-nav__item">
-            <a href="{{ routes.collections_url }}/face-care" class="site-nav__link{% if request.path contains 'face-care' %} is-active{% endif %}">
+          <li class="site-nav__item site-nav__item--mega">
+            <a href="{{ routes.all_products_collection_url }}/cleansing-bar" class="site-nav__link{% if current_tags contains 'cleansing-bar' %} is-active{% endif %}">
               Cleansing Bars
               <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                 <path d="M6 9l6 6 6-6"/>
               </svg>
             </a>
-            <div class="site-nav__dropdown site-nav__megamenu">
+            <div class="site-nav__dropdown site-nav__megamenu--full">
               <div class="site-nav__dropdown-bridge"></div>
-              <div class="site-nav__megamenu-left">
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                  <li><a href="/products/donkey-milk-soap-100gm" class="site-nav__dropdown-link">Donkey Milk Soap</a></li>
-                  <li><a href="/products/redwine-soap-100gm" class="site-nav__dropdown-link">Red Wine Radiance</a></li>
-                  <li><a href="/products/skjn-whitening-soap-100gm" class="site-nav__dropdown-link">Skin Radiance Glow</a></li>
-                  <li class="site-nav__dropdown-divider"></li>
-                  <li><a href="{{ routes.collections_url }}/face-care" class="site-nav__dropdown-link" style="font-weight: 600;">Shop All Bars</a></li>
-                </ul>
+              
+              <!-- Left descriptive panel -->
+              <div class="mm-panel-left">
+                <div class="mm-panel-title">Cleansing Bars</div>
+                <div class="mm-panel-desc">Artisan formulated bars crafted from pure botanical ingredients to restore skin's natural balance.</div>
+                <a href="{{ routes.all_products_collection_url }}/cleansing-bar" class="mm-view-all">Shop All Bars</a>
               </div>
-              <div class="site-nav__megamenu-right">
-                <a href="{{ routes.collections_url }}/face-care" class="site-nav__megamenu-promo">
-                  <div class="site-nav__megamenu-promo-img bg-placeholder"></div>
-                  <span class="site-nav__megamenu-promo-text">Discover Cleansing Bars</span>
-                </a>
+              
+              <!-- Right product grid -->
+              <div class="mm-panel-grid">
+                {% assign mega_products = collections['face-care'].products %}
+                {% if mega_products.size == 0 %}{% assign mega_products = collections.all.products %}{% endif %}
+                {% for product in mega_products limit: 2 %}
+                  <a href="{{ product.url }}" class="mm-card">
+                    <div class="mm-card__image-wrapper">
+                      {% if product.featured_image %}
+                        <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" class="mm-card__image" loading="lazy" width="400" height="400">
+                      {% else %}
+                        {{ 'product-1' | placeholder_svg_tag: 'mm-card__image' }}
+                      {% endif %}
+                    </div>
+                    <div class="mm-card__title">{{ product.title | split: '|' | first }}</div>
+                  </a>
+                {% endfor %}
               </div>
             </div>
           </li>
 
           <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
-          <li class="site-nav__item">
-            <a href="{{ routes.collections_url }}/lip-care" class="site-nav__link{% if request.path contains 'lip-care' %} is-active{% endif %}">
+          <li class="site-nav__item site-nav__item--mega">
+            <a href="{{ routes.all_products_collection_url }}/lip-care" class="site-nav__link{% if current_tags contains 'lip-care' %} is-active{% endif %}">
               Lip Care
               <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                 <path d="M6 9l6 6 6-6"/>
               </svg>
             </a>
-            <div class="site-nav__dropdown site-nav__megamenu">
+            <div class="site-nav__dropdown site-nav__megamenu--full">
               <div class="site-nav__dropdown-bridge"></div>
-              <div class="site-nav__megamenu-left">
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                  <li><a href="{{ routes.collections_url }}/lip-care" class="site-nav__dropdown-link">Lip Balms</a></li>
-                  <li><a href="{{ routes.collections_url }}/lip-care" class="site-nav__dropdown-link">Lip Scrubs</a></li>
-                  <li class="site-nav__dropdown-divider"></li>
-                  <li><a href="{{ routes.collections_url }}/lip-care" class="site-nav__dropdown-link" style="font-weight: 600;">Shop All Lip Care</a></li>
-                </ul>
+              
+              <!-- Left descriptive panel -->
+              <div class="mm-panel-left">
+                <div class="mm-panel-title">Lip Care</div>
+                <div class="mm-panel-desc">Hydrating balms and restorative scrubs for perfectly nourished, soft lips.</div>
+                <a href="{{ routes.all_products_collection_url }}/lip-care" class="mm-view-all">Shop Lip Care</a>
               </div>
-              <div class="site-nav__megamenu-right">
-                <a href="{{ routes.collections_url }}/lip-care" class="site-nav__megamenu-promo">
-                  <div class="site-nav__megamenu-promo-img bg-placeholder"></div>
-                  <span class="site-nav__megamenu-promo-text">Nourish Your Lips</span>
-                </a>
+              
+              <!-- Right product grid -->
+              <div class="mm-panel-grid">
+                {% assign mega_products = collections['lip-care'].products %}
+                {% if mega_products.size == 0 %}{% assign mega_products = collections.all.products %}{% endif %}
+                {% for product in mega_products limit: 2 %}
+                  <a href="{{ product.url }}" class="mm-card">
+                    <div class="mm-card__image-wrapper">
+                      {% if product.featured_image %}
+                        <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" class="mm-card__image" loading="lazy" width="400" height="400">
+                      {% else %}
+                        {{ 'product-2' | placeholder_svg_tag: 'mm-card__image' }}
+                      {% endif %}
+                    </div>
+                    <div class="mm-card__title">{{ product.title | split: '|' | first }}</div>
+                  </a>
+                {% endfor %}
               </div>
             </div>
           </li>

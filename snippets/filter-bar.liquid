@@ -8,16 +8,6 @@
 
 <div class="filter-bar" id="FilterBar">
   <div class="filter-bar__top">
-
-    <!-- Result count -->
-    <p class="filter-bar__count" id="FilterResultCount">
-      {%- if collection.products_count == 1 -%}
-        1 product
-      {%- else -%}
-        {{ collection.products_count }} products
-      {%- endif -%}
-    </p>
-
     <div class="filter-bar__controls">
 
       <!-- Filter toggle (mobile) -->
@@ -36,18 +26,6 @@
           {%- endif -%}
         {%- endif -%}
       </button>
-
-      <!-- Sort -->
-      <div class="filter-bar__sort">
-        <label for="SortBy" class="visually-hidden">Sort by</label>
-        <select name="sort_by" id="SortBy" class="form-select filter-bar__sort-select" aria-label="Sort products">
-          {%- for option in collection.sort_options -%}
-            <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>
-              {{ option.name }}
-            </option>
-          {%- endfor -%}
-        </select>
-      </div>
 
     </div>
   </div>

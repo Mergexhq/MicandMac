@@ -1,96 +1,438 @@
 {% comment %}
-  Section: Main Collection
-  Grid of product cards with filter bar and pagination.
+  Section: Main Collection (Hybrid Editorial PLP)
+  Implements the 7-Stage Hybrid Flow:
+  1. Hero, 2. Quick Scan, 3. Featured Prod, 4. Editorial List, 5. Mini Grid, 6. Brand Paragraph, 7. Visual Close
 {% endcomment %}
 
 {%- liquid
-  assign products_per_page = section.settings.products_per_page | default: 12
+  assign products_per_page = section.settings.products_per_page | default: 16
 -%}
 
-<div class="main-collection section-padding">
-  <div class="container">
+<div class="main-collection hybrid-plp">
+  
+  {%- paginate collection.products by products_per_page -%}
+  
+    {%- if paginate.current_page == 1 -%}
+      <!-- Stage 1 & 2: Hero & Quick Scan -->
+      <div class="plp-simple-hero section-padding">
+        <div class="container text-center">
+          <h1 class="plp-simple-hero__title">{{ collection.title }}</h1>
+          <div class="plp-simple-hero__desc">
+            {%- if collection.description != blank -%}
+              {{ collection.description }}
+            {%- else -%}
+              Shop our pure, artisanal, and botanically-formulated range of skincare & wellness essentials. Every blend is meticulously handcrafted to restore your natural balance and profoundly nourish specific skin and hair needs.
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
 
-    <!-- Header -->
-    <div class="main-collection__header">
-      <h1 class="main-collection__title">{{ collection.title }}</h1>
-      {%- if collection.description != blank -%}
-        <p class="main-collection__desc">{{ collection.description }}</p>
-      {%- endif -%}
+      <div class="plp-quick-scan">
+        <div class="container container--narrow">
+          <ul class="plp-quick-list">
+            {%- if section.settings.quick_links != blank -%}
+              {%- for link in linklists[section.settings.quick_links].links -%}
+                <li><a href="{{ link.url }}" class="plp-quick-link {% if link.active %}is-active{% endif %}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            {%- else -%}
+              {%- assign all_url = routes.all_products_collection_url -%}
+              <li><a href="{{ all_url }}" class="plp-quick-link {% if request.path == all_url %}is-active{% endif %}">All</a></li>
+              <li><a href="{{ all_url }}/cleansing-bar" class="plp-quick-link {% if current_tags contains 'cleansing-bar' %}is-active{% endif %}">Cleansing Bars</a></li>
+              <li><a href="{{ all_url }}/lip-care" class="plp-quick-link {% if current_tags contains 'lip-care' %}is-active{% endif %}">Lip Care</a></li>
+            {%- endif -%}
+          </ul>
+        </div>
+      </div>
+    {%- endif -%} <!-- Close Hero/Scan if -->
+
+    <!-- Stage 5: Mini Grid (Quick Shop) -->
+    <div class="plp-mini-grid-section section-padding bg-murmur">
+      <div class="container">
+      {% comment %} Filter bar removed as per minimalist request {% endcomment %}
+
+        {%- if collection.products.size > 0 -%}
+          <div class="product-grid">
+            {%- for product in collection.products -%}
+              {%- if current_tags.size > 0 -%}
+                {%- assign tag_match = false -%}
+                {%- for tag in current_tags -%}
+                  {%- assign tag_lower = tag | downcase -%}
+                  {%- for ptag in product.tags -%}
+                    {%- assign ptag_lower = ptag | downcase -%}
+                    {%- if ptag_lower == tag_lower -%}
+                      {%- assign tag_match = true -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endfor -%}
+                {%- if tag_match -%}
+                  {% render 'product-card', product: product %}
+                {%- endif -%}
+              {%- else -%}
+                {% render 'product-card', product: product %}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <div class="collection-empty text-center" style="padding: 100px 0;">
+            <p style="margin-bottom: 20px;">No products found in this collection.</p>
+            <a href="{{ routes.all_products_collection_url }}" class="btn btn--secondary">Shop All</a>
+          </div>
+        {%- endif -%}
+
+        {% render 'pagination', paginate: paginate %}
+      </div>
     </div>
 
-    <!-- Filter bar -->
-    {% render 'filter-bar', collection: collection %}
-
-    <!-- Grid -->
-    {%- paginate collection.products by products_per_page -%}
+    {%- if paginate.current_page == 1 -%}
+      <!-- Checking products for editorial split -->
       {%- if collection.products.size > 0 -%}
-        <div class="product-grid" id="ProductGrid">
-          {%- for product in collection.products -%}
-            {% render 'product-card', product: product %}
-          {%- endfor -%}
+        
+        <!-- Stage 3: Featured Product (Index 0) -->
+        {%- assign featured_product = collection.products[0] -%}
+        <div class="plp-featured section-padding">
+          <div class="container grid grid--2 align-center plp-split-layout">
+            <div class="plp-featured__image-wrap">
+              <a href="{{ featured_product.url }}">
+                {%- if featured_product.featured_image -%}
+                <img src="{{ featured_product.featured_image | image_url: width: 800 }}" alt="{{ featured_product.title | escape }}" width="{{ featured_product.featured_image.width }}" height="{{ featured_product.featured_image.height }}" class="plp-featured__img" loading="lazy">
+                {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'plp-featured__img' }}
+                {%- endif -%}
+              </a>
+            </div>
+            <div class="plp-featured__info">
+              <h2 class="plp-featured__title">{{ featured_product.title | split: '|' | first }}</h2>
+              <p class="plp-featured__benefit">{{ featured_product.metafields.custom.benefit | default: "Discover pure, potent botanicals formulated to restore and nourish your daily ritual." }}</p>
+              <div class="plp-featured__price">{{ featured_product.price | money }}</div>
+              
+              <div class="plp-actions flex flex-col flex--gap-sm">
+                <form method="post" action="{{ routes.cart_add_url }}" class="plp-atc-form">
+                  <input type="hidden" name="id" value="{{ featured_product.variants.first.id }}">
+                  <button type="submit" class="btn btn--primary plp-btn" {% unless featured_product.available %}disabled{% endunless %}>
+                    {% if featured_product.available %}Add to Cart{% else %}Sold Out{% endif %}
+                  </button>
+                </form>
+                <a href="{{ featured_product.url }}" class="btn btn--secondary plp-btn plp-btn--view">View Details</a>
+              </div>
+            </div>
+          </div>
         </div>
-      {%- else -%}
-        <div class="collection-empty">
-          <p>No products match the selected filters.</p>
-          <a href="{{ collection.url }}" class="btn btn--secondary">Clear filters</a>
+        
+        <!-- Stage 4: Editorial List (Index 1 & 2) -->
+        <div class="plp-editorial-list section-padding--sm">
+          <div class="container">
+            {%- for product in collection.products limit: 2 offset: 1 -%}
+              {%- assign is_reverse = forloop.index | modulo: 2 -%}
+              <div class="plp-editorial-row grid grid--2 align-center {% if is_reverse == 0 %}plp-editorial-row--reverse{% endif %}">
+                <div class="plp-editorial-row__image-wrap">
+                  <a href="{{ product.url }}">
+                    {%- if product.featured_image -%}
+                    <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title | escape }}" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}" class="plp-editorial-row__img" loading="lazy">
+                    {%- else -%}
+                    {{ 'product-2' | placeholder_svg_tag: 'plp-editorial-row__img' }}
+                    {%- endif -%}
+                  </a>
+                </div>
+                <div class="plp-editorial-row__info">
+                  <h3 class="plp-editorial-row__title">{{ product.title | split: '|' | first }}</h3>
+                  <p class="plp-editorial-row__benefit">{{ product.metafields.custom.benefit | default: "Elevate your routine with artisanal craftsmanship." }}</p>
+                  <div class="plp-editorial-row__price">{{ product.price | money }}</div>
+                  
+                  <form method="post" action="{{ routes.cart_add_url }}" class="plp-atc-form" style="max-width: 250px;">
+                    <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                    <button type="submit" class="btn btn--primary plp-btn" {% unless product.available %}disabled{% endunless %}>
+                      {% if product.available %}Add to Cart{% else %}Sold Out{% endif %}
+                    </button>
+                  </form>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
         </div>
       {%- endif -%}
 
-      {% render 'pagination', paginate: paginate %}
-    {%- endpaginate -%}
+      <!-- Stage 6: Brand Paragraph -->
+      {%- if section.settings.brand_text != blank -%}
+      <div class="plp-brand-paragraph section-padding text-center">
+        <div class="container container--narrow">
+          <h2 class="plp-brand-heading">{{ section.settings.brand_heading }}</h2>
+          <div class="plp-brand-text">{{ section.settings.brand_text }}</div>
+        </div>
+      </div>
+      {%- endif -%}
 
-  </div>
+      <!-- Stage 7: Visual Close -->
+      {%- if section.settings.closing_image != blank -%}
+      <div class="plp-visual-close">
+        <img src="{{ section.settings.closing_image | image_url: width: 2500 }}" alt="Closing Aesthetic" width="{{ section.settings.closing_image.width }}" height="{{ section.settings.closing_image.height }}" class="plp-visual-close__img" loading="lazy">
+      </div>
+      {%- endif -%}
+    {%- endif -%} <!-- Final Page 1 check -->
+
+  {%- endpaginate -%}
 </div>
 
 <style>
-.main-collection__header {
-  margin-bottom: var(--space-8);
-  max-width: 600px;
-}
+  /* Hybrid PLP Specific CSS */
+  .plp-simple-hero {
+    padding-top: var(--space-20);
+    padding-bottom: var(--space-8);
+    background-color: var(--mm-soft-blush);
+  }
+  .plp-simple-hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-weight: 500;
+    margin-bottom: var(--space-4);
+    color: var(--mm-deep-garnet);
+    line-height: 1.1;
+  }
+  .plp-simple-hero__desc {
+    font-size: clamp(14px, 2vw, 17px);
+    color: var(--mm-dark-espresso);
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    max-width: 100%;
+    margin: 0 auto;
+    opacity: 0.85;
+  }
+  
+  /* Quick Scan Strip */
+  .plp-quick-scan {
+    background-color: var(--mm-soft-blush);
+    padding: var(--space-4) 0 var(--space-12) 0;
+  }
+  .plp-quick-list {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-8);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    align-items: baseline;
+  }
+  .plp-quick-list::-webkit-scrollbar { display: none; }
+  .plp-quick-link {
+    display: inline-block;
+    color: var(--mm-dark-espresso);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    white-space: nowrap;
+    opacity: 0.25;
+    padding: 5px 10px;
+    transition: all var(--transition-fast);
+  }
+  .plp-quick-link sup {
+    font-size: 0.35em;
+    vertical-align: super;
+    margin-left: 2px;
+    opacity: 0.7;
+    font-weight: 500;
+    font-family: var(--font-body);
+  }
+  .plp-quick-link:hover {
+    opacity: 0.6;
+    background: transparent;
+  }
+  .plp-quick-link.is-active {
+    opacity: 1;
+    color: var(--mm-dark-espresso);
+    background: transparent;
+    border: none;
+  }
 
-.main-collection__title {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 300;
-  color: var(--color-text-dark);
-  margin-bottom: var(--space-3);
-}
+  /* Featured Product (Stage 3) */
+  .plp-featured {
+    background: var(--mm-soft-blush);
+  }
+  .plp-split-layout {
+    gap: var(--space-12);
+  }
+  .plp-featured__img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 40px rgba(46,31,26,0.05);
+  }
+  .plp-featured__info {
+    padding: var(--space-6) 0;
+  }
+  .plp-featured__title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(2.5rem, 4vw, 3.8rem);
+    font-weight: 600;
+    color: var(--mm-deep-garnet);
+    margin-bottom: var(--space-3);
+    line-height: 1.1;
+  }
+  .plp-featured__benefit {
+    font-size: 16px;
+    color: var(--mm-dark-espresso);
+    opacity: 0.85;
+    margin-bottom: var(--space-6);
+    line-height: 1.6;
+    max-width: 450px;
+  }
+  .plp-featured__price {
+    font-family: var(--font-body);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--mm-deep-garnet);
+    margin-bottom: var(--space-8);
+  }
+  .plp-actions {
+    max-width: 280px;
+  }
+  .plp-btn {
+    width: 100%;
+  }
+  
+  /* Editorial Row (Stage 4) */
+  .plp-editorial-row {
+    gap: var(--space-12);
+    margin-bottom: var(--space-16);
+  }
+  .plp-editorial-row:last-child {
+    margin-bottom: 0;
+  }
+  .plp-editorial-row--reverse {
+    direction: rtl;
+  }
+  .plp-editorial-row--reverse > * {
+    direction: ltr;
+  }
+  .plp-editorial-row__img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 4/5;
+    border-radius: var(--radius-lg);
+  }
+  .plp-editorial-row__info {
+    padding: 0 var(--space-8);
+  }
+  .plp-editorial-row__title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(2rem, 3vw, 2.5rem);
+    font-weight: 500;
+    color: var(--mm-deep-garnet);
+    margin-bottom: var(--space-2);
+    line-height: 1.2;
+  }
+  .plp-editorial-row__benefit {
+    font-size: 14px;
+    color: var(--mm-dark-espresso);
+    opacity: 0.8;
+    margin-bottom: var(--space-4);
+    line-height: 1.5;
+  }
+  .plp-editorial-row__price {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--mm-deep-garnet);
+    margin-bottom: var(--space-6);
+  }
 
-.main-collection__desc {
-  font-size: var(--text-base);
-  color: var(--color-text-mid);
-  line-height: 1.7;
-}
+  /* Mini Grid (Stage 5) */
+  .bg-murmur { 
+    background-color: var(--mm-soft-blush);
+    border-top: 1px solid rgba(46,31,26,0.05);
+  }
+  .plp-mini-grid__header {
+    margin-bottom: var(--space-10);
+  }
+  .plp-mini-grid__heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: var(--mm-deep-garnet);
+    margin-bottom: var(--space-1);
+  }
+  .plp-mini-grid__sub {
+    font-size: 11px;
+    color: var(--mm-dark-espresso);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+    opacity: 0.6;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
 
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-6);
-  margin-bottom: var(--space-8);
-}
+  /* Product Card styling now lives in assets/product-card.css */
+  
+  /* Brand Paragraph (Stage 6) */
+  .plp-brand-paragraph {
+    background: var(--mm-soft-blush);
+  }
+  .plp-brand-heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2.5rem;
+    color: var(--mm-deep-garnet);
+    margin-bottom: var(--space-4);
+    font-weight: 500;
+  }
+  .plp-brand-text {
+    font-size: 16px;
+    color: var(--mm-dark-espresso);
+    line-height: 1.8;
+  }
 
-.collection-empty {
-  text-align: center;
-  padding: var(--space-16);
-  color: var(--color-text-light);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
-}
+  /* Visual Close (Stage 7) */
+  .plp-visual-close__img {
+    width: 100%;
+    height: 70vh;
+    object-fit: cover;
+    display: block;
+  }
 
-@media (max-width: 1023px) {
-  .product-grid { grid-template-columns: repeat(3, 1fr); }
-}
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .plp-split-layout, .plp-editorial-row {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+    .plp-editorial-row--reverse {
+      direction: ltr;
+    }
+    .plp-editorial-row__info {
+      padding: 0;
+      text-align: center;
+    }
+    .plp-featured__info {
+      text-align: center;
+    }
+    .plp-actions {
+      margin: 0 auto;
+    }
+    .plp-editorial-row__title {
+      font-size: 2rem;
+    }
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
+    }
+  }
 
-@media (max-width: 767px) {
-  .product-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
-}
+  @media (min-width: 769px) and (max-width: 1023px) {
+    .product-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
 </style>
 
 {% schema %}
 {
-  "name": "Collection products",
+  "name": "Hybrid Collection PLP",
   "settings": [
     {
       "type": "range",
@@ -99,7 +441,31 @@
       "min": 8,
       "max": 48,
       "step": 4,
-      "default": 12
+      "default": 16
+    },
+    {
+      "type": "link_list",
+      "id": "quick_links",
+      "label": "Quick Scan Categories",
+      "info": "Select a menu to show category links below the hero."
+    },
+    {
+      "type": "text",
+      "id": "brand_heading",
+      "label": "Brand Paragraph Heading",
+      "default": "The Art of Wellness"
+    },
+    {
+      "type": "richtext",
+      "id": "brand_text",
+      "label": "Brand Paragraph Text",
+      "default": "<p>Discover the finest artisanal ingredients crafted to restore, nourish, and elevate your daily ritual.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "closing_image",
+      "label": "Visual Close Image",
+      "info": "Large aesthetic image to anchor the bottom of the page."
     }
   ]
 }
