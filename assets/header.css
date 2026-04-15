@@ -163,7 +163,7 @@
 
 /* Bottom tier: desktop nav strip */
 .site-header__bottom {
-  background-color: var(--mm-deep-garnet);
+  background: linear-gradient(to bottom, var(--mm-deep-garnet), var(--mm-dark-espresso));
   position: relative;
 }
 .site-nav {
@@ -191,6 +191,7 @@
   font-weight: 500;
   color: var(--mm-soft-blush);
   text-decoration: none;
+  border-bottom: none;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -200,12 +201,17 @@
 }
 .site-nav__link.is-active {
   color: var(--mm-champagne-gold);
+  text-decoration: none;
+  border-bottom: none;
 }
 .site-nav__link:hover {
   color: var(--mm-champagne-gold);
+  text-decoration: none;
 }
 .site-nav__link--white {
   color: #FFFFFF;
+  text-decoration: none;
+  border-bottom: none;
 }
 .nav-chevron {
   opacity: 0.7;

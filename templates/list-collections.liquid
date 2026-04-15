@@ -1,0 +1,19 @@
+{% layout none %}
+{% comment %}
+  Permanent redirect for the /collections page.
+  Removes all original page code and redirects to /collections/all.
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting...</title>
+  <meta http-equiv="refresh" content="0;url={{ routes.all_products_collection_url }}">
+  <script type="text/javascript">
+    window.location.replace("{{ routes.all_products_collection_url }}");
+  </script>
+</head>
+<body>
+  <p>Redirecting to the collection... <a href="{{ routes.all_products_collection_url }}">Click here if you are not redirected</a>.</p>
+</body>
+</html>

@@ -6,10 +6,8 @@
 
 <footer class="site-footer" role="contentinfo">
   <div class="container">
-
     <!-- Top: Brand + Columns -->
     <div class="footer__top">
-
       <!-- Brand Column -->
       <div class="footer__brand">
         {%- if section.settings.logo != blank -%}
@@ -23,20 +21,23 @@
             >
           </a>
         {%- else -%}
-          <a href="{{ routes.root_url }}" class="footer__logo-text" data-footer-3d>MIC & MAC</a>
+          <a href="{{ routes.root_url }}" class="footer__logo-icon">
+            <img
+              src="{{ 'MicandMac_Monogram.webp' | asset_url }}"
+              alt="Mic & Mac"
+              width="48"
+              height="48"
+              loading="lazy"
+            >
+          </a>
         {%- endif -%}
 
         <p class="footer__brand-desc">
-          A formulation-led skincare brand rooted in botanical science and modern refinement.<br>
-          Every product is developed with intention and brought to life through trusted expertise.<br><br>
           Designed for your daily ritual.<br>
           Love Your Skin. Every Day. 365.
         </p>
 
-        <p class="footer__ritual">
-          A daily ritual of clean, conscious skincare.
-        </p>
-
+        <p class="footer__ritual">A daily ritual of clean, conscious skincare.</p>
       </div>
 
       <!-- Link Columns -->
@@ -45,10 +46,9 @@
         <ul class="footer__col-links">
           <li><a href="{{ routes.all_products_collection_url }}" class="footer__col-link">All Products</a></li>
           <li><a href="{{ routes.collections_url }}/bestsellers" class="footer__col-link">Bestsellers</a></li>
-          <li><a href="{{ routes.collections_url }}/combos" class="footer__col-link">Combos</a></li>
-          <li><a href="{{ routes.collections_url }}/face-care" class="footer__col-link">Face Care</a></li>
-          <li><a href="{{ routes.collections_url }}/body-care" class="footer__col-link">Body Care</a></li>
-          <li><a href="{{ routes.collections_url }}/lip-care" class="footer__col-link">Lip Care</a></li>
+          <li><a href="{{ routes.collections_url }}/combo-offers" class="footer__col-link">Combos</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}/cleansing-bar" class="footer__col-link">Cleansing Bars</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}/lip-care" class="footer__col-link">Lip Care</a></li>
         </ul>
       </div>
 
@@ -76,40 +76,57 @@
         <h4 class="footer__col-title">Community</h4>
         <ul class="footer__col-links">
           {%- if section.settings.instagram != blank -%}
-            <li><a href="{{ section.settings.instagram }}" target="_blank" rel="noopener" class="footer__col-link">Instagram</a></li>
+            <li>
+              <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener" class="footer__col-link"
+                >Instagram</a
+              >
+            </li>
           {%- else -%}
             <li><a href="#" class="footer__col-link">Instagram</a></li>
           {%- endif -%}
           {%- if section.settings.whatsapp != blank -%}
-            <li><a href="https://wa.me/{{ section.settings.whatsapp }}" target="_blank" rel="noopener" class="footer__col-link">WhatsApp</a></li>
+            <li>
+              <a
+                href="https://wa.me/{{ section.settings.whatsapp }}"
+                target="_blank"
+                rel="noopener"
+                class="footer__col-link"
+                >WhatsApp</a
+              >
+            </li>
           {%- else -%}
             <li><a href="#" class="footer__col-link">WhatsApp</a></li>
           {%- endif -%}
           {%- if section.settings.youtube != blank -%}
-            <li><a href="{{ section.settings.youtube }}" target="_blank" rel="noopener" class="footer__col-link">YouTube</a></li>
+            <li>
+              <a href="{{ section.settings.youtube }}" target="_blank" rel="noopener" class="footer__col-link"
+                >YouTube</a
+              >
+            </li>
           {%- else -%}
             <li><a href="#" class="footer__col-link">YouTube</a></li>
           {%- endif -%}
         </ul>
       </div>
-
-    </div><!-- /.footer__top -->
+    </div>
+    <!-- /.footer__top -->
 
     <!-- Trust seals row -->
-    <div class="footer__trust-seals">
-      <span class="footer__seal">✦ Lab-Certified</span>
-      <span class="footer__seal-divider">·</span>
-      <span class="footer__seal">✦ Sulfate-Free</span>
-      <span class="footer__seal-divider">·</span>
-      <span class="footer__seal">✦ Cruelty-Free</span>
-      <span class="footer__seal-divider">·</span>
-      <span class="footer__seal">✦ Made in India 🇮🇳</span>
+    <div class="footer__trust-seals" style="gap: 20px;">
+      <span class="footer__seal">✦   Lab-Certified</span>
+      <span class="footer__seal">✦   Sulfate-Free</span>
+      <span class="footer__seal">✦   Cruelty-Free</span>
+      <span class="footer__seal">✦   Made in India</span>
     </div>
+  </div>
 
-    <!-- Bottom: copyright + payment -->
+  <div class="footer__giant-brand">MIC & MAC</div>
+
+  <div class="container">
     <div class="footer__bottom">
       <p class="footer__copyright">
-        &copy; 2026 Mic & Mac. All rights reserved. <span class="footer__copyright-divider">|</span> CRAFTED BY <a href="https://mergex.in" target="_blank" rel="noopener" class="footer__mergex-link">MERGEX</a>
+        &copy; 2026 Mic & Mac. All rights reserved. <span class="footer__copyright-divider">|</span> Crafted by
+        <a href="https://mergex.in" target="_blank" rel="noopener" class="footer__mergex-link">Mergex</a>
       </p>
 
       <div class="footer__policy-links">
@@ -129,319 +146,295 @@
         </div>
       {%- endif -%}
     </div>
-
   </div>
 </footer>
 
 <style>
-/* ── Zero the footer's own Shopify wrapper top spacing ── */
-#shopify-section-footer {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-}
-
-.site-footer {
-  position: relative;
-  background-image: linear-gradient(rgba(58, 31, 37, 0.95), rgba(58, 31, 37, 0.95)), url('{{ "footerbg.png" | asset_url }}');
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-color: #3a1f25;
-  overflow: hidden;
-  color: rgba(255,255,255,0.65);
-  padding-top: var(--space-8);
-  padding-bottom: var(--space-8);
-  margin-top: 0;
-}
-
-/* ── Seamless blend: fade from page cream (#F3E8E4) down into the dark footer ── */
-.site-footer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 280px;
-  background: linear-gradient(
-    to bottom,
-    #F3E8E4                   0%,
-    rgba(243,232,228,0.82)   20%,
-    rgba(243,232,228,0.45)   50%,
-    rgba(243,232,228,0.12)   75%,
-    rgba(243,232,228,0)     100%
-  );
-  pointer-events: none;
-  z-index: 1; /* Places the fade below the footer content */
-}
-
-/* Depth lighting only */
-.site-footer::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      ellipse at 20% 0%,
-      rgba(255,255,255,0.06) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      ellipse at 80% 100%,
-      rgba(74,16,64,0.3) 0%,
-      transparent 55%
-    );
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Ensure footer content sits above overlay pseudo-elements */
-.site-footer > * {
-  position: relative;
-  z-index: 2;
-}
-
-@keyframes foamFloat {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
-}
-
-.footer__top {
-  display: grid;
-  grid-template-columns: 1.6fr repeat(4, 1fr);
-  gap: var(--space-8);
-  padding-bottom: var(--space-12);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.footer__logo-text {
-  font-family: var(--font-display);
-  font-size: var(--text-2xl);
-  font-weight: 300;
-  color: var(--color-white);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: var(--space-4);
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), text-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform-style: preserve-3d;
-  will-change: transform, text-shadow;
-}
-
-.footer__logo-text:hover {
-  transform: translateY(-2px) scale(1.02);
-  text-shadow: 
-    0px 1px 0px rgba(0,0,0,0.8),
-    0px 2px 0px rgba(0,0,0,0.6),
-    0px 3px 0px rgba(0,0,0,0.4),
-    0px 4px 5px rgba(0,0,0,0.2),
-    0px 8px 10px rgba(0,0,0,0.1);
-}
-
-.footer__brand-desc {
-  font-size: var(--text-sm);
-  line-height: 1.7;
-  color: rgba(255,255,255,0.65);
-  max-width: 300px;
-  margin-bottom: var(--space-2);
-}
-
-.footer__ritual {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-style: italic;
-  color: rgba(255,255,255,0.6);
-  margin-top: 8px;
-  margin-bottom: var(--space-5);
-}
-
-.footer__social {
-  display: flex;
-  gap: var(--space-3);
-}
-
-.footer__social-link {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 50%;
-  color: rgba(255,255,255,0.6);
-  transition: all var(--transition-base);
-}
-
-.footer__social-link:hover {
-  border-color: var(--color-gold);
-  color: var(--color-gold);
-  background: rgba(212,175,55,0.1);
-  box-shadow: 0 0 10px rgba(212,175,55,0.2);
-}
-
-.footer__col-title {
-  font-family: var(--font-display);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.85);
-  margin-bottom: var(--space-5);
-}
-
-.footer__col-links {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.footer__col-link {
-  display: inline-block;
-  font-size: var(--text-sm);
-  color: rgba(255,255,255,0.55);
-  transition: all var(--transition-fast);
-}
-
-.footer__col-link:hover {
-  color: var(--color-gold);
-  transform: translateX(2px);
-}
-
-/* Trust seals */
-.footer__trust-seals {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
-  padding: var(--space-5) 0;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  margin-bottom: var(--space-6);
-}
-
-.footer__seal {
-  font-family: var(--font-body);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
-  opacity: 0.6;
-}
-
-.footer__seal-divider {
-  color: rgba(255,255,255,0.2);
-  font-size: 10px;
-}
-
-/* Bottom bar */
-.footer__bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  padding-top: var(--space-4);
-}
-
-.footer__copyright {
-  font-size: var(--text-xs);
-  color: rgba(255,255,255,0.35);
-  line-height: 1;
-}
-
-.footer__copyright-divider {
-  margin: 0 4px;
-  color: rgba(255,255,255,0.15);
-}
-
-.footer__mergex-link {
-  color: var(--color-white);
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-decoration: none;
-  transition: color var(--transition-fast);
-}
-
-.footer__mergex-link:hover {
-  color: var(--color-gold);
-}
-
-/* Operational status */
-.footer__status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.footer__status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #4ade80;
-  flex-shrink: 0;
-  animation: mm-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4);
-}
-
-@keyframes mm-pulse {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); opacity: 1; }
-  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); opacity: 0.6; }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); opacity: 1; }
-}
-
-.footer__status-text {
-  font-family: var(--font-body);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: rgba(255,255,255,0.4);
-}
-
-.footer__policy-links {
-  display: flex;
-  gap: var(--space-4);
-}
-
-.footer__policy-links a {
-  font-size: var(--text-xs);
-  color: rgba(255,255,255,0.35);
-  transition: color var(--transition-fast);
-}
-
-.footer__policy-links a:hover {
-  color: var(--color-gold);
-}
-
-.footer__payment {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  opacity: 0.5;
-}
-
-.footer__payment-icon {
-  height: 20px;
-  width: auto;
-}
-
-/* Responsive */
-@media (max-width: 1023px) {
-  .footer__top {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-8);
+  /* ── Zero the footer's own Shopify wrapper top spacing ── */
+  #shopify-section-footer {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
   }
-}
 
-@media (max-width: 639px) {
-  .footer__top {
-    grid-template-columns: 1fr;
-    gap: var(--space-8);
+  .site-footer {
+    position: relative;
+    background-image: url('{{ "footerbg.png" | asset_url }}');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #3b1f25;
+    overflow: hidden;
+    color: rgba(255,255,255,0.65);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+    margin-top: 0;
   }
-  .footer__bottom {
+
+  .site-footer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(58, 31, 37, 0.9); /* Replaced gradient overlay with a flat dark mask for readability */
+    pointer-events: none;
+    z-index: 1;
+  }
+
+
+
+  /* Ensure footer content sits above overlay pseudo-elements */
+  .site-footer > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  @keyframes foamFloat {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+
+  .footer__top {
+    display: grid;
+    grid-template-columns: 1.6fr repeat(4, 1fr);
+    gap: var(--space-8);
+    padding-bottom: var(--space-12);
+  }
+
+  .footer__logo-icon {
+    display: block;
+    margin-bottom: var(--space-4);
+    margin-left: 64px; /* Centers monogram over the specific text width */
+    transition: opacity 0.3s ease;
+  }
+
+  .footer__logo-icon:hover {
+    opacity: 0.8;
+  }
+
+  .footer__logo-icon img {
+    display: block;
+    filter: brightness(0) invert(1);
+  }
+
+  .footer__brand-desc {
+    font-size: var(--text-sm);
+    line-height: 1.7;
+    color: rgba(255,255,255,0.65);
+    max-width: 300px;
+    margin-bottom: var(--space-2);
+  }
+
+  .footer__ritual {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-style: italic;
+    color: rgba(255,255,255,0.6);
+    margin-top: 8px;
+    margin-bottom: var(--space-5);
+  }
+
+  .footer__social {
+    display: flex;
+    gap: var(--space-3);
+  }
+
+  .footer__social-link {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50%;
+    color: rgba(255,255,255,0.6);
+    transition: all var(--transition-base);
+  }
+
+  .footer__social-link:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+    background: rgba(212,175,55,0.1);
+    box-shadow: 0 0 10px rgba(212,175,55,0.2);
+  }
+
+  .footer__col-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: var(--space-5);
+  }
+
+  .footer__col-links {
+    display: flex;
     flex-direction: column;
-    text-align: center;
+    gap: var(--space-3);
   }
-}
+
+  .footer__col-link {
+    display: inline-block;
+    font-size: var(--text-sm);
+    color: rgba(255,255,255,0.55);
+    transition: all var(--transition-fast);
+  }
+
+  .footer__col-link:hover {
+    color: var(--color-gold);
+    transform: translateX(2px);
+  }
+
+  /* Trust seals */
+  .footer__trust-seals {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-5) 0;
+    margin-bottom: var(--space-6);
+  }
+
+  .footer__seal {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    opacity: 0.6;
+  }
+
+  .footer__seal-divider {
+    color: rgba(255,255,255,0.2);
+    font-size: 10px;
+  }
+
+  /* Bottom bar */
+  .footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding-top: var(--space-4);
+  }
+
+  .footer__copyright {
+    font-size: var(--text-xs);
+    color: rgba(255,255,255,0.35);
+    line-height: 1;
+  }
+
+  .footer__copyright-divider {
+    margin: 0 4px;
+    color: rgba(255,255,255,0.15);
+  }
+
+  .footer__mergex-link {
+    color: var(--color-white);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .footer__mergex-link:hover {
+    color: var(--color-gold);
+  }
+
+  /* Operational status */
+  .footer__status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .footer__status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    flex-shrink: 0;
+    animation: mm-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4);
+  }
+
+  @keyframes mm-pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); opacity: 1; }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); opacity: 0.6; }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); opacity: 1; }
+  }
+
+  .footer__status-text {
+    font-family: var(--font-body);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .footer__policy-links {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .footer__policy-links a {
+    font-size: var(--text-xs);
+    color: rgba(255,255,255,0.35);
+    transition: color var(--transition-fast);
+  }
+
+  .footer__policy-links a:hover {
+    color: var(--color-gold);
+  }
+
+  .footer__payment {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    opacity: 0.5;
+  }
+
+  .footer__payment-icon {
+    height: 20px;
+    width: auto;
+  }
+
+  /* Responsive */
+  @media (max-width: 1023px) {
+    .footer__top {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+    }
+  }
+
+  @media (max-width: 639px) {
+    .footer__top {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+    .footer__bottom {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  .footer__giant-brand {
+    width: 100%;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 15vw, 22rem);
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.04);
+    line-height: 0.7;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    pointer-events: none;
+    user-select: none;
+    padding-bottom: 20px;
+    margin-top: 40px;
+  }
 </style>
 
 {% schema %}

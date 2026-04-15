@@ -148,7 +148,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  background: var(--mm-deep-garnet);
+  background: linear-gradient(to bottom, var(--mm-deep-garnet), var(--mm-dark-espresso));
   flex-shrink: 0;
 }
 .mnav__logo {

@@ -1,135 +1,25 @@
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-{%- endstyle -%}
+{% comment %}
+  Redirects the /collections (list collections) page to /collections/all
+  as per user request "dont show this page".
+{% endcomment %}
 
-<div class="main-list-collections section-{{ section.id }}-padding" id="MainListCollections-{{ section.id }}">
-  <div class="container px-4">
-    <div class="text-center mb-12">
-      <h1 class="text-4xl md:text-5xl font-light mb-4" style="font-family: var(--font-display);">
-        {{ section.settings.title | default: page_title }}
-      </h1>
-      {%- if section.settings.description != blank -%}
-        <p class="text-gray-600 max-w-2xl mx-auto">{{ section.settings.description }}</p>
-      {%- endif -%}
-    </div>
+<script>
+  window.location.replace("{{ routes.all_products_collection_url }}");
+</script>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-{{ section.settings.columns_desktop }} gap-6 md:gap-8">
-      {%- case section.settings.display_type -%}
-        {%- when 'all' -%}
-          {%- for collection in collections -%}
-            {%- render 'collection-card', collection: collection -%}
-          {%- endfor -%}
-        {%- when 'selected' -%}
-          {%- for block in section.blocks -%}
-            {%- if block.settings.collection != blank -%}
-              {%- render 'collection-card', collection: block.settings.collection, custom_image: block.settings.image, custom_title: block.settings.title -%}
-            {%- endif -%}
-          {%- endfor -%}
-      {%- endcase -%}
-    </div>
-  </div>
+<div class="container container--narrow text-center" style="padding: 15vh 20px;">
+  <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; opacity: 0.6;">Redirecting to the collection...</p>
+  <noscript>
+    <meta http-equiv="refresh" content="0;url={{ routes.all_products_collection_url }}">
+    <p>If you are not redirected, <a href="{{ routes.all_products_collection_url }}">click here</a>.</p>
+  </noscript>
 </div>
 
 {% schema %}
 {
-  "name": "Collections List Page",
+  "name": "List Collections Redirect",
   "tag": "section",
   "class": "section",
-  "settings": [
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Heading",
-      "default": "Collections"
-    },
-    {
-      "type": "textarea",
-      "id": "description",
-      "label": "Description"
-    },
-    {
-      "type": "radio",
-      "id": "display_type",
-      "label": "Select collections to show",
-      "options": [
-        {
-          "value": "all",
-          "label": "All"
-        },
-        {
-          "value": "selected",
-          "label": "Selected"
-        }
-      ],
-      "default": "all"
-    },
-    {
-      "type": "range",
-      "id": "columns_desktop",
-      "min": 2,
-      "max": 5,
-      "step": 1,
-      "default": 3,
-      "label": "Number of columns on desktop"
-    },
-    {
-      "type": "header",
-      "content": "Section Padding"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding Top",
-      "default": 64
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding Bottom",
-      "default": 64
-    }
-  ],
-  "blocks": [
-    {
-      "type": "collection",
-      "name": "Collection",
-      "settings": [
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Collection"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image",
-          "info": "Optional. Replaces the collection image."
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "info": "Optional. Replaces the collection title."
-        }
-      ]
-    }
-  ]
+  "settings": []
 }
 {% endschema %}
