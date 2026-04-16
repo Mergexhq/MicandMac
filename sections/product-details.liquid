@@ -1,0 +1,214 @@
+{% comment %}
+  Section: Product Details
+  Contains How to use, Social Proof, Combos, FAQ, and Related Products
+{% endcomment %}
+
+{%- liquid
+  assign how_to_use = product.metafields.custom.how_to_use
+-%}
+
+<!-- ============================================================
+     SECTION 4: HOW TO USE
+     ============================================================ -->
+<div class="pdp-how-to-use">
+  <div class="container">
+    <div class="pdp-how-to-use__layout">
+      <div>
+        <p class="pdp-how-to-use__eyebrow">Ritual</p>
+        <h2 class="pdp-how-to-use__title">How to use</h2>
+        <div class="pdp-steps">
+          {%- if how_to_use != blank -%}
+            {%- assign steps = how_to_use | split: '|' -%}
+            {%- for step in steps -%}
+              <div class="pdp-step">
+                <div class="pdp-step__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+                <p class="pdp-step__text">{{ step | strip }}</p>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <div class="pdp-step">
+              <div class="pdp-step__num">01</div>
+              <p class="pdp-step__text">Wet your skin with warm water</p>
+            </div>
+            <div class="pdp-step">
+              <div class="pdp-step__num">02</div>
+              <p class="pdp-step__text">Lather the bar gently between hands and massage onto skin in circular motions</p>
+            </div>
+            <div class="pdp-step">
+              <div class="pdp-step__num">03</div>
+              <p class="pdp-step__text">Rinse thoroughly and pat dry. Follow with your favourite moisturiser</p>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Optional: product image on the right -->
+      <div style="display:flex;align-items:center;justify-content:center;">
+        {%- if product.media.size > 1 -%}
+          <img
+            src="{{ product.media[1] | image_url: width: 520 }}"
+            alt="{{ product.title | escape }}"
+            width="520"
+            height="520"
+            loading="lazy"
+            style="border-radius:var(--radius-lg);object-fit:cover;width:100%;max-width:520px;aspect-ratio:1/1;"
+          >
+        {%- elsif product.featured_image -%}
+          <img
+            src="{{ product.featured_image | image_url: width: 520 }}"
+            alt="{{ product.title | escape }}"
+            width="520"
+            height="520"
+            loading="lazy"
+            style="border-radius:var(--radius-lg);object-fit:cover;width:100%;max-width:520px;aspect-ratio:1/1;"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SECTION 5: SOCIAL PROOF
+     ============================================================ -->
+<div class="container">
+  {% render 'product-reviews', product: product %}
+</div>
+
+<!-- ============================================================
+     SECTION 6: BETTER TOGETHER — Combos
+     ============================================================ -->
+{%- assign combo_collection = collections['combo-offers'] -%}
+{%- if combo_collection.products.size > 0 -%}
+  <div class="pdp-combos">
+    <div class="container">
+      <p class="pdp-combos__eyebrow">Save more</p>
+      <h2 class="pdp-combos__title">Better Together</h2>
+      <div class="pdp-combos__grid">
+        {%- for combo in combo_collection.products limit: 2 -%}
+          <div class="pdp-combo-card">
+            <div class="pdp-combo-card__image">
+              {%- if combo.featured_image -%}
+                <img
+                  src="{{ combo.featured_image | image_url: width: 260 }}"
+                  alt="{{ combo.title | escape }}"
+                  width="120"
+                  height="120"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </div>
+            <div class="pdp-combo-card__content">
+              <p class="pdp-combo-card__tag">Bundle</p>
+              <p class="pdp-combo-card__title">{{ combo.title | split: '|' | first }}</p>
+              <p class="pdp-combo-card__price">{{ combo.price | money }}</p>
+              <form action="{{ routes.cart_add_url }}" method="post">
+                <input type="hidden" name="id" value="{{ combo.selected_or_first_available_variant.id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="pdp-combo-card__cta">
+                  Add Set
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+              </form>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<!-- ============================================================
+     SECTION 7: FAQ
+     ============================================================ -->
+<div class="pdp-faq" id="PdpFaq">
+  <div class="container">
+    <div class="pdp-faq__layout">
+      <div>
+        <p class="pdp-faq__eyebrow">Got questions?</p>
+        <h2 class="pdp-faq__title">Frequently asked</h2>
+      </div>
+      <div class="pdp-faq__items" id="PdpFaqItems">
+        <div class="pdp-faq__item">
+          <button class="pdp-faq__question" aria-expanded="false">
+            Is this suitable for sensitive skin?
+            <svg class="pdp-faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <div class="pdp-faq__answer">Yes — all our bars are formulated without sulphates, parabens, or synthetic fragrance, making them gentle enough for daily use on sensitive skin.</div>
+        </div>
+        <div class="pdp-faq__item">
+          <button class="pdp-faq__question" aria-expanded="false">
+            Can I use this every day?
+            <svg class="pdp-faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <div class="pdp-faq__answer">Absolutely. The gentle formula is designed for daily use without over-drying or disrupting your skin's natural moisture barrier.</div>
+        </div>
+        <div class="pdp-faq__item">
+          <button class="pdp-faq__question" aria-expanded="false">
+            How long does one bar last?
+            <svg class="pdp-faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <div class="pdp-faq__answer">With regular daily use, each bar lasts 4–6 weeks. Storing it on a dry soap dish between uses extends its life significantly.</div>
+        </div>
+        <div class="pdp-faq__item">
+          <button class="pdp-faq__question" aria-expanded="false">
+            Is free shipping available?
+            <svg class="pdp-faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <div class="pdp-faq__answer">Yes — free delivery on all orders above ₹999. Orders are dispatched within 48 hours from Coimbatore.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var faqItems = document.querySelectorAll('#PdpFaqItems .pdp-faq__item');
+  faqItems.forEach(function (item) {
+    var btn = item.querySelector('.pdp-faq__question');
+    btn.addEventListener('click', function () {
+      var isOpen = item.classList.contains('is-open');
+      faqItems.forEach(function (i) { i.classList.remove('is-open'); i.querySelector('.pdp-faq__question').setAttribute('aria-expanded', 'false'); });
+      if (!isOpen) {
+        item.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+})();
+</script>
+
+<!-- ============================================================
+     SECTION 8: RELATED PRODUCTS
+     ============================================================ -->
+{%- if section.settings.show_related -%}
+  <div class="container" style="padding-top:var(--space-16);padding-bottom:var(--space-16);">
+    <div
+      data-related-products
+      data-product-id="{{ product.id }}"
+      data-limit="4"
+      id="RelatedProductsContainer"
+    ></div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product Details",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_related",
+      "label": "Show related products below",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Details"
+    }
+  ]
+}
+{% endschema %}

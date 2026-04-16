@@ -61,3 +61,15 @@
   color: rgba(255,255,255,0.7);
 }
 </style>
+
+{% schema %}
+{
+  "name": "Ingredient Pill",
+  "settings": [
+    { "type": "text", "id": "icon_emoji", "label": "Emoji icon", "default": "🌿" },
+    { "type": "image_picker", "id": "icon_image", "label": "Icon image" },
+    { "type": "text", "id": "name", "label": "Ingredient name", "default": "Aloe Vera" },
+    { "type": "text", "id": "benefit", "label": "Benefit (optional)" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,394 @@
+{% comment %}
+  Section: Ingredients
+  Dynamic Shopify section with editable blocks.
+  Desktop: 1×4 grid | Mobile: 2×2 grid
+  Add/remove ingredients from Theme Editor dashboard.
+  Reusable on homepage, PDP, or any page.
+{% endcomment %}
+
+{%- style -%}
+  /* ── Section spacing ── */
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  /* ── Wrapper ── */
+  .ingredients-section {
+    background: transparent;
+    overflow: hidden;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media (max-width: 768px) {
+    .ingredients-section {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+
+  /* ── Title ── */
+  .ingredients-title {
+    text-align: center;
+    font-family: var(--font-heading-family, serif);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 400;
+    margin-bottom: 3.5rem;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary, #111);
+  }
+
+  /* ── Grid: 1×4 desktop, 2×2 mobile ── */
+  .ingredients-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+
+  /* ── Card ── */
+  .ingredient-card {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    background: transparent;
+    padding: 24px;
+    height: 100%;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .ingredient-card:hover {
+    transform: translateY(-4px);
+  }
+
+  /* First card highlight — disabled for uniform look */
+  /* .ingredient-card.highlight {
+    background: linear-gradient(160deg, #fffcf5 0%, #f7ebd5 100%);
+  } */
+
+  /* ── Image ── */
+  .ingredient-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .ingredient-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .ingredient-card:hover .ingredient-image {
+    transform: scale(1.05);
+  }
+
+  /* ── Empty state placeholder ── */
+  .ingredient-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0ebe4;
+    border-radius: 12px;
+  }
+
+  .ingredient-placeholder svg {
+    width: 48px;
+    height: 48px;
+    opacity: 0.25;
+    color: #999;
+  }
+
+  /* ── Typography ── */
+  .ingredient-card h3 {
+    font-family: var(--font-heading-family, sans-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--color-text-primary, #1a1a1a);
+    letter-spacing: -0.01em;
+    text-transform: lowercase;
+  }
+
+  .ingredient-card p {
+    font-family: var(--font-body-family, sans-serif);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: #555;
+    margin-bottom: 20px;
+    flex-grow: 1;
+  }
+
+  /* ── CTA Link ── */
+  .ingredient-link {
+    font-family: var(--font-body-family, sans-serif);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-primary, #111);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    letter-spacing: 0.02em;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+  }
+
+  .ingredient-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-text-primary, #111);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease;
+  }
+
+  .ingredient-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  /* ── Tablet: 2×2 ── */
+  @media (max-width: 1024px) {
+    .ingredients-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+  }
+
+  /* ── Mobile: 2×2 compact ── */
+  @media (max-width: 768px) {
+    .ingredients-title {
+      font-size: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .ingredients-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .ingredient-card {
+      padding: 16px;
+    }
+
+    .ingredient-card h3 {
+      font-size: 0.9375rem;
+    }
+
+    .ingredient-card p {
+      font-size: 0.8125rem;
+      margin-bottom: 14px;
+    }
+
+    .ingredient-link {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* ── Empty state ghost cards ── */
+  .ingredient-card--empty {
+    opacity: 0.5;
+  }
+
+  .ingredient-empty-label {
+    font-family: var(--font-heading-family, serif);
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #999;
+    margin-bottom: 8px;
+  }
+
+  .ingredient-empty-desc {
+    font-family: var(--font-body-family, sans-serif);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: #bbb;
+    font-style: italic;
+    flex-grow: 1;
+  }
+
+  .ingredient-empty-link {
+    font-family: var(--font-body-family, sans-serif);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #999;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: default;
+  }
+{%- endstyle -%}
+
+<section class="ingredients-section section-{{ section.id }}-padding">
+  <div class="page-width">
+
+    {% if section.settings.title != blank %}
+      <h2 class="ingredients-title">{{ section.settings.title }}</h2>
+    {% endif %}
+
+    <div class="ingredients-grid">
+
+      {%- if section.blocks.size > 0 -%}
+        {%- comment -%} Dynamic blocks from Theme Editor {%- endcomment -%}
+        {% for block in section.blocks %}
+          <div class="ingredient-card {% if forloop.first %}highlight{% endif %}" {{ block.shopify_attributes }}>
+
+            <div class="ingredient-image-wrapper">
+              {% if block.settings.image != blank %}
+                <img
+                  class="ingredient-image"
+                  src="{{ block.settings.image | image_url: width: 500 }}"
+                  alt="{{ block.settings.title | escape }}"
+                  loading="lazy"
+                  width="500"
+                  height="{{ 500 | divided_by: block.settings.image.aspect_ratio | ceil }}"
+                >
+              {% else %}
+                <div class="ingredient-placeholder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+                  </svg>
+                </div>
+              {% endif %}
+            </div>
+
+            {% if block.settings.title != blank %}
+              <h3>{{ block.settings.title }}</h3>
+            {% endif %}
+
+            {% if block.settings.description != blank %}
+              <p>{{ block.settings.description | newline_to_br }}</p>
+            {% endif %}
+
+            {% if block.settings.link_label != blank %}
+              <a href="{{ block.settings.link | default: '#' }}" class="ingredient-link">
+                {{ block.settings.link_label }}
+              </a>
+            {% endif %}
+
+          </div>
+        {% endfor %}
+
+      {%- else -%}
+        {%- comment -%}
+          Empty state: no blocks configured yet.
+          Shows 4 ghost placeholder cards so the merchant
+          can see the section layout in the Theme Editor.
+        {%- endcomment -%}
+
+        {%- for i in (1..4) -%}
+          <div class="ingredient-card {% if forloop.first %}highlight{% endif %} ingredient-card--empty">
+            <div class="ingredient-image-wrapper">
+              <div class="ingredient-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="ingredient-empty-label">Ingredient name</h3>
+            <p class="ingredient-empty-desc">Add a short description in the Theme Editor.</p>
+            <span class="ingredient-empty-link">read more</span>
+          </div>
+        {%- endfor -%}
+
+      {%- endif -%}
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ingredients",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Key Ingredients"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Ingredient Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Ingredient Name"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Short Description"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Learn More Link"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link Label",
+          "default": "read more →"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Ingredients Section"
+    }
+  ]
+}
+{% endschema %}

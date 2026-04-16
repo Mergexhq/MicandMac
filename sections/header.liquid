@@ -362,9 +362,12 @@
               
               <!-- Right product grid -->
               <div class="mm-panel-grid">
+                {% assign count = 0 %}
                 {% assign mega_products = collections['face-care'].products %}
                 {% if mega_products.size == 0 %}{% assign mega_products = collections.all.products %}{% endif %}
-                {% for product in mega_products limit: 2 %}
+                {% for product in mega_products %}
+                  {% assign p_title = product.title | downcase %}
+                  {% if p_title contains 'combo' or p_title contains 'duo' or p_title contains 'set' %}{% continue %}{% endif %}
                   <a href="{{ product.url }}" class="mm-card">
                     <div class="mm-card__image-wrapper">
                       {% if product.featured_image %}
@@ -375,6 +378,8 @@
                     </div>
                     <div class="mm-card__title">{{ product.title | split: '|' | first }}</div>
                   </a>
+                  {% assign count = count | plus: 1 %}
+                  {% if count == 2 %}{% break %}{% endif %}
                 {% endfor %}
               </div>
             </div>
@@ -401,9 +406,19 @@
               
               <!-- Right product grid -->
               <div class="mm-panel-grid">
+                {% assign count = 0 %}
                 {% assign mega_products = collections['lip-care'].products %}
-                {% if mega_products.size == 0 %}{% assign mega_products = collections.all.products %}{% endif %}
-                {% for product in mega_products limit: 2 %}
+                {% assign fallback = false %}
+                {% if mega_products.size == 0 %}
+                  {% assign mega_products = collections.all.products %}
+                  {% assign fallback = true %}
+                {% endif %}
+                {% for product in mega_products %}
+                  {% if fallback %}
+                    {% assign p_title = product.title | downcase %}
+                    {% assign p_tags = product.tags | join: ',' | downcase %}
+                    {% unless p_title contains 'lip' or p_tags contains 'lip' %}{% continue %}{% endunless %}
+                  {% endif %}
                   <a href="{{ product.url }}" class="mm-card">
                     <div class="mm-card__image-wrapper">
                       {% if product.featured_image %}
@@ -414,6 +429,8 @@
                     </div>
                     <div class="mm-card__title">{{ product.title | split: '|' | first }}</div>
                   </a>
+                  {% assign count = count | plus: 1 %}
+                  {% if count == 2 %}{% break %}{% endif %}
                 {% endfor %}
               </div>
             </div>

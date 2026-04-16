@@ -53,3 +53,15 @@
   line-height: 1.5;
 }
 </style>
+
+{% schema %}
+{
+  "name": "Trust Item",
+  "settings": [
+    { "type": "text", "id": "icon_emoji", "label": "Emoji icon", "default": "✓" },
+    { "type": "image_picker", "id": "icon_image", "label": "Icon image" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Cruelty-Free" },
+    { "type": "text", "id": "subtext", "label": "Subtext" }
+  ]
+}
+{% endschema %}

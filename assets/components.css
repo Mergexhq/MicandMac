@@ -28,13 +28,12 @@
 
 /* Primary — Burgundy fill · cream text — 9.8:1 contrast */
 .btn--primary {
-  background: var(--color-burgundy);
-  color: var(--color-text-on-dark);
-  border-color: var(--color-burgundy);
+  background: var(--mm-deep-garnet);
+  background: linear-gradient(to bottom, var(--mm-deep-garnet), var(--mm-dark-espresso));
+  color: var(--mm-soft-blush);
+  border-color: var(--mm-deep-garnet);
 }
 .btn--primary:hover {
-  background: var(--color-burgundy-hover);
-  border-color: var(--color-burgundy-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }

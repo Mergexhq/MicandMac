@@ -1,95 +1,68 @@
 {% comment %}
   Snippet: product-reviews
   Usage: {% render 'product-reviews', product: product %}
-  Rating summary + breakdown bars + review list.
-  Plugs into Judge.me / Okendo via embed target #JudgemeReviews or #OkendoReviews.
-  Falls back to metafield-based manual display if no app installed.
+  Editorial pull-quote style. Large rating + 2-3 featured quotes.
+  Judge.me embed container kept below.
 {% endcomment %}
 
 {%- liquid
   assign avg_rating = product.metafields.reviews.rating.value
   assign review_count = product.metafields.reviews.rating_count.value | plus: 0
+  assign has_reviews = false
+  if review_count > 0 or avg_rating > 0
+    assign has_reviews = true
+  endif
 -%}
 
-<div class="product-reviews" id="ProductReviews">
+<div class="pdp-reviews" id="ProductReviews">
 
-  <!-- Summary header -->
-  {%- if avg_rating != blank -%}
-    <div class="product-reviews__summary">
-      <div class="product-reviews__score">
-        <span class="product-reviews__avg">{{ avg_rating | round: 1 }}</span>
-        {% render 'star-rating', rating: avg_rating, size: 'lg' %}
-        <span class="product-reviews__count">{{ review_count }} reviews</span>
+  <div class="pdp-reviews__header" style="display: flex; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    {%- if has_reviews -%}
+      <div class="pdp-reviews__score-big">{{ avg_rating | round: 1 }}</div>
+      <div class="pdp-reviews__meta">
+        <div class="pdp-reviews__stars">★★★★★</div>
+        <div class="pdp-reviews__label">Loved by {{ review_count }} customers</div>
       </div>
-    </div>
-  {%- endif -%}
+    {%- else -%}
+      <div class="pdp-reviews__score-big" style="color: #bbb;">0.0</div>
+      <div class="pdp-reviews__meta" style="color: #bbb;">
+        <div class="pdp-reviews__stars">☆☆☆☆☆</div>
+        <div class="pdp-reviews__label">No reviews yet</div>
+      </div>
+    {%- endif -%}
+    
+    <!-- Write a Review Button -->
+    <button class="pdp-reviews__write-btn" style="margin-left: auto; padding: 10px 20px; background-color: #1a1a1a; color: #fff; font-size: 0.9rem; font-weight: 500; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#333'" onmouseout="this.style.backgroundColor='#1a1a1a'" onclick="document.querySelector('#JudgemeReviews').scrollIntoView({behavior: 'smooth'})">
+      Write a review
+    </button>
+  </div>
 
-  <!-- App embed targets (uncomment the one you're using) -->
-  <!-- Judge.me: -->
-  <div id="JudgemeReviews" class="product-reviews__app-embed" data-product-id="{{ product.id }}">
+  <!-- Featured pull-quotes (metafield only, no fake hardcoded data) -->
+  <div class="pdp-reviews__quotes" style="margin-top: 2rem;">
+    {%- if product.metafields.custom.review_1 != blank -%}
+      <div class="pdp-review-quote">
+        <p class="pdp-review-quote__text">"{{ product.metafields.custom.review_1 }}"</p>
+        <p class="pdp-review-quote__author">{{ product.metafields.custom.reviewer_1 | default: '— Verified Customer' }}</p>
+      </div>
+    {%- endif -%}
+
+    {%- if product.metafields.custom.review_2 != blank -%}
+      <div class="pdp-review-quote">
+        <p class="pdp-review-quote__text">"{{ product.metafields.custom.review_2 }}"</p>
+        <p class="pdp-review-quote__author">{{ product.metafields.custom.reviewer_2 | default: '— Verified Customer' }}</p>
+      </div>
+    {%- endif -%}
+    
+    {%- if has_reviews == false and product.metafields.custom.review_1 == blank and product.metafields.custom.review_2 == blank -%}
+      <div class="pdp-review-quote pdp-review-quote--empty" style="text-align: center; width: 100%; border: 1px dashed #ddd; border-radius: 8px; padding: 3rem 1rem;">
+        <p style="color: #666; margin-bottom: 1rem;">Be the first to share your thoughts on this product!</p>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <!-- Judge.me / Okendo embed -->
+  <div class="pdp-reviews__app-embed" id="JudgemeReviews" data-product-id="{{ product.id }}" style="margin-top: 3rem;">
     <!-- Judge.me widget renders here -->
   </div>
 
-  <!-- Fallback: no app installed -->
-  {%- if avg_rating == blank -%}
-    <div class="product-reviews__empty">
-      <p>Be the first to review this product.</p>
-      <a href="mailto:hello@micandmac.in?subject=Review: {{ product.title | url_encode }}" class="btn btn--secondary btn--sm">
-        Write a Review
-      </a>
-    </div>
-  {%- endif -%}
-
 </div>
-
-<style>
-.product-reviews {
-  padding-top: var(--space-8);
-  border-top: 1px solid var(--color-beige);
-  margin-top: var(--space-8);
-}
-
-.product-reviews__summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  margin-bottom: var(--space-6);
-  padding-bottom: var(--space-6);
-  border-bottom: 1px solid var(--color-beige);
-}
-
-.product-reviews__score {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.product-reviews__avg {
-  font-family: var(--font-display);
-  font-size: var(--text-5xl);
-  font-weight: 400;
-  color: var(--color-text-dark);
-  line-height: 1;
-}
-
-.product-reviews__count {
-  font-size: var(--text-sm);
-  color: var(--color-text-light);
-}
-
-.product-reviews__empty {
-  text-align: center;
-  padding: var(--space-10);
-  color: var(--color-text-light);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.product-reviews__app-embed {
-  min-height: 60px;
-}
-</style>

@@ -1,0 +1,16 @@
+/*
+  base.css — STUB
+  ══════════════════════════════════════════════════════
+  Styles have been split into modular files.
+  See layout/theme.liquid for the load order:
+
+    tokens.css      — CSS custom properties (design tokens)
+    reset.css       — Box-model reset & base HTML elements
+    typography.css  — Headings, eyebrow, RTE, split-heading
+    layout.css      — Container, grid, flex, section spacing
+    components.css  — Buttons, badges, forms, product card, overlay
+    header.css      — Desktop 3-tier header, nav, megamenu, search
+    mobile-nav.css  — Mobile topbar, sidebar accordion, bottom dock
+    animations.css  — Keyframes, utility classes, breakpoints
+  ══════════════════════════════════════════════════════
+*/

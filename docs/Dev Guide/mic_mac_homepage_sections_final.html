@@ -1,0 +1,470 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0;font-size:13px}
+
+/* NAVBAR PREVIEW */
+.navbar{border-radius:10px;overflow:hidden;border:0.5px solid var(--color-border-tertiary);margin-bottom:1.5rem}
+.nav-ann{background:#2A1520;text-align:center;padding:6px;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#D4A96A;font-family:sans-serif}
+.nav-top{background:#FDFAF6;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:52px;border-bottom:0.5px solid #E8DDD0;position:relative}
+.nav-tagline{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#A8957E;font-family:sans-serif}
+.nav-logo{font-size:18px;letter-spacing:0.18em;text-transform:uppercase;color:#2A1520;font-weight:300;position:absolute;left:50%;transform:translateX(-50%);font-family:Georgia,serif}
+.nav-logo span{color:#B8924A}
+.nav-actions{display:flex;gap:8px;align-items:center}
+.nav-icon{width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.nav-icon svg{width:16px;height:16px;stroke:#5C3D2E;stroke-width:1.5;fill:none;stroke-linecap:round}
+.nav-bot{background:#4A1040;display:flex;align-items:center;justify-content:center;height:40px;gap:0}
+.nav-link{padding:5px 18px;font-size:10px;letter-spacing:0.08em;color:rgba(245,236,215,0.65);font-family:sans-serif;cursor:pointer;text-transform:uppercase}
+.nav-link.active{color:#D4A96A;font-weight:600}
+.nav-dot{width:2px;height:2px;border-radius:50%;background:rgba(212,169,106,0.3)}
+.cart-badge{position:absolute;top:4px;right:4px;width:13px;height:13px;border-radius:50%;background:#B8924A;color:#2A1520;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:sans-serif}
+
+/* SECTION STACK */
+.stack{display:flex;flex-direction:column;gap:0}
+.sec-row{display:grid;grid-template-columns:36px 1fr;gap:0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.sec-row:last-child{border-bottom:none}
+.sec-num-col{padding:16px 0 16px 0;display:flex;flex-direction:column;align-items:center;gap:4px;border-right:0.5px solid var(--color-border-tertiary)}
+.sec-num{font-size:11px;font-weight:500;color:var(--color-text-tertiary);font-family:sans-serif;width:36px;text-align:center}
+.sec-line{flex:1;width:1px;background:var(--color-border-tertiary);min-height:10px}
+.sec-body{padding:16px 16px 16px 16px}
+.sec-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;gap:8px}
+.sec-name{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.sec-file{font-family:var(--font-mono);font-size:10px;color:var(--color-text-tertiary);margin-top:2px}
+.badges{display:flex;gap:4px;flex-wrap:wrap;flex-shrink:0}
+.badge{font-size:10px;padding:2px 7px;border-radius:3px;font-weight:500;white-space:nowrap}
+.b-new{background:#4A1040;color:#D4A96A}
+.b-reuse{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.b-key{background:var(--color-background-warning);color:var(--color-text-warning)}
+.b-opt{background:var(--color-background-info);color:var(--color-text-info)}
+.sec-content{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sec-what{font-size:11px;color:var(--color-text-secondary);line-height:1.6}
+.sec-why{font-size:11px;color:var(--color-text-tertiary);line-height:1.6;font-style:italic}
+.sec-label{font-size:9px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:4px}
+.preview{border-radius:8px;overflow:hidden;border:0.5px solid var(--color-border-tertiary);margin-top:10px}
+.preview-inner{padding:10px 14px}
+
+/* SECTION PREVIEWS */
+.hero-p{background:#4A1040;padding:20px 24px;min-height:80px;display:flex;align-items:center;justify-content:space-between}
+.hero-text-col{flex:1}
+.hero-eyebrow{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:#B8924A;margin-bottom:6px;font-family:sans-serif}
+.hero-h{font-size:20px;color:#F5ECD7;font-weight:300;line-height:1.2;margin-bottom:8px;font-family:Georgia,serif}
+.hero-sub{font-size:10px;color:rgba(245,236,215,0.65);font-family:sans-serif;margin-bottom:12px;line-height:1.5}
+.hero-btns{display:flex;gap:8px}
+.hero-btn1{background:#B8924A;color:#2A1520;border:none;padding:7px 16px;font-size:10px;font-family:sans-serif;letter-spacing:0.06em;border-radius:2px;font-weight:600}
+.hero-btn2{background:transparent;color:rgba(245,236,215,0.7);border:0.5px solid rgba(245,236,215,0.3);padding:7px 14px;font-size:10px;font-family:sans-serif;letter-spacing:0.06em;border-radius:2px}
+.hero-img-placeholder{width:120px;height:80px;background:rgba(245,236,215,0.06);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(245,236,215,0.3);font-family:sans-serif;text-align:center;flex-shrink:0;margin-left:20px}
+
+.trust-p{background:#2A1520;display:flex;justify-content:space-around;padding:12px 20px;gap:12px}
+.trust-item-p{display:flex;align-items:center;gap:6px}
+.trust-dot{width:6px;height:6px;border-radius:50%;background:#B8924A;flex-shrink:0}
+.trust-text-p{font-size:9px;color:rgba(245,236,215,0.8);font-family:sans-serif;text-transform:uppercase;letter-spacing:0.06em}
+
+.ritual-p{display:grid;grid-template-columns:1fr 1fr;background:#F5ECD7}
+.ritual-img{background:#E8C8C0;min-height:80px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#7A5C52;font-family:sans-serif}
+.ritual-text{padding:16px 18px}
+.ritual-ey{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:#B8924A;margin-bottom:6px;font-family:sans-serif}
+.ritual-h{font-size:14px;color:#2A1520;font-weight:300;margin-bottom:6px;line-height:1.3;font-family:Georgia,serif}
+.ritual-body{font-size:10px;color:#5C3D2E;line-height:1.6;font-family:sans-serif;margin-bottom:8px}
+.ritual-cta{font-size:9px;color:#4A1040;font-family:sans-serif;letter-spacing:0.08em;text-transform:uppercase;font-weight:500;border-bottom:0.5px solid #4A1040;width:fit-content;padding-bottom:2px}
+
+.spotlight-p{display:grid;grid-template-columns:2fr 1fr;background:#FDFAF6}
+.spotlight-img{background:#EDD9B8;min-height:90px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#7A5C52;font-family:sans-serif}
+.spotlight-content{padding:16px;display:flex;flex-direction:column;justify-content:center}
+.sp-ey{font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:#B8924A;margin-bottom:4px;font-family:sans-serif}
+.sp-name{font-size:13px;color:#2A1520;font-weight:300;margin-bottom:4px;font-family:Georgia,serif;line-height:1.3}
+.sp-sub{font-size:9px;color:#A8957E;margin-bottom:8px;font-family:sans-serif}
+.sp-price{font-size:13px;color:#4A1040;font-weight:500;font-family:sans-serif;margin-bottom:10px}
+.sp-btns{display:flex;flex-direction:column;gap:5px}
+.sp-btn1{background:#4A1040;color:#F5ECD7;border:none;padding:6px 12px;font-size:9px;font-family:sans-serif;letter-spacing:0.06em;border-radius:2px;text-align:center}
+.sp-btn2{background:transparent;color:#4A1040;border:0.5px solid #4A1040;padding:6px 12px;font-size:9px;font-family:sans-serif;letter-spacing:0.06em;border-radius:2px;text-align:center}
+
+.ingr-p{background:#F5ECD7;padding:16px 20px}
+.ingr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.ingr-card{background:#FDFAF6;border-radius:6px;padding:8px;text-align:center;border:0.5px solid #E8DDD0}
+.ingr-dot{width:24px;height:24px;border-radius:50%;margin:0 auto 4px}
+.ingr-name{font-size:9px;font-weight:500;color:#2A1520;font-family:sans-serif}
+.ingr-benefit{font-size:8px;color:#A8957E;font-family:sans-serif;margin-top:2px}
+
+.video-p{background:#2A1520;padding:12px 20px;display:flex;gap:8px}
+.video-thumb{background:rgba(245,236,215,0.08);border-radius:6px;height:50px;flex:1;display:flex;align-items:center;justify-content:center}
+.video-play{width:16px;height:16px;border-radius:50%;background:#B8924A;display:flex;align-items:center;justify-content:center}
+.play-tri{width:0;height:0;border-style:solid;border-width:3px 0 3px 5px;border-color:transparent transparent transparent #2A1520;margin-left:1px}
+
+.test-p{background:#F5ECD7;padding:14px 20px}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.test-card{background:#FDFAF6;border-radius:6px;padding:10px;border:0.5px solid #E8DDD0}
+.test-stars{font-size:10px;color:#B8924A;margin-bottom:4px}
+.test-quote{font-size:9px;color:#5C3D2E;font-family:Georgia,serif;font-style:italic;line-height:1.4;margin-bottom:6px}
+.test-author{font-size:8px;color:#A8957E;font-family:sans-serif}
+
+.story-p{background:#4A1040;padding:20px 24px;min-height:60px;display:flex;align-items:center;justify-content:space-between}
+.story-text{flex:1}
+.story-ey{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:#B8924A;margin-bottom:6px;font-family:sans-serif}
+.story-h{font-size:16px;color:#F5ECD7;font-weight:300;margin-bottom:8px;font-family:Georgia,serif}
+.story-sub{font-size:10px;color:rgba(245,236,215,0.55);font-family:sans-serif;margin-bottom:10px;max-width:280px;line-height:1.5}
+.story-cta{font-size:9px;color:#D4A96A;font-family:sans-serif;letter-spacing:0.08em;text-transform:uppercase;border-bottom:0.5px solid #B8924A;width:fit-content;padding-bottom:2px}
+
+.news-p{background:#F5ECD7;padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:center}
+.news-h{font-size:14px;color:#2A1520;font-weight:300;font-family:Georgia,serif;margin-bottom:4px}
+.news-sub{font-size:10px;color:#5C3D2E;font-family:sans-serif;line-height:1.5}
+.news-form{display:flex;gap:6px;margin-top:10px}
+.news-input{flex:1;padding:8px 12px;border:0.5px solid #E8DDD0;background:#FDFAF6;border-radius:2px;font-size:10px;font-family:sans-serif;color:#5C3D2E}
+.news-btn{background:#4A1040;color:#F5ECD7;border:none;padding:8px 14px;font-size:10px;font-family:sans-serif;border-radius:2px;white-space:nowrap}
+.wa-card{background:#4A1040;border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.wa-icon{width:28px;height:28px;border-radius:50%;background:#B8924A;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.wa-text{flex:1}
+.wa-title{font-size:11px;font-weight:500;color:#F5ECD7;font-family:sans-serif;margin-bottom:2px}
+.wa-sub{font-size:9px;color:rgba(245,236,215,0.55);font-family:sans-serif}
+.wa-btn{font-size:9px;color:#D4A96A;font-family:sans-serif;letter-spacing:0.06em;border:0.5px solid rgba(212,169,106,0.3);padding:4px 10px;border-radius:2px;white-space:nowrap}
+
+.sec-title-p{font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:4px;font-family:sans-serif}
+
+.bestsellers-p{background:#FDFAF6;padding:16px 20px}
+.bs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.bs-card{border-radius:8px;overflow:hidden;border:0.5px solid #E8DDD0}
+.bs-img{height:60px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#7A5C52;font-family:sans-serif;text-align:center}
+.bs-body{padding:7px;background:#FDFAF6}
+.bs-name{font-size:9px;font-weight:500;color:#2A1520;font-family:sans-serif;margin-bottom:2px;line-height:1.3}
+.bs-price{font-size:9px;color:#4A1040;font-family:sans-serif;font-weight:500}
+.bs-atc{width:100%;margin-top:4px;background:#4A1040;color:#F5ECD7;border:none;padding:4px;font-size:8px;font-family:sans-serif;border-radius:2px;letter-spacing:0.04em}
+
+.img-grid-p{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;height:60px}
+.img-cell{background:#E8C8C0;display:flex;align-items:center;justify-content:center;font-size:8px;color:#7A5C52;font-family:sans-serif}
+.img-cell:nth-child(2){background:#EDD9B8}
+.img-cell:nth-child(3){background:#F2D8D0}
+.img-cell:nth-child(4){background:#E8DDD0}
+.img-cell:nth-child(5){background:#D4A96A;opacity:0.4}
+.img-cell:nth-child(6){background:#4A1040;opacity:0.3}
+</style>
+
+<div class="wrap">
+
+<div class="navbar">
+  <div class="nav-ann">Free shipping on all orders above ₹999 · Use NATURAL10 for 10% off ✕</div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,#B8924A 30%,#D4A96A 50%,#B8924A 70%,transparent)"></div>
+  <div class="nav-top">
+    <div class="nav-tagline">Love Your Body 365</div>
+    <div class="nav-logo">Mic <span>&</span> Mac</div>
+    <div class="nav-actions">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+      <div class="nav-icon" style="position:relative"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><div class="cart-badge">2</div></div>
+    </div>
+  </div>
+  <div class="nav-bot">
+    <span class="nav-link">Home</span><span class="nav-dot"></span>
+    <span class="nav-link active">Shop ▾</span><span class="nav-dot"></span>
+    <span class="nav-link">Face Care</span><span class="nav-dot"></span>
+    <span class="nav-link">Body Care</span><span class="nav-dot"></span>
+    <span class="nav-link">Lip Care</span><span class="nav-dot"></span>
+    <span class="nav-link">Combos</span><span class="nav-dot"></span>
+    <span class="nav-link">About</span><span class="nav-dot"></span>
+    <span class="nav-link">Blog</span>
+  </div>
+</div>
+
+<div style="font-size:11px;color:var(--color-text-tertiary);font-family:sans-serif;margin-bottom:14px;padding:8px 12px;background:var(--color-background-secondary);border-radius:6px">
+  Each row below = one section file. Click the section name to see its preview layout below.
+</div>
+
+<div class="stack" style="border:0.5px solid var(--color-border-tertiary);border-radius:10px;overflow:hidden">
+
+<div class="sec-row">
+  <div class="sec-num-col"><div class="sec-num">1</div><div class="sec-line"></div></div>
+  <div class="sec-body">
+    <div class="sec-header">
+      <div><div class="sec-name">Hero banner</div><div class="sec-file">sections/hero-banner.liquid</div></div>
+      <div class="badges"><span class="badge b-reuse">existing</span><span class="badge b-key">conversion critical</span></div>
+    </div>
+    <div class="sec-content">
+      <div><div class="sec-label">What it contains</div><div class="sec-what">Full-screen · Burgundy background · Brand tagline as eyebrow · Emotional headline (not product name) · 2 CTAs: "Shop the Ritual" + "Our Story" · Product composition image right side (editorial, not catalog) · Scroll indicator</div></div>
+      <div><div class="sec-label">Why this order</div><div class="sec-why">First 3 seconds must answer: WHO are you. Not what you sell. Brand emotion before product. This is what separates luxury from commodity.</div></div>
+    </div>
+    <div class="preview">
+      <div class="hero-p">
+        <div class="hero-text-col">
+          <div class="hero-eyebrow">Lab Certified · Cold Pressed · Made for Indian Skin</div>
+          <div class="hero-h">Your Skin Remembers<br>What Real Feels Like.</div>
+          <div class="hero-sub">Cold-pressed, lab-certified skincare formulated<br>for the way Indian skin truly feels.</div>
+          <div class="hero-btns">
+            <button class="hero-btn1">Shop the Ritual</button>
+            <button class="hero-btn2">Our Story</button>
+          </div>
+        </div>
+        <div class="hero-img-placeholder">Product<br>editorial<br>image</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-row">
+  <div class="sec-num-col"><div class="sec-num">2</div><div class="sec-line"></div></div>
+  <div class="sec-body">
+    <div class="sec-header">
+      <div><div class="sec-name">Trust bar</div><div class="sec-file">sections/trust-bar.liquid</div></div>
+      <div class="badges"><span class="badge b-reuse">existing</span></div>
+    </div>
+    <div class="sec-content">
+      <div><div class="sec-label">What it contains</div><div class="sec-what">5 trust pillars on burgundy-dark (#2A1520) background · Thin line icons · 100% Natural · Cold Pressed · Cruelty Free · Lab Certified · Made in India · NO free shipping here — save that for cart</div></div>
+      <div><div class="sec-label">Why this order</div><div class="sec-why">Immediately after hero — the customer just felt emotion, now they need reassurance. Trust bar converts skeptical first-time visitors who are thinking "but is it actually good?"</div></div>
+    </div>
+    <div class="preview">
+      <div class="trust-p">
+        <div class="trust-item-p"><div class="trust-dot"></div><div class="trust-text-p">100% Natural</div></div>
+        <div class="trust-item-p"><div class="trust-dot"></div><div class="trust-text-p">Cold Pressed</div></div>
+        <div class="trust-item-p"><div class="trust-dot"></div><div class="trust-text-p">Cruelty Free</div></div>
+        <div class="trust-item-p"><div class="trust-dot"></div><div class="trust-text-p">Lab Certified</div></div>
+        <div class="trust-item-p"><div class="trust-dot"></div><div class="trust-text-p">Made in India</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-row">
+  <div class="sec-num-col"><div class="sec-num">3</div><div class="sec-line"></div></div>
+  <div class="sec-body">
+    <div class="sec-header">
+      <div><div class="sec-name">Ritual / philosophy story</div><div class="sec-file">sections/ritual-story.liquid &nbsp;(new — rename ingredients-story)</div></div>
+      <div class="badges"><span class="badge b-new">new section</span><span class="badge b-key">brand moat</span></div>
+    </div>
+    <div class="sec-content">
+      <div><div class="sec-label">What it contains</div><div class="sec-what">2-col split · Left: large product texture/lifestyle image on cream (#F5ECD7) · Right: eyebrow "A Ritual, Not a Routine" + heading + 2-para brand philosophy + text CTA "Discover Our Process" · No product grid here</div></div>
+      <div><div class="sec-label">Why this order</div><div class="sec-why">This is the brand moat. Other soap brands don't have a philosophy. This section makes Mic & Mac feel like a lifestyle brand. Customer goes from "I might buy" to "I want to be part of this."</div></div>
+    </div>
+    <div class="preview">
+      <div class="ritual-p">
+        <div class="ritual-img">Product texture /<br>lifestyle image</div>
+        <div class="ritual-text">
+          <div class="ritual-ey">A Ritual, Not a Routine</div>
+          <div class="ritual-h">Crafted to be the best part of your day.</div>
+          <div class="ritual-body">Every bar is cold-pressed in small batches with botanical oils and lab-certified formulas. Not mass produced. Not generic. Made with the intention that your daily wash should feel like something.</div>
+          <div class="ritual-cta">Discover our process →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-row">
+  <div class="sec-num-col"><div class="sec-num">4</div><div class="sec-line"></div></div>
+  <div class="sec-body">
+    <div class="sec-header">
+      <div><div class="sec-name">Product spotlight — Soap (hero product)</div><div class="sec-file">sections/product-spotlight.liquid &nbsp;(new)</div></div>
+      <div class="badges"><span class="badge b-new">new section</span><span class="badge b-key">conversion critical</span></div>
+    </div>
+    <div class="sec-content">
+      <div><div class="sec-label">What it contains</div><div class="sec-what">Large image 65% width left · Content 35% right · Eyebrow "Bestseller" · Product name in display font · Short 1-line promise · Price + compare-at · Add to Cart + Learn More · Image: editorial product shot on cream/marble</div></div>
+      <div><div class="sec-label">Why this order</div><div class="sec-why">After brand story, customer is ready to look at products. Single spotlight = maximum focus = higher perceived value. The grid comes AFTER — not before — this moment.</div></div>
+    </div>
+    <div class="preview">
+      <div class="spotlight-p">
+        <div class="spotlight-img">Donkey Milk Soap<br>editorial image</div>
+        <div class="spotlight-content">
+          <div class="sp-ey">Bestseller · Cold Pressed</div>
+          <div class="sp-name">Donkey Milk Soap<br>Deep Hydration</div>
+          <div class="sp-sub">For dry, sensitive & dull skin · Face & body safe</div>
+          <div class="sp-price">₹199 <span style="text-decoration:line-through;color:#A8957E;font-size:10px;font-weight:400">₹320</span></div>
+          <div class="sp-btns">
+            <div class="sp-btn1">Add to Cart</div>
+            <div class="sp-btn2">Learn More</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-row">
+  <div class="sec-num-col"><div class="sec-num">5</div><div class="sec-line"></div></div>
+  <div class="sec-body">
+    <div class="sec-header">
+      <div><div class="sec-name">Product spotlight — Lip Balm (alternate layout)</div><div class="sec-file">sections/product-spotlight.liquid &nbsp;(reused, image-right variant)</div></div>
+      <div class="badges"><span class="badge b-reuse">reuse section</span></div>
+    </div>
+    <div class="sec-content">
+      <div><div class="sec-label">What it contains</div><div class="sec-what">Mirrored layout — content left, large image right · Background: blush (#E8C8C0) to differentiate · Beetroot Lip Balm + Grape Lip Balm shown together as a pair · "New Launch" badge · Same ATC + Learn More structure</div></div>
+      <div><div class="sec-label">Why this order</div><div class="sec-why">Alternating image placement creates visual rhythm — avoids the monotony of a grid. The blush background naturally fits the lip care category. Two products together = combination sell opportunity.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-row">
+  <div class="sec-num-col"><div class="sec-num">6</div><div class="sec-line"></div></div>
+  <div class="sec-body">
+    <div class="sec-header">
+      <div><div class="sec-name">Bestsellers grid — 4 products</div><div class="sec-file">sections/featured-collection.liquid &nbsp;(existing, limited to 4)</div></div>
+      <div class="badges"><span class="badge b-reuse">existing</span><span class="badge b-key">conversion critical</span></div>
+    </div>
+    <div class="sec-content">
+      <div><div class="sec-label">What it contains</div><div class="sec-what">Eyebrow "The ones they keep coming back for" · 4 product cards max (not all 7) · Show: Donkey Milk · Red Wine CP · Charcoal · Beetroot Lip Balm · ATC on hover · Star ratings · "View All" link · Cream (#F5ECD7) background</div></div>
+      <div><div class="sec-label">Why this order</div><div class="sec-why">After the spotlight single-focus, the grid answers "what else do you have?" without overwhelming. 4 is the sweet spot — enough variety, not enough to cause choice paralysis. This is where impulse buying happens.</div></div>
+    </div>
+    <div class="preview">
+      <div class="bestsellers-p">
+        <div class="sec-title-p">The ones they keep coming back for</div>
+        <div class="bs-grid">
+          <div class="bs-card"><div class="bs-img" style="background:#E8C8C0">Donkey<br>Milk</div><div class="bs-body"><div class="bs-name">Donkey Milk Soap</div><div class="bs-price">₹199</div><button class="bs-atc">Add to Cart</button></div></div>
+          <div class="bs-card"><div class="bs-img" style="background:#7A2060;opacity:0.7">Red<br>Wine</div><div class="bs-body"><div class="bs-name">Red Wine Soap CP</div><div class="bs-price">₹149</div><button class="bs-atc">Add to Cart</button></div></div>
+          <div class="bs-card"><div class="bs-img" style="background:#2A1520">Charcoal<br>Detox</div><div class="bs-body"><div class="bs-name">Charcoal Detox Soap</div><div class="bs-price">₹149</div><button class="bs-atc">Add to Cart</button></div></div>
+          <div class="bs-card"><div class="bs-img" style="background:#C0392B;opacity:0.6">Beetroot<br>Balm</div><div class="bs-body"><div class="bs-name">Beetroot Lip Balm</div><div class="bs-price">₹99</div><button class="bs-atc">Add to Cart</button></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-row">
+  <div class="sec-num-col"><div class="sec-num">7</div><div class="sec-line"></div></div>
+  <div class="sec-body">
+    <div class="sec-header">
+      <div><div class="sec-name">Ingredients story</div><div class="sec-file">sections/ingredients-story.liquid &nbsp;(existing)</div></div>
+      <div class="badges"><span class="badge b-reuse">existing</span></div>
+    </div>
+    <div class="sec-content">
+      <div><div class="sec-label">What it contains</div><div class="sec-what">Heading "What touches your skin matters" · 4 ingredient cards: Donkey Milk · Red Wine · Activated Charcoal · Beetroot · Icon + name + 1-line benefit · Cream background · "Explore Ingredients" CTA → About page</div></div>
+      <div><div class="sec-label">Why this order</div><div class="sec-why">After the grid, skeptical buyers who didn't add to cart need a deeper reason to trust. Ingredient transparency is Mic & Mac's biggest differentiator. This section converts the analytical buyer.</div></div>
+    </div>
+    <div class="preview">
+      <div class="ingr-p">
+        <div class="sec-title-p">What touches your skin matters</div>
+        <div class="ingr-grid">
+          <div class="ingr-card"><div class="ingr-dot" style="background:#E8C8C0"></div><div class="ingr-name">Donkey Milk</div><div class="ingr-benefit">Deep hydration · Vitamins A–E</div></div>
+          <div class="ingr-card"><div class="ingr-dot" style="background:#7A2060"></div><div class="ingr-name">Red Wine Extract</div><div class="ingr-benefit">Resveratrol · Antioxidant glow</div></div>
+          <div class="ingr-card"><div class="ingr-dot" style="background:#2A1520"></div><div class="ingr-name">Activated Charcoal</div><div class="ingr-benefit">Detox · Pore cleanse</div></div>
+          <div class="ingr-card"><div class="ingr-dot" style="background:#C0392B"></div><div class="ingr-name">Beetroot</div><div class="ingr-benefit">Natural tint · Iron rich</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-row">
+  <div class="sec-num-col"><div class="sec-num">8</div><div class="sec-line"></div></div>
+  <div class="sec-body">
+    <div class="sec-header">
+      <div><div class="sec-name">Video / UGC strip</div><div class="sec-file">sections/video-strip.liquid &nbsp;(existing)</div></div>
+      <div class="badges"><span class="badge b-reuse">existing</span></div>
+    </div>
+    <div class="sec-content">
+      <div><div class="sec-label">What it contains</div><div class="sec-what">Dark (#2A1520) background · 3–4 video thumbnails horizontal scroll · Texture shots + application clips · Autoplay muted on hover · No text overlay needed — let the product speak visually</div></div>
+      <div><div class="sec-label">Why this order</div><div class="sec-why">Creates sensory desire after the analytical ingredient section. Sight and implied texture are the closest a website gets to letting a customer touch the product. This is where "I want it" happens.</div></div>
+    </div>
+    <div class="preview">
+      <div class="video-p">
+        <div class="video-thumb"><div class="video-play"><div class="play-tri"></div></div></div>
+        <div class="video-thumb"><div class="video-play"><div class="play-tri"></div></div></div>
+        <div class="video-thumb"><div class="video-play"><div class="play-tri"></div></div></div>
+        <div class="video-thumb"><div class="video-play"><div class="play-tri"></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-row">
+  <div class="sec-num-col"><div class="sec-num">9</div><div class="sec-line"></div></div>
+  <div class="sec-body">
+    <div class="sec-header">
+      <div><div class="sec-name">Testimonials</div><div class="sec-file">sections/testimonials.liquid &nbsp;(existing)</div></div>
+      <div class="badges"><span class="badge b-reuse">existing</span></div>
+    </div>
+    <div class="sec-content">
+      <div><div class="sec-label">What it contains</div><div class="sec-what">Eyebrow "10,000+ customers can't all be wrong" · 3 cards only — not 6 · Each: star rating + quote + name + city + product bought · Cream (#F5ECD7) background · NO loud star overload — clean and editorial</div></div>
+      <div><div class="sec-label">Why this order</div><div class="sec-why">After visuals create desire, social proof removes the last objection: "but does it actually work?" Real customer names + cities + product specifics are far more credible than generic reviews.</div></div>
+    </div>
+    <div class="preview">
+      <div class="test-p">
+        <div class="sec-title-p">10,000+ customers can't all be wrong</div>
+        <div class="test-grid">
+          <div class="test-card"><div class="test-stars">★★★★★</div><div class="test-quote">"My skin feels softer in 3 days. The donkey milk soap is unlike anything I've tried."</div><div class="test-author">Priya S. · Chennai · Donkey Milk Soap</div></div>
+          <div class="test-card"><div class="test-stars">★★★★★</div><div class="test-quote">"The red wine soap actually gave me a glow. I've recommended it to my entire family."</div><div class="test-author">Anjali R. · Bengaluru · Red Wine Soap</div></div>
+          <div class="test-card"><div class="test-stars">★★★★★</div><div class="test-quote">"I read every ingredient. Mic & Mac is the only brand where I recognise all of them."</div><div class="test-author">Sneha K. · Mumbai · Charcoal Soap</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-row">
+  <div class="sec-num-col"><div class="sec-num">10</div><div class="sec-line"></div></div>
+  <div class="sec-body">
+    <div class="sec-header">
+      <div><div class="sec-name">Brand story — emotional close</div><div class="sec-file">sections/cta-banner.liquid &nbsp;(existing, repurposed)</div></div>
+      <div class="badges"><span class="badge b-reuse">existing</span></div>
+    </div>
+    <div class="sec-content">
+      <div><div class="sec-label">What it contains</div><div class="sec-what">Full-width · Burgundy (#4A1040) background · Eyebrow "Our Story" · Heading "Where Nature Meets Clinical Integrity" · 2-line subtext · CTA: "Meet the Brand" → /pages/about · No product here — pure emotional</div></div>
+      <div><div class="sec-label">Why this order</div><div class="sec-why">After proof, deepen the relationship. Customers who read this section have high intent — they're deciding between buying now and buying later. A brand story tips them toward now.</div></div>
+    </div>
+    <div class="preview">
+      <div class="story-p">
+        <div class="story-text">
+          <div class="story-ey">Our Story</div>
+          <div class="story-h">Where Nature Meets Clinical Integrity.</div>
+          <div class="story-sub">Mic & Mac was started to answer one question: why does premium skincare in India always mean Western formulas on Indian skin?</div>
+          <div class="story-cta">Meet the brand →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-row">
+  <div class="sec-num-col"><div class="sec-num">11</div><div class="sec-line"></div></div>
+  <div class="sec-body">
+    <div class="sec-header">
+      <div><div class="sec-name">Instagram / visual grid</div><div class="sec-file">sections/image-grid.liquid &nbsp;(new — optional)</div></div>
+      <div class="badges"><span class="badge b-new">new</span><span class="badge b-opt">optional</span></div>
+    </div>
+    <div class="sec-content">
+      <div><div class="sec-label">What it contains</div><div class="sec-what">6 square images in a tight grid · Caption "@micandmacofficial" · Each image links to Instagram · No titles, no badges — pure aesthetic · Works even with stock photography initially</div></div>
+      <div><div class="sec-label">Why this order</div><div class="sec-why">Social presence signal — makes the brand feel alive and active. A grid of beautiful product photos here creates aspiration. Skip if Instagram is not yet active.</div></div>
+    </div>
+    <div class="preview">
+      <div class="img-grid-p">
+        <div class="img-cell"></div><div class="img-cell"></div><div class="img-cell"></div>
+        <div class="img-cell"></div><div class="img-cell"></div><div class="img-cell"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-row">
+  <div class="sec-num-col"><div class="sec-num">12</div></div>
+  <div class="sec-body">
+    <div class="sec-header">
+      <div><div class="sec-name">Newsletter + WhatsApp CTA</div><div class="sec-file">sections/newsletter-cta.liquid &nbsp;(existing)</div></div>
+      <div class="badges"><span class="badge b-reuse">existing</span></div>
+    </div>
+    <div class="sec-content">
+      <div><div class="sec-label">What it contains</div><div class="sec-what">2-col · Left: email capture with "Join the ritual. Get 10% off" · Right: WhatsApp card with dark burgundy bg · Both capture contacts before the customer leaves · Cream background</div></div>
+      <div><div class="sec-label">Why this order</div><div class="sec-why">Last chance before footer. Customers who scrolled this far are warm — they just haven't committed. Email or WhatsApp gives you a second chance to convert them later.</div></div>
+    </div>
+    <div class="preview">
+      <div class="news-p">
+        <div>
+          <div class="ritual-ey">Join the ritual</div>
+          <div class="news-h">Get 10% off your first order.</div>
+          <div style="font-size:10px;color:#5C3D2E;font-family:sans-serif;line-height:1.5">Early access to launches, skincare tips, and members-only offers.</div>
+          <div class="news-form">
+            <input class="news-input" placeholder="Your email address">
+            <button class="news-btn">Claim 10% Off</button>
+          </div>
+        </div>
+        <div class="wa-card">
+          <div class="wa-icon">
+            <svg style="width:14px;height:14px;stroke:#2A1520;stroke-width:2;fill:none;stroke-linecap:round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="wa-text">
+            <div class="wa-title">Prefer WhatsApp?</div>
+            <div class="wa-sub">Join thousands on our community for exclusive drops and tips.</div>
+          </div>
+          <div class="wa-btn">Join →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+</div>

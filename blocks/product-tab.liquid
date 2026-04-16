@@ -41,3 +41,14 @@
 .product-tab__panel.is-hidden { display: none; }
 .product-tab__panel { padding: var(--space-5) 0; }
 </style>
+
+{% schema %}
+{
+  "name": "Product Tab",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Tab label", "default": "Description" },
+    { "type": "richtext", "id": "rich_content", "label": "Rich text content" },
+    { "type": "textarea", "id": "plain_text", "label": "Plain text content" }
+  ]
+}
+{% endschema %}

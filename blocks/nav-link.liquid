@@ -56,3 +56,16 @@
   padding: 2px 6px;
 }
 </style>
+
+{% schema %}
+{
+  "name": "Nav Link",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label" },
+    { "type": "url", "id": "url", "label": "URL" },
+    { "type": "text", "id": "badge", "label": "Badge text" },
+    { "type": "checkbox", "id": "highlight", "label": "Highlight link", "default": false },
+    { "type": "checkbox", "id": "new_window", "label": "Open in new window", "default": false }
+  ]
+}
+{% endschema %}

@@ -1,43 +1,64 @@
 {% comment %}
-  Section: Main Product (PDP)
-  Orchestrates all PDP snippets in correct order.
-  Replaces the thin product.liquid stub.
+  Section: Main Product (PDP) — Redesigned
+  Structure:
+    1. Hero: 60/40 grid — vertical gallery | product content
+    2. Why It Works — benefit strip
+    3. Ingredient Story — full-width (product-ingredients section)
+    4. How to Use — numbered steps
+    5. Social Proof — editorial pull-quotes
+    6. Better Together — combo cards
+    7. FAQ — accordion
+    8. Sticky ATC (fixed bottom bar)
 {% endcomment %}
 
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign avg_rating = product.metafields.reviews.rating.value
   assign review_count = product.metafields.reviews.rating_count.value
+  assign benefits_line = product.metafields.custom.benefits_line
+  assign how_to_use = product.metafields.custom.how_to_use
 -%}
 
-<div class="pdp section-padding">
+<!-- ============================================================
+     SECTION 1: HERO — 60/40 Gallery | Content
+     ============================================================ -->
+<div class="pdp section-padding" id="PdpHero">
   <div class="container">
+
+    <!-- Standard breadcrumb -->
+    {% render 'breadcrumb' %}
+
     <div class="pdp__layout">
 
-      <!-- Left: Gallery -->
+      <!-- LEFT: Gallery (60%) -->
       <div class="pdp__gallery">
         {% render 'product-gallery', product: product %}
       </div>
 
-      <!-- Right: Content -->
+      <!-- RIGHT: Content (40%) -->
       <div class="pdp__content">
-
-        <!-- Breadcrumb -->
-        {% render 'breadcrumb' %}
 
         <!-- Vendor -->
         {%- if product.vendor != blank and section.settings.show_vendor -%}
-          <p class="pdp__vendor eyebrow">{{ product.vendor }}</p>
+          <p class="pdp__vendor eyebrow" style="margin-bottom:var(--space-3);">{{ product.vendor }}</p>
         {%- endif -%}
 
         <!-- Title -->
-        <h1 class="pdp__title">{{ product.title }}</h1>
+        <h1 class="pdp__title">{{ product.title | split: '|' | first }}</h1>
 
-        <!-- Rating -->
+        <!-- Star rating -->
         {%- if avg_rating != blank -%}
           <div class="pdp__rating">
             {% render 'star-rating', rating: avg_rating, count: review_count, size: 'md' %}
+            <span class="pdp__rating-count">({{ review_count }})</span>
           </div>
+        {%- endif -%}
+
+        <!-- Micro benefit line -->
+        {%- if benefits_line != blank -%}
+          <p class="pdp__micro-line">{{ benefits_line }}</p>
+        {%- else -%}
+          <p class="pdp__micro-line">Deep hydration &bull; Gentle cleansing &bull; Artisan-crafted</p>
         {%- endif -%}
 
         <!-- Price -->
@@ -45,103 +66,93 @@
           {% render 'price', variant: current_variant %}
         </div>
 
-        <!-- Short description -->
-        {%- if product.metafields.custom.short_description != blank -%}
-          <p class="pdp__short-desc">{{ product.metafields.custom.short_description }}</p>
-        {%- endif -%}
-
-        <!-- Product Form -->
-        {% render 'product-form', product: product, section: section %}
-
-        <!-- Trust strip -->
+        <!-- Inline Trust Strip -->
         {% render 'product-trust' %}
 
-        <!-- Tabs -->
-        {% render 'product-tabs', product: product %}
+        <!-- Urgency badge -->
+        {%- if product.variants.first.inventory_quantity <= 10 and product.variants.first.inventory_quantity > 0 -%}
+          <div class="pdp__urgency">Only {{ product.variants.first.inventory_quantity }} left</div>
+        {%- else -%}
+          <div class="pdp__urgency">Popular choice</div>
+        {%- endif -%}
 
-        <!-- Reviews -->
-        {% render 'product-reviews', product: product %}
+        <!-- Product Form (Add to Bag + Buy Now) -->
+        {% render 'product-form', product: product, section: section %}
 
+        <!-- Short Description (filtered to remove legacy "Our Actives" HTML) -->
+        {%- liquid
+          assign raw_desc = product.description | strip_html
+          assign clean_desc = raw_desc
+
+          if raw_desc contains 'Our Actives'
+            assign parts = raw_desc | split: 'Our Actives'
+            assign clean_desc = parts | first
+          endif
+
+          if clean_desc contains 'Powered by'
+            assign parts2 = clean_desc | split: 'Powered by'
+            assign clean_desc = parts2 | first
+          endif
+
+          assign clean_desc = clean_desc | strip | truncatewords: 50
+        -%}
+        {%- if clean_desc != blank -%}
+          <div class="pdp__description rte" style="margin-top: var(--space-6);">
+            {{ clean_desc }}
+          </div>
+        {%- endif -%}
+
+
+      </div><!-- /pdp__content -->
+    </div><!-- /pdp__layout -->
+  </div>
+</div>
+
+
+<!-- ============================================================
+     SECTION 2: WHY IT WORKS — Benefit Strip
+     ============================================================ -->
+<div class="pdp-benefits">
+  <div class="container">
+    <div class="pdp-benefits__layout">
+      <div>
+        <p class="pdp-benefits__eyebrow">Why it works</p>
+        <h2 class="pdp-benefits__title">Formulated to deliver,<br>not just promise</h2>
       </div>
+      <ul class="pdp-benefits__list">
+        {%- if product.metafields.custom.benefits != blank -%}
+          {%- assign benefit_lines = product.metafields.custom.benefits | split: '|' -%}
+          {%- for line in benefit_lines -%}
+            <li class="pdp-benefits__item">
+              <div class="pdp-benefits__accent" aria-hidden="true"></div>
+              <span class="pdp-benefits__text">{{ line | strip }}</span>
+            </li>
+          {%- endfor -%}
+        {%- else -%}
+          <li class="pdp-benefits__item">
+            <div class="pdp-benefits__accent" aria-hidden="true"></div>
+            <span class="pdp-benefits__text">Deep cleans without stripping natural moisture</span>
+          </li>
+          <li class="pdp-benefits__item">
+            <div class="pdp-benefits__accent" aria-hidden="true"></div>
+            <span class="pdp-benefits__text">Supports the skin's natural pH balance</span>
+          </li>
+          <li class="pdp-benefits__item">
+            <div class="pdp-benefits__accent" aria-hidden="true"></div>
+            <span class="pdp-benefits__text">Leaves skin soft and nourished — never tight</span>
+          </li>
+          <li class="pdp-benefits__item">
+            <div class="pdp-benefits__accent" aria-hidden="true"></div>
+            <span class="pdp-benefits__text">Free from sulphates, parabens, and synthetic fragrance</span>
+          </li>
+        {%- endif -%}
+      </ul>
     </div>
   </div>
 </div>
 
-<!-- Sticky ATC -->
-{% render 'sticky-atc', product: product %}
 
-<!-- Product Ingredients Deep Dive (section — add to template JSON) -->
-{% section 'product-ingredients' %}
 
-<!-- Related Products -->
-{%- if section.settings.show_related -%}
-  <div class="container">
-    {%- assign product_id_for_recommendations = product.id -%}
-    <div
-      data-related-products
-      data-product-id="{{ product_id_for_recommendations }}"
-      data-limit="4"
-      id="RelatedProductsContainer"
-    ></div>
-  </div>
-{%- endif -%}
-
-<!-- Recently Viewed (populated by recently-viewed.ts) -->
-<section class="recently-viewed section-padding--sm" id="RecentlyViewedSection" style="display:none">
-  <div class="container">
-    <h2 style="font-family:var(--font-display);font-size:var(--text-2xl);font-weight:400;margin-bottom:var(--space-6)">Recently Viewed</h2>
-    <div class="product-grid" id="RecentlyViewedGrid"
-         style="grid-template-columns:repeat(4,1fr)"></div>
-  </div>
-</section>
-
-<style>
-.pdp__layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-16);
-  align-items: start;
-}
-
-.pdp__vendor {
-  margin-bottom: var(--space-2);
-}
-
-.pdp__title {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.5vw, 3rem);
-  font-weight: 400;
-  color: var(--color-text-dark);
-  line-height: 1.2;
-  margin-bottom: var(--space-4);
-}
-
-.pdp__rating {
-  margin-bottom: var(--space-4);
-}
-
-.pdp__price {
-  margin-bottom: var(--space-5);
-}
-
-.pdp__price .price__current {
-  font-size: var(--text-2xl);
-}
-
-.pdp__short-desc {
-  font-size: var(--text-base);
-  color: var(--color-text-mid);
-  line-height: 1.7;
-  margin-bottom: var(--space-5);
-}
-
-@media (max-width: 767px) {
-  .pdp__layout {
-    grid-template-columns: 1fr;
-    gap: var(--space-8);
-  }
-}
-</style>
 
 {% schema %}
 {

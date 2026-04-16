@@ -101,3 +101,16 @@
   color: var(--color-text-light);
 }
 </style>
+
+{% schema %}
+{
+  "name": "Testimonial Card",
+  "settings": [
+    { "type": "text", "id": "quote", "label": "Quote" },
+    { "type": "text", "id": "name", "label": "Customer name", "default": "Happy Customer" },
+    { "type": "text", "id": "location", "label": "Location" },
+    { "type": "range", "id": "rating", "label": "Star rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "image_picker", "id": "avatar", "label": "Avatar image" }
+  ]
+}
+{% endschema %}

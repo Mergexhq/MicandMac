@@ -1,0 +1,313 @@
+/* ============================================
+   MIC & MAC — COMPONENTS
+   Buttons, badges, forms, product card,
+   section headings, trust icons, overlay.
+   Import order: 5 of 8
+   ============================================ */
+
+
+/* ---- BUTTONS ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.875rem 2rem;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+/* Primary — Burgundy fill · cream text — 9.8:1 contrast */
+.btn--primary {
+  background: var(--color-burgundy);
+  color: var(--color-text-on-dark);
+  border-color: var(--color-burgundy);
+}
+.btn--primary:hover {
+  background: var(--color-burgundy-hover);
+  border-color: var(--color-burgundy-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+.btn--primary:active {
+  transform: translateY(0);
+}
+
+/* Secondary — Outlined burgundy */
+.btn--secondary {
+  background: transparent;
+  color: var(--color-burgundy);
+  border-color: var(--color-burgundy);
+}
+.btn--secondary:hover {
+  background: var(--color-burgundy);
+  color: var(--color-text-on-dark);
+  transform: translateY(-1px);
+}
+
+/* Gold CTA — hero + promo sections only · dark text on gold 5.4:1 */
+.btn--gold {
+  background: var(--color-gold);
+  color: var(--color-plum);
+  border-color: var(--color-gold);
+}
+.btn--gold:hover {
+  background: var(--color-gold-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Ghost — on dark burgundy/plum backgrounds · cream border + text */
+.btn--ghost {
+  background: transparent;
+  color: var(--color-text-on-dark);
+  border-color: rgba(245, 236, 215, 0.5);
+}
+.btn--ghost:hover {
+  background: rgba(245, 236, 215, 0.12);
+  border-color: var(--color-text-on-dark);
+}
+
+/* Full width */
+.btn--full {
+  width: 100%;
+}
+
+/* Large size */
+.btn--lg {
+  padding: 1.125rem 2.5rem;
+  font-size: var(--text-base);
+}
+
+/* Small size */
+.btn--sm {
+  padding: 0.625rem 1.25rem;
+  font-size: var(--text-xs);
+}
+
+/* Loading state */
+.btn--loading {
+  opacity: 0.7;
+  pointer-events: none;
+  position: relative;
+}
+.btn--loading::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin-left: var(--space-2);
+}
+
+
+/* ---- BADGES & TAGS ---- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0.25rem 0.75rem;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+/* Bestseller badge — burgundy bg, gold-light text (6.1:1) */
+.badge--burgundy {
+  background: var(--color-burgundy);
+  color: var(--color-gold-light);
+}
+
+/* % Off badge — gold bg, plum text (5.4:1) */
+.badge--gold {
+  background: var(--color-gold);
+  color: var(--color-plum);
+}
+
+/* New / Skin-type badge — blush bg, brown text (8.2:1) */
+.badge--blush {
+  background: var(--color-bg-blush);
+  color: var(--color-text-secondary);
+}
+
+/* Lab certified — plum bg, gold-light text (6.1:1) */
+.badge--plum {
+  background: var(--color-plum);
+  color: var(--color-gold-light);
+}
+
+/* Cruelty Free — outlined gold */
+.badge--outline {
+  background: transparent;
+  color: var(--color-gold-dark);
+  border: 1px solid var(--color-gold);
+}
+
+/* Warm cream badge */
+.badge--cream {
+  background: var(--color-bg-warm);
+  color: var(--color-text-secondary);
+}
+
+/* Legacy alias */
+.badge--forest { background: var(--color-burgundy); color: var(--color-text-on-dark); }
+
+
+/* ---- FORMS ---- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-dark);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  background: var(--color-bg-page);
+  border: 1.5px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color var(--transition-fast);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--color-burgundy);
+  box-shadow: 0 0 0 3px rgba(74, 16, 64, 0.08);
+}
+
+.form-input::placeholder {
+  color: var(--color-text-light);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Quantity input */
+.qty-input {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  width: fit-content;
+}
+
+.qty-input__btn {
+  width: 40px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-cream);
+  font-size: var(--text-lg);
+  color: var(--color-burgundy);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  border: none;
+}
+
+.qty-input__btn:hover {
+  background: var(--color-bg-warm);
+}
+
+.qty-input__field {
+  width: 48px;
+  height: 44px;
+  text-align: center;
+  border: none;
+  border-inline: 1.5px solid var(--color-border-default);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  background: var(--color-bg-page);
+  outline: none;
+}
+
+
+/* ---- PRODUCT CARD ---- */
+/* Styles moved to assets/product-card.css for modularity */
+
+
+/* ---- SECTION HEADINGS ---- */
+.section-heading {
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
+
+.section-heading .eyebrow {
+  margin-bottom: var(--space-3);
+}
+
+.section-heading h2 {
+  margin-bottom: var(--space-4);
+}
+
+.section-heading p {
+  max-width: 520px;
+  margin-inline: auto;
+  font-size: var(--text-lg);
+}
+
+
+/* ---- TRUST ICONS ---- */
+.trust-icon {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.trust-icon svg {
+  color: var(--color-gold);  /* Gold icons — decorative, safe */
+  flex-shrink: 0;
+}
+
+
+/* ---- OVERLAY / MODAL ---- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(42, 21, 32, 0.6); /* Deep plum overlay */
+  z-index: var(--z-overlay);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+  backdrop-filter: blur(2px);
+}
+
+.overlay.is-active {
+  opacity: 1;
+  pointer-events: all;
+}

@@ -7,8 +7,8 @@
       <!-- Info side -->
       <div class="page-contact__info">
         <p class="eyebrow">{{ section.settings.eyebrow | default: 'Get in Touch' }}</p>
-        <h1 class="page-contact__title">{{ section.settings.heading | default: 'We\'d Love to Hear From You' }}</h1>
-        <p class="page-contact__sub">{{ section.settings.subtext | default: 'Questions about your order, partnerships, or press enquiries — we\'re here.' }}</p>
+        <h1 class="page-contact__title">{{ section.settings.heading | default: "We'd Love to Hear From You" }}</h1>
+        <p class="page-contact__sub">{{ section.settings.subtext | default: "Questions about your order, partnerships, or press enquiries — we're here." }}</p>
 
         <div class="contact-info-items">
           {%- if section.settings.email != blank -%}

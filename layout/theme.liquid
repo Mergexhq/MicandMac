@@ -44,11 +44,20 @@
   {{ 'mobile-nav.css' | asset_url | stylesheet_tag }}
   {{ 'animations.css' | asset_url | stylesheet_tag }}
   {{ 'theme.css'      | asset_url | stylesheet_tag }}
+  {{ 'pdp.css'        | asset_url | stylesheet_tag }}
 
   <link rel="canonical" href="{{ canonical_url }}">
   {%- if settings.favicon != blank -%}
     <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
   {%- endif -%}
+
+  <!-- RealFaviconGenerator HTML markups -->
+  <link rel="icon" type="image/png" href="{{ 'favicon-96x96.png' | asset_url }}" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="{{ 'favicon.svg' | asset_url }}" />
+  <link rel="shortcut icon" href="{{ 'favicon.ico' | asset_url }}" />
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ 'apple-touch-icon.png' | asset_url }}" />
+  <meta name="apple-mobile-web-app-title" content="Mic & Mac" />
+  <link rel="manifest" href="{{ 'site.webmanifest' | asset_url }}" />
 </head>
 
 <body class="template-{{ template.name }}{% if template.suffix %} template-{{ template.name }}-{{ template.suffix }}{% endif %}">

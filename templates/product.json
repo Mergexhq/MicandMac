@@ -8,9 +8,25 @@
         "show_notify_me": true,
         "show_related": true
       }
+    },
+    "ingredients": {
+      "type": "ingredients",
+      "settings": {
+        "title": "Key Ingredients"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "details": {
+      "type": "product-details",
+      "settings": {
+        "show_related": true
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "ingredients",
+    "details"
   ]
 }

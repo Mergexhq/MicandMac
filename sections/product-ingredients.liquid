@@ -1,158 +1,269 @@
-{% comment %}
-  Section: Product Ingredients Deep-Dive
-  Visual ingredient cards — icon + name + benefit
-  Positioned below the PDP form on the product page
-{% endcomment %}
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
 
-<section class="product-ingredients section-padding--sm">
-  <div class="container">
-    <div class="section-heading">
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
-      {%- endif -%}
-      <h2>{{ section.settings.heading | default: 'What's Inside Matters' }}</h2>
-      {%- if section.settings.subtext != blank -%}
-        <p>{{ section.settings.subtext }}</p>
-      {%- endif -%}
-    </div>
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
 
-    <div class="ingredient-cards">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'ingredient' -%}
-          <div class="ingredient-card" {{ block.shopify_attributes }}>
-            <div class="ingredient-card__icon">
-              {%- if block.settings.icon != blank -%}
-                <img
-                  src="{{ block.settings.icon | image_url: width: 120 }}"
-                  alt="{{ block.settings.name }}"
-                  width="60"
-                  height="60"
-                  loading="lazy"
-                >
-              {%- else -%}
-                <span class="ingredient-card__emoji">{{ block.settings.emoji | default: '🌿' }}</span>
-              {%- endif -%}
-            </div>
-            <div class="ingredient-card__content">
-              <h4 class="ingredient-card__name">{{ block.settings.name }}</h4>
-              <p class="ingredient-card__benefit">{{ block.settings.benefit }}</p>
-            </div>
-            {%- if block.settings.badge != blank -%}
-              <span class="ingredient-card__badge badge badge--forest">{{ block.settings.badge }}</span>
-            {%- endif -%}
+  .ingredients-section-wrapper {
+    background: transparent;
+    overflow: hidden;
+  }
+
+  .ingredients-title {
+    text-align: center;
+    font-family: var(--font-heading-family);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 3.5rem;
+    letter-spacing: -0.02em;
+    color: #111;
+  }
+
+  .ingredients-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+
+  .ingredient-card {
+    text-align: left;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    background: transparent;
+    padding: 24px;
+    height: 100%;
+  }
+
+  .ingredient-card:hover {
+    transform: translateY(-4px);
+  }
+
+  /* First card receives the premium subtle background highlight */
+  .ingredient-card.highlight {
+    background: linear-gradient(160deg, #fffcf5 0%, #f7ebd5 100%);
+  }
+
+  .ingredient-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .ingredient-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Image zoom interaction */
+  .ingredient-card:hover .ingredient-image {
+    transform: scale(1.05);
+  }
+
+  .ingredient-card h3 {
+    font-family: var(--font-heading-family);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #1a1a1a;
+  }
+
+  .ingredient-card p {
+    font-family: var(--font-body-family);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 24px;
+    flex-grow: 1;
+  }
+
+  .ingredient-link {
+    font-family: var(--font-body-family);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #111;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+  }
+
+  /* Subtle CTA interaction */
+  .ingredient-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #111;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease;
+  }
+
+  .ingredient-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  @media (max-width: 1024px) {
+    .ingredients-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+  }
+
+  /* Mobile 2x2 grid */
+  @media (max-width: 768px) {
+    .ingredients-title {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .ingredients-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .ingredient-card {
+      padding: 16px;
+    }
+
+    .ingredient-card h3 {
+      font-size: 1rem;
+    }
+
+    .ingredient-card p {
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+    }
+
+    .ingredient-link {
+      font-size: 0.75rem;
+    }
+  }
+{%- endstyle -%}
+
+<div class="ingredients-section-wrapper section-{{ section.id }}-padding">
+  <div class="page-width">
+    {% if section.settings.title != blank %}
+      <h2 class="ingredients-title">{{ section.settings.title }}</h2>
+    {% endif %}
+
+    <div class="ingredients-grid">
+      {% for block in section.blocks %}
+        <div class="ingredient-card {% if forloop.first %}highlight{% endif %}" {{ block.shopify_attributes }}>
+          <div class="ingredient-image-wrapper">
+            {% if block.settings.image != blank %}
+              <img 
+                class="ingredient-image"
+                src="{{ block.settings.image | image_url: width: 500 }}" 
+                alt="{{ block.settings.title | escape }}"
+                loading="lazy"
+                width="500"
+                height="{{ 500 | divided_by: block.settings.image.aspect_ratio | ceil }}"
+              >
+            {% else %}
+               {{ 'image' | placeholder_svg_tag: 'ingredient-image' }}
+            {% endif %}
           </div>
-        {%- endif -%}
-      {%- endfor -%}
+
+          {% if block.settings.title != blank %}
+            <h3>{{ block.settings.title }}</h3>
+          {% endif %}
+
+          {% if block.settings.description != blank %}
+            <p>{{ block.settings.description | newline_to_br }}</p>
+          {% endif %}
+
+          {% if block.settings.link != blank or block.settings.link_label != blank %}
+            <a href="{{ block.settings.link | default: '#' }}" class="ingredient-link">
+              {{ block.settings.link_label | default: 'Learn more →' }}
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      {%- if section.blocks.size == 0 -%}
+        <!-- Fallback if blocks are empty so we can see the effect immediately -->
+        <div class="ingredient-card highlight">
+          <div class="ingredient-image-wrapper">{{ 'image' | placeholder_svg_tag: 'ingredient-image' }}</div>
+          <h3>Almond Oil</h3>
+          <p>Cold-pressed from nutrient-rich almonds.<br>Helps soften, smooth, and deeply condition the skin.</p>
+          <a href="#" class="ingredient-link">Learn more →</a>
+        </div>
+        <div class="ingredient-card">
+          <div class="ingredient-image-wrapper">{{ 'image' | placeholder_svg_tag: 'ingredient-image' }}</div>
+          <h3>Sunflower Seed Oil</h3>
+          <p>Lightweight and vitamin-rich.<br>Supports hydration without clogging pores.</p>
+          <a href="#" class="ingredient-link">Learn more →</a>
+        </div>
+        <div class="ingredient-card">
+          <div class="ingredient-image-wrapper">{{ 'image' | placeholder_svg_tag: 'ingredient-image' }}</div>
+          <h3>Argan Oil</h3>
+          <p>Rich in essential fatty acids.<br>Helps restore moisture and improve skin texture.</p>
+          <a href="#" class="ingredient-link">Learn more →</a>
+        </div>
+        <div class="ingredient-card">
+          <div class="ingredient-image-wrapper">{{ 'image' | placeholder_svg_tag: 'ingredient-image' }}</div>
+          <h3>Avocado Oil</h3>
+          <p>Deeply nourishing and restorative.<br>Supports dry and sensitive skin.</p>
+          <a href="#" class="ingredient-link">Learn more →</a>
+        </div>
+      {%- endif -%}
+
     </div>
-
-    {%- if section.settings.sourcing_note != blank -%}
-      <p class="product-ingredients__sourcing text-center">{{ section.settings.sourcing_note }}</p>
-    {%- endif -%}
-
   </div>
-</section>
-
-<style>
-.ingredient-cards {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-5);
-  margin-bottom: var(--space-8);
-}
-
-.ingredient-card {
-  position: relative;
-  background: var(--color-white);
-  border: 1px solid var(--color-beige);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
-  text-align: center;
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
-}
-
-.ingredient-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-}
-
-.ingredient-card__icon {
-  width: 72px;
-  height: 72px;
-  background: var(--color-beige);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto var(--space-4);
-}
-
-.ingredient-card__emoji {
-  font-size: 2rem;
-}
-
-.ingredient-card__name {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 400;
-  color: var(--color-text-dark);
-  margin-bottom: var(--space-2);
-}
-
-.ingredient-card__benefit {
-  font-size: var(--text-sm);
-  color: var(--color-text-mid);
-  line-height: 1.6;
-}
-
-.ingredient-card__badge {
-  position: absolute;
-  top: var(--space-3);
-  right: var(--space-3);
-  font-size: 10px;
-  padding: 2px 8px;
-}
-
-.product-ingredients__sourcing {
-  font-size: var(--text-sm);
-  color: var(--color-text-light);
-  font-style: italic;
-}
-
-@media (max-width: 1023px) {
-  .ingredient-cards { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 479px) {
-  .ingredient-cards { grid-template-columns: 1fr; }
-}
-</style>
+</div>
 
 {% schema %}
 {
   "name": "Product ingredients",
+  "tag": "section",
+  "class": "section",
   "settings": [
     {
       "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "Our Actives"
+      "id": "title",
+      "label": "Section Title",
+      "default": "Key Ingredients"
     },
     {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "What's Inside Matters"
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 80
     },
     {
-      "type": "text",
-      "id": "subtext",
-      "label": "Subtext"
-    },
-    {
-      "type": "text",
-      "id": "sourcing_note",
-      "label": "Sourcing note",
-      "default": "All ingredients are ethically sourced and cruelty-free tested."
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 80
     }
   ],
   "blocks": [
@@ -162,44 +273,66 @@
       "settings": [
         {
           "type": "image_picker",
-          "id": "icon",
-          "label": "Icon image"
+          "id": "image",
+          "label": "Ingredient Image"
         },
         {
           "type": "text",
-          "id": "emoji",
-          "label": "Emoji fallback (if no icon)",
-          "default": "🌿"
+          "id": "title",
+          "label": "Ingredient Name"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Short Description"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Learn More Link"
         },
         {
           "type": "text",
-          "id": "name",
-          "label": "Ingredient name",
-          "default": "Donkey Milk"
-        },
-        {
-          "type": "text",
-          "id": "benefit",
-          "label": "One-line benefit",
-          "default": "Deep hydration & skin renewal"
-        },
-        {
-          "type": "text",
-          "id": "badge",
-          "label": "Badge label (optional)",
-          "placeholder": "Key Active"
+          "id": "link_label",
+          "label": "Link Label",
+          "default": "Learn more →"
         }
       ]
     }
   ],
+  "max_blocks": 6,
   "presets": [
     {
       "name": "Product ingredients",
       "blocks": [
-        { "type": "ingredient", "settings": { "emoji": "🍶", "name": "Donkey Milk", "benefit": "Deep hydration, skin renewal & brightening", "badge": "Key Active" } },
-        { "type": "ingredient", "settings": { "emoji": "🍷", "name": "Red Wine Extract", "benefit": "Antioxidant powerhouse, fights free radicals", "badge": "Key Active" } },
-        { "type": "ingredient", "settings": { "emoji": "🪴", "name": "Aloe Vera", "benefit": "Soothes, hydrates & reduces inflammation" } },
-        { "type": "ingredient", "settings": { "emoji": "🌿", "name": "Turmeric", "benefit": "Brightens skin tone & reduces dark spots" } }
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Almond Oil",
+            "description": "Cold-pressed from nutrient-rich almonds.\nHelps soften, smooth, and deeply condition the skin."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Sunflower Seed Oil",
+            "description": "Lightweight and vitamin-rich.\nSupports hydration without clogging pores."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Argan Oil",
+            "description": "Rich in essential fatty acids.\nHelps restore moisture and improve skin texture."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Avocado Oil",
+            "description": "Deeply nourishing and restorative.\nSupports dry and sensitive skin."
+          }
+        }
       ]
     }
   ]

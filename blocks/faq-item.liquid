@@ -53,3 +53,13 @@
   line-height: 1.8;
 }
 </style>
+
+{% schema %}
+{
+  "name": "FAQ Item",
+  "settings": [
+    { "type": "text", "id": "question", "label": "Question", "default": "What makes your products different?" },
+    { "type": "richtext", "id": "answer", "label": "Answer" }
+  ]
+}
+{% endschema %}

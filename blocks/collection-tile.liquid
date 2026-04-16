@@ -108,3 +108,15 @@
 
 .collection-tile:hover .collection-tile__cta { opacity: 1; }
 </style>
+
+{% schema %}
+{
+  "name": "Collection Tile",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "text", "id": "label", "label": "Override label" },
+    { "type": "image_picker", "id": "image", "label": "Override image" },
+    { "type": "url", "id": "custom_url", "label": "Custom URL (if no collection)" }
+  ]
+}
+{% endschema %}

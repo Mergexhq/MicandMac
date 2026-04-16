@@ -1,0 +1,161 @@
+/* =========================================================
+   theme.css  –  Mic & Mac Clean Beauty
+   Layout utilities · Component styles · Accessibility
+   ========================================================= */
+
+/* ─── Skip-to-content ─────────────────────────────────── */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  background: var(--color-primary, #2D4A3E);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 var(--radius, 12px) var(--radius, 12px);
+  font-size: 0.875rem;
+  font-weight: 600;
+  z-index: 10000;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* ─── Announcement Bar  ───────────────────────────────── */
+.announcement-bar {
+  background: var(--color-primary, #2D4A3E);
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+.announcement-bar p {
+  margin: 0;
+}
+
+/* ─── Container ───────────────────────────────────────── */
+.container {
+  width: min(100%, var(--page-width, 1280px));
+  margin-inline: auto;
+  padding-inline: var(--space-6, 1.5rem);
+}
+
+/* ─── Section spacing ─────────────────────────────────── */
+.section {
+  padding-block: var(--space-16, 4rem);
+}
+@media (max-width: 767px) {
+  .section { padding-block: var(--space-10, 2.5rem); }
+}
+
+/* ─── Eyebrow label ───────────────────────────────────── */
+.eyebrow {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-accent, #C8A96E);
+  margin-bottom: 0.75rem;
+}
+
+/* ─── Button variants ─────────────────────────────────── */
+.btn--lg {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
+.btn--ghost {
+  background: transparent;
+  border: 2px solid currentColor;
+  color: var(--color-primary, #2D4A3E);
+}
+.btn--ghost:hover {
+  background: var(--color-primary, #2D4A3E);
+  color: #fff;
+}
+
+/* ─── Generic card ────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: var(--radius, 12px);
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(44, 74, 62, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(44, 74, 62, 0.12);
+}
+
+/* ─── Badge ───────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-pill, 999px);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.badge--gold {
+  background: var(--color-accent, #C8A96E);
+  color: var(--color-primary, #2D4A3E);
+}
+.badge--green {
+  background: var(--color-primary, #2D4A3E);
+  color: #fff;
+}
+.badge--soft {
+  background: var(--color-highlight, #A8C5BA);
+  color: var(--color-primary, #2D4A3E);
+}
+
+/* ─── Section heading block ────────────────────────────── */
+.section-header {
+  text-align: center;
+  max-width: 600px;
+  margin-inline: auto;
+  margin-bottom: var(--space-12, 3rem);
+}
+.section-header__heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  margin-bottom: 0.75rem;
+}
+.section-header__subtext {
+  opacity: 0.75;
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+/* ─── Visually hidden (a11y) ──────────────────────────── */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── Price ───────────────────────────────────────────── */
+.price {
+  font-weight: 600;
+  color: var(--color-primary, #2D4A3E);
+  font-size: 1.1rem;
+}
+.price--compare {
+  color: #999;
+  text-decoration: line-through;
+  font-weight: 400;
+  font-size: 0.9rem;
+  margin-left: 0.4rem;
+}
+.price--sale {
+  color: #c0392b;
+}

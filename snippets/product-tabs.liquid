@@ -3,7 +3,51 @@
   Usage: {% render 'product-tabs', product: product %}
   Tab nav: Description · Ingredients · How to use · Full list
   Mobile falls back to accordion
+
+  NOTE: The "Our Actives / Powered by" content lives inside the Shopify
+  product description HTML in Admin. We strip it at render-time using
+  split/join so it never appears on the storefront.
 {% endcomment %}
+
+{%- comment -%}
+  Clean the product description:
+  Remove the "Our Actives" block that was hardcoded into the
+  Shopify Admin product description field.  We split on known
+  marker text, take only the portion BEFORE it, then also
+  handle the case where it's the entire description.
+{%- endcomment -%}
+
+{%- liquid
+  assign raw_desc = product.description
+  assign clean_desc = raw_desc
+
+  comment
+    Strip "Our Actives" section and everything after it.
+    The admin description typically contains:
+      [useful description] ... Our Actives ... Powered by ... [ingredient list]
+    We split on "Our Actives" and keep only the first part.
+  endcomment
+
+  if raw_desc contains 'Our Actives'
+    assign parts = raw_desc | split: 'Our Actives'
+    assign clean_desc = parts | first
+  endif
+
+  comment
+    Also handle cases where "Powered by" appears without "Our Actives"
+  endcomment
+
+  if clean_desc contains 'Powered by'
+    assign parts2 = clean_desc | split: 'Powered by'
+    assign clean_desc = parts2 | first
+  endif
+
+  comment
+    Strip trailing whitespace/empty tags
+  endcomment
+
+  assign clean_desc = clean_desc | strip
+-%}
 
 <div class="product-tabs" id="ProductTabs">
   <div class="product-tabs__nav" role="tablist">
@@ -29,7 +73,11 @@
 
     <div class="product-tabs__panel is-active" id="ProductTab-1" role="tabpanel" aria-labelledby="ProductTabBtn-1">
       <div class="rte">
-        {{ product.description }}
+        {%- if clean_desc != blank -%}
+          {{ clean_desc }}
+        {%- else -%}
+          {{ product.description }}
+        {%- endif -%}
       </div>
     </div>
 
@@ -38,7 +86,7 @@
         {%- if product.metafields.custom.ingredients_description != blank -%}
           {{ product.metafields.custom.ingredients_description }}
         {%- else -%}
-          <p>Donkey Milk · Red Wine Extract · Aloe Vera · Turmeric. All natural, no sulphates, no parabens.</p>
+          <p>Ingredient details coming soon.</p>
         {%- endif -%}
       </div>
     </div>

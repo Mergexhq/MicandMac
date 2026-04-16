@@ -388,11 +388,14 @@
 }
 .mm-card__title {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 22px;
+  font-size: 19px;
   font-weight: 500;
   color: var(--mm-dark-espresso);
   margin-bottom: 8px;
   line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .mm-card__price {
   font-family: var(--font-body);
