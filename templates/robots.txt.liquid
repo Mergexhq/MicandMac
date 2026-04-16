@@ -1,0 +1,26 @@
+# SEO Optimized Robots.txt for Shopify
+{% for group in robots.default_groups %}
+  {{- group.user_agent -}}
+
+  {% for rule in group.rules %}
+    {{- rule -}}
+  {% endfor %}
+
+  {%- if group.user_agent.value == '*' -%}
+    {{ 'Disallow: /admin' }}
+    {{ 'Disallow: /cart' }}
+    {{ 'Disallow: /orders' }}
+    {{ 'Disallow: /checkout' }}
+    {{ 'Disallow: /account' }}
+    {{ 'Disallow: /search' }}
+    {{ 'Disallow: /collections/*sort_by*' }}
+    {{ 'Disallow: /collections/*+*' }}
+    {{ 'Disallow: /*?*variant=*' }}
+  {%- endif -%}
+
+  {%- if group.sitemap != blank -%}
+    {{ group.sitemap }}
+  {%- else -%}
+    Sitemap: {{ shop.url }}/sitemap.xml
+  {%- endif -%}
+{% endfor %}

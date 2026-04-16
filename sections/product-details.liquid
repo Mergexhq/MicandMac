@@ -69,142 +69,77 @@
 </div>
 
 <!-- ============================================================
-     SECTION 5: SOCIAL PROOF
+     SECTION 5: COMPLETE YOUR ROUTINE (Curated Pairs)
      ============================================================ -->
-<div class="container">
-  {% render 'product-reviews', product: product %}
-</div>
+<div class="pdp-curated-pairs" style="padding: var(--space-12) 0;">
+  <div class="container container--narrow" style="max-width: 600px; margin: 0 auto;">
+    <div class="pdp-curated-pairs__header" style="margin-bottom: var(--space-8);">
+      <h2 class="pdp-curated-pairs__title" style="font-family: var(--font-heading-family, serif); font-size: 2rem; margin-bottom: 8px;">Complete Your Routine</h2>
+      <p class="pdp-curated-pairs__subtitle" style="font-size: 1rem; color: #555;">Thoughtfully selected products that work well with this formula.</p>
+    </div>
 
-<!-- ============================================================
-     SECTION 6: BETTER TOGETHER — Combos
-     ============================================================ -->
-{%- assign combo_collection = collections['combo-offers'] -%}
-{%- if combo_collection.products.size > 0 -%}
-  <div class="pdp-combos">
-    <div class="container">
-      <p class="pdp-combos__eyebrow">Save more</p>
-      <h2 class="pdp-combos__title">Better Together</h2>
-      <div class="pdp-combos__grid">
-        {%- for combo in combo_collection.products limit: 2 -%}
-          <div class="pdp-combo-card">
-            <div class="pdp-combo-card__image">
-              {%- if combo.featured_image -%}
-                <img
-                  src="{{ combo.featured_image | image_url: width: 260 }}"
-                  alt="{{ combo.title | escape }}"
-                  width="120"
-                  height="120"
-                  loading="lazy"
-                >
-              {%- endif -%}
+    <div class="pdp-curated-pairs__list">
+      {%- liquid
+        assign current_title = product.title | downcase
+        assign paired_handles = 'donkey-milk-soap,beetroot-lip-balm'
+
+        if current_title contains 'charcoal'
+          assign paired_handles = 'donkey-milk-soap,beetroot-lip-balm'
+        elsif current_title contains 'lip balm' or current_title contains 'lip-balm'
+          assign paired_handles = 'charcoal-soap,red-wine-lip-balm'
+        endif
+        
+        assign paired_array = paired_handles | split: ','
+      -%}
+
+      {%- for handle in paired_array -%}
+        {%- assign paired_product = all_products[handle] -%}
+        {%- if paired_product != blank and paired_product.id != product.id -%}
+          <div class="pdp-pair-item" style="display: flex; align-items: center; gap: 1.25rem; border-bottom: 1px solid #eaeaea; padding: 1.5rem 0;">
+            <div class="pdp-pair-item__image" style="width: 88px; height: 88px; flex-shrink: 0; background: #fdfdfd; border-radius: 8px; overflow: hidden; border: 1px solid #f3f3f3;">
+              <a href="{{ paired_product.url }}">
+                <img src="{{ paired_product.featured_image | image_url: width: 176 }}" alt="{{ paired_product.title | escape }}" width="88" height="88" loading="lazy" style="width:100%; height:100%; object-fit:cover; display:block;">
+              </a>
             </div>
-            <div class="pdp-combo-card__content">
-              <p class="pdp-combo-card__tag">Bundle</p>
-              <p class="pdp-combo-card__title">{{ combo.title | split: '|' | first }}</p>
-              <p class="pdp-combo-card__price">{{ combo.price | money }}</p>
-              <form action="{{ routes.cart_add_url }}" method="post">
-                <input type="hidden" name="id" value="{{ combo.selected_or_first_available_variant.id }}">
-                <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="pdp-combo-card__cta">
-                  Add Set
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </button>
-              </form>
+            <div class="pdp-pair-item__info" style="flex-grow: 1;">
+              <a href="{{ paired_product.url }}" style="text-decoration: none; color: inherit;">
+                <h4 style="font-family: var(--font-heading-family, serif); font-size: 1.125rem; margin-bottom: 4px;">{{ paired_product.title | split: '|' | first }}</h4>
+              </a>
+              <p style="font-size: 0.875rem; color: #666; margin-bottom: 12px; line-height: 1.3;">
+                {%- if paired_product.metafields.custom.benefits_line != blank -%}
+                  {{ paired_product.metafields.custom.benefits_line }}
+                {%- else -%}
+                  Adds glow + complements deep cleansing
+                {%- endif -%}
+              </p>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-weight: 500; font-size: 0.9375rem;">{{ paired_product.price | money }}</span>
+                <form action="{{ routes.cart_add_url }}" method="post" style="margin:0;">
+                  <input type="hidden" name="id" value="{{ paired_product.selected_or_first_available_variant.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <button type="submit" style="background: none; border: none; text-decoration: underline; font-size: 0.8125rem; font-weight: 600; cursor: pointer; padding: 0; text-transform: uppercase; letter-spacing: 0.05em;">Add to bag</button>
+                </form>
+              </div>
             </div>
           </div>
-        {%- endfor -%}
-      </div>
-    </div>
-  </div>
-{%- endif -%}
-
-<!-- ============================================================
-     SECTION 7: FAQ
-     ============================================================ -->
-<div class="pdp-faq" id="PdpFaq">
-  <div class="container">
-    <div class="pdp-faq__layout">
-      <div>
-        <p class="pdp-faq__eyebrow">Got questions?</p>
-        <h2 class="pdp-faq__title">Frequently asked</h2>
-      </div>
-      <div class="pdp-faq__items" id="PdpFaqItems">
-        <div class="pdp-faq__item">
-          <button class="pdp-faq__question" aria-expanded="false">
-            Is this suitable for sensitive skin?
-            <svg class="pdp-faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-          </button>
-          <div class="pdp-faq__answer">Yes — all our bars are formulated without sulphates, parabens, or synthetic fragrance, making them gentle enough for daily use on sensitive skin.</div>
-        </div>
-        <div class="pdp-faq__item">
-          <button class="pdp-faq__question" aria-expanded="false">
-            Can I use this every day?
-            <svg class="pdp-faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-          </button>
-          <div class="pdp-faq__answer">Absolutely. The gentle formula is designed for daily use without over-drying or disrupting your skin's natural moisture barrier.</div>
-        </div>
-        <div class="pdp-faq__item">
-          <button class="pdp-faq__question" aria-expanded="false">
-            How long does one bar last?
-            <svg class="pdp-faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-          </button>
-          <div class="pdp-faq__answer">With regular daily use, each bar lasts 4–6 weeks. Storing it on a dry soap dish between uses extends its life significantly.</div>
-        </div>
-        <div class="pdp-faq__item">
-          <button class="pdp-faq__question" aria-expanded="false">
-            Is free shipping available?
-            <svg class="pdp-faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-          </button>
-          <div class="pdp-faq__answer">Yes — free delivery on all orders above ₹999. Orders are dispatched within 48 hours from Coimbatore.</div>
-        </div>
-      </div>
+        {%- endif -%}
+      {%- endfor -%}
     </div>
   </div>
 </div>
 
-<script>
-(function () {
-  var faqItems = document.querySelectorAll('#PdpFaqItems .pdp-faq__item');
-  faqItems.forEach(function (item) {
-    var btn = item.querySelector('.pdp-faq__question');
-    btn.addEventListener('click', function () {
-      var isOpen = item.classList.contains('is-open');
-      faqItems.forEach(function (i) { i.classList.remove('is-open'); i.querySelector('.pdp-faq__question').setAttribute('aria-expanded', 'false'); });
-      if (!isOpen) {
-        item.classList.add('is-open');
-        btn.setAttribute('aria-expanded', 'true');
-      }
-    });
-  });
-})();
-</script>
-
 <!-- ============================================================
-     SECTION 8: RELATED PRODUCTS
+     SECTION 6: SOCIAL PROOF (Reviews)
      ============================================================ -->
-{%- if section.settings.show_related -%}
-  <div class="container" style="padding-top:var(--space-16);padding-bottom:var(--space-16);">
-    <div
-      data-related-products
-      data-product-id="{{ product.id }}"
-      data-limit="4"
-      id="RelatedProductsContainer"
-    ></div>
-  </div>
-{%- endif -%}
+<div class="container" style="padding-bottom: var(--space-16);">
+  {% render 'product-reviews', product: product %}
+</div>
 
 {% schema %}
 {
   "name": "Product Details",
   "tag": "section",
-  "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_related",
-      "label": "Show related products below",
-      "default": true
-    }
-  ],
+  "settings": [],
   "presets": [
     {
       "name": "Product Details"

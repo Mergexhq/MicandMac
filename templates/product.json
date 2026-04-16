@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -11,22 +20,117 @@
     },
     "ingredients": {
       "type": "ingredients",
-      "settings": {
-        "title": "Key Ingredients"
+      "blocks": {
+        "ingredient_C4UbKw": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/hf_20260416_083408_d4dc46b9-e3e8-4220-802e-a6772d4d14e1.png",
+            "title": "Charcoal",
+            "description": "activated charcoal powder, fine matte black particles, soft scattered texture, organic irregular shape",
+            "link": "",
+            "link_label": "read more →"
+          }
+        },
+        "ingredient_peTwiq": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/hf_20260416_083801_77b1a49d-991b-4b3d-8212-9072167d1d49.png",
+            "title": "Beetroot",
+            "description": "activated charcoal powder, fine matte black particles, soft scattered texture, organic irregular shape",
+            "link": "",
+            "link_label": "read more →"
+          }
+        },
+        "ingredient_nTn6Gi": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/hf_20260416_083652_94e6c6eb-a187-4ac2-8bca-fecac6f4597f.png",
+            "title": "Redwine",
+            "description": "activated charcoal powder, fine matte black particles, soft scattered texture, organic irregular shape",
+            "link": "",
+            "link_label": "read more →"
+          }
+        },
+        "ingredient_wdYb4r": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/hf_20260416_083623_9569772b-7365-4f7b-8bc2-415c1495181d.png",
+            "title": "Coconut oil",
+            "description": "activated charcoal powder, fine matte black particles, soft scattered texture, organic irregular shape",
+            "link": "",
+            "link_label": "read more →"
+          }
+        }
       },
-      "blocks": {},
-      "block_order": []
+      "block_order": [
+        "ingredient_C4UbKw",
+        "ingredient_peTwiq",
+        "ingredient_nTn6Gi",
+        "ingredient_wdYb4r"
+      ],
+      "settings": {
+        "title": "Key Ingredients",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
     },
     "details": {
       "type": "product-details",
       "settings": {
         "show_related": true
       }
+    },
+    "faq": {
+      "type": "faq-accordion",
+      "blocks": {
+        "faq_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is this suitable for sensitive skin?",
+            "answer": "<p>Yes — all our bars are formulated without sulphates, parabens, or synthetic fragrance, making them gentle enough for daily use on sensitive skin.</p>"
+          }
+        },
+        "faq_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I use this every day?",
+            "answer": "<p>Absolutely. The gentle formula is designed for daily use without over-drying or disrupting your skin's natural moisture barrier.</p>"
+          }
+        },
+        "faq_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does one bar last?",
+            "answer": "<p>With regular daily use, each bar lasts 4–6 weeks. Storing it on a dry soap dish between uses extends its life significantly.</p>"
+          }
+        },
+        "faq_4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is free shipping available?",
+            "answer": "<p>Yes — free delivery on all orders above ₹999. Orders are dispatched within 48 hours from Coimbatore.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_1",
+        "faq_2",
+        "faq_3",
+        "faq_4"
+      ],
+      "settings": {
+        "eyebrow": "Got questions?",
+        "heading": "Frequently asked",
+        "cta_prefix": "",
+        "cta_label": "",
+        "cta_url": ""
+      }
     }
   },
   "order": [
     "main",
     "ingredients",
-    "details"
+    "details",
+    "faq"
   ]
 }

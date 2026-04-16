@@ -17,6 +17,15 @@
     "read_more": "Read more",
     "back_to_blog": "Back to Journal"
   },
+  "checkout": {
+    "contact": {
+      "shipping_address_title": "Delivery details",
+      "contact_information_title": "Contact \n<span style=\"display:block;font-size:0.8rem;font-weight:400;color:#666;margin-top:6px\">Secure checkout • Fast dispatch • No spam</span>"
+    },
+    "payment": {
+      "title": "Payment \n<span style=\"display:block;font-size:0.8rem;font-weight:400;color:#666;margin-top:6px\">Secure payment via Razorpay / Shopify Payments</span>"
+    }
+  },
   "cart": {
     "checkout": "Checkout",
     "title": "Your Cart",

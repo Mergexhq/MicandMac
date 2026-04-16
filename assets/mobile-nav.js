@@ -185,10 +185,18 @@
                       document.getElementById('MtbCartCount');
 
   if (masterBadge && 'MutationObserver' in window) {
-    new MutationObserver(function () {
-      const n = parseInt(masterBadge.textContent || '0', 10);
+    const observer = new MutationObserver(function () {
+      // Disconnect temporarily to avoid infinite DOM modification loops
+      observer.disconnect();
+      
+      const textVal = masterBadge.textContent || '0';
+      const n = parseInt(textVal.trim() === '' ? '0' : textVal, 10);
       syncCartBadges(n);
-    }).observe(masterBadge, { childList: true, characterData: true, subtree: true });
+      
+      // Reattach observer after our changes are complete
+      observer.observe(masterBadge, { childList: true, characterData: true, subtree: true });
+    });
+    observer.observe(masterBadge, { childList: true, characterData: true, subtree: true });
   }
 
   /* ===================================================

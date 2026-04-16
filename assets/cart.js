@@ -7,13 +7,17 @@
           <a href="${t.url}" class="cart-item__title">${t.product_title}</a>
           ${i}
           <div class="cart-item__bottom">
-            <div class="qty-input qty-input--sm">
-              <button class="qty-input__btn" data-action="decrease" data-key="${t.key}" data-qty="${t.quantity}" aria-label="Decrease quantity">\u2212</button>
-              <span class="qty-input__value">${t.quantity}</span>
-              <button class="qty-input__btn" data-action="increase" data-key="${t.key}" data-qty="${t.quantity}" aria-label="Increase quantity">+</button>
+            <div class="cart-item__qty-actions">
+              <div class="qty-input qty-input--sm">
+                <button class="qty-input__btn" data-action="decrease" data-key="${t.key}" data-qty="${t.quantity}" aria-label="Decrease quantity">\u2212</button>
+                <span class="qty-input__value">${t.quantity}</span>
+                <button class="qty-input__btn" data-action="increase" data-key="${t.key}" data-qty="${t.quantity}" aria-label="Increase quantity">+</button>
+              </div>
+              <button class="cart-item__remove" data-key="${t.key}" aria-label="Remove ${t.product_title}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              </button>
             </div>
             <p class="cart-item__price">${d(t.final_line_price)}</p>
           </div>
         </div>
-        <button class="cart-item__remove" data-key="${t.key}" aria-label="Remove ${t.product_title}">\xD7</button>
-      </div>`}bindItemEvents(){this.body?.querySelectorAll("[data-action]").forEach(t=>{t.addEventListener("click",()=>{let e=t.dataset.key,i=parseInt(t.dataset.qty??"1",10),s=t.dataset.action==="increase"?i+1:Math.max(0,i-1);o.change({id:e,quantity:s}).then(()=>this.refresh())})}),this.body?.querySelectorAll(".cart-item__remove").forEach(t=>{t.addEventListener("click",()=>{o.change({id:t.dataset.key,quantity:0}).then(()=>this.refresh())})})}bindEvents(){r("#CartToggle")?.addEventListener("click",()=>this.open()),r("#CartDrawerClose")?.addEventListener("click",()=>this.close()),this.overlay?.addEventListener("click",()=>this.close()),document.addEventListener("keydown",t=>{t.key==="Escape"&&this.close()}),document.addEventListener("click",async t=>{let e=t.target.closest("[data-atc]");if(!e)return;let i=Number(e.dataset.variantId);if(!i)return;e.disabled=!0;let s=e.textContent??"Add to Cart";e.textContent="Adding\u2026",await this.addItem(i),e.textContent="Added \u2713",setTimeout(()=>{e.textContent=s,e.disabled=!1},2e3)})}showToast(t){console.warn("[Cart]",t)}},u=new c;window.closeCartDrawer=()=>u.close();})();
+      </div>`}bindItemEvents(){this.body?.querySelectorAll("[data-action]").forEach(t=>{t.addEventListener("click",()=>{let e=t.dataset.key,i=parseInt(t.dataset.qty??"1",10),s=t.dataset.action==="increase"?i+1:Math.max(0,i-1),p=t.closest(".qty-input");if(p){p.style.opacity="0.5",p.style.pointerEvents="none";let v=p.querySelector(".qty-input__value, .qty-input__field");if(v){v.value!==undefined?v.value=s:v.textContent=s}}o.change({id:e,quantity:s}).then(()=>this.refresh())})}),this.body?.querySelectorAll(".cart-item__remove").forEach(t=>{t.addEventListener("click",()=>{let p=t.closest(".cart-item");if(p){p.style.opacity="0.5",p.style.pointerEvents="none"}o.change({id:t.dataset.key,quantity:0}).then(()=>this.refresh())})})}bindEvents(){r("#CartToggle")?.addEventListener("click",()=>this.open()),r("#CartDrawerClose")?.addEventListener("click",()=>this.close()),this.overlay?.addEventListener("click",()=>this.close()),document.addEventListener("keydown",t=>{t.key==="Escape"&&this.close()}),document.addEventListener("click",async t=>{let e=t.target.closest("[data-atc]");if(!e)return;let i=Number(e.dataset.variantId);if(!i)return;e.disabled=!0;let s=e.textContent??"Add to Cart";e.textContent="Adding\u2026",await this.addItem(i),e.textContent="Added \u2713",setTimeout(()=>{e.textContent=s,e.disabled=!1},2e3)})}showToast(t){console.warn("[Cart]",t)}},u=new c;window.closeCartDrawer=()=>u.close();})();

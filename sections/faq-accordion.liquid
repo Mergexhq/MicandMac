@@ -5,16 +5,30 @@
 {% endcomment %}
 
 <section class="faq-section section-padding">
-  <div class="container container--narrow">
+  <div class="container">
+    <div class="faq-layout">
+      <!-- Left Info -->
+      <div class="faq-layout__aside">
+        <div class="section-heading" style="text-align: left; margin-bottom: 0;">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+          <h2>{{ section.settings.heading | default: 'Frequently Asked Questions' }}</h2>
+          
+          {%- if section.settings.cta_label != blank -%}
+            <div class="faq-section__footer" style="align-items: flex-start; margin-top: var(--space-8);">
+              <p class="faq-section__cta-text">{{ section.settings.cta_prefix | default: 'Still have questions?' }}</p>
+              <a href="{{ section.settings.cta_url | default: routes.root_url }}" class="btn btn--secondary">
+                {{ section.settings.cta_label }}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
 
-    <div class="section-heading">
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
-      {%- endif -%}
-      <h2>{{ section.settings.heading | default: 'Frequently Asked Questions' }}</h2>
-    </div>
-
-    <div class="faq-accordion" id="FaqAccordion-{{ section.id }}">
+      <!-- Right Accordion -->
+      <div class="faq-layout__content">
+        <div class="faq-accordion" id="FaqAccordion-{{ section.id }}" style="border-top: none; margin-bottom: 0;">
       {%- for block in section.blocks -%}
         {%- if block.type == 'faq_item' -%}
           <div class="faq-item" {{ block.shopify_attributes }}>
@@ -43,21 +57,26 @@
           </div>
         {%- endif -%}
       {%- endfor -%}
-    </div>
-
-    {%- if section.settings.cta_label != blank -%}
-      <div class="faq-section__footer text-center">
-        <p class="faq-section__cta-text">{{ section.settings.cta_prefix | default: 'Still have questions?' }}</p>
-        <a href="{{ section.settings.cta_url | default: routes.root_url }}" class="btn btn--secondary">
-          {{ section.settings.cta_label }}
-        </a>
       </div>
-    {%- endif -%}
-
+    </div>
   </div>
+</div>
 </section>
 
 <style>
+.faq-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+}
+@media (min-width: 900px) {
+  .faq-layout {
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--space-16);
+    align-items: start;
+  }
+}
+
 .faq-accordion {
   display: flex;
   flex-direction: column;

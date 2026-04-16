@@ -4,13 +4,21 @@
       "type": "main-cart",
       "settings": {}
     },
-    "upsell": {
-      "type": "cart-upsell",
-      "settings": {}
+    "recommendations": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "You May Also Like",
+        "description": "",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "show_view_all": false,
+        "padding_top": 32,
+        "padding_bottom": 64
+      }
     }
   },
   "order": [
     "main",
-    "upsell"
+    "recommendations"
   ]
 }

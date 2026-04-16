@@ -8,6 +8,7 @@
 <a
   href="https://wa.link/orm75u"
   class="wa-sticky"
+  id="WASticky"
   target="_blank"
   rel="noopener noreferrer"
   aria-label="Chat with us on WhatsApp"
@@ -29,18 +30,45 @@
   gap: 8px;
   background: var(--mm-champagne-gold);
   color: var(--mm-dark-espresso);
-  padding: 10px 18px 10px 14px;
+  padding: 7px 14px 7px 11px;
   border-radius: var(--radius-pill);
   text-decoration: none;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.04em;
   box-shadow: 0 4px 20px rgba(46, 31, 26, 0.25);
-  transition: transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  max-width: 200px;
+  overflow: hidden;
+  transition: max-width 0.7s cubic-bezier(0.25, 1, 0.5, 1),
+              padding 0.7s ease,
+              transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
               box-shadow 250ms ease,
               background 250ms ease;
   white-space: nowrap;
+}
+
+.wa-sticky.wa-collapsed {
+  max-width: 39px;
+  padding: 11px;
+}
+
+.wa-sticky.wa-collapsed .wa-sticky__label {
+  opacity: 0;
+}
+
+.wa-sticky.wa-collapsed:hover {
+  max-width: 200px;
+  padding: 7px 14px 7px 11px;
+}
+
+.wa-sticky.wa-collapsed:hover .wa-sticky__label {
+  opacity: 1;
+  transition-delay: 0.2s;
+}
+
+.wa-sticky__label {
+  transition: opacity 0.3s ease;
 }
 
 .wa-sticky:hover {
@@ -54,15 +82,15 @@
 }
 
 .wa-sticky__icon {
-  width: 20px;
-  height: 20px;
+  width: 17px;
+  height: 17px;
   flex-shrink: 0;
 }
 
 /* Mobile: icon only — no label */
 @media (max-width: 767px) {
   .wa-sticky {
-    padding: 13px;
+    padding: 12px;
     border-radius: 50%;
     bottom: 20px;
     right: 16px;
@@ -72,3 +100,12 @@
   }
 }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      var wa = document.getElementById('WASticky');
+      if (wa) wa.classList.add('wa-collapsed');
+    }, 3500); // Collapse after 3.5 seconds
+  });
+</script>

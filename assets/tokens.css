@@ -6,7 +6,7 @@
 
 :root {
   /* ---- Mic & Mac Brand Palette (from Layout Guide) ---- */
-  --mm-soft-blush:       #F3E8E4;  /* Page & header middle strip bg */
+  --mm-soft-blush:       #FCF5F3;  /* Page & header middle strip bg */
   --mm-dark-espresso:    #2E1F1A;  /* Body text, footer bg, announcement bar bg */
   --mm-deep-garnet:      #4B2A31;  /* Logo, headlines, nav strip bg, CTA buttons */
   --mm-terracotta-rose:  #D18E82;  /* Hover states, accents, sale tags */
