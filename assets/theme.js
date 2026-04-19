@@ -26,41 +26,154 @@
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         ${this._escape(e)}
       </a>
-    `).join("")}}_showRecent(t){this.recentWrap&&(this.recentWrap.style.display=t?"":"none")}_escape(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}_highlight(t,e){let r=e.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");return t.replace(new RegExp(`(${r})`,"gi"),"<mark>$1</mark>")}};var d={get(o,t){try{let e=localStorage.getItem(o);return e?JSON.parse(e):t}catch{return t}},set(o,t){try{localStorage.setItem(o,JSON.stringify(t))}catch{}},remove(o){try{localStorage.removeItem(o)}catch{}}};var C="mm_wishlist",x="WishlistGrid",k="WishlistEmpty",_=class{constructor(){this._initToggleButtons(),this._updateAllHearts(),this._renderWishlistPage(),h.updateWishlistCount(this._getHandles().length)}_getHandles(){return d.get(C,[])}_saveHandles(t){d.set(C,t)}_contains(t){return this._getHandles().includes(t)}_toggle(t){let e=this._getHandles(),r=e.indexOf(t);return r>=0?e.splice(r,1):e.unshift(t),this._saveHandles(e),h.updateWishlistCount(e.length),r<0}_initToggleButtons(){document.addEventListener("click",t=>{let e=t.target.closest("[data-wishlist-toggle]");if(!e)return;let r=e.dataset.productHandle;if(!r)return;let s=this._toggle(r);this._setButtonState(e,s)}),document.addEventListener("click",t=>{let e=t.target.closest("[data-wishlist-remove]");if(!e)return;let r=e.dataset.wishlistRemove;if(!r)return;let s=this._getHandles().filter(i=>i!==r);this._saveHandles(s),h.updateWishlistCount(s.length),document.querySelector(`.wishlist-card[data-product-handle="${r}"]`)?.remove(),this._checkEmpty()})}_setButtonState(t,e){t.classList.toggle("is-wishlisted",e),t.setAttribute("aria-pressed",String(e));let r=t.querySelector("span");r&&(r.textContent=e?"Saved \u2665":"Save to Wishlist")}_updateAllHearts(){document.querySelectorAll("[data-wishlist-toggle]").forEach(t=>{let e=t.dataset.productHandle;e&&this._setButtonState(t,this._contains(e))})}async _renderWishlistPage(){let t=document.getElementById(x);if(!t)return;let e=this._getHandles();if(e.length===0){this._checkEmpty();return}let r=await Promise.all(e.map(s=>this._fetchProductCard(s)));t.innerHTML=r.filter(Boolean).join(""),this._checkEmpty()}async _fetchProductCard(t){try{let s=(await(await fetch(`/products/${t}.json`)).json()).product,n=s.variants?.[0],i=s.images?.[0]?.src||"",a=i?i.replace("?","?width=600&"):"";return`
-        <div class="product-card wishlist-card" data-product-handle="${s.handle}">
-          <div class="product-card__media">
-            <a href="/products/${s.handle}" class="product-card__img-link">
-              ${a?`<img src="${a}" alt="${s.title}" width="600" height="600" loading="lazy" class="product-card__img product-card__img--primary">`:""}
-            </a>
-            <button class="product-card__badge-btn wishlist-card__remove" data-wishlist-remove="${s.handle}" aria-label="Remove from wishlist">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                <path d="M18 6L6 18M6 6l12 12"/>
-              </svg>
+    `).join("")}}_showRecent(t){this.recentWrap&&(this.recentWrap.style.display=t?"":"none")}_escape(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}_highlight(t,e){let r=e.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");return t.replace(new RegExp(`(${r})`,"gi"),"<mark>$1</mark>")}};var d={get(o,t){try{let e=localStorage.getItem(o);return e?JSON.parse(e):t}catch{return t}},set(o,t){try{localStorage.setItem(o,JSON.stringify(t))}catch{}},remove(o){try{localStorage.removeItem(o)}catch{}}};var C="mm_wishlist",x="WishlistGrid",k="WishlistEmpty",_ = class {
+  constructor() {
+    this.key = "mm_wishlist";
+    this.gridId = "WishlistGrid";
+    this.emptyId = "WishlistEmpty";
+    this._init();
+    this._updateAllHearts();
+    this._renderWishlistPage();
+    h.updateWishlistCount(this._getHandles().length);
+  }
+
+  _getHandles() {
+    return d.get(this.key, []);
+  }
+
+  _saveHandles(t) {
+    d.set(this.key, t);
+  }
+
+  _contains(t) {
+    return this._getHandles().includes(t);
+  }
+
+  _toggle(t) {
+    let e = this._getHandles(),
+      r = e.indexOf(t);
+    return r >= 0 ? e.splice(r, 1) : e.unshift(t), this._saveHandles(e), h.updateWishlistCount(e.length), r < 0;
+  }
+
+  _init() {
+    document.addEventListener("click", (t) => {
+      let e = t.target.closest("[data-wishlist-toggle]");
+      if (!e) return;
+      let r = e.dataset.productHandle;
+      if (!r) return;
+      let s = this._toggle(r);
+      this._updateAllHearts();
+      
+      // If we are on the wishlist page and removing an item
+      if (!s && document.getElementById(this.gridId)) {
+        document.querySelector(`.pc[data-product-handle="${r}"]`)?.remove();
+        this._checkEmpty();
+      }
+    });
+  }
+
+  _updateAllHearts() {
+    const handles = this._getHandles();
+    document.querySelectorAll("[data-wishlist-toggle]").forEach((t) => {
+      let e = t.dataset.productHandle;
+      if (e) {
+        const isWishlisted = handles.includes(e);
+        t.classList.toggle("is-wishlisted", isWishlisted);
+        t.setAttribute("aria-pressed", String(isWishlisted));
+      }
+    });
+  }
+
+  async _renderWishlistPage() {
+    let t = document.getElementById(this.gridId);
+    if (!t) return;
+    let e = this._getHandles();
+    if (e.length === 0) {
+      this._checkEmpty();
+      return;
+    }
+    let r = await Promise.all(e.map((s) => this._fetchProductCard(s)));
+    // Clear and append
+    const gridInner = document.createElement('div');
+    gridInner.className = 'wishlist-grid__inner';
+    gridInner.innerHTML = r.filter(Boolean).join("");
+    
+    // Replace only content, keep empty state hidden inside grid if needed or separate
+    const existingItems = t.querySelectorAll('.pc');
+    existingItems.forEach(el => el.remove());
+    t.prepend(gridInner);
+    
+    this._checkEmpty();
+  }
+
+  async _fetchProductCard(t) {
+    try {
+      let s = (await (await fetch(`/products/${t}.json`)).json()).product,
+        n = s.variants?.[0],
+        i = s.images?.[0]?.src || "",
+        a = i ? i.replace("?", "?width=600&") : "";
+        
+      // Matching snippets/product-card.liquid exactly
+      return `
+        <div class="pc" data-product-handle="${s.handle}">
+          <div class="pc__media">
+            <button type="button" class="pc__wishlist-btn is-wishlisted" data-wishlist-toggle data-product-handle="${s.handle}" aria-label="Remove from wishlist">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
             </button>
+            <a href="/products/${s.handle}">
+              ${a ? `<img src="${a}" alt="${s.title}" width="600" height="600" loading="lazy" class="pc__img">` : '<div class="pc__img-placeholder"></div>'}
+            </a>
           </div>
-          <div class="product-card__info">
-            <h3 class="product-card__title"><a href="/products/${s.handle}">${s.title}</a></h3>
-            ${n?`<p class="price__current">\u20B9${(n.price/100).toFixed(0)}</p>`:""}
-            ${n?.available?`<button class="btn btn--primary btn--sm btn--full" data-atc data-variant-id="${n.id}">Add to Cart</button>`:'<button class="btn btn--secondary btn--sm btn--full" disabled>Sold Out</button>'}
+          <div class="pc__info">
+            <a href="/products/${s.handle}" class="pc__name">${s.title}</a>
+            <div class="pc__pricing">
+              ${n ? `<span class="pc__price">\u20B9${(n.price / 100).toFixed(0)}</span>` : ""}
+            </div>
+            <form method="post" action="/cart/add" class="pc__form">
+              <input type="hidden" name="id" value="${n?.id}">
+              <button type="submit" class="pc__atc" data-atc data-variant-id="${n?.id}" ${n?.available ? "" : "disabled"}>
+                ${n?.available ? "Add to Bag" : "Sold Out"}
+              </button>
+            </form>
           </div>
         </div>
-      `}catch{return""}}_checkEmpty(){let t=document.getElementById(x),e=document.getElementById(k);if(!t||!e)return;let r=t.querySelector(".wishlist-card");e.style.display=r?"none":""}};var I="mm_wishlist",f=class{constructor(){window.customerLoggedIn&&this._mergePendingData()}async _mergePendingData(){let t=d.get(I,[]);if(t.length!==0)try{let e=window.wishlistSyncUrl;e&&await fetch(e,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({handles:t})}),d.remove(I)}catch(e){console.warn("[AuthMerge] Could not sync wishlist:",e)}}};var y=class{constructor(){this._initPasswordToggle(),this._initPasswordStrength(),this._scrollToErrors()}_initPasswordToggle(){document.querySelectorAll('input[type="password"]').forEach(t=>{let e=document.createElement("div");e.className="password-input-wrapper",t.parentNode?.insertBefore(e,t),e.appendChild(t);let r=document.createElement("button");r.type="button",r.className="password-toggle",r.setAttribute("aria-label","Show password"),r.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',e.appendChild(r),r.addEventListener("click",()=>{let s=t.type==="text";t.type=s?"password":"text",r.setAttribute("aria-label",s?"Show password":"Hide password"),r.style.opacity=s?"0.5":"1"})})}_initPasswordStrength(){let t=document.querySelector("#RegisterPassword");if(!t)return;let e=document.createElement("div");e.className="password-strength",e.innerHTML='<div class="password-strength__track"><div class="password-strength__fill" id="PasswordStrengthFill"></div></div><span class="password-strength__label" id="PasswordStrengthLabel"></span>',t.closest(".form-group")?.appendChild(e);let r=document.getElementById("PasswordStrengthFill"),s=document.getElementById("PasswordStrengthLabel");t.addEventListener("input",()=>{let n=this._scorePassword(t.value),i=[{pct:20,color:"#e74c3c",text:"Very weak"},{pct:40,color:"#e67e22",text:"Weak"},{pct:60,color:"#f1c40f",text:"Fair"},{pct:80,color:"#27ae60",text:"Strong"},{pct:100,color:"#16a085",text:"Very strong"}],a=i[n]||i[0];r.style.width=a.pct+"%",r.style.background=a.color,s.textContent=t.value?a.text:""})}_scorePassword(t){let e=0;return t.length>=8&&e++,t.length>=12&&e++,/[A-Z]/.test(t)&&e++,/[0-9]/.test(t)&&e++,/[^A-Za-z0-9]/.test(t)&&e++,Math.min(e-1,4)}_scrollToErrors(){let t=document.querySelector(".form-error");t&&setTimeout(()=>t.scrollIntoView({behavior:"smooth",block:"center"}),100)}};var S=class{constructor(){this._initAddressDelete()}_initAddressDelete(){document.querySelectorAll('[id^="DeleteAddressForm-"]').forEach(t=>{t.addEventListener("submit",e=>{confirm("Remove this address?")||e.preventDefault()})})}};var w=class{constructor(){this.filterToggle=document.querySelector("#FilterToggle"),this.filterDrawer=document.querySelector("#FilterDrawer"),this.sortSelect=document.querySelector("#SortBy"),this.filterDrawer&&this._init()}_init(){this.filterToggle?.addEventListener("click",()=>{let e=this.filterDrawer?.classList.contains("is-open");this.filterDrawer?.classList.toggle("is-open",!e),this.filterToggle?.setAttribute("aria-expanded",String(!e)),document.body.style.overflow=e?"":"hidden"}),this.sortSelect?.addEventListener("change",()=>{let e=new URL(window.location.href);e.searchParams.set("sort_by",this.sortSelect.value),e.searchParams.delete("page"),window.location.assign(e.toString())}),document.addEventListener("click",e=>{let r=e.target;this.filterDrawer?.classList.contains("is-open")&&!this.filterDrawer.contains(r)&&!this.filterToggle?.contains(r)&&(this.filterDrawer.classList.remove("is-open"),this.filterToggle?.setAttribute("aria-expanded","false"),document.body.style.overflow="")}),document.querySelector("#FilterPriceApply")?.addEventListener("click",()=>{let e=document.querySelector("#FilterMinPrice"),r=document.querySelector("#FilterMaxPrice"),s=new URL(window.location.href);e?.name&&s.searchParams.set(e.name,String(Number(e.value)*100)),r?.name&&s.searchParams.set(r.name,String(Number(r.value)*100)),window.location.assign(s.toString())})}};var E=class{constructor(){this.productData=null;this._currentIndex=0;document.querySelector("#ProductVariantId")&&(this._loadProductJSON(),this._initVariantPicker(),this._initGallery(),this._initStickyAtc(),this._initQtyStepper())}async _loadProductJSON(){try{let t=window.location.pathname.replace(/\/$/,"")+".json",r=await(await fetch(t)).json();this.productData=r.product}catch{}}_initVariantPicker(){let t=document.querySelector("#ProductVariants");t&&t.addEventListener("click",e=>{let r=e.target.closest(".variant-pill");if(!r)return;let s=Number(r.dataset.optionIndex),n=r.dataset.optionValue;t.querySelectorAll(`.variant-pill[data-option-index="${s}"]`).forEach(a=>{a.classList.toggle("is-selected",a===r),a.setAttribute("aria-pressed",String(a===r))});let i=document.querySelector(`#OptionValue-${s+1}`);i&&(i.textContent=n),this._resolveVariant(t)})}_resolveVariant(t){let e=[];if(t.querySelectorAll("[data-option-index]").forEach(a=>{let u=a.closest(".product-form__option")?.querySelector(".variant-pill.is-selected");u&&e.push(u.dataset.optionValue)}),!this.productData)return;let r=this.productData.variants.find(a=>a.options.every((u,M)=>u===e[M]));if(!r)return;let s=document.querySelector("#ProductVariantId");s&&(s.value=String(r.id));let n=document.querySelector("#ProductATC");if(n&&(n.dataset.variantId=String(r.id)),this._updatePrice(r),r.featured_image){let a=this.productData.images.findIndex(u=>u.id===r.featured_image?.id);a>=0&&this._goToSlide(a)}let i=document.querySelector(".product-form__atc");i&&(i.disabled=!r.available,i.textContent=r.available?"Add to Cart":"Sold Out")}_updatePrice(t){let e=document.querySelector("#PdpPrice");if(!e)return;let r=(t.price/100).toLocaleString("en-IN",{style:"currency",currency:"INR",minimumFractionDigits:0}),s=t.compare_at_price&&t.compare_at_price>t.price?(t.compare_at_price/100).toLocaleString("en-IN",{style:"currency",currency:"INR",minimumFractionDigits:0}):null,n=s?Math.round((t.compare_at_price-t.price)*100/t.compare_at_price):null;e.innerHTML=`
+      `;
+    } catch {
+      return "";
+    }
+  }
+
+  _checkEmpty() {
+    let t = document.getElementById(this.gridId),
+      e = document.getElementById(this.emptyId);
+    if (!t || !e) return;
+    let r = t.querySelector(".pc");
+    e.style.display = r ? "none" : "flex";
+  }
+};var I="mm_wishlist",f=class{constructor(){window.customerLoggedIn&&this._mergePendingData()}async _mergePendingData(){let t=d.get(I,[]);if(t.length!==0)try{let e=window.wishlistSyncUrl;e&&await fetch(e,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({handles:t})}),d.remove(I)}catch(e){console.warn("[AuthMerge] Could not sync wishlist:",e)}}};var y=class{constructor(){this._initPasswordToggle(),this._initPasswordStrength(),this._scrollToErrors()}_initPasswordToggle(){document.querySelectorAll('input[type="password"]').forEach(t=>{let e=document.createElement("div");e.className="password-input-wrapper",t.parentNode?.insertBefore(e,t),e.appendChild(t);let r=document.createElement("button");r.type="button",r.className="password-toggle",r.setAttribute("aria-label","Show password"),r.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',e.appendChild(r),r.addEventListener("click",()=>{let s=t.type==="text";t.type=s?"password":"text",r.setAttribute("aria-label",s?"Show password":"Hide password"),r.style.opacity=s?"0.5":"1"})})}_initPasswordStrength(){let t=document.querySelector("#RegisterPassword");if(!t)return;let e=document.createElement("div");e.className="password-strength",e.innerHTML='<div class="password-strength__track"><div class="password-strength__fill" id="PasswordStrengthFill"></div></div><span class="password-strength__label" id="PasswordStrengthLabel"></span>',t.closest(".form-group")?.appendChild(e);let r=document.getElementById("PasswordStrengthFill"),s=document.getElementById("PasswordStrengthLabel");t.addEventListener("input",()=>{let n=this._scorePassword(t.value),i=[{pct:20,color:"#e74c3c",text:"Very weak"},{pct:40,color:"#e67e22",text:"Weak"},{pct:60,color:"#f1c40f",text:"Fair"},{pct:80,color:"#27ae60",text:"Strong"},{pct:100,color:"#16a085",text:"Very strong"}],a=i[n]||i[0];r.style.width=a.pct+"%",r.style.background=a.color,s.textContent=t.value?a.text:""})}_scorePassword(t){let e=0;return t.length>=8&&e++,t.length>=12&&e++,/[A-Z]/.test(t)&&e++,/[0-9]/.test(t)&&e++,/[^A-Za-z0-9]/.test(t)&&e++,Math.min(e-1,4)}_scrollToErrors(){let t=document.querySelector(".form-error");t&&setTimeout(()=>t.scrollIntoView({behavior:"smooth",block:"center"}),100)}};var S=class{constructor(){this._initAddressDelete()}_initAddressDelete(){document.querySelectorAll('[id^="DeleteAddressForm-"]').forEach(t=>{t.addEventListener("submit",e=>{confirm("Remove this address?")||e.preventDefault()})})}};var w=class{constructor(){this.filterToggle=document.querySelector("#FilterToggle"),this.filterDrawer=document.querySelector("#FilterDrawer"),this.sortSelect=document.querySelector("#SortBy"),this.filterDrawer&&this._init()}_init(){this.filterToggle?.addEventListener("click",()=>{let e=this.filterDrawer?.classList.contains("is-open");this.filterDrawer?.classList.toggle("is-open",!e),this.filterToggle?.setAttribute("aria-expanded",String(!e)),document.body.style.overflow=e?"":"hidden"}),this.sortSelect?.addEventListener("change",()=>{let e=new URL(window.location.href);e.searchParams.set("sort_by",this.sortSelect.value),e.searchParams.delete("page"),window.location.assign(e.toString())}),document.addEventListener("click",e=>{let r=e.target;this.filterDrawer?.classList.contains("is-open")&&!this.filterDrawer.contains(r)&&!this.filterToggle?.contains(r)&&(this.filterDrawer.classList.remove("is-open"),this.filterToggle?.setAttribute("aria-expanded","false"),document.body.style.overflow="")}),document.querySelector("#FilterPriceApply")?.addEventListener("click",()=>{let e=document.querySelector("#FilterMinPrice"),r=document.querySelector("#FilterMaxPrice"),s=new URL(window.location.href);e?.name&&s.searchParams.set(e.name,String(Number(e.value)*100)),r?.name&&s.searchParams.set(r.name,String(Number(r.value)*100)),window.location.assign(s.toString())})}};var E=class{constructor(){this.productData=null;this._currentIndex=0;document.querySelector("#ProductVariantId")&&(this._loadProductJSON(),this._initVariantPicker(),this._initGallery(),this._initStickyAtc(),this._initQtyStepper())}async _loadProductJSON(){try{let t=window.location.pathname.replace(/\/$/,"")+".json",r=await(await fetch(t)).json();this.productData=r.product}catch{}}_initVariantPicker(){let t=document.querySelector("#ProductVariants");t&&t.addEventListener("click",e=>{let r=e.target.closest(".variant-pill");if(!r)return;let s=Number(r.dataset.optionIndex),n=r.dataset.optionValue;t.querySelectorAll(`.variant-pill[data-option-index="${s}"]`).forEach(a=>{a.classList.toggle("is-selected",a===r),a.setAttribute("aria-pressed",String(a===r))});let i=document.querySelector(`#OptionValue-${s+1}`);i&&(i.textContent=n),this._resolveVariant(t)})}_resolveVariant(t){let e=[];if(t.querySelectorAll("[data-option-index]").forEach(a=>{let u=a.closest(".product-form__option")?.querySelector(".variant-pill.is-selected");u&&e.push(u.dataset.optionValue)}),!this.productData)return;let r=this.productData.variants.find(a=>a.options.every((u,M)=>u===e[M]));if(!r)return;let s=document.querySelector("#ProductVariantId");s&&(s.value=String(r.id));let n=document.querySelector("#ProductATC");if(n&&(n.dataset.variantId=String(r.id)),this._updatePrice(r),r.featured_image){let a=this.productData.images.findIndex(u=>u.id===r.featured_image?.id);a>=0&&this._goToSlide(a)}let i=document.querySelector(".product-form__atc");i&&(i.disabled=!r.available,i.textContent=r.available?"Add to Cart":"Sold Out")}_updatePrice(t){let e=document.querySelector("#PdpPrice");if(!e)return;let r=(t.price/100).toLocaleString("en-IN",{style:"currency",currency:"INR",minimumFractionDigits:0}),s=t.compare_at_price&&t.compare_at_price>t.price?(t.compare_at_price/100).toLocaleString("en-IN",{style:"currency",currency:"INR",minimumFractionDigits:0}):null,n=s?Math.round((t.compare_at_price-t.price)*100/t.compare_at_price):null;e.innerHTML=`
       <div class="price ${s?"price--on-sale":""}">
         <span class="price__current">${r}</span>
         ${s?`<span class="price__compare">${s}</span>`:""}
         ${n?`<span class="price__badge badge badge--forest">${n}% Off</span>`:""}
       </div>
     `}_initGallery(){let t=document.querySelector("#GalleryPrev"),e=document.querySelector("#GalleryNext"),r=document.querySelector("#GalleryThumbs");t?.addEventListener("click",()=>this._goToSlide(this._currentIndex-1)),e?.addEventListener("click",()=>this._goToSlide(this._currentIndex+1)),r?.querySelectorAll(".product-gallery__thumb").forEach((n,i)=>{n.addEventListener("click",()=>this._goToSlide(i))});let s=document.querySelector("#GalleryMain");s&&this._initSwipe(s)}_goToSlide(t){let e=document.querySelectorAll(".product-gallery__slide"),r=document.querySelectorAll(".product-gallery__thumb"),s=e.length;if(s===0)return;t=(t%s+s)%s,e.forEach((i,a)=>i.classList.toggle("is-active",a===t)),r.forEach((i,a)=>i.classList.toggle("is-active",a===t));let n=document.querySelector("#GalleryCurrentNum");n&&(n.textContent=String(t+1)),this._currentIndex=t}_initSwipe(t){let e=null;t.addEventListener("touchstart",r=>{e=r.touches[0].clientX},{passive:!0}),t.addEventListener("touchend",r=>{if(e===null)return;let s=e-r.changedTouches[0].clientX;Math.abs(s)>40&&this._goToSlide(this._currentIndex+(s>0?1:-1)),e=null},{passive:!0})}_initStickyAtc(){let t=document.querySelector("#ProductATC"),e=document.querySelector("#StickyAtc");if(!t||!e)return;new IntersectionObserver(([i])=>{e.classList.toggle("is-visible",!i.isIntersecting),e.setAttribute("aria-hidden",String(i.isIntersecting))},{threshold:0,rootMargin:"-72px 0px 0px 0px"}).observe(t);let s=document.querySelector("#StickyVariantSelect"),n=document.querySelector("#StickyAtcBtn");s?.addEventListener("change",()=>{n&&(n.dataset.variantId=s.value)})}_initQtyStepper(){let t=document.querySelector("#ProductQty"),e=document.querySelector("#QtyMinus"),r=document.querySelector("#QtyPlus");e?.addEventListener("click",()=>{t&&(t.value=String(Math.max(1,Number(t.value)-1)))}),r?.addEventListener("click",()=>{t&&(t.value=String(Number(t.value)+1))})}};var B="mm_recently_viewed",$=8,b=class{constructor(){this._trackCurrentProduct(),this._renderGrid()}_getHandles(){return d.get(B,[])}_trackCurrentProduct(){let t=window.productHandle;if(!t)return;let e=this._getHandles().filter(r=>r!==t);e.unshift(t),e.length>$&&e.pop(),d.set(B,e)}async _renderGrid(){let t=document.getElementById("RecentlyViewedSection"),e=document.getElementById("RecentlyViewedGrid");if(!t||!e)return;let r=window.productHandle,s=this._getHandles().filter(a=>a!==r).slice(0,4);if(s.length===0)return;let i=(await Promise.all(s.map(a=>this._fetchCard(a)))).filter(Boolean).join("");i&&(e.innerHTML=i,t.style.display="")}async _fetchCard(t){try{let s=(await(await fetch(`/products/${t}.json`)).json()).product,n=s.variants?.[0],i=s.images?.[0]?.src?.replace("?","?width=600&")||"";return`
-        <div class="product-card">
-          <div class="product-card__media">
-            <a href="/products/${s.handle}" class="product-card__img-link">
-              ${i?`<img src="${i}" alt="${s.title}" width="600" height="600" loading="lazy" class="product-card__img product-card__img--primary">`:""}
+        <div class="pc">
+          <div class="pc__media">
+            <a href="/products/${s.handle}">
+              ${i?`<img src="${i}" alt="${s.title}" width="600" height="600" loading="lazy" class="pc__img">`:'<div class="pc__img-placeholder"></div>'}
             </a>
           </div>
-          <div class="product-card__info">
-            <h3 class="product-card__title"><a href="/products/${s.handle}">${s.title}</a></h3>
-            ${n?`<div><span class="price__current">\u20B9${(n.price/100).toFixed(0)}</span></div>`:""}
-            ${n?.available?`<button class="btn btn--primary btn--sm btn--full" data-atc data-variant-id="${n.id}">Add to Cart</button>`:'<button class="btn btn--secondary btn--sm btn--full" disabled>Sold Out</button>'}
+          <div class="pc__info">
+            <a href="/products/${s.handle}" class="pc__name">${s.title}</a>
+            <div class="pc__pricing">
+              ${n?`<span class="pc__price">\u20B9${(n.price/100).toFixed(0)}</span>`:""}
+            </div>
+            <form method="post" action="/cart/add" class="pc__form">
+              <input type="hidden" name="id" value="${n?.id}">
+              <button type="submit" class="pc__atc" ${n?.available?"":"disabled"}>
+                ${n?.available?"Add to Bag":"Sold Out"}
+              </button>
+            </form>
           </div>
         </div>
-      `}catch{return""}}};var L=class{constructor(){this._initCountdowns(),this._initScrollReveal()}_initCountdowns(){document.querySelectorAll('[id^="PromoCountdown-"]').forEach(t=>{let e=t.dataset.end;if(!e)return;let r=new Date(e).getTime();if(isNaN(r))return;let s=()=>{let n=Date.now(),i=r-n;if(i<=0){t.style.display="none";return}let a=Math.floor(i/864e5),u=Math.floor(i%864e5/36e5),M=Math.floor(i%36e5/6e4),A=Math.floor(i%6e4/1e3),g=q=>String(q).padStart(2,"0");t.querySelector('[data-unit="days"]').textContent=g(a),t.querySelector('[data-unit="hours"]').textContent=g(u),t.querySelector('[data-unit="minutes"]').textContent=g(M),t.querySelector('[data-unit="seconds"]').textContent=g(A)};s(),setInterval(s,1e3)})}_initScrollReveal(){let t=document.querySelectorAll(".reveal");if(!t.length||!("IntersectionObserver"in window))return;let e=new IntersectionObserver(r=>{r.forEach(s=>{s.isIntersecting&&(s.target.classList.add("is-visible"),e.unobserve(s.target))})},{threshold:.12,rootMargin:"0px 0px -48px 0px"});t.forEach(r=>e.observe(r))}};var T=class{constructor(){let t=document.getElementById("ContactForm");t&&(this._initSubmitState(t),this._initCharCounter())}_initSubmitState(t){t.addEventListener("submit",()=>{let e=document.getElementById("ContactSubmit");e&&(e.disabled=!0,e.textContent="Sending\u2026")})}_initCharCounter(){let t=document.getElementById("ContactMessage");if(!t)return;let e=2e3,r=document.createElement("p");r.className="char-counter",r.style.cssText="font-size:var(--text-xs);color:var(--color-text-light);text-align:right;margin-top:4px",t.parentNode?.appendChild(r);let s=()=>{let n=e-t.value.length;r.textContent=`${n} characters remaining`,r.style.color=n<50?"var(--color-burgundy)":"var(--color-text-light)"};t.addEventListener("input",s),s()}};new h;new v;new _;new f;{let o=new IntersectionObserver(t=>{t.forEach(e=>{e.isIntersecting&&(e.target.classList.add("is-visible"),o.unobserve(e.target))})},{threshold:.15});document.querySelectorAll("[data-animate]").forEach(t=>o.observe(t))}document.querySelector("[data-dismiss-announcement]")?.addEventListener("click",()=>{let o=document.querySelector(".announcement-bar");o&&(o.style.maxHeight=o.offsetHeight+"px",requestAnimationFrame(()=>{o.style.transition="max-height 0.3s ease, opacity 0.3s ease",o.style.maxHeight="0",o.style.opacity="0"}),setTimeout(()=>o.remove(),350))});var c=o=>document.body.classList.contains(o);c("template-index")&&new L;c("template-product")&&(new E,new b);(c("template-collection")||c("template-search"))&&new w;(c("template-customers-login")||c("template-customers-register")||c("template-customers-reset_password")||c("template-customers-activate_account"))&&new y;(c("template-customers")||c("template-customers-account")||c("template-customers-addresses"))&&new S;c("template-page-contact")&&new T;})();
+      `}catch{return""}}};var L=class{constructor(){this._initCountdowns(),this._initScrollReveal()}_initCountdowns(){document.querySelectorAll('[id^="PromoCountdown-"]').forEach(t=>{let e=t.dataset.end;if(!e)return;let r=new Date(e).getTime();if(isNaN(r))return;let s=()=>{let n=Date.now(),i=r-n;if(i<=0){t.style.display="none";return}let a=Math.floor(i/864e5),u=Math.floor(i%864e5/36e5),M=Math.floor(i%36e5/6e4),A=Math.floor(i%6e4/1e3),g=q=>String(q).padStart(2,"0");t.querySelector('[data-unit="days"]').textContent=g(a),t.querySelector('[data-unit="hours"]').textContent=g(u),t.querySelector('[data-unit="minutes"]').textContent=g(M),t.querySelector('[data-unit="seconds"]').textContent=g(A)};s(),setInterval(s,1e3)})}_initScrollReveal(){let t=document.querySelectorAll(".reveal");if(!t.length||!("IntersectionObserver"in window))return;let e=new IntersectionObserver(r=>{r.forEach(s=>{s.isIntersecting&&(s.target.classList.add("is-visible"),e.unobserve(s.target))})},{threshold:.12,rootMargin:"0px 0px -48px 0px"});t.forEach(r=>e.observe(r))}};var T=class{constructor(){let t=document.getElementById("ContactForm");t&&(this._initSubmitState(t),this._initCharCounter())}_initSubmitState(t){t.addEventListener("submit",()=>{let e=document.getElementById("ContactSubmit");e&&(e.disabled=!0,e.textContent="Sending\u2026")})}_initCharCounter(){let t=document.getElementById("ContactMessage");if(!t)return;let e=2e3,r=document.createElement("p");r.className="char-counter",r.style.cssText="font-size:var(--text-xs);color:var(--color-text-light);text-align:right;margin-top:4px",t.parentNode?.appendChild(r);let s=()=>{let n=e-t.value.length;r.textContent=`${n} characters remaining`,r.style.color=n<50?"var(--color-burgundy)":"var(--color-text-light)"};t.addEventListener("input",s),s()}};new h;new _;new f;{let o=new IntersectionObserver(t=>{t.forEach(e=>{e.isIntersecting&&(e.target.classList.add("is-visible"),o.unobserve(e.target))})},{threshold:.15});document.querySelectorAll("[data-animate]").forEach(t=>o.observe(t))}document.querySelector("[data-dismiss-announcement]")?.addEventListener("click",()=>{let o=document.querySelector(".announcement-bar");o&&(o.style.maxHeight=o.offsetHeight+"px",requestAnimationFrame(()=>{o.style.transition="max-height 0.3s ease, opacity 0.3s ease",o.style.maxHeight="0",o.style.opacity="0"}),setTimeout(()=>o.remove(),350))});var c=o=>document.body.classList.contains(o);c("template-index")&&new L;c("template-product")&&(new E,new b);(c("template-collection")||c("template-search"))&&new w;(c("template-customers-login")||c("template-customers-register")||c("template-customers-reset_password")||c("template-customers-activate_account"))&&new y;(c("template-customers")||c("template-customers-account")||c("template-customers-addresses"))&&new S;c("template-page-contact")&&new T;})();

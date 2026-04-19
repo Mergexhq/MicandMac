@@ -107,7 +107,7 @@
                       <span>{{ upsell_item.price | money }}</span>
                     </div>
                   </div>
-                  <form method="post" action="/cart/add" class="cart-upsell-strip__form">
+                  <form method="post" action="{{ routes.cart_add_url }}" class="cart-upsell-strip__form">
                     <input type="hidden" name="id" value="{{ upsell_item.variants.first.id }}">
                     <button type="submit" class="btn-upsell-add">Add</button>
                   </form>
@@ -141,7 +141,7 @@
                           <span>{{ p.price | money }}</span>
                         </div>
                       </div>
-                      <form method="post" action="/cart/add" class="cart-upsell-strip__form">
+                      <form method="post" action="{{ routes.cart_add_url }}" class="cart-upsell-strip__form">
                         <input type="hidden" name="id" value="{{ p.variants.first.id }}">
                         <button type="submit" class="btn-upsell-add">Add</button>
                       </form>
@@ -209,11 +209,15 @@
             <ul class="summary-trust">
               <li>
                 <svg width="16" height="16" fill="none" class="trust-icon" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 6L9 17l-5-5"/></svg>
-                Orders dispatch within 48 hrs
+                Secure checkout powered by encrypted payment
               </li>
               <li>
                 <svg width="16" height="16" fill="none" class="trust-icon" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg>
-                Secure checkout
+                Fast delivery across India
+              </li>
+              <li>
+                <svg width="16" height="16" fill="none" class="trust-icon" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Orders dispatch within 48 hrs
               </li>
             </ul>
 

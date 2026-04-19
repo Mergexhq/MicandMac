@@ -3,25 +3,51 @@
   Populated by recently-viewed.ts via localStorage → rendered client-side
 {% endcomment %}
 
-<section class="recently-viewed section-padding--sm" id="RecentlyViewedSection" style="display:none">
+<section class="recently-viewed section-padding bg-murmur" id="RecentlyViewedSection" style="display:none">
   <div class="container">
-    <h2 class="section-heading__h2">
-      {{ section.settings.heading | default: 'Recently Viewed' }}
-    </h2>
-    <div class="product-grid" id="RecentlyViewedGrid">
+    <div class="section-heading text-center" style="margin-bottom: 60px;">
+      <h2 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2.2rem; font-weight: 500; color: var(--mm-deep-garnet);">
+        {{ section.settings.heading | default: 'Recently Viewed' }}
+      </h2>
+      <p style="font-size: 11px; color: var(--mm-dark-espresso); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; opacity: 0.6; margin-top: 8px;">Revisit your favorites</p>
+    </div>
+    <div class="product-grid" id="RecentlyViewedGrid" style="row-gap: 60px;">
       <!-- JS renders product cards here -->
     </div>
   </div>
 </section>
 
 <style>
-#RecentlyViewedSection .product-grid {
-  grid-template-columns: repeat(4, 1fr);
+.recently-viewed.bg-murmur {
+  background-color: var(--mm-soft-blush);
+  border-top: 1px solid rgba(46,31,26,0.05);
 }
 
-@media (max-width: 767px) {
-  #RecentlyViewedSection .product-grid {
+.recently-viewed .product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+  row-gap: 60px;
+  margin-bottom: var(--space-8);
+}
+
+/* Ensure no child can span multiple columns */
+.recently-viewed .product-grid > * {
+  grid-column: span 1 !important;
+  width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .recently-viewed .product-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    row-gap: 40px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1023px) {
+  .recently-viewed .product-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 </style>

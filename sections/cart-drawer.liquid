@@ -22,7 +22,7 @@
         <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
       </svg>
       <p>Your cart is empty</p>
-      <a href="/collections/all" class="btn btn--primary">Start Shopping</a>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">Start Shopping</a>
     </div>
   </div>
 
@@ -64,8 +64,20 @@
           </div>
         </div>
       {%- endfor -%}
-    </div>
-
+      </div>
+      
+      <!-- Trust Badges -->
+      <div class="cart-drawer__trust-badges">
+        <div class="drawer-trust-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4"/></svg>
+          Secure checkout
+        </div>
+        <div class="drawer-trust-item">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M5 13l4 4L19 7"/></svg>
+          Fast delivery in India
+        </div>
+      </div>
+    
     <!-- Footer -->
     <div class="cart-drawer__footer">
       <div class="cart-drawer__subtotal">
@@ -81,8 +93,6 @@
           View Cart
         </a>
       </div>
-
-
     </div>
   </div>
 </div>
@@ -172,6 +182,12 @@
   flex-direction: column;
   flex: 1;
   overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
 }
 
 .cart-drawer__body {
@@ -339,5 +355,27 @@ body:has(.cart-drawer.is-open) .wa-sticky {
   font-size: 11px;
   color: var(--color-text-light);
   gap: var(--space-2);
+}
+.cart-drawer__trust-badges {
+  padding: 1.5rem 1.5rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-top: 1px solid var(--color-beige);
+  margin-top: auto;
+}
+
+.drawer-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-mid, #796C69);
+  font-weight: 400;
+}
+
+.drawer-trust-item svg {
+  color: #2F7A5B; /* Success green for trust */
+  flex-shrink: 0;
 }
 </style>

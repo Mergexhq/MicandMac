@@ -1,0 +1,89 @@
+<div id="SearchOverlay" class="search-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="search-overlay__inner">
+    
+    <!-- Header: Input + Close (Combined) -->
+    <div class="search-overlay__header">
+      <div class="search-overlay__field">
+        <svg class="search-overlay__field-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input 
+          type="text" 
+          id="SearchOverlayInput" 
+          class="search-overlay__input" 
+          placeholder="Search for skincare, ingredients..."
+          autocomplete="off"
+          spellcheck="false"
+        >
+        <button type="button" id="SearchOverlayCloseInternal" class="search-overlay__close-internal" aria-label="Close search">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Body Content -->
+    <div class="search-overlay__body">
+      
+      <!-- STATE 1: IDLE (Previous vs Trending) -->
+      <div id="SearchIdleState" class="search-overlay__state">
+        <div class="search-overlay__idle-content">
+          
+          <!-- Previous Searches (LocalStorage) -->
+          <div class="search-section" id="SearchRecentContainer" style="display: none;">
+            <h3 class="search-section__title">Previous Searches</h3>
+            <ul id="SearchRecentList" class="search-section__list">
+              <!-- JS Populated -->
+            </ul>
+          </div>
+
+          <!-- Trending Suggestions (Shown if no recent) -->
+          <div class="search-section" id="SearchTrendingContainer">
+            <h3 class="search-section__title">Trending Searches</h3>
+            <ul class="search-section__list">
+              <li><button type="button" class="suggestion-btn" data-query="Donkey Milk Soap">donkey milk soap</button></li>
+              <li><button type="button" class="suggestion-btn" data-query="Red Wine Soap">red wine soap</button></li>
+              <li><button type="button" class="suggestion-btn" data-query="Charcoal Detox">charcoal detox</button></li>
+              <li><button type="button" class="suggestion-btn" data-query="Lip Balm">lip balm</button></li>
+              <li><button type="button" class="suggestion-btn" data-query="Combo Sets">combo sets</button></li>
+            </ul>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- STATE 2: TYPING (Suggestions + Results) -->
+      <div id="SearchTypingState" class="search-overlay__state" style="display: none;">
+        
+        <div class="search-overlay__typing-grid">
+          
+          <!-- Query Suggestions -->
+          <div class="search-section">
+            <h3 class="search-section__title">Suggestions</h3>
+            <ul id="SearchQuerySuggestions" class="search-section__list">
+              <!-- JS Populated -->
+            </ul>
+          </div>
+
+          <!-- Product Results -->
+          <div class="search-section search-section--products">
+            <div class="search-section__header">
+              <h3 class="search-section__title">Featured Products</h3>
+              <a href="{{ routes.search_url }}?q=" id="SearchViewAll" class="search-section__view-all">View all results &rarr;</a>
+            </div>
+            
+            <div id="SearchProductResults" class="search-overlay__products-scroll">
+              <!-- JS Populated -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div id="SearchEmptyState" class="search-overlay__empty" style="display: none;">
+        <p>No results found for "<span id="SearchEmptyQuery"></span>"</p>
+        <button type="button" class="btn btn--secondary btn--sm" id="SearchResetBtn">Clear search</button>
+      </div>
+
+    </div>
+  </div>
+</div>

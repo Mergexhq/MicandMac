@@ -21,6 +21,8 @@
   {{ 'reset.css'      | asset_url | stylesheet_tag: preload: true }}
   {{ 'typography.css' | asset_url | stylesheet_tag: preload: true }}
   {{ 'layout.css'     | asset_url | stylesheet_tag: preload: true }}
+  {{ 'search-overlay.css' | asset_url | stylesheet_tag }}
+  {{ 'auth-modal.css'     | asset_url | stylesheet_tag }}
   {{ 'components.css' | asset_url | stylesheet_tag }}
   {{ 'header.css'     | asset_url | stylesheet_tag }}
   {{ 'mobile-nav.css' | asset_url | stylesheet_tag }}
@@ -56,6 +58,9 @@
   <!-- Cart Drawer -->
   {%- section 'cart-drawer' -%}
 
+  {%- render 'search-overlay' -%}
+  {%- render 'auth-modal' -%}
+
   <!-- Main Content -->
   <main id="MainContent" role="main" tabindex="-1">
     {{ content_for_layout }}
@@ -79,6 +84,12 @@
 
   <!-- Cart JS -->
   <script src="{{ 'cart.js' | asset_url }}" defer></script>
+
+  <!-- Search Overlay JS -->
+  <script src="{{ 'search-overlay.js' | asset_url }}" defer></script>
+
+  <!-- Auth Modal JS -->
+  <script src="{{ 'auth-modal.js' | asset_url }}" defer></script>
 
   <!-- Scroll Reveal Engine (CSS IntersectionObserver — no dependencies) -->
   <script src="{{ 'cinematic.js' | asset_url }}" defer></script>

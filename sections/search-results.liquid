@@ -70,7 +70,7 @@
       {%- else -%}
         <div class="collection-empty">
           <p>Try a different search term or browse our collections below.</p>
-          <a href="/collections/all" class="btn btn--secondary">Browse All Products</a>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--secondary">Browse All Products</a>
         </div>
       {%- endif -%}
     {%- endif -%}
@@ -81,6 +81,10 @@
 {%- endpaginate -%}
 
 <style>
+.search-results {
+  display: block;
+}
+
 .search-results__header {
   display: flex;
   align-items: flex-start;
@@ -139,6 +143,26 @@
   font-size: var(--text-sm);
   color: var(--color-text-mid);
   margin-top: var(--space-2);
+}
+
+.search-results .btn {
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  height: auto;
+  min-width: unset;
+}
+
+.collection-empty {
+  margin-top: var(--space-12);
+  text-align: center;
+}
+
+.collection-empty p {
+  margin-bottom: var(--space-6);
+  opacity: 0.6;
 }
 
 @media (max-width: 639px) {

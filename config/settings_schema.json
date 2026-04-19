@@ -76,5 +76,52 @@
         "label": "Twitter / X URL"
       }
     ]
+  },
+  {
+    "name": "Checkout",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Branding"
+      },
+      {
+        "type": "image_picker",
+        "id": "checkout_logo",
+        "label": "Logo"
+      },
+      {
+        "type": "select",
+        "id": "checkout_logo_alignment",
+        "label": "Logo alignment",
+        "options": [
+          { "value": "left", "label": "Left" },
+          { "value": "center", "label": "Center" },
+          { "value": "right", "label": "Right" }
+        ],
+        "default": "center"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "checkout_accent_color",
+        "label": "Accent color",
+        "default": "#5A2E2E"
+      },
+      {
+        "type": "color",
+        "id": "checkout_button_color",
+        "label": "Button color",
+        "default": "#5A2E2E"
+      },
+      {
+        "type": "color",
+        "id": "checkout_error_color",
+        "label": "Error color",
+        "default": "#ff6d6d"
+      }
+    ]
   }
 ]

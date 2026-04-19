@@ -5,58 +5,100 @@
 {% endcomment %}
 
 <div class="main-wishlist section-padding">
-  <div class="container">
-    <h1 class="main-wishlist__title">My Wishlist</h1>
+  <div class="container container--narrow">
+    <div class="main-wishlist__header">
+      <h1 class="main-wishlist__title">Saved Items</h1>
+      <p class="main-wishlist__subtitle">A collection of products you've chosen to revisit.</p>
+    </div>
 
-    <!-- Guest nudge (hidden for logged-in users by wishlist.ts) -->
-    {%- unless customer -%}
-      {% render 'wishlist-guest-nudge' %}
-    {%- endunless -%}
-
-    <!-- Grid — populated by wishlist.ts from localStorage -->
+    <!-- Grid — populated by theme.js from localStorage -->
     <div class="wishlist-grid" id="WishlistGrid">
+      
+      <!-- Empty state -->
       <div class="wishlist-empty" id="WishlistEmpty" style="display:none">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3" aria-hidden="true">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-        </svg>
-        <p>Your wishlist is empty.</p>
-        <a href="{{ routes.all_products_collection_url }}" class="btn btn--secondary">Discover Products</a>
+        <div class="wishlist-empty__content">
+          <svg class="wishlist-empty__icon" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <h2 class="wishlist-empty__title">Your wishlist is empty</h2>
+          <p class="wishlist-empty__text">Save products you like to revisit them anytime.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">Explore Products</a>
+        </div>
       </div>
+
     </div>
 
   </div>
 </div>
 
 <style>
-.main-wishlist__title {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 300;
-  margin-bottom: var(--space-8);
+.main-wishlist {
+  background: var(--mm-soft-blush, #F5EDE6);
+  min-height: 60vh;
 }
 
-.wishlist-grid {
+.main-wishlist__header {
+  text-align: center;
+  margin-bottom: var(--space-16);
+}
+
+.main-wishlist__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 300;
+  color: var(--mm-dark-espresso);
+  margin-bottom: var(--space-2);
+}
+
+.main-wishlist__subtitle {
+  font-size: var(--text-sm);
+  color: var(--mm-dark-espresso);
+  opacity: 0.6;
+}
+
+.wishlist-grid__inner {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-6);
+  gap: var(--space-8) var(--space-6);
 }
 
 .wishlist-empty {
   grid-column: 1/-1;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-20) 0;
   text-align: center;
-  padding: var(--space-16);
+}
+
+.wishlist-empty__content {
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-4);
-  color: var(--color-text-light);
+  gap: var(--space-6);
+}
+
+.wishlist-empty__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--text-2xl);
+  font-weight: 400;
+}
+
+.wishlist-empty__text {
+  font-size: var(--text-base);
+  opacity: 0.7;
+  line-height: 1.6;
 }
 
 @media (max-width: 1023px) {
-  .wishlist-grid { grid-template-columns: repeat(3, 1fr); }
+  .wishlist-grid__inner { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 767px) {
-  .wishlist-grid { grid-template-columns: repeat(2, 1fr); }
+  .main-wishlist__header { margin-bottom: var(--space-10); }
+  .wishlist-grid__inner { 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: var(--space-6) var(--space-4);
+  }
 }
 </style>

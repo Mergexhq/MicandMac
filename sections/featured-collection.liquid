@@ -10,77 +10,66 @@
     }
   }
 
-  /* Uniform product card sizing in this section */
-  #FeaturedCollection-{{ section.id }} .pc {
-    height: 100%;
-  }
-  #FeaturedCollection-{{ section.id }} .pc__media {
-    aspect-ratio: 1 / 1;
-    width: 100%;
-    background: #F8F5F2;
-  }
-  #FeaturedCollection-{{ section.id }} .pc__img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
-  #FeaturedCollection-{{ section.id }} .pc__info {
-    padding: 12px 4px 0;
+  /* Standardized Product Grid */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
   }
 
-  /* Grid consistency */
-  #FeaturedCollection-{{ section.id }} .flex > div {
-    display: flex;
-    flex-direction: column;
+  @media (max-width: 768px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
+    }
+    .section-heading h2 {
+      font-size: 1.8rem !important;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1023px) {
+    .product-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 {%- endstyle -%}
 
-<div class="featured-collection section-{{ section.id }}-padding" id="FeaturedCollection-{{ section.id }}">
+<div class="featured-collection section-{{ section.id }}-padding bg-murmur" id="FeaturedCollection-{{ section.id }}">
   <div class="container px-4">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12">
-      <div class="max-w-2xl">
-        {%- if section.settings.heading != blank -%}
-          <h2 class="text-3xl md:text-4xl font-light mb-4" style="font-family: var(--font-display);">{{ section.settings.heading }}</h2>
-        {%- endif -%}
-        {%- if section.settings.description != blank -%}
-          <p class="text-base text-gray-600">{{ section.settings.description }}</p>
-        {%- endif -%}
-      </div>
-      
-      {%- if section.settings.show_view_all and section.settings.collection != blank -%}
-        <div class="mt-4 md:mt-0">
-          <a href="{{ section.settings.collection.url }}" class="link-underline font-medium uppercase tracking-widest text-sm text-primary">
-            {{ 'sections.featured_collection.view_all' | t | default: 'View All' }}
-          </a>
-        </div>
+    <div class="section-heading text-center" style="margin-bottom: 60px;">
+      {%- if section.settings.heading != blank -%}
+        <h2 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2.2rem; font-weight: 500; color: var(--mm-deep-garnet);">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.description != blank -%}
+        <p style="font-size: 11px; color: var(--mm-dark-espresso); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; opacity: 0.6; margin-top: 8px;">{{ section.settings.description }}</p>
       {%- endif -%}
     </div>
 
-    <div class="featured-collection__slider relative -mx-4 px-4 overflow-x-auto snap-x snap-mandatory hide-scrollbar">
-      <div class="flex gap-4 md:gap-6 w-max pb-4 md:grid md:grid-cols-{{ section.settings.columns_desktop }} md:w-full">
-        {%- assign collection = section.settings.collection -%}
-        {%- assign display_products = collection.products -%}
-        {%- if collection == blank or collection.products_count == 0 -%}
-          {%- assign display_products = collections['all'].products | sort: 'published_at' | reverse -%}
-        {%- endif -%}
+    <div class="product-grid" style="row-gap: 60px;">
+      {%- assign collection = section.settings.collection -%}
+      {%- assign display_products = collection.products -%}
+      {%- if collection == blank or collection.products_count == 0 -%}
+        {%- assign display_products = collections['all'].products | sort: 'published_at' | reverse -%}
+      {%- endif -%}
 
-        {%- if display_products != blank -%}
-          {%- assign count = 0 -%}
-          {%- for product in display_products -%}
-            {%- if count >= section.settings.products_to_show -%}{%- break -%}{%- endif -%}
-            {%- assign count = count | plus: 1 -%}
-            <div class="w-[280px] md:w-full snap-start shrink-0">
-              {% render 'product-card',
-                product: product,
-                show_secondary_image: section.settings.show_secondary_image,
-                show_vendor: section.settings.show_vendor,
-                show_rating: section.settings.show_rating
-              %}
-            </div>
-          {%- endfor -%}
-        {%- endif -%}
-      </div>
+      {%- if display_products != blank -%}
+        {%- assign count = 0 -%}
+        {%- for product in display_products -%}
+          {%- if count >= section.settings.products_to_show -%}{%- break -%}{%- endif -%}
+          {%- assign count = count | plus: 1 -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      {%- endif -%}
     </div>
+
+    {%- if section.settings.show_view_all and section.settings.collection != blank -%}
+      <div class="text-center" style="margin-top: 40px;">
+        <a href="{{ section.settings.collection.url }}" class="link-underline font-medium uppercase tracking-widest text-sm text-primary">
+          {{ 'sections.featured_collection.view_all' | t | default: 'View All' }}
+        </a>
+      </div>
+    {%- endif -%}
   </div>
 </div>
 
@@ -99,7 +88,7 @@
     {
       "type": "textarea",
       "id": "description",
-      "label": "Description",
+      "label": "Small Label (Subhead)",
       "default": "Meet our community favorites."
     },
     {
@@ -130,29 +119,6 @@
       "id": "show_view_all",
       "default": true,
       "label": "Enable 'View all' button"
-    },
-    {
-      "type": "header",
-      "content": "Product Card"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_secondary_image",
-      "default": true,
-      "label": "Show second image on hover"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_vendor",
-      "default": false,
-      "label": "Show vendor"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_rating",
-      "default": false,
-      "label": "Show product rating",
-      "info": "To display a rating, add a product rating app."
     },
     {
       "type": "header",

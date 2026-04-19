@@ -86,6 +86,12 @@
 .pc__wishlist-btn svg {
   width: 20px;
   height: 20px;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.pc__wishlist-btn.is-wishlisted svg {
+  fill: #5A2D3A; /* Brand Garnet */
+  stroke: #5A2D3A;
 }
 
 /* ---- TEXT BLOCK ---- */

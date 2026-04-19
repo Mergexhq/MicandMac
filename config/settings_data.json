@@ -8,5 +8,22 @@
  * ------------------------------------------------------------
  */
 {
-  "current": {}
+  "current": {
+    "sections": {
+      "main-cart": {
+        "type": "main-cart",
+        "settings": {
+          "threshold_cents": 99900
+        }
+      }
+    },
+    "settings": {
+      "checkout_logo_alignment": "center",
+      "checkout_accent_color": "#5A2E2E",
+      "checkout_button_color": "#5A2E2E",
+      "checkout_error_color": "#ff6d6d",
+      "checkout_background_color": "#F5EDE6",
+      "checkout_card_background_color": "#FFFFFF"
+    }
+  }
 }

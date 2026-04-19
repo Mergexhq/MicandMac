@@ -1,0 +1,144 @@
+{% comment %} Auth Modal — Two-step: Login + Register (no page redirect) {% endcomment %}
+
+<div id="AuthModal" class="auth-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Sign in to your account">
+  <div class="auth-modal__backdrop" id="AuthModalBackdrop"></div>
+
+  <div class="auth-modal__panel">
+
+    <!-- LEFT: Brand Layer -->
+    <div class="auth-modal__brand">
+      <div class="auth-modal__brand-inner">
+        <a href="{{ routes.root_url }}" class="auth-modal__brand-logo">
+          <img src="{{ 'MicandMac_Monogram.webp' | asset_url }}" alt="Mic &amp; Mac" width="40" height="40">
+          <span>MIC &amp; MAC</span>
+        </a>
+        <div class="auth-modal__brand-copy">
+          <h2 class="auth-modal__brand-headline">Pure care,<br><em>thoughtfully made.</em></h2>
+          <p class="auth-modal__brand-subtext">Handcrafted skincare rooted in nature &amp; ritual.</p>
+        </div>
+        <div class="auth-modal__brand-decoration" aria-hidden="true">
+          <div class="auth-modal__circle auth-modal__circle--1"></div>
+          <div class="auth-modal__circle auth-modal__circle--2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Auth Form -->
+    <div class="auth-modal__form-side">
+      <button class="auth-modal__close" id="AuthModalClose" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <!-- ═══ STEP 1: SIGN IN ═══ -->
+      <div class="auth-modal__step" id="AuthStepLogin">
+        <div class="auth-modal__form-header">
+          <h3 class="auth-modal__title">Welcome back.</h3>
+          <p class="auth-modal__subtitle">Continue with your email to access your account.</p>
+        </div>
+
+        {%- form 'customer_login', id: 'AuthLoginForm', novalidate: 'novalidate' -%}
+          {%- if form.errors -%}
+            <div class="auth-modal__error" role="alert">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="auth-modal__field">
+            <label for="AuthEmailInput" class="auth-modal__label">Email</label>
+            <input type="email" id="AuthEmailInput" name="customer[email]" class="auth-modal__input" autocomplete="email" placeholder="your@email.com" required>
+          </div>
+
+          <div class="auth-modal__field">
+            <div class="auth-modal__label-row">
+              <label for="AuthPasswordInput" class="auth-modal__label">Password</label>
+              <a href="{{ routes.account_recover_url }}" class="auth-modal__forgot">Forgot?</a>
+            </div>
+            <div class="auth-modal__input-wrapper">
+              <input type="password" id="AuthPasswordInput" name="customer[password]" class="auth-modal__input" autocomplete="current-password" placeholder="••••••••" required>
+              <button type="button" class="password-toggle" data-password-toggle aria-label="Show password">
+                <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="auth-modal__cta">
+            Continue
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+
+          <p class="auth-modal__trust">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Secure login. Your data is safe with us.
+          </p>
+        {%- endform -%}
+
+        <div class="auth-modal__divider"><span>New here?</span></div>
+        <!-- Switch to Register step — NO page redirect -->
+        <button type="button" class="auth-modal__alt-cta" id="SwitchToRegister">Create an account</button>
+      </div>
+
+      <!-- ═══ STEP 2: CREATE ACCOUNT ═══ -->
+      <div class="auth-modal__step" id="AuthStepRegister" style="display:none;">
+        <div class="auth-modal__form-header">
+          <button type="button" class="auth-modal__back" id="SwitchToLogin" aria-label="Back to sign in">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Back
+          </button>
+          <h3 class="auth-modal__title">Create account.</h3>
+          <p class="auth-modal__subtitle">Join us to save your wishlist &amp; track orders.</p>
+        </div>
+
+        {%- form 'create_customer', id: 'AuthRegisterForm', novalidate: 'novalidate' -%}
+          {%- if form.errors -%}
+            <div class="auth-modal__error" role="alert">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="auth-modal__field">
+              <label for="AuthRegFirstName" class="auth-modal__label">First name</label>
+              <input type="text" id="AuthRegFirstName" name="customer[first_name]" class="auth-modal__input" autocomplete="given-name" required>
+            </div>
+            <div class="auth-modal__field">
+              <label for="AuthRegLastName" class="auth-modal__label">Last name</label>
+              <input type="text" id="AuthRegLastName" name="customer[last_name]" class="auth-modal__input" autocomplete="family-name" required>
+            </div>
+          </div>
+
+          <div class="auth-modal__field">
+            <label for="AuthRegEmail" class="auth-modal__label">Email</label>
+            <input type="email" id="AuthRegEmail" name="customer[email]" class="auth-modal__input" autocomplete="email" placeholder="your@email.com" required>
+          </div>
+
+          <div class="auth-modal__field">
+            <label for="AuthRegPassword" class="auth-modal__label">Password</label>
+            <div class="auth-modal__input-wrapper">
+              <input type="password" id="AuthRegPassword" name="customer[password]" class="auth-modal__input" autocomplete="new-password" placeholder="Min. 8 characters" required minlength="8">
+              <button type="button" class="password-toggle" data-password-toggle aria-label="Show password">
+                <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="auth-modal__cta">
+            Create Account
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+
+          <p class="auth-modal__trust">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            We never share your data.
+          </p>
+        {%- endform -%}
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,41 +1,64 @@
 {% comment %}Section: Main Register{% endcomment %}
 
-<div class="account-auth section-padding">
-  <div class="container container--xs">
-    <h1 class="account-auth__title">Create Account</h1>
+<div class="auth-page section-padding">
+  <div class="auth-page__card">
+
+    <div class="auth-page__brand">
+      <a href="{{ routes.root_url }}" class="auth-page__logo">
+        <img src="{{ 'MicandMac_Monogram.webp' | asset_url }}" alt="Mic &amp; Mac" width="32" height="32">
+        <span>MIC &amp; MAC</span>
+      </a>
+    </div>
+
+    <h1 class="auth-page__title">Create account.</h1>
+    <p class="auth-page__subtitle">Join us to save your wishlist, track orders, and more.</p>
 
     {%- if form.errors -%}
-      <div class="form-error" role="alert">{{ form.errors | default_errors }}</div>
+      <div class="auth-page__error" role="alert">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        {{ form.errors | default_errors }}
+      </div>
     {%- endif -%}
 
     {%- form 'create_customer', id: 'RegisterForm' -%}
-      <div class="form-group">
-        <label for="RegisterFirstName" class="form-label">First name</label>
-        <input type="text" id="RegisterFirstName" name="customer[first_name]" autocomplete="given-name" class="form-input" required>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="auth-page__field">
+          <label for="RegisterFirstName" class="auth-page__label">First name</label>
+          <input type="text" id="RegisterFirstName" name="customer[first_name]" autocomplete="given-name" class="auth-page__input" required>
+        </div>
+        <div class="auth-page__field">
+          <label for="RegisterLastName" class="auth-page__label">Last name</label>
+          <input type="text" id="RegisterLastName" name="customer[last_name]" autocomplete="family-name" class="auth-page__input" required>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="RegisterLastName" class="form-label">Last name</label>
-        <input type="text" id="RegisterLastName" name="customer[last_name]" autocomplete="family-name" class="form-input" required>
+      <div class="auth-page__field">
+        <label for="RegisterEmail" class="auth-page__label">Email</label>
+        <input type="email" id="RegisterEmail" name="customer[email]" autocomplete="email" class="auth-page__input" placeholder="your@email.com" required>
       </div>
-      <div class="form-group">
-        <label for="RegisterEmail" class="form-label">Email</label>
-        <input type="email" id="RegisterEmail" name="customer[email]" autocomplete="email" class="form-input" required>
+      <div class="auth-page__field">
+        <label for="RegisterPassword" class="auth-page__label">Password</label>
+        <div class="auth-page__input-wrapper">
+          <input type="password" id="RegisterPassword" name="customer[password]" autocomplete="new-password" class="auth-page__input" placeholder="Min. 8 characters" required minlength="8">
+          <button type="button" class="password-toggle" data-password-toggle aria-label="Show password">
+            <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+          </button>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="RegisterPassword" class="form-label">Password</label>
-        <input type="password" id="RegisterPassword" name="customer[password]" autocomplete="new-password" class="form-input" required minlength="8">
-        <p class="form-hint">Minimum 8 characters.</p>
-      </div>
-      <button type="submit" class="btn btn--primary btn--full btn--lg">Create Account</button>
+      <button type="submit" class="auth-page__cta">Create Account →</button>
     {%- endform -%}
 
-    <div class="account-auth__alt">
-      <span>Already have an account?</span>
-      <a href="{{ routes.account_login_url }}">Sign in</a>
-    </div>
+    <p class="auth-page__trust">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      We never share your data.
+    </p>
+
+    <div class="auth-page__divider"><span>Already have an account?</span></div>
+    <a href="{{ routes.account_login_url }}" class="auth-page__alt">Sign in instead</a>
+
   </div>
 </div>
 
 <style>
-.form-hint { font-size: var(--text-xs); color: var(--color-text-light); margin-top: var(--space-1); }
+{{ 'auth-modal.css' | asset_url | stylesheet_tag }}
 </style>
