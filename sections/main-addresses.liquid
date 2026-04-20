@@ -1,82 +1,240 @@
 {% comment %}Section: Main Addresses{% endcomment %}
 
-<div class="account-page section-padding">
+<div class="account-page">
   <div class="container">
     <div class="account-page__layout">
+
+      <!-- ── Sidebar ── -->
       <aside class="account-page__sidebar">
         {% render 'account-nav', current: 'addresses' %}
       </aside>
-      <main class="account-page__main">
-        <h1 class="account-page__title">Addresses</h1>
 
-        <div class="address-grid">
-          {%- for address in customer.addresses -%}
-            <div class="address-card {% if address == customer.default_address %}address-card--default{% endif %}">
-              {%- if address == customer.default_address -%}
-                <span class="badge badge--forest address-card__badge">Default</span>
-              {%- endif -%}
-              <address class="account-address">{{ address | format_address }}</address>
-              <div class="address-card__actions">
-                <a href="{{ routes.account_addresses_url }}/{{ address.id }}/edit" class="btn btn--secondary btn--sm">Edit</a>
-                {%- form 'customer_address', address, id: 'DeleteAddressForm-{{ address.id }}' -%}
-                  <input type="hidden" name="_method" value="delete">
-                  <button type="submit" class="btn btn--ghost btn--sm">Delete</button>
-                {%- endform -%}
-                {%- unless address == customer.default_address -%}
-                  {%- form 'customer_address', customer.default_address, id: 'DefaultAddressForm-{{ address.id }}' -%}
-                    <input type="hidden" name="_method" value="put">
-                    <input type="hidden" name="address[default]" value="true">
-                    <button type="submit" class="btn btn--ghost btn--sm">Set Default</button>
-                  {%- endform -%}
-                {%- endunless -%}
-              </div>
-            </div>
-          {%- endfor -%}
+      <!-- ── Main ── -->
+      <main class="account-page__main">
+
+        <div class="acct-header">
+          <h1 class="acct-header__title">Saved addresses</h1>
+          {%- if customer.addresses.size > 0 -%}
+            <p class="acct-header__subtitle">{{ customer.addresses.size }} address{% if customer.addresses.size != 1 %}es{% endif %} saved</p>
+          {%- endif -%}
         </div>
 
-        <!-- Add new -->
-        <div class="address-new">
-          <h2 class="account-section__heading">Add New Address</h2>
-          {%- form 'customer_address', customer.new_address, id: 'AddressForm' -%}
-            <div class="form-group">
-              <label for="AddressFirstName" class="form-label">First name</label>
-              <input type="text" id="AddressFirstName" name="address[first_name]" value="{{ customer.new_address.first_name | escape }}" class="form-input">
+        {%- if customer.addresses.size > 0 -%}
+          <div class="address-grid">
+            {%- for address in customer.addresses -%}
+              <div class="address-card {% if address == customer.default_address %}address-card--default{% endif %}">
+
+                {%- if address == customer.default_address -%}
+                  <span class="address-card__badge">Default</span>
+                {%- endif -%}
+
+                <p class="address-card__label">
+                  {{ address.first_name }} {{ address.last_name }}
+                </p>
+
+                <address>
+                  {%- if address.address1 != blank -%}{{ address.address1 }}<br>{%- endif -%}
+                  {%- if address.address2 != blank -%}{{ address.address2 }}<br>{%- endif -%}
+                  {%- if address.city != blank -%}{{ address.city }}{%- endif -%}
+                  {%- if address.province != blank -%}, {{ address.province }}{%- endif -%}
+                  {%- if address.zip != blank -%}&nbsp;{{ address.zip }}{%- endif -%}
+                  <br>
+                  {{ address.country }}<br>
+                  {%- if address.phone != blank -%}{{ address.phone }}<br>{%- endif -%}
+                </address>
+
+                <div class="address-card__actions">
+                  <a
+                    href="{{ routes.account_addresses_url }}/{{ address.id }}/edit"
+                    class="btn-text"
+                  >Edit</a>
+
+                  {%- form 'customer_address', address, id: 'DeleteAddressForm-{{ address.id }}' -%}
+                    <input type="hidden" name="_method" value="delete">
+                    <button
+                      type="submit"
+                      class="btn-text btn-text--danger"
+                      onclick="return confirm('Delete this address?')"
+                    >Delete</button>
+                  {%- endform -%}
+
+                  {%- unless address == customer.default_address -%}
+                    {%- form 'customer_address', address, id: 'DefaultAddressForm-{{ address.id }}' -%}
+                      <input type="hidden" name="_method" value="put">
+                      <input type="hidden" name="address[default]" value="true">
+                      <button type="submit" class="btn-text">Set as default</button>
+                    {%- endform -%}
+                  {%- endunless -%}
+                </div>
+
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <div class="acct-empty">
+            <div class="acct-empty__icon">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
             </div>
-            <div class="form-group">
-              <label for="AddressLastName" class="form-label">Last name</label>
-              <input type="text" id="AddressLastName" name="address[last_name]" value="{{ customer.new_address.last_name | escape }}" class="form-input">
+            <h2 class="acct-empty__title">No addresses saved</h2>
+            <p class="acct-empty__text">Add a shipping address to make checkout faster.</p>
+          </div>
+        {%- endif -%}
+
+        <!-- ── Add new address form ── -->
+        <div class="address-form-wrap">
+          <h2 class="address-form-title">+ Add new address</h2>
+
+          {%- form 'customer_address', customer.new_address, id: 'AddressNewForm' -%}
+
+            {%- if form.errors -%}
+              <div style="background:#fff4f4;border:1px solid #f5c0c0;border-radius:8px;padding:12px 16px;font-size:0.8rem;color:#8B2020;margin-bottom:1.5rem;">
+                {{ form.errors | default_errors }}
+              </div>
+            {%- endif -%}
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="AddressFirstName" class="form-label">First name</label>
+                <input
+                  type="text"
+                  id="AddressFirstName"
+                  name="address[first_name]"
+                  value="{{ form.first_name | escape }}"
+                  class="form-input"
+                  autocomplete="given-name"
+                >
+              </div>
+              <div class="form-group">
+                <label for="AddressLastName" class="form-label">Last name</label>
+                <input
+                  type="text"
+                  id="AddressLastName"
+                  name="address[last_name]"
+                  value="{{ form.last_name | escape }}"
+                  class="form-input"
+                  autocomplete="family-name"
+                >
+              </div>
             </div>
+
             <div class="form-group">
               <label for="AddressAddress1" class="form-label">Address</label>
-              <input type="text" id="AddressAddress1" name="address[address1]" value="{{ customer.new_address.address1 | escape }}" class="form-input">
+              <input
+                type="text"
+                id="AddressAddress1"
+                name="address[address1]"
+                value="{{ form.address1 | escape }}"
+                class="form-input"
+                autocomplete="address-line1"
+              >
             </div>
+
             <div class="form-group">
-              <label for="AddressCity" class="form-label">City</label>
-              <input type="text" id="AddressCity" name="address[city]" value="{{ customer.new_address.city | escape }}" class="form-input">
+              <label for="AddressAddress2" class="form-label">Apartment, suite, etc. <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+              <input
+                type="text"
+                id="AddressAddress2"
+                name="address[address2]"
+                value="{{ form.address2 | escape }}"
+                class="form-input"
+                autocomplete="address-line2"
+              >
             </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="AddressCity" class="form-label">City</label>
+                <input
+                  type="text"
+                  id="AddressCity"
+                  name="address[city]"
+                  value="{{ form.city | escape }}"
+                  class="form-input"
+                  autocomplete="address-level2"
+                >
+              </div>
+              <div class="form-group">
+                <label for="AddressZip" class="form-label">Postcode / ZIP</label>
+                <input
+                  type="text"
+                  id="AddressZip"
+                  name="address[zip]"
+                  value="{{ form.zip | escape }}"
+                  class="form-input"
+                  autocomplete="postal-code"
+                >
+              </div>
+            </div>
+
             <div class="form-group">
               <label for="AddressCountry" class="form-label">Country</label>
-              <select id="AddressCountry" name="address[country]" class="form-input">
+              <select
+                id="AddressCountry"
+                name="address[country]"
+                class="form-input"
+                data-default="{{ form.country }}"
+              >
                 {{ all_country_option_tags }}
               </select>
             </div>
+
             <div class="form-group">
-              <label for="AddressPhone" class="form-label">Phone</label>
-              <input type="tel" id="AddressPhone" name="address[phone]" value="{{ customer.new_address.phone | escape }}" class="form-input">
+              <label for="AddressPhone" class="form-label">Phone <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+              <input
+                type="tel"
+                id="AddressPhone"
+                name="address[phone]"
+                value="{{ form.phone | escape }}"
+                class="form-input"
+                autocomplete="tel"
+                placeholder="+91 XXXXXXXXXX"
+              >
             </div>
-            <button type="submit" class="btn btn--primary">Add Address</button>
+
+            <div class="form-group" style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1.5rem;">
+              <input
+                type="checkbox"
+                id="AddressDefault"
+                name="address[default]"
+                value="true"
+                style="width:16px;height:16px;accent-color:var(--color-text-primary);cursor:pointer;"
+              >
+              <label for="AddressDefault" style="font-size:0.82rem;color:var(--color-text-secondary);cursor:pointer;">Set as default address</label>
+            </div>
+
+            <button type="submit" class="btn-save">Save address</button>
+
           {%- endform -%}
         </div>
+
       </main>
     </div>
   </div>
 </div>
 
-<style>
-.address-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-5); margin-bottom: var(--space-8); }
-.address-card { border: 1px solid var(--color-beige); border-radius: var(--radius-lg); padding: var(--space-5); position: relative; }
-.address-card--default { border-color: var(--color-forest); }
-.address-card__badge { position: absolute; top: var(--space-3); right: var(--space-3); font-size: 10px; }
-.address-card__actions { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-top: var(--space-4); }
-.address-new { padding-top: var(--space-8); border-top: 1px solid var(--color-beige); }
-</style>
+<!-- Toast -->
+<div class="acct-toast" id="AcctToast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  const toast = document.getElementById('AcctToast');
+  function showToast(msg) {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('is-visible');
+    setTimeout(() => toast.classList.remove('is-visible'), 3000);
+  }
+  if (window.location.search.includes('address_saved')) showToast('Address saved.');
+  if (window.location.search.includes('address_deleted')) showToast('Address removed.');
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Account Addresses",
+  "settings": []
+}
+{% endschema %}

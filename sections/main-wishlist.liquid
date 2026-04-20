@@ -1,104 +1,70 @@
 {% comment %}
   Section: Main Wishlist Page
-  Logged-in: loads saved handles from customer metafields (via app or custom approach)
-  Guest:     loads from localStorage via wishlist.ts + shows nudge
+  Inside account layout with sidebar nav.
+  Grid is populated by theme.js from localStorage.
+  JS targets: #WishlistGrid (container), #WishlistEmpty (empty state)
 {% endcomment %}
 
-<div class="main-wishlist section-padding">
-  <div class="container container--narrow">
-    <div class="main-wishlist__header">
-      <h1 class="main-wishlist__title">Saved Items</h1>
-      <p class="main-wishlist__subtitle">A collection of products you've chosen to revisit.</p>
-    </div>
+<div class="account-page">
+  <div class="container">
+    <div class="account-page__layout">
 
-    <!-- Grid — populated by theme.js from localStorage -->
-    <div class="wishlist-grid" id="WishlistGrid">
-      
-      <!-- Empty state -->
-      <div class="wishlist-empty" id="WishlistEmpty" style="display:none">
-        <div class="wishlist-empty__content">
-          <svg class="wishlist-empty__icon" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-          <h2 class="wishlist-empty__title">Your wishlist is empty</h2>
-          <p class="wishlist-empty__text">Save products you like to revisit them anytime.</p>
-          <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">Explore Products</a>
+      <!-- ── Sidebar ── -->
+      <aside class="account-page__sidebar">
+        {% render 'account-nav', current: 'wishlist' %}
+      </aside>
+
+      <!-- ── Main ── -->
+      <main class="account-page__main">
+
+        <div class="acct-header">
+          <h1 class="acct-header__title">Saved for later</h1>
+          <p class="acct-header__subtitle">Products you've set aside</p>
         </div>
-      </div>
 
+        <!-- Outer container — JS will inject product-card.wishlist-card elements here -->
+        <div class="wishlist-grid__inner" id="WishlistGrid">
+
+          <!-- Empty state — shown/hidden by wishlist.ts -->
+          <div class="acct-empty" id="WishlistEmpty" style="display:none">
+            <div class="acct-empty__icon">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+              </svg>
+            </div>
+            <h2 class="acct-empty__title">Nothing saved yet</h2>
+            <p class="acct-empty__text">Tap the heart on any product to save it here.</p>
+            <a href="{{ routes.all_products_collection_url }}" class="btn--outline">Browse products</a>
+          </div>
+
+        </div>
+
+        <style>
+          /* Override wishlist grid inside account layout */
+          #WishlistGrid.wishlist-grid__inner {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+          }
+          #WishlistGrid .wishlist-card {
+            border-radius: 14px;
+            overflow: hidden;
+          }
+          #WishlistEmpty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem 0;
+          }
+        </style>
+
+      </main>
     </div>
-
   </div>
 </div>
 
-<style>
-.main-wishlist {
-  background: var(--mm-soft-blush, #F5EDE6);
-  min-height: 60vh;
+{% schema %}
+{
+  "name": "Wishlist",
+  "settings": []
 }
-
-.main-wishlist__header {
-  text-align: center;
-  margin-bottom: var(--space-16);
-}
-
-.main-wishlist__title {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 300;
-  color: var(--mm-dark-espresso);
-  margin-bottom: var(--space-2);
-}
-
-.main-wishlist__subtitle {
-  font-size: var(--text-sm);
-  color: var(--mm-dark-espresso);
-  opacity: 0.6;
-}
-
-.wishlist-grid__inner {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-8) var(--space-6);
-}
-
-.wishlist-empty {
-  grid-column: 1/-1;
-  justify-content: center;
-  align-items: center;
-  padding: var(--space-20) 0;
-  text-align: center;
-}
-
-.wishlist-empty__content {
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-6);
-}
-
-.wishlist-empty__title {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: var(--text-2xl);
-  font-weight: 400;
-}
-
-.wishlist-empty__text {
-  font-size: var(--text-base);
-  opacity: 0.7;
-  line-height: 1.6;
-}
-
-@media (max-width: 1023px) {
-  .wishlist-grid__inner { grid-template-columns: repeat(3, 1fr); }
-}
-
-@media (max-width: 767px) {
-  .main-wishlist__header { margin-bottom: var(--space-10); }
-  .wishlist-grid__inner { 
-    grid-template-columns: repeat(2, 1fr); 
-    gap: var(--space-6) var(--space-4);
-  }
-}
-</style>
+{% endschema %}

@@ -1,151 +1,206 @@
 {% comment %}Section: Main Account Dashboard{% endcomment %}
 
-<div class="account-page section-padding">
+{%- assign active_section = request.param_last | default: '' -%}
+
+<div class="account-page">
   <div class="container">
     <div class="account-page__layout">
 
-      <!-- Sidebar nav -->
+      <!-- ── Sidebar ────────────────────────────── -->
       <aside class="account-page__sidebar">
-        {% render 'account-nav', current: 'dashboard' %}
+        {%- if active_section == 'details' -%}
+          {% render 'account-nav', current: 'details' %}
+        {%- else -%}
+          {% render 'account-nav', current: 'orders' %}
+        {%- endif -%}
       </aside>
 
-      <!-- Main -->
+      <!-- ── Main Content ────────────────────────── -->
       <main class="account-page__main">
-        <h1 class="account-page__title">Hello, {{ customer.first_name }}</h1>
 
-        <!-- Recent orders -->
-        <section class="account-section">
-          <h2 class="account-section__heading">Recent Orders</h2>
-          {%- if customer.orders.size > 0 -%}
-            <table class="order-table">
-              <thead>
-                <tr>
-                  <th>Order</th><th>Date</th><th>Status</th><th>Total</th><th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {%- for order in customer.orders limit: 5 -%}
-                  <tr>
-                    <td><a href="{{ order.customer_url }}" class="link-underline">#{{ order.name }}</a></td>
-                    <td>{{ order.created_at | date: '%b %d, %Y' }}</td>
-                    <td>
-                      <span class="order-status badge {% if order.fulfillment_status == 'fulfilled' %}badge--forest{% else %}badge--gold{% endif %}">
-                        {{ order.fulfillment_status | replace: '_', ' ' | capitalize | default: 'Processing' }}
-                      </span>
-                    </td>
-                    <td>{{ order.total_price | money }}</td>
-                    <td><a href="{{ order.customer_url }}" class="btn btn--secondary btn--xs">View</a></td>
-                  </tr>
-                {%- endfor -%}
-              </tbody>
-            </table>
-          {%- else -%}
-            <p class="text-muted">No orders yet. <a href="{{ routes.all_products_collection_url }}" class="link-underline">Start shopping</a></p>
-          {%- endif -%}
-        </section>
+        {%- if active_section == 'details' -%}
 
-        <!-- Account details -->
-        <section class="account-section">
-          <div class="account-section__header-row">
-            <h2 class="account-section__heading">Account Details</h2>
-            <a href="{{ routes.account_url }}/edit" class="btn btn--secondary btn--sm">Edit</a>
+          <!-- ═══════════════════════════════════
+               ACCOUNT DETAILS
+               ═══════════════════════════════════ -->
+          <div class="acct-header">
+            <h1 class="acct-header__title">Account details</h1>
+            <p class="acct-header__subtitle">Your personal information</p>
           </div>
-          <p>{{ customer.email }}</p>
-          {%- if customer.default_address -%}
-            <address class="account-address">
-              {{ customer.default_address | format_address }}
-            </address>
-          {%- else -%}
-            <p class="text-muted">No default address. <a href="{{ routes.account_addresses_url }}" class="link-underline">Add one</a></p>
-          {%- endif -%}
-        </section>
-      </main>
 
+          {%- form 'customer' -%}
+            <div class="address-form-wrap">
+
+              {%- if form.errors -%}
+                <div style="background:#fff4f4;border:1px solid #f5c0c0;border-radius:8px;padding:12px 16px;font-size:0.8rem;color:#8B2020;margin-bottom:1.5rem;">
+                  {{ form.errors | default_errors }}
+                </div>
+              {%- endif -%}
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="AccountFirstName" class="form-label">First name</label>
+                  <input
+                    type="text"
+                    id="AccountFirstName"
+                    name="customer[first_name]"
+                    value="{{ customer.first_name | escape }}"
+                    class="form-input"
+                    autocomplete="given-name"
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="AccountLastName" class="form-label">Last name</label>
+                  <input
+                    type="text"
+                    id="AccountLastName"
+                    name="customer[last_name]"
+                    value="{{ customer.last_name | escape }}"
+                    class="form-input"
+                    autocomplete="family-name"
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="AccountEmail" class="form-label">Email</label>
+                <input
+                  type="email"
+                  id="AccountEmail"
+                  value="{{ customer.email | escape }}"
+                  class="form-input"
+                  readonly
+                  title="Email cannot be changed here"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="AccountPhone" class="form-label">Phone <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+                <input
+                  type="tel"
+                  id="AccountPhone"
+                  name="customer[phone]"
+                  value="{{ customer.phone | escape }}"
+                  class="form-input"
+                  autocomplete="tel"
+                  placeholder="+91 XXXXXXXXXX"
+                >
+              </div>
+
+              <div style="margin-top:0.5rem;display:flex;align-items:center;gap:1.5rem;">
+                <button type="submit" class="btn-save" id="AccountDetailsSave">Save changes</button>
+                <a
+                  href="{{ routes.account_url }}"
+                  style="font-size:0.78rem;color:var(--color-text-muted);text-decoration:underline;text-underline-offset:3px;"
+                >Cancel</a>
+              </div>
+
+            </div>
+
+            <div style="margin-top:1.5rem;padding:1rem 1.25rem;background:#fff;border:1px solid var(--color-border-default);border-radius:12px;display:inline-flex;align-items:center;gap:0.75rem;">
+              <span style="font-size:0.78rem;color:var(--color-text-muted);">Want to change your password?</span>
+              <a href="/account/reset" style="font-size:0.78rem;font-weight:600;color:var(--color-text-primary);text-decoration:underline;text-underline-offset:3px;">Reset password</a>
+            </div>
+
+          {%- endform -%}
+
+        {%- else -%}
+
+          <!-- ═══════════════════════════════════
+               ORDERS (Default view)
+               ═══════════════════════════════════ -->
+          <div class="acct-header">
+            <h1 class="acct-header__title">Your orders</h1>
+            {%- if customer.orders.size > 0 -%}
+              <p class="acct-header__subtitle">{{ customer.orders.size }} order{% if customer.orders.size != 1 %}s{% endif %} placed</p>
+            {%- endif -%}
+          </div>
+
+          {%- if customer.orders.size > 0 -%}
+
+            <div class="order-list">
+              {%- for order in customer.orders -%}
+                <div class="order-card">
+                  <div class="order-card__info">
+                    <p class="order-card__id">Order #{{ order.name }}</p>
+                    <div class="order-card__meta">
+                      <span>{{ order.created_at | date: '%b %d, %Y' }}</span>
+                      <span class="order-card__meta-sep">·</span>
+                      <span>{{ order.line_items_count }} item{% if order.line_items_count != 1 %}s{% endif %}</span>
+                    </div>
+                  </div>
+
+                  {%- assign status = order.fulfillment_status | default: 'unfulfilled' -%}
+                  <span class="order-card__status {% if status == 'fulfilled' %}order-card__status--fulfilled{% elsif status == 'processing' %}order-card__status--processing{% endif %}">
+                    {{ status | replace: '_', ' ' | capitalize }}
+                  </span>
+
+                  <div class="order-card__price">
+                    {{ order.total_price | money }}
+                    <small>{{ order.financial_status | replace: '_', ' ' | capitalize }}</small>
+                  </div>
+
+                  <a href="{{ order.customer_url }}" class="order-card__cta">View details</a>
+                </div>
+              {%- endfor -%}
+            </div>
+
+          {%- else -%}
+
+            <div class="acct-empty">
+              <div class="acct-empty__icon">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <path d="M16 10a4 4 0 01-8 0"/>
+                </svg>
+              </div>
+              <h2 class="acct-empty__title">No orders yet</h2>
+              <p class="acct-empty__text">When you place an order, it'll appear here.</p>
+              <a href="{{ routes.all_products_collection_url }}" class="btn--outline">Explore products</a>
+            </div>
+
+          {%- endif -%}
+
+        {%- endif -%}
+
+      </main>
     </div>
   </div>
 </div>
 
-<style>
-.account-page__layout {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: var(--space-10);
-  align-items: start;
-}
+<!-- Toast micro-feedback -->
+<div class="acct-toast" id="AcctToast" role="status" aria-live="polite"></div>
 
-.account-page__title {
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 300;
-  margin-bottom: var(--space-8);
-}
-
-.account-section {
-  margin-bottom: var(--space-10);
-  padding-bottom: var(--space-10);
-  border-bottom: 1px solid var(--color-beige);
-}
-
-.account-section:last-child { border-bottom: none; }
-
-.account-section__heading {
-  font-family: var(--font-display);
-  font-size: var(--text-2xl);
-  font-weight: 400;
-  margin-bottom: var(--space-5);
-  color: var(--color-text-dark);
-}
-
-.account-section__header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--space-5);
-}
-
-.order-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: var(--text-sm);
-}
-
-.order-table th {
-  text-align: left;
-  padding: var(--space-3) var(--space-4);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-text-light);
-  border-bottom: 1px solid var(--color-beige);
-}
-
-.order-table td {
-  padding: var(--space-4);
-  border-bottom: 1px solid var(--color-beige);
-  color: var(--color-text-mid);
-  vertical-align: middle;
-}
-
-.account-address {
-  font-style: normal;
-  font-size: var(--text-sm);
-  color: var(--color-text-mid);
-  line-height: 1.7;
-}
-
-.link-underline { color: var(--color-forest); text-decoration: underline; }
-.text-muted { color: var(--color-text-light); font-size: var(--text-sm); }
-
-.btn--xs {
-  padding: var(--space-1) var(--space-3);
-  font-size: var(--text-xs);
-  height: auto;
-}
-
-@media (max-width: 767px) {
-  .account-page__layout {
-    grid-template-columns: 1fr;
+<script>
+(function () {
+  /* Toast helper */
+  const toast = document.getElementById('AcctToast');
+  function showToast(msg) {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('is-visible');
+    setTimeout(() => toast.classList.remove('is-visible'), 3000);
   }
+
+  /* Account details save feedback */
+  const saveBtn = document.getElementById('AccountDetailsSave');
+  if (saveBtn) {
+    saveBtn.closest('form').addEventListener('submit', function () {
+      showToast('Saving…');
+    });
+  }
+
+  /* Flash success if redirected back */
+  if (window.location.search.includes('customer_updated=true')) {
+    showToast('Details saved successfully.');
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Account Dashboard",
+  "settings": []
 }
-</style>
+{% endschema %}

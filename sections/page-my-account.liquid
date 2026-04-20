@@ -1,0 +1,532 @@
+{% comment %}
+  Section: page-my-account
+  Custom account dashboard for Shopify New Customer Accounts.
+  All 4 panels (Orders, Addresses, Wishlist, Details) in one page
+  with smooth JS tab switching — no page reload.
+  URL: /pages/my-account
+{% endcomment %}
+
+{%- unless customer -%}
+  <script>window.location.href = '{{ routes.account_login_url }}';</script>
+{%- endunless -%}
+
+<div class="account-page" id="AccountPage">
+  <div class="container">
+    <div class="account-page__layout">
+
+      <!-- ══ SIDEBAR ════════════════════════════════════════════════════ -->
+      <aside class="account-page__sidebar">
+        <nav class="account-nav" aria-label="Account navigation">
+
+          <p class="account-nav__greeting">Hi, <em>{{ customer.first_name }}</em></p>
+          <hr class="account-nav__rule">
+
+          <ul class="account-nav__list">
+            <li>
+              <button
+                class="account-nav__link is-active"
+                data-tab="orders"
+                aria-selected="true"
+                type="button"
+              >Orders</button>
+            </li>
+            <li>
+              <button
+                class="account-nav__link"
+                data-tab="addresses"
+                aria-selected="false"
+                type="button"
+              >Addresses</button>
+            </li>
+            <li>
+              <button
+                class="account-nav__link"
+                data-tab="wishlist"
+                aria-selected="false"
+                type="button"
+              >Wishlist</button>
+            </li>
+            <li>
+              <button
+                class="account-nav__link"
+                data-tab="details"
+                aria-selected="false"
+                type="button"
+              >Account Details</button>
+            </li>
+          </ul>
+
+          <hr class="account-nav__rule">
+
+          <a
+            href="{{ routes.account_logout_url }}"
+            class="account-nav__link account-nav__link--logout"
+          >Log out</a>
+
+        </nav>
+      </aside>
+
+      <!-- ══ MAIN CONTENT ═══════════════════════════════════════════════ -->
+      <main class="account-page__main">
+
+        <!-- ─────────────────────────────────────────────────────────────
+             PANEL 1 — ORDERS
+             ───────────────────────────────────────────────────────────── -->
+        <div class="acct-panel is-active" id="panel-orders" role="tabpanel" aria-label="Orders">
+
+          <div class="acct-header">
+            <h1 class="acct-header__title">Your orders</h1>
+            {%- if customer.orders.size > 0 -%}
+              <p class="acct-header__subtitle">
+                {{ customer.orders.size }} order{% if customer.orders.size != 1 %}s{% endif %} placed
+              </p>
+            {%- endif -%}
+          </div>
+
+          {%- if customer.orders.size > 0 -%}
+            <div class="order-list">
+              {%- for order in customer.orders -%}
+                <div class="order-card">
+                  <div class="order-card__info">
+                    <p class="order-card__id">Order #{{ order.name }}</p>
+                    <div class="order-card__meta">
+                      <span>{{ order.created_at | date: '%b %d, %Y' }}</span>
+                      <span class="order-card__meta-sep">·</span>
+                      <span>
+                        {{ order.line_items_count }}
+                        item{% if order.line_items_count != 1 %}s{% endif %}
+                      </span>
+                    </div>
+                  </div>
+
+                  {%- assign f_status = order.fulfillment_status | default: 'unfulfilled' -%}
+                  <span class="order-card__status
+                    {% if f_status == 'fulfilled' %}order-card__status--fulfilled
+                    {% elsif f_status == 'in_progress' %}order-card__status--processing
+                    {% endif %}">
+                    {{ f_status | replace: '_', ' ' | capitalize }}
+                  </span>
+
+                  <div class="order-card__price">
+                    {{ order.total_price | money }}
+                    <small>{{ order.financial_status | replace: '_', ' ' | capitalize }}</small>
+                  </div>
+
+                  <a href="{{ order.customer_url }}" class="order-card__cta">View details</a>
+                </div>
+              {%- endfor -%}
+            </div>
+
+          {%- else -%}
+            <div class="acct-empty">
+              <div class="acct-empty__icon">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <path d="M16 10a4 4 0 01-8 0"/>
+                </svg>
+              </div>
+              <h2 class="acct-empty__title">No orders yet</h2>
+              <p class="acct-empty__text">When you place an order, it'll appear here.</p>
+              <a href="{{ routes.all_products_collection_url }}" class="btn--outline">
+                Explore products
+              </a>
+            </div>
+          {%- endif -%}
+
+        </div>
+
+
+        <!-- ─────────────────────────────────────────────────────────────
+             PANEL 2 — ADDRESSES
+             ───────────────────────────────────────────────────────────── -->
+        <div class="acct-panel" id="panel-addresses" role="tabpanel" aria-label="Addresses" hidden>
+
+          <div class="acct-header">
+            <h1 class="acct-header__title">Saved addresses</h1>
+            {%- if customer.addresses.size > 0 -%}
+              <p class="acct-header__subtitle">
+                {{ customer.addresses.size }} address{% if customer.addresses.size != 1 %}es{% endif %} saved
+              </p>
+            {%- endif -%}
+          </div>
+
+          {%- if customer.addresses.size > 0 -%}
+            <div class="address-grid">
+              {%- for address in customer.addresses -%}
+                <div class="address-card {% if address == customer.default_address %}address-card--default{% endif %}">
+                  {%- if address == customer.default_address -%}
+                    <span class="address-card__badge">Default</span>
+                  {%- endif -%}
+
+                  <p class="address-card__label">
+                    {{ address.first_name }} {{ address.last_name }}
+                  </p>
+
+                  <address>
+                    {%- if address.address1 != blank -%}{{ address.address1 }}<br>{%- endif -%}
+                    {%- if address.address2 != blank -%}{{ address.address2 }}<br>{%- endif -%}
+                    {%- if address.city != blank -%}{{ address.city }}{%- endif -%}
+                    {%- if address.province != blank -%}, {{ address.province }}{%- endif -%}
+                    {%- if address.zip != blank -%} {{ address.zip }}{%- endif -%}
+                    <br>{{ address.country }}
+                    {%- if address.phone != blank -%}<br>{{ address.phone }}{%- endif -%}
+                  </address>
+
+                  <div class="address-card__actions">
+                    {%- form 'customer_address', address, id: 'DeleteForm-{{ address.id }}' -%}
+                      <input type="hidden" name="_method" value="delete">
+                      <button
+                        type="submit"
+                        class="btn-text btn-text--danger"
+                        onclick="return confirm('Delete this address?')"
+                      >Delete</button>
+                    {%- endform -%}
+
+                    {%- unless address == customer.default_address -%}
+                      {%- form 'customer_address', address, id: 'DefaultForm-{{ address.id }}' -%}
+                        <input type="hidden" name="_method" value="put">
+                        <input type="hidden" name="address[default]" value="true">
+                        <button type="submit" class="btn-text">Set as default</button>
+                      {%- endform -%}
+                    {%- endunless -%}
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <div class="acct-empty" style="padding: 1.5rem 0 0.5rem;">
+              <div class="acct-empty__icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <h2 class="acct-empty__title" style="font-size:1.2rem;">No addresses saved</h2>
+              <p class="acct-empty__text">Add a shipping address to speed up checkout.</p>
+            </div>
+          {%- endif -%}
+
+          <!-- Add New Address Form -->
+          <div class="address-form-wrap">
+            <h2 class="address-form-title">+ Add new address</h2>
+
+            {%- form 'customer_address', customer.new_address, id: 'NewAddressForm' -%}
+              {%- if form.errors -%}
+                <div class="form-errors">{{ form.errors | default_errors }}</div>
+              {%- endif -%}
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="NewFirstName" class="form-label">First name</label>
+                  <input
+                    type="text" id="NewFirstName"
+                    name="address[first_name]"
+                    value="{{ form.first_name | escape }}"
+                    class="form-input"
+                    autocomplete="given-name"
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="NewLastName" class="form-label">Last name</label>
+                  <input
+                    type="text" id="NewLastName"
+                    name="address[last_name]"
+                    value="{{ form.last_name | escape }}"
+                    class="form-input"
+                    autocomplete="family-name"
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="NewAddress1" class="form-label">Address</label>
+                <input
+                  type="text" id="NewAddress1"
+                  name="address[address1]"
+                  value="{{ form.address1 | escape }}"
+                  class="form-input"
+                  autocomplete="address-line1"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="NewAddress2" class="form-label">
+                  Apartment, suite, etc.
+                  <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span>
+                </label>
+                <input
+                  type="text" id="NewAddress2"
+                  name="address[address2]"
+                  value="{{ form.address2 | escape }}"
+                  class="form-input"
+                  autocomplete="address-line2"
+                >
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="NewCity" class="form-label">City</label>
+                  <input
+                    type="text" id="NewCity"
+                    name="address[city]"
+                    value="{{ form.city | escape }}"
+                    class="form-input"
+                    autocomplete="address-level2"
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="NewZip" class="form-label">ZIP / Postcode</label>
+                  <input
+                    type="text" id="NewZip"
+                    name="address[zip]"
+                    value="{{ form.zip | escape }}"
+                    class="form-input"
+                    autocomplete="postal-code"
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="NewCountry" class="form-label">Country</label>
+                <select id="NewCountry" name="address[country]" class="form-input">
+                  {{ all_country_option_tags }}
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="NewPhone" class="form-label">
+                  Phone
+                  <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span>
+                </label>
+                <input
+                  type="tel" id="NewPhone"
+                  name="address[phone]"
+                  value="{{ form.phone | escape }}"
+                  class="form-input"
+                  placeholder="+91 XXXXXXXXXX"
+                  autocomplete="tel"
+                >
+              </div>
+
+              <div class="form-group" style="display:flex;align-items:center;gap:0.65rem;margin-bottom:1.5rem;">
+                <input
+                  type="checkbox" id="NewDefault"
+                  name="address[default]"
+                  value="true"
+                  style="width:16px;height:16px;accent-color:var(--color-text-primary);cursor:pointer;"
+                >
+                <label for="NewDefault" style="font-size:0.82rem;color:var(--color-text-secondary);cursor:pointer;">
+                  Set as default address
+                </label>
+              </div>
+
+              <button type="submit" class="btn-save">Save address</button>
+            {%- endform -%}
+          </div>
+
+        </div>
+
+
+        <!-- ─────────────────────────────────────────────────────────────
+             PANEL 3 — WISHLIST
+             ───────────────────────────────────────────────────────────── -->
+        <div class="acct-panel" id="panel-wishlist" role="tabpanel" aria-label="Wishlist" hidden>
+
+          <div class="acct-header">
+            <h1 class="acct-header__title">Saved for later</h1>
+            <p class="acct-header__subtitle">Products you've set aside</p>
+          </div>
+
+          <!--
+            #WishlistGrid & #WishlistEmpty are the IDs that wishlist.ts uses.
+            Do not rename them.
+          -->
+          <div class="wishlist-page-grid" id="WishlistGrid">
+            <div class="acct-empty" id="WishlistEmpty" style="display:none">
+              <div class="acct-empty__icon">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+                  <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                </svg>
+              </div>
+              <h2 class="acct-empty__title">Nothing saved yet</h2>
+              <p class="acct-empty__text">Tap the heart on any product to save it here.</p>
+              <a href="{{ routes.all_products_collection_url }}" class="btn--outline">Browse products</a>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- ─────────────────────────────────────────────────────────────
+             PANEL 4 — ACCOUNT DETAILS
+             ───────────────────────────────────────────────────────────── -->
+        <div class="acct-panel" id="panel-details" role="tabpanel" aria-label="Account details" hidden>
+
+          <div class="acct-header">
+            <h1 class="acct-header__title">Account details</h1>
+            <p class="acct-header__subtitle">Your personal information</p>
+          </div>
+
+          {%- form 'customer' -%}
+            {%- if form.errors -%}
+              <div class="form-errors">{{ form.errors | default_errors }}</div>
+            {%- endif -%}
+
+            <div class="address-form-wrap">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="CustFirstName" class="form-label">First name</label>
+                  <input
+                    type="text" id="CustFirstName"
+                    name="customer[first_name]"
+                    value="{{ customer.first_name | escape }}"
+                    class="form-input"
+                    autocomplete="given-name"
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="CustLastName" class="form-label">Last name</label>
+                  <input
+                    type="text" id="CustLastName"
+                    name="customer[last_name]"
+                    value="{{ customer.last_name | escape }}"
+                    class="form-input"
+                    autocomplete="family-name"
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="CustEmail" class="form-label">Email</label>
+                <input
+                  type="email" id="CustEmail"
+                  value="{{ customer.email | escape }}"
+                  class="form-input"
+                  readonly
+                  title="Email cannot be changed here"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="CustPhone" class="form-label">
+                  Phone
+                  <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span>
+                </label>
+                <input
+                  type="tel" id="CustPhone"
+                  name="customer[phone]"
+                  value="{{ customer.phone | escape }}"
+                  class="form-input"
+                  placeholder="+91 XXXXXXXXXX"
+                  autocomplete="tel"
+                >
+              </div>
+
+              <div style="display:flex;align-items:center;gap:1.5rem;margin-top:0.5rem;">
+                <button type="submit" class="btn-save" id="DetailsSaveBtn">Save changes</button>
+                <a
+                  href="{{ routes.account_logout_url }}"
+                  style="font-size:0.78rem;color:var(--color-text-muted);text-decoration:underline;text-underline-offset:3px;"
+                >Sign out of account</a>
+              </div>
+            </div>
+          {%- endform -%}
+
+          <div class="acct-password-hint">
+            <span>Password or security settings?</span>
+            <a href="/account">Manage in account settings →</a>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- Micro-feedback toast -->
+<div class="acct-toast" id="AcctToast" role="status" aria-live="polite"></div>
+
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Elements ───────────────────────────────────────────────────────── */
+  const navBtns = document.querySelectorAll('[data-tab]');
+  const panels  = document.querySelectorAll('.acct-panel');
+  const toast   = document.getElementById('AcctToast');
+
+  /* ── Tab switching ──────────────────────────────────────────────────── */
+  function switchTab(id) {
+    panels.forEach(p => {
+      const match = p.id === 'panel-' + id;
+      p.hidden = !match;
+      p.classList.toggle('is-active', match);
+    });
+
+    navBtns.forEach(b => {
+      const active = b.dataset.tab === id;
+      b.classList.toggle('is-active', active);
+      b.setAttribute('aria-selected', String(active));
+    });
+
+    /* persist in URL hash so browser back works */
+    history.replaceState(null, '', '#' + id);
+
+    /* scroll main to top when switching */
+    document.getElementById('AccountPage')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  navBtns.forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+
+  /* restore from hash on load */
+  const initHash = window.location.hash.slice(1);
+  const validIds = ['orders', 'addresses', 'wishlist', 'details'];
+  if (initHash && validIds.includes(initHash)) switchTab(initHash);
+
+  /* ── Toast ──────────────────────────────────────────────────────────── */
+  function showToast(msg, duration) {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('is-visible');
+    setTimeout(() => toast.classList.remove('is-visible'), duration || 3000);
+  }
+
+  /* Flash on return after save */
+  if (location.search.includes('customer_updated')) showToast('Details saved successfully.');
+  if (location.search.includes('address_saved'))    showToast('Address saved.');
+
+  /* Save button feedback */
+  const saveBtn = document.getElementById('DetailsSaveBtn');
+  saveBtn?.closest('form')?.addEventListener('submit', () => showToast('Saving…', 10000));
+
+  /* New address form feedback */
+  document.getElementById('NewAddressForm')?.addEventListener('submit', () => {
+    showToast('Saving address…', 10000);
+  });
+
+  /* ── Wishlist: trigger re-scan when panel opens ─────────────────────── */
+  /* wishlist.ts already runs on DOM ready. When the panel becomes visible
+     via tab switch, the cards are already in the DOM — _checkEmpty handles it. */
+  document.querySelector('[data-tab="wishlist"]')?.addEventListener('click', () => {
+    /* re-trigger empty check in case panel was hidden during initial render */
+    setTimeout(() => {
+      const grid  = document.getElementById('WishlistGrid');
+      const empty = document.getElementById('WishlistEmpty');
+      if (!grid || !empty) return;
+      empty.style.display = grid.querySelector('.wishlist-card') ? 'none' : '';
+    }, 50);
+  });
+
+})();
+</script>
+
+
+{% schema %}
+{
+  "name": "Account Dashboard",
+  "settings": []
+}
+{% endschema %}

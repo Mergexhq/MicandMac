@@ -1,74 +1,132 @@
 {% comment %}Section: Main Order Detail{% endcomment %}
 
-<div class="account-page section-padding">
+<div class="account-page">
   <div class="container">
     <div class="account-page__layout">
+
+      <!-- ── Sidebar ── -->
       <aside class="account-page__sidebar">
         {% render 'account-nav', current: 'orders' %}
       </aside>
-      <main class="account-page__main">
-        <a href="{{ routes.account_url }}" class="account-back">← Back to account</a>
-        <h1 class="account-page__title">Order #{{ order.name }}</h1>
-        <p class="order-date">Placed {{ order.created_at | date: '%B %d, %Y' }}</p>
 
-        {% render 'order-timeline', order: order %}
+      <!-- ── Main ── -->
+      <main class="account-page__main">
+
+        <a href="{{ routes.account_url }}" class="order-back">
+          ← Back to orders
+        </a>
+
+        <div class="acct-header">
+          <h1 class="acct-header__title">Order #{{ order.name }}</h1>
+          <p class="acct-header__subtitle">Placed {{ order.created_at | date: '%B %d, %Y' }}</p>
+        </div>
+
+        <!-- Status bar -->
+        <div class="order-meta-bar">
+          <div class="order-meta-bar__item">
+            <p class="order-meta-bar__label">Order number</p>
+            <p class="order-meta-bar__value">#{{ order.name }}</p>
+          </div>
+          <div class="order-meta-bar__item">
+            <p class="order-meta-bar__label">Date</p>
+            <p class="order-meta-bar__value">{{ order.created_at | date: '%b %d, %Y' }}</p>
+          </div>
+          <div class="order-meta-bar__item">
+            <p class="order-meta-bar__label">Payment</p>
+            <p class="order-meta-bar__value">{{ order.financial_status | replace: '_', ' ' | capitalize }}</p>
+          </div>
+          <div class="order-meta-bar__item">
+            <p class="order-meta-bar__label">Fulfilment</p>
+            <p class="order-meta-bar__value">{{ order.fulfillment_status | replace: '_', ' ' | capitalize | default: 'Processing' }}</p>
+          </div>
+        </div>
 
         <!-- Line items -->
-        <section class="account-section">
-          <h2 class="account-section__heading">Items</h2>
+        <div class="order-items">
           {%- for item in order.line_items -%}
             <div class="order-item">
               {%- if item.image -%}
-                <img src="{{ item.image | image_url: width: 120 }}" alt="{{ item.title | escape }}" width="80" height="80" loading="lazy" class="order-item__img">
+                <img
+                  src="{{ item.image | image_url: width: 144 }}"
+                  alt="{{ item.title | escape }}"
+                  width="72"
+                  height="72"
+                  loading="lazy"
+                  class="order-item__img"
+                >
+              {%- else -%}
+                <div class="order-item__img" style="display:flex;align-items:center;justify-content:center;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <path d="M3 9h18M9 21V9"/>
+                  </svg>
+                </div>
               {%- endif -%}
-              <div class="order-item__info">
-                <p class="order-item__title">{{ item.product.title }}</p>
+
+              <div>
+                <p class="order-item__name">{{ item.product.title }}</p>
                 {%- unless item.variant.title == 'Default Title' -%}
                   <p class="order-item__variant">{{ item.variant.title }}</p>
                 {%- endunless -%}
-                <p class="order-item__qty">Qty: {{ item.quantity }}</p>
+                <p class="order-item__qty">Qty {{ item.quantity }}</p>
               </div>
+
               <p class="order-item__price">{{ item.final_line_price | money }}</p>
             </div>
           {%- endfor -%}
-        </section>
+        </div>
 
         <!-- Totals -->
-        <section class="account-section order-totals">
-          <div class="order-totals__row"><span>Subtotal</span><span>{{ order.subtotal_price | money }}</span></div>
+        <div class="order-summary">
+          <div class="order-summary__row">
+            <span>Subtotal</span>
+            <span>{{ order.subtotal_price | money }}</span>
+          </div>
           {%- for discount in order.cart_level_discount_applications -%}
-            <div class="order-totals__row order-totals__row--discount"><span>{{ discount.title }}</span><span>-{{ discount.total_allocated_amount | money }}</span></div>
+            <div class="order-summary__row order-summary__row--discount">
+              <span>{{ discount.title }}</span>
+              <span>–{{ discount.total_allocated_amount | money }}</span>
+            </div>
           {%- endfor -%}
-          <div class="order-totals__row"><span>Shipping</span><span>{{ order.shipping_price | money }}</span></div>
-          <div class="order-totals__row"><span>Tax</span><span>{{ order.tax_price | money }}</span></div>
-          <div class="order-totals__total"><span>Total</span><span>{{ order.total_price | money }}</span></div>
-        </section>
+          <div class="order-summary__row">
+            <span>Shipping</span>
+            <span>{{ order.shipping_price | money }}</span>
+          </div>
+          {%- if order.tax_price and order.tax_price > 0 -%}
+            <div class="order-summary__row">
+              <span>Tax</span>
+              <span>{{ order.tax_price | money }}</span>
+            </div>
+          {%- endif -%}
+          <div class="order-summary__total">
+            <span>Total</span>
+            <span>{{ order.total_price | money }}</span>
+          </div>
+        </div>
 
         <!-- Shipping address -->
         {%- if order.shipping_address -%}
-          <section class="account-section">
-            <h2 class="account-section__heading">Shipping Address</h2>
-            <address class="account-address">{{ order.shipping_address | format_address }}</address>
-          </section>
+          <div class="order-address">
+            <p class="order-address__label">Shipped to</p>
+            <address>
+              {{ order.shipping_address.name }}<br>
+              {%- if order.shipping_address.address1 != blank -%}{{ order.shipping_address.address1 }}<br>{%- endif -%}
+              {%- if order.shipping_address.address2 != blank -%}{{ order.shipping_address.address2 }}<br>{%- endif -%}
+              {{ order.shipping_address.city }}{%- if order.shipping_address.province != blank -%}, {{ order.shipping_address.province }}{%- endif -%}&nbsp;{{ order.shipping_address.zip }}<br>
+              {{ order.shipping_address.country }}<br>
+              {%- if order.shipping_address.phone != blank -%}{{ order.shipping_address.phone }}{%- endif -%}
+            </address>
+          </div>
         {%- endif -%}
+
       </main>
     </div>
   </div>
 </div>
 
-<style>
-.account-back { color: var(--color-text-light); font-size: var(--text-sm); display: inline-flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-5); text-decoration: none; }
-.account-back:hover { color: var(--color-forest); }
-.order-date { font-size: var(--text-sm); color: var(--color-text-light); margin-bottom: var(--space-4); }
-
-.order-item { display: grid; grid-template-columns: 80px 1fr auto; gap: var(--space-4); padding-block: var(--space-4); border-bottom: 1px solid var(--color-beige); align-items: start; }
-.order-item__img { width: 80px; height: 80px; border-radius: var(--radius-md); object-fit: cover; background: var(--color-beige); }
-.order-item__title { font-weight: 500; font-size: var(--text-sm); color: var(--color-text-dark); }
-.order-item__variant, .order-item__qty { font-size: var(--text-xs); color: var(--color-text-light); }
-.order-item__price { font-weight: 500; font-size: var(--text-sm); text-align: right; }
-
-.order-totals { max-width: 340px; }
-.order-totals__row { display: flex; justify-content: space-between; padding-block: var(--space-2); font-size: var(--text-sm); color: var(--color-text-mid); }
-.order-totals__row--discount { color: var(--color-forest); }
-.order-totals__total { display: flex; justify-content: space-between; padding-top: var(--space-4); font-weight: 600; font-size: var(--text-lg); color: var(--color-text-dark); border-top: 1px solid var(--color-beige); }
-</style>
+{% schema %}
+{
+  "name": "Order Detail",
+  "settings": []
+}
+{% endschema %}
