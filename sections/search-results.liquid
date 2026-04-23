@@ -165,6 +165,26 @@
   opacity: 0.6;
 }
 
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+}
+
+@media (max-width: 1023px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 767px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+}
+
 @media (max-width: 639px) {
   .search-results__form { width: 100%; }
   .search-results__input { width: 100%; flex: 1; }

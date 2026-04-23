@@ -21,23 +21,52 @@
             >
           </a>
         {%- else -%}
-          <a href="{{ routes.root_url }}" class="footer__logo-icon">
+          <a href="{{ routes.root_url }}" class="footer__logo-icon" style="display: flex; align-items: center; gap: 12px; text-decoration: none; margin-bottom: var(--space-4);">
             <img
               src="{{ 'MicandMac_Monogram.webp' | asset_url }}"
               alt="Mic & Mac"
-              width="48"
-              height="48"
+              width="36"
+              height="36"
               loading="lazy"
             >
+            <span style="font-family: var(--font-display); font-size: 20px; font-weight: 500; color: #fff; letter-spacing: 0.1em; text-transform: uppercase;">MIC &amp; MAC</span>
           </a>
         {%- endif -%}
 
         <p class="footer__brand-desc">
-          Designed for your daily ritual.<br>
-          Love Your Skin. Every Day. 365.
+          Clean, conscious skincare crafted for daily care.
         </p>
 
-        <p class="footer__ritual">A daily ritual of clean, conscious skincare.</p>
+        <div class="footer__contact" style="margin-top: 32px;">
+          <h4 style="font-family: var(--font-display); font-size: 17px; font-weight: 600; color: #fff; letter-spacing: 0.05em; margin-bottom: 8px;">Need help?</h4>
+          <a href="mailto:care@micandmacstores.com" style="display: block; font-size: var(--text-sm); color: rgba(255,255,255,0.95); text-decoration: none; margin-bottom: 8px; transition: color 0.3s;">care@micandmacstores.com</a>
+          <a href="tel:+917339663196" style="display: block; font-size: var(--text-sm); color: rgba(255,255,255,0.95); text-decoration: none; margin-bottom: 16px; transition: color 0.3s;">+91 73396 63196</a>
+        </div>
+
+        <a href="/pages/contact" class="btn btn--secondary btn--outline" style="border-radius: var(--radius-sm); padding: 10px 28px; font-size: 13px; display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.4); color: #fff; background: transparent; transition: all var(--transition-fast); margin-bottom: 12px;">
+          Contact Us <span style="margin-left: 6px;">&rarr;</span>
+        </a>
+
+        <div class="footer__social" style="display: flex; gap: var(--space-4); align-items: center;">
+          {%- if section.settings.instagram != blank -%}
+            <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener" aria-label="Instagram" class="footer__social-link" style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: rgba(255,255,255,0.85); text-decoration: none;">
+              <i class="fa-brands fa-instagram" style="font-size: 18px;"></i> <span>Instagram</span>
+            </a>
+          {%- else -%}
+            <a href="#" aria-label="Instagram" class="footer__social-link" style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: rgba(255,255,255,0.85); text-decoration: none;">
+              <i class="fa-brands fa-instagram" style="font-size: 18px;"></i> <span>Instagram</span>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.whatsapp != blank -%}
+            <a href="https://wa.me/{{ section.settings.whatsapp }}" target="_blank" rel="noopener" aria-label="WhatsApp" class="footer__social-link" style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: rgba(255,255,255,0.85); text-decoration: none;">
+              <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> <span>WhatsApp</span>
+            </a>
+          {%- else -%}
+             <a href="#" aria-label="WhatsApp" class="footer__social-link" style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: rgba(255,255,255,0.85); text-decoration: none;">
+               <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> <span>WhatsApp</span>
+             </a>
+          {%- endif -%}
+        </div>
       </div>
 
       <!-- Link Columns -->
@@ -45,67 +74,28 @@
         <h4 class="footer__col-title">Shop</h4>
         <ul class="footer__col-links">
           <li><a href="{{ routes.all_products_collection_url }}" class="footer__col-link">All Products</a></li>
-          <li><a href="{{ routes.collections_url }}/bestsellers" class="footer__col-link">Bestsellers</a></li>
-          <li><a href="{{ routes.collections_url }}/combo-offers" class="footer__col-link">Combos</a></li>
-          <li><a href="{{ routes.all_products_collection_url }}/cleansing-bar" class="footer__col-link">Cleansing Bars</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}/glowing-bar" class="footer__col-link">Glowing Bars</a></li>
           <li><a href="{{ routes.all_products_collection_url }}/lip-care" class="footer__col-link">Lip Care</a></li>
+          <li><a href="{{ routes.collections_url }}/combo-offers" class="footer__col-link">Combos</a></li>
         </ul>
       </div>
 
       <div class="footer__col">
-        <h4 class="footer__col-title">Company</h4>
+        <h4 class="footer__col-title">Brand</h4>
         <ul class="footer__col-links">
           <li><a href="/pages/our-story" class="footer__col-link">Our Story</a></li>
-          <li><a href="/pages/ingredients-philosophy" class="footer__col-link">Ingredients Philosophy</a></li>
+          <li><a href="/pages/ingredients" class="footer__col-link">Ingredients</a></li>
           <li><a href="/blogs/journal" class="footer__col-link">Journal</a></li>
-          <li><a href="/pages/contact" class="footer__col-link">Contact</a></li>
         </ul>
       </div>
 
       <div class="footer__col">
         <h4 class="footer__col-title">Support</h4>
         <ul class="footer__col-links">
-          <li><a href="/policies/shipping-policy" class="footer__col-link">Shipping Policy</a></li>
-          <li><a href="/policies/refund-policy" class="footer__col-link">Returns & Refunds</a></li>
           <li><a href="/pages/track-order" class="footer__col-link">Track Order</a></li>
+          <li><a href="/policies/shipping-policy" class="footer__col-link">Shipping</a></li>
+          <li><a href="/policies/refund-policy" class="footer__col-link">Returns</a></li>
           <li><a href="/pages/faq" class="footer__col-link">FAQ</a></li>
-        </ul>
-      </div>
-
-      <div class="footer__col">
-        <h4 class="footer__col-title">Community</h4>
-        <ul class="footer__col-links">
-          {%- if section.settings.instagram != blank -%}
-            <li>
-              <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener" class="footer__col-link"
-                >Instagram</a
-              >
-            </li>
-          {%- else -%}
-            <li><a href="#" class="footer__col-link">Instagram</a></li>
-          {%- endif -%}
-          {%- if section.settings.whatsapp != blank -%}
-            <li>
-              <a
-                href="https://wa.me/{{ section.settings.whatsapp }}"
-                target="_blank"
-                rel="noopener"
-                class="footer__col-link"
-                >WhatsApp</a
-              >
-            </li>
-          {%- else -%}
-            <li><a href="#" class="footer__col-link">WhatsApp</a></li>
-          {%- endif -%}
-          {%- if section.settings.youtube != blank -%}
-            <li>
-              <a href="{{ section.settings.youtube }}" target="_blank" rel="noopener" class="footer__col-link"
-                >YouTube</a
-              >
-            </li>
-          {%- else -%}
-            <li><a href="#" class="footer__col-link">YouTube</a></li>
-          {%- endif -%}
         </ul>
       </div>
     </div>
@@ -134,16 +124,27 @@
         <a href="{{ shop.refund_policy.url }}">Returns</a>
         <a href="{{ shop.shipping_policy.url }}">Shipping</a>
         <a href="{{ shop.terms_of_service.url }}">Terms</a>
+        <a href="/policies/cookie-policy">Cookies</a>
       </div>
 
       {%- if section.settings.show_payment_icons -%}
-        <div class="footer__payment" title="Secured by Razorpay">
-          {{ 'upi' | payment_type_svg_tag: class: 'footer__payment-icon' }}
-          {{ 'google_pay' | payment_type_svg_tag: class: 'footer__payment-icon' }}
-          {{ 'visa' | payment_type_svg_tag: class: 'footer__payment-icon' }}
-          {{ 'master' | payment_type_svg_tag: class: 'footer__payment-icon' }}
-          {{ 'rupay' | payment_type_svg_tag: class: 'footer__payment-icon' }}
+        <div class="footer__payment" title="Secured by Razorpay" style="display: flex; align-items: center; gap: var(--space-6);">
+          <div style="display: flex; align-items: center; gap: var(--space-2);">
+            {{ 'upi' | payment_type_svg_tag: class: 'footer__payment-icon' }}
+            {{ 'google_pay' | payment_type_svg_tag: class: 'footer__payment-icon' }}
+            {{ 'visa' | payment_type_svg_tag: class: 'footer__payment-icon' }}
+            {{ 'master' | payment_type_svg_tag: class: 'footer__payment-icon' }}
+            {{ 'rupay' | payment_type_svg_tag: class: 'footer__payment-icon' }}
+          </div>
+          
+          <a href="#MainContent" class="footer__back-to-top" aria-label="Back to top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+          </a>
         </div>
+      {%- else -%}
+        <a href="#MainContent" class="footer__back-to-top" aria-label="Back to top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+        </a>
       {%- endif -%}
     </div>
   </div>
@@ -158,7 +159,7 @@
 
   .site-footer {
     position: relative;
-    background-image: url('{{ "footerbg.png" | asset_url }}');
+    background: linear-gradient(to bottom, var(--mm-deep-garnet), var(--mm-dark-espresso));
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -195,15 +196,14 @@
 
   .footer__top {
     display: grid;
-    grid-template-columns: 1.6fr repeat(4, 1fr);
+    grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: var(--space-8);
-    padding-bottom: var(--space-12);
+    padding-bottom: var(--space-6);
   }
 
   .footer__logo-icon {
     display: block;
     margin-bottom: var(--space-4);
-    margin-left: 64px; /* Centers monogram over the specific text width */
     transition: opacity 0.3s ease;
   }
 
@@ -217,10 +217,10 @@
   }
 
   .footer__brand-desc {
-    font-size: var(--text-sm);
+    font-size: 16px;
     line-height: 1.7;
-    color: rgba(255,255,255,0.65);
-    max-width: 300px;
+    color: rgba(255,255,255,0.95);
+    max-width: 100%;
     margin-bottom: var(--space-2);
   }
 
@@ -239,22 +239,21 @@
   }
 
   .footer__social-link {
-    width: 36px;
-    height: 36px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 50%;
-    color: rgba(255,255,255,0.6);
-    transition: all var(--transition-base);
+    color: #fff;
+    font-size: 20px;
+    transition: all var(--transition-fast);
   }
 
   .footer__social-link:hover {
-    border-color: var(--color-gold);
-    color: var(--color-gold);
-    background: rgba(212,175,55,0.1);
-    box-shadow: 0 0 10px rgba(212,175,55,0.2);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .footer__col {
+    padding-top: 0;
   }
 
   .footer__col-title {
@@ -263,7 +262,7 @@
     font-weight: 700;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.85);
+    color: #fff;
     margin-bottom: var(--space-5);
   }
 
@@ -276,13 +275,34 @@
   .footer__col-link {
     display: inline-block;
     font-size: var(--text-sm);
-    color: rgba(255,255,255,0.55);
+    color: rgba(255,255,255,0.95);
     transition: all var(--transition-fast);
   }
 
   .footer__col-link:hover {
     color: var(--color-gold);
     transform: translateX(2px);
+  }
+
+  /* Back to Top */
+  .footer__back-to-top {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50%;
+    color: rgba(255,255,255,0.6);
+    transition: all var(--transition-base);
+    text-decoration: none;
+  }
+
+  .footer__back-to-top:hover {
+    border-color: #fff;
+    color: #fff;
+    background: rgba(255,255,255,0.05);
+    transform: translateY(-3px);
   }
 
   /* Trust seals */
@@ -426,14 +446,14 @@
     font-family: var(--font-display);
     font-size: clamp(4rem, 15vw, 22rem);
     font-weight: 300;
-    color: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.015);
     line-height: 0.7;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     pointer-events: none;
     user-select: none;
-    padding-bottom: 20px;
-    margin-top: 40px;
+    padding-bottom: 0px;
+    margin-top: 10px;
   }
 </style>
 

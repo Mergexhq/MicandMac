@@ -13,12 +13,12 @@
 
 .pdp {
   padding-top: var(--space-10);
-  padding-bottom: var(--space-20);
+  padding-bottom: 0;
 }
 
 .pdp__layout {
   display: grid;
-  grid-template-columns: 55fr 45fr;
+  grid-template-columns: 60fr 40fr;
   gap: var(--space-16);
   align-items: start;
 }
@@ -60,20 +60,10 @@
 /* Micro benefit line */
 .pdp__micro-line {
   font-size: var(--text-sm);
-  color: var(--color-text-primary);
-  font-weight: 500;
+  color: var(--color-text-muted);
   letter-spacing: 0.04em;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-5);
   font-style: italic;
-}
-
-/* Synopsis description */
-.pdp__description {
-  font-size: var(--text-base);
-  line-height: 1.7;
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-6);
-  max-width: 520px;
 }
 
 /* Star rating */
@@ -81,7 +71,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-5);
 }
 
 .pdp__rating-count {
@@ -95,7 +85,7 @@
 }
 
 .pdp__price .price__current {
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-size: var(--text-3xl);
   font-weight: 600;
   color: var(--color-text-primary);
@@ -243,10 +233,6 @@
   cursor: zoom-in;
 }
 
-.product-gallery__main:only-child {
-  grid-column: 1 / -1;
-}
-
 .product-gallery__slide {
   position: absolute;
   inset: 0;
@@ -288,35 +274,6 @@
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-pill);
   backdrop-filter: blur(4px);
-  z-index: 5;
-}
-
-/* Zoom state (In-place) */
-.product-gallery.is-zoomed {
-  /* No fixed positioning, stays in layout flow */
-}
-
-.product-gallery.is-zoomed .product-gallery__main {
-  cursor: zoom-out;
-  overflow: hidden;
-}
-
-.product-gallery.is-zoomed .product-gallery__img {
-  object-fit: contain;
-  transform: scale(2.5);
-  transition: transform 0.1s ease-out; /* Smooth panning */
-  pointer-events: none;
-}
-
-/* Hide navigation during zoom if desired */
-.product-gallery.is-zoomed .product-gallery__rail,
-.product-gallery.is-zoomed .product-gallery__counter {
-  opacity: 0.3;
-  pointer-events: none;
-}
-
-.product-gallery__zoom-close {
-  display: none !important; /* Managed by click-to-close on image */
 }
 
 /* Mobile: horizontal swipe — overridden below in responsive */
@@ -358,95 +315,7 @@
 .product-form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-}
-
-/* Utility row (Qty + Like + Share) */
-.product-form__utils-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-1);
-}
-
-.product-form__qty {
-  display: flex;
-  align-items: center;
-  background: white;
-  border: 1.5px solid var(--color-border-default);
-  border-radius: var(--radius-sm);
-  height: 48px;
-  padding: 0 4px;
-}
-
-.product-form__qty-btn {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--color-text-primary);
-  opacity: 0.6;
-  transition: opacity 0.2s;
-}
-
-.product-form__qty-btn:hover {
-  opacity: 1;
-}
-
-.product-form__qty-input {
-  width: 40px;
-  text-align: center;
-  border: none;
-  background: none;
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--color-text-primary);
-  -moz-appearance: textfield;
-}
-
-.product-form__qty-input::-webkit-outer-spin-button,
-.product-form__qty-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.product-form__util-btn {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--color-border-default);
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--color-text-primary);
-  transition: all var(--transition-fast);
-}
-
-.product-form__util-btn:hover {
-  border-color: var(--mm-terracotta-rose);
-  color: var(--mm-terracotta-rose);
-}
-
-.product-form__util-btn.is-active {
-  color: var(--color-burgundy);
-  border-color: var(--color-burgundy);
-}
-
-.product-form__util-btn.is-active svg {
-  fill: var(--color-burgundy);
-}
-
-.product-form__util-btn.is-copied {
-  background: var(--color-success);
-  color: white;
-  border-color: var(--color-success);
+  gap: var(--space-4);
 }
 
 /* Variant pills */
@@ -490,40 +359,31 @@
 }
 
 /* CTA row */
-.product-form__actions-row {
+.product-form__actions {
   display: flex;
-  gap: var(--space-4);
-  width: 100%;
-}
-
-.product-form__atc,
-.product-form__buy-now {
-  flex: 1;
-  padding: 1.125rem 1.5rem;
-  border-radius: var(--radius-sm);
-  font-size: var(--text-sm);
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: var(--space-3);
 }
 
 .product-form__atc {
   gap: var(--space-3);
+  font-size: var(--text-base);
   letter-spacing: 0.05em;
-  background: var(--mm-deep-garnet);
-  background: linear-gradient(to bottom, var(--mm-deep-garnet), var(--mm-dark-espresso));
-  color: var(--mm-soft-blush);
-  border: none;
-  cursor: pointer;
 }
 
 .product-form__buy-now {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: var(--space-2);
+  width: 100%;
+  padding: 0.875rem 2rem;
   font-family: var(--font-body);
+  font-size: var(--text-sm);
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  border-radius: var(--radius-pill);
   border: 1.5px solid var(--color-burgundy);
   background: transparent;
   color: var(--color-burgundy);
@@ -533,8 +393,7 @@
 }
 
 .product-form__buy-now:hover {
-  background: var(--mm-deep-garnet);
-  background: linear-gradient(to bottom, var(--mm-deep-garnet), var(--mm-dark-espresso));
+  background: var(--color-burgundy);
   color: var(--mm-soft-blush);
   transform: translateY(-1px);
 }
@@ -593,9 +452,11 @@
 .pdp-trust {
   display: flex;
   align-items: center;
-  gap: var(--space-5);
-  padding: var(--space-1) 0;
-  margin-bottom: var(--space-6);
+  gap: var(--space-3);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-default);
+  margin-bottom: var(--space-5);
   flex-wrap: wrap;
 }
 

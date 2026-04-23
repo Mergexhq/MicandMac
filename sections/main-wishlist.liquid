@@ -1,66 +1,174 @@
 {% comment %}
   Section: Main Wishlist Page
-  Inside account layout with sidebar nav.
-  Grid is populated by theme.js from localStorage.
-  JS targets: #WishlistGrid (container), #WishlistEmpty (empty state)
+  Standalone wishlist layout.
+  Grid is populated by wishlist.ts from localStorage.
 {% endcomment %}
 
-<div class="account-page">
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
+
+<div class="wishlist-page">
   <div class="container">
-    <div class="account-page__layout">
-
-      <!-- ── Sidebar ── -->
-      <aside class="account-page__sidebar">
-        {% render 'account-nav', current: 'wishlist' %}
-      </aside>
-
-      <!-- ── Main ── -->
-      <main class="account-page__main">
-
-        <div class="acct-header">
-          <h1 class="acct-header__title">Saved for later</h1>
-          <p class="acct-header__subtitle">Products you've set aside</p>
-        </div>
-
-        <!-- Outer container — JS will inject product-card.wishlist-card elements here -->
-        <div class="wishlist-grid__inner" id="WishlistGrid">
-
-          <!-- Empty state — shown/hidden by wishlist.ts -->
-          <div class="acct-empty" id="WishlistEmpty" style="display:none">
-            <div class="acct-empty__icon">
-              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
-                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
-              </svg>
-            </div>
-            <h2 class="acct-empty__title">Nothing saved yet</h2>
-            <p class="acct-empty__text">Tap the heart on any product to save it here.</p>
-            <a href="{{ routes.all_products_collection_url }}" class="btn--outline">Browse products</a>
-          </div>
-
-        </div>
-
-        <style>
-          /* Override wishlist grid inside account layout */
-          #WishlistGrid.wishlist-grid__inner {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.5rem;
-          }
-          #WishlistGrid .wishlist-card {
-            border-radius: 14px;
-            overflow: hidden;
-          }
-          #WishlistEmpty {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 3rem 0;
-          }
-        </style>
-
-      </main>
+    
+    <div class="wishlist-header">
+      <h1 class="wishlist-header__title">Saved items</h1>
+      <p class="wishlist-header__subtitle">Products you’ve chosen to revisit.</p>
     </div>
+
+    <!-- Outer container — JS will inject product-card elements here -->
+    <div class="wishlist-grid" id="WishlistGrid">
+      <!-- Cards rendered here by wishlist.ts -->
+    </div>
+
+    <!-- Empty state — shown/hidden by wishlist.ts -->
+    <div class="wishlist-empty" id="WishlistEmpty" style="display:none">
+      <div class="wishlist-empty__inner">
+        <div class="wishlist-empty__icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+          </svg>
+        </div>
+        <h2 class="wishlist-empty__title font-serif">Your curated picks start here</h2>
+        <div class="wishlist-empty__text font-sans">
+          <p>Save products you love and revisit them anytime.</p>
+          <p>Build your personal collection before you buy.</p>
+        </div>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary btn--full-mobile wishlist-empty__btn font-sans">Explore the Collection &rarr;</a>
+        
+        <p class="wishlist-empty__hint font-sans">Tap the ♡ on any product to save it here</p>
+      </div>
+    </div>
+
+    <div class="wishlist-actions" id="WishlistActions" style="display:none; text-align: center; margin-top: 4rem;">
+       <a href="{{ routes.all_products_collection_url }}" class="btn btn--outline">Continue shopping &rarr;</a>
+    </div>
+
   </div>
 </div>
+
+<style>
+  .wishlist-page {
+    padding: 60px 0 100px;
+    background-color: var(--color-bg-page, #F3E8E4);
+    min-height: 70vh;
+  }
+  .wishlist-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .wishlist-header__title {
+    font-size: 2.2rem;
+    font-weight: 400;
+    margin-bottom: 8px;
+    color: #2E1F1A;
+    font-family: var(--font-display, serif);
+  }
+  .wishlist-header__subtitle {
+    font-size: 1rem;
+    color: #7A6F68;
+  }
+  
+  .wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .wishlist-empty {
+    text-align: center;
+    padding: 60px 20px;
+    background: transparent;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .wishlist-empty__icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(46, 31, 26, 0.04);
+    color: #2E1F1A;
+    margin-bottom: 24px;
+    animation: pulseHeart 3s infinite ease-in-out;
+  }
+
+  @keyframes pulseHeart {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 31, 26, 0.05); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(46, 31, 26, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 31, 26, 0); }
+  }
+  
+  .wishlist-empty__title {
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    color: #2E1F1A;
+    margin-bottom: 16px;
+    font-weight: 300;
+  }
+  
+  .wishlist-empty__text {
+    font-size: 1rem;
+    color: #7A6F68;
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  .wishlist-empty__text p {
+    margin: 0;
+  }
+
+  .wishlist-empty__btn {
+    margin-bottom: 24px;
+    transition: all 0.3s ease;
+  }
+
+  .wishlist-empty__btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(75, 42, 49, 0.15);
+  }
+
+  .wishlist-empty__hint {
+    font-size: 0.85rem;
+    color: #9E9289;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* Wishlist cards sit directly on the page background — no white layer */
+  #WishlistGrid .pc {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  @media (max-width: 768px) {
+    .wishlist-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    #WishlistGrid .pc {
+      padding: 12px;
+      border-radius: 12px;
+    }
+    .wishlist-page {
+      padding: 40px 0 60px;
+    }
+    .wishlist-header__title {
+      font-size: 1.8rem;
+    }
+    .btn--full-mobile {
+      width: 100%;
+    }
+  }
+</style>
 
 {% schema %}
 {

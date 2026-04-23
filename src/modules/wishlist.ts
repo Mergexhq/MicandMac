@@ -63,24 +63,19 @@ export class Wishlist {
 
       const added = this._toggle(handle);
       this._setButtonState(btn, added);
-    });
 
-    // Remove buttons on wishlist page
-    document.addEventListener('click', (e: Event) => {
-      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-wishlist-remove]');
-      if (!btn) return;
-
-      const handle = btn.dataset.wishlistRemove;
-      if (!handle) return;
-
-      const handles = this._getHandles().filter(h => h !== handle);
-      this._saveHandles(handles);
-      Header.updateWishlistCount(handles.length);
-
-      const card = document.querySelector(`.wishlist-card[data-product-handle="${handle}"]`);
-      card?.remove();
-
-      this._checkEmpty();
+      // If we are on the wishlist page and it was removed, hide the card
+      if (!added && window.location.pathname.includes('wishlist')) {
+        const card = btn.closest('.pc') as HTMLElement;
+        if (card) {
+          card.style.transition = 'opacity 0.3s ease';
+          card.style.opacity = '0';
+          setTimeout(() => {
+            card.remove();
+            this._checkEmpty();
+          }, 300);
+        }
+      }
     });
   }
 
@@ -121,35 +116,18 @@ export class Wishlist {
 
   private async _fetchProductCard(handle: string): Promise<string> {
     try {
-      const res  = await fetch(`/products/${handle}.json`);
-      const data = await res.json();
-      const p    = data.product;
-      const v    = p.variants?.[0];
-      const img  = p.images?.[0]?.src || '';
-      const imgSrc = img ? img.replace('?', '?width=600&') : '';
-
-      return `
-        <div class="product-card wishlist-card" data-product-handle="${p.handle}">
-          <div class="product-card__media">
-            <a href="/products/${p.handle}" class="product-card__img-link">
-              ${imgSrc ? `<img src="${imgSrc}" alt="${p.title}" width="600" height="600" loading="lazy" class="product-card__img product-card__img--primary">` : ''}
-            </a>
-            <button class="product-card__badge-btn wishlist-card__remove" data-wishlist-remove="${p.handle}" aria-label="Remove from wishlist">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                <path d="M18 6L6 18M6 6l12 12"/>
-              </svg>
-            </button>
-          </div>
-          <div class="product-card__info">
-            <h3 class="product-card__title"><a href="/products/${p.handle}">${p.title}</a></h3>
-            ${v ? `<p class="price__current">₹${(v.price / 100).toFixed(0)}</p>` : ''}
-            ${v?.available
-              ? `<button class="btn btn--primary btn--sm btn--full" data-atc data-variant-id="${v.id}">Add to Cart</button>`
-              : `<button class="btn btn--secondary btn--sm btn--full" disabled>Sold Out</button>`
-            }
-          </div>
-        </div>
-      `;
+      const res = await fetch(`/products/${handle}?section_id=wishlist-item`);
+      if (!res.ok) return '';
+      const text = await res.text();
+      
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = text;
+      
+      const card = tempDiv.querySelector('.pc');
+      if (card) {
+        return card.outerHTML;
+      }
+      return '';
     } catch {
       return '';
     }
@@ -158,9 +136,16 @@ export class Wishlist {
   private _checkEmpty(): void {
     const grid  = document.getElementById(GRID_ID);
     const empty = document.getElementById(EMPTY_ID);
+    const actions = document.getElementById('WishlistActions');
+    
     if (!grid || !empty) return;
 
-    const hasCards = grid.querySelector('.wishlist-card');
+    const hasCards = grid.querySelector('.pc');
     empty.style.display = hasCards ? 'none' : '';
+    grid.style.display = hasCards ? 'grid' : 'none';
+    
+    if (actions) {
+      actions.style.display = hasCards ? 'block' : 'none';
+    }
   }
 }

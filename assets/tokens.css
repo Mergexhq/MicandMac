@@ -6,7 +6,7 @@
 
 :root {
   /* ---- Mic & Mac Brand Palette (from Layout Guide) ---- */
-  --mm-soft-blush:       #FCF5F3;  /* Page & header middle strip bg */
+  --mm-soft-blush:       #F3E8E4;  /* Page & header middle strip bg */
   --mm-dark-espresso:    #2E1F1A;  /* Body text, footer bg, announcement bar bg */
   --mm-deep-garnet:      #4B2A31;  /* Logo, headlines, nav strip bg, CTA buttons */
   --mm-terracotta-rose:  #D18E82;  /* Hover states, accents, sale tags */
@@ -61,9 +61,13 @@
   --color-text-white:       var(--color-text-on-dark);
 
   /* ---- Typography ---- */
-  --font-display: 'Cormorant Garamond', Georgia, serif;  /* Headings — luxury serif */
-  --font-script:  'Great Vibes', cursive;                /* First-letter decoration */
-  --font-body:    'DM Sans', -apple-system, sans-serif;  /* UI text — clean sans */
+  --font-display: 'Cormorant Garamond', Georgia, serif;  /* Serif — Headings, product names, brand storytelling */
+  --font-script:  'Great Vibes', cursive;                /* Script — First-letter decoration only */
+  --font-body:    'Inter', -apple-system, sans-serif;    /* Sans — All UI, buttons, price, labels, forms */
+
+  /* ---- Semantic font aliases (enforce the hybrid system) ---- */
+  --font-serif: var(--font-display);   /* Emotion: H1/H2, section titles, product names, editorial */
+  --font-sans:  var(--font-body);      /* Function: nav, price, buttons, forms, meta, supporting text */
 
   /* ---- Font scale ---- */
   --text-xs:    0.75rem;    /* 12px */

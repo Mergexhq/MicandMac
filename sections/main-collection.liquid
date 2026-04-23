@@ -17,9 +17,9 @@
       <div class="plp-simple-hero section-padding">
         <div class="container text-center">
           <div class="plp-simple-hero__subline" style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 15px; color: var(--mm-dark-espresso); font-weight: 500;">Formulated for lasting care.</div>
-          <h1 class="plp-simple-hero__title">The Collection</h1>
+          <h1 class="plp-simple-hero__title" style="font-family: 'Cormorant Garamond', Georgia, serif;">The Collection</h1>
           <div class="plp-simple-hero__desc">
-            From cleansing bars to nourishing balms, each blend is crafted to restore balance and elevate the everyday.
+            From glowing bars to nourishing balms, each blend is crafted to restore balance and elevate the everyday.
           </div>
         </div>
       </div>
@@ -35,7 +35,7 @@
               {%- assign all_url = routes.all_products_collection_url -%}
               {%- assign current_tag_list = current_tags | join: ' ' | downcase -%}
               <li><a href="{{ all_url }}" class="plp-quick-link {% if request.path == all_url and current_tags == blank %}is-active{% endif %}">All</a></li>
-              <li><a href="{{ all_url }}/cleansing-bar" class="plp-quick-link {% if current_tag_list contains 'cleansing' or current_tag_list contains 'bar' or current_tag_list contains 'soap' %}is-active{% endif %}">Cleansing Bars</a></li>
+              <li><a href="{{ all_url }}/glowing-bar" class="plp-quick-link {% if current_tag_list contains 'glowing' or current_tag_list contains 'bar' or current_tag_list contains 'soap' %}is-active{% endif %}">Glowing Bars</a></li>
               <li><a href="{{ all_url }}/lip-care" class="plp-quick-link {% if current_tag_list contains 'lip' %}is-active{% endif %}">Lip Care</a></li>
             {%- endif -%}
           </ul>
@@ -70,8 +70,8 @@
                 {%- assign match = false -%}
                 {%- assign c_tags = current_tags | join: ' ' | downcase -%}
                 {%- assign p_search = product.title | append: ' ' | append: product.type | append: ' ' | append: product.tags | join: ' ' | downcase -%}
-                {%- if c_tags contains 'cleansing' or c_tags contains 'bar' -%}
-                  {%- if p_search contains 'soap' or p_search contains 'bar' or p_search contains 'cleansing' -%}
+                {%- if c_tags contains 'glowing' or c_tags contains 'bar' -%}
+                  {%- if p_search contains 'soap' or p_search contains 'bar' or p_search contains 'glowing' -%}
                     {%- assign match = true -%}
                   {%- endif -%}
                 {%- elsif c_tags contains 'lip' -%}
@@ -162,7 +162,7 @@
                     </ul>
                   {%- else -%}
                     <ul class="plp-combo-row__includes-list">
-                      <li>&bull; Artisanal Cleansing Bar</li>
+                      <li>&bull; Artisanal Glowing Bar</li>
                       <li>&bull; Nourishing Lip Balm</li>
                     </ul>
                   {%- endif -%}

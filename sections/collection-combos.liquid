@@ -1,0 +1,628 @@
+{% comment %}
+  Section: Curated Combos — Ritual Sets Page
+{% endcomment %}
+
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
+
+<div class="combos-page">
+
+  <!-- 1. HERO -->
+  <div class="combos-hero">
+    <div class="container text-center">
+      <span class="combos-hero__eyebrow">{{ section.settings.eyebrow | default: 'Ritual Sets' }}</span>
+      <h1 class="combos-hero__title">{{ section.settings.title | default: 'Designed to work better together' }}</h1>
+      <p class="combos-hero__desc">{{ section.settings.description | default: 'Thoughtfully paired formulations for complete, everyday care.' }}</p>
+    </div>
+  </div>
+
+  <!-- 2. FEATURED RITUAL (Editorial Big Card) -->
+  {%- assign featured = section.settings.featured_combo -%}
+  {%- if featured != blank -%}
+    <div class="combos-featured">
+      <div class="container">
+        <div class="combos-featured__inner">
+          <div class="combos-featured__image">
+            <a href="{{ featured.url }}">
+              {%- if featured.featured_image -%}
+                <img src="{{ featured.featured_image | image_url: width: 1000 }}" alt="{{ featured.title | escape }}" loading="lazy" width="{{ featured.featured_image.width }}" height="{{ featured.featured_image.height }}">
+              {%- else -%}
+                <div class="combos-featured__img-placeholder"></div>
+              {%- endif -%}
+            </a>
+          </div>
+          <div class="combos-featured__content">
+            <span class="combos-featured__label">⭐ Featured Ritual</span>
+            <h2 class="combos-featured__title">{{ section.settings.featured_title | default: featured.title | split: '|' | first }}</h2>
+            <p class="combos-featured__benefit">{{ section.settings.featured_benefit | default: 'Your complete daily ritual — cleanse, restore, and protect in one curated set.' }}</p>
+            <div class="combos-featured__pricing">
+              <span class="combos-featured__price">{{ featured.price | money }}</span>
+              {%- if featured.compare_at_price > featured.price -%}
+                <span class="combos-featured__compare">{{ featured.compare_at_price | money }}</span>
+              {%- endif -%}
+            </div>
+            <div class="combos-featured__actions">
+              <form method="post" action="{{ routes.cart_add_url }}" class="combos-featured__atc-form">
+                <input type="hidden" name="id" value="{{ featured.variants.first.id }}">
+                <button type="submit" class="btn btn--primary combos-btn" {% unless featured.available %}disabled{% endunless %}>
+                  {% if featured.available %}Add Ritual Set{% else %}Sold Out{% endif %}
+                </button>
+              </form>
+              <a href="{{ featured.url }}" class="btn btn--secondary combos-btn">Explore Ritual &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- 3. COMBO GRID -->
+  {%- assign has_combos = false -%}
+  {%- for product in collection.products -%}
+    {%- assign c_title = product.title | downcase -%}
+    {%- assign c_tags = product.tags | join: ',' | downcase -%}
+    {%- if c_title contains 'combo' or c_tags contains 'combo' -%}
+      {%- assign has_combos = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if has_combos -%}
+    <div class="combos-grid-section">
+      <div class="container">
+        <div class="combos-section-head text-center">
+          <h2 class="combos-section-title">{{ section.settings.grid_heading | default: 'All Ritual Sets' }}</h2>
+          <p class="combos-section-sub">{{ section.settings.grid_subheading | default: 'Each pairing is intentional. Each set is complete.' }}</p>
+        </div>
+
+        <div class="combos-grid">
+          {%- for product in collection.products -%}
+            {%- assign c_title = product.title | downcase -%}
+            {%- assign c_tags = product.tags | join: ',' | downcase -%}
+            {%- if featured != blank and product.handle == featured.handle -%}{%- continue -%}{%- endif -%}
+            {%- unless c_title contains 'combo' or c_tags contains 'combo' -%}{%- continue -%}{%- endunless -%}
+
+            <div class="combo-card">
+              <div class="combo-card__image-wrap">
+                <span class="combo-card__badge">Ritual Set</span>
+                <a href="{{ product.url }}">
+                  {%- if product.featured_image -%}
+                    <img class="combo-card__img" src="{{ product.featured_image | image_url: width: 700 }}" alt="{{ product.title | escape }}" loading="lazy" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}">
+                  {%- else -%}
+                    <div class="combo-card__img-placeholder"></div>
+                  {%- endif -%}
+                </a>
+              </div>
+
+              <div class="combo-card__body">
+                <h3 class="combo-card__title"><a href="{{ product.url }}">{{ product.title | split: '|' | first }}</a></h3>
+                <p class="combo-card__tagline">{{ product.metafields.custom.benefit | default: 'A complete ritual for balanced, nourished skin.' }}</p>
+
+                <div class="combo-card__includes">
+                  {%- if product.metafields.custom.includes != blank -%}
+                    {%- assign includes_arr = product.metafields.custom.includes | newline_to_br | split: '<br />' -%}
+                    <ul class="combo-card__includes-list">
+                      {%- for item in includes_arr -%}
+                        {%- assign trimmed = item | strip -%}
+                        {%- if trimmed != blank -%}<li>{{ trimmed }}</li>{%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+
+                <div class="combo-card__pricing">
+                  <span class="combo-card__price">{{ product.price | money }}</span>
+                  {%- if product.compare_at_price > product.price -%}
+                    <span class="combo-card__compare">{{ product.compare_at_price | money }}</span>
+                    {%- assign saving_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+                    <span class="combo-card__saving">Save {{ saving_pct }}%</span>
+                  {%- endif -%}
+                </div>
+
+                <div class="combo-card__actions">
+                  <form method="post" action="{{ routes.cart_add_url }}">
+                    <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                    <button type="submit" class="btn btn--primary combos-btn" {% unless product.available %}disabled{% endunless %}>
+                      {% if product.available %}Add Ritual Set{% else %}Sold Out{% endif %}
+                    </button>
+                  </form>
+                  <a href="{{ product.url }}" class="btn btn--secondary combos-btn">View Details</a>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- 4. WHY THIS WORKS (Brand Context) -->
+  <div class="combos-why">
+    <div class="container text-center">
+      <h3 class="combos-why__title">{{ section.settings.why_title | default: 'Why ritual sets?' }}</h3>
+      <p class="combos-why__desc">{{ section.settings.why_desc | default: 'Skin responds better to paired care. Our sets are formulated to work in sequence — each step amplifying the next for deeper, lasting results.' }}</p>
+    </div>
+  </div>
+
+  <!-- 5. TRUST STRIP -->
+  <div class="combos-trust">
+    <div class="container">
+      <div class="combos-trust__row">
+        <span>✦ Sulfate-Free</span>
+        <span>✦ Cruelty-Free</span>
+        <span>✦ Lab-Certified</span>
+        <span>✦ Made in India</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. CROSS-SELL -->
+  <div class="combos-crosssell text-center">
+    <a href="{{ routes.all_products_collection_url }}" class="combos-crosssell__link">Explore individual products &rarr;</a>
+  </div>
+
+</div>
+
+<style>
+  /* ---- BASE ---- */
+  .combos-page {
+    background: var(--color-background, #FAF7F4);
+    color: var(--mm-dark-espresso, #2E1F1A);
+    padding-bottom: var(--space-20);
+  }
+
+  /* ---- HERO ---- */
+  .combos-hero {
+    padding: 100px 0 70px;
+  }
+  .combos-hero__eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--mm-terracotta-rose, #B56B5D);
+    font-weight: 600;
+    margin-bottom: var(--space-4);
+  }
+  .combos-hero__title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 500;
+    color: var(--mm-deep-garnet, #5A2D3A);
+    line-height: 1.15;
+    margin-bottom: var(--space-5);
+  }
+  .combos-hero__desc {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 300;
+    max-width: 580px;
+    margin: 0 auto;
+    opacity: 0.8;
+    letter-spacing: 0.02em;
+    line-height: 1.7;
+  }
+
+  /* ---- FEATURED ---- */
+  .combos-featured {
+    padding-bottom: 90px;
+  }
+  .combos-featured__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: center;
+    background: #fff;
+    border-radius: var(--radius-lg, 12px);
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(46,31,26,0.07);
+  }
+  .combos-featured__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 4/5;
+    display: block;
+  }
+  .combos-featured__img-placeholder {
+    width: 100%;
+    aspect-ratio: 4/5;
+    background: rgba(46,31,26,0.04);
+  }
+  .combos-featured__content {
+    padding: var(--space-12) var(--space-10);
+  }
+  .combos-featured__label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--mm-terracotta-rose, #B56B5D);
+    font-weight: 600;
+    margin-bottom: var(--space-4);
+  }
+  .combos-featured__title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 500;
+    color: var(--mm-deep-garnet);
+    margin-bottom: var(--space-4);
+    line-height: 1.2;
+  }
+  .combos-featured__benefit {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: var(--space-6);
+    opacity: 0.8;
+  }
+  .combos-featured__pricing {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+  }
+  .combos-featured__price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--mm-deep-garnet);
+  }
+  .combos-featured__compare {
+    font-size: 1rem;
+    color: #9E9289;
+    text-decoration: line-through;
+    font-weight: 400;
+  }
+  .combos-featured__actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  /* ---- SECTION HEADER ---- */
+  .combos-grid-section {
+    padding-bottom: 80px;
+  }
+  .combos-section-head {
+    margin-bottom: var(--space-12);
+  }
+  .combos-section-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 500;
+    color: var(--mm-deep-garnet);
+    margin-bottom: var(--space-2);
+  }
+  .combos-section-sub {
+    font-size: 0.95rem;
+    opacity: 0.7;
+    letter-spacing: 0.03em;
+  }
+
+  /* ---- COMBO GRID ---- */
+  .combos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+  }
+
+  /* ---- COMBO CARD ---- */
+  .combo-card {
+    background: #fff;
+    border-radius: var(--radius-lg, 12px);
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(46,31,26,0.06);
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .combo-card:hover {
+    box-shadow: 0 12px 40px rgba(46,31,26,0.12);
+    transform: translateY(-4px);
+  }
+  .combo-card__image-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+  .combo-card__img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3/2;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .combo-card:hover .combo-card__img {
+    transform: scale(1.04);
+  }
+  .combo-card__img-placeholder {
+    width: 100%;
+    aspect-ratio: 3/2;
+    background: rgba(46,31,26,0.04);
+  }
+  .combo-card__badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+    background: rgba(255,255,255,0.92);
+    color: var(--mm-deep-garnet);
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 5px 14px;
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+  }
+  .combo-card__body {
+    padding: var(--space-6) var(--space-7) var(--space-7);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    flex-grow: 1;
+  }
+  .combo-card__title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--mm-deep-garnet);
+    line-height: 1.2;
+    margin: 0;
+  }
+  .combo-card__title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .combo-card__title a:hover {
+    color: var(--mm-terracotta-rose);
+  }
+  .combo-card__tagline {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    opacity: 0.75;
+    margin: 0;
+  }
+  .combo-card__includes {
+    border-top: 1px solid rgba(46,31,26,0.08);
+    padding-top: var(--space-3);
+    margin-top: var(--space-1);
+  }
+  .combo-card__includes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .combo-card__includes-list li {
+    font-size: 0.82rem;
+    color: var(--mm-dark-espresso);
+    opacity: 0.75;
+    padding-left: 14px;
+    position: relative;
+  }
+  .combo-card__includes-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    font-size: 0.7rem;
+    opacity: 0.5;
+  }
+  .combo-card__pricing {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: auto;
+    padding-top: var(--space-3);
+  }
+  .combo-card__price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--mm-deep-garnet);
+  }
+  .combo-card__compare {
+    font-size: 0.95rem;
+    color: #9E9289;
+    text-decoration: line-through;
+  }
+  .combo-card__saving {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6A994E;
+    background: rgba(106,153,78,0.1);
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+  .combo-card__actions {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  /* ---- SHARED BUTTON ---- */
+  .combos-btn {
+    flex: 1;
+    min-width: 120px;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 12px 18px;
+    border-radius: 0;
+    text-align: center;
+  }
+
+  /* ---- WHY SECTION ---- */
+  .combos-why {
+    padding: 80px 0;
+    border-top: 1px solid rgba(46,31,26,0.08);
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .combos-why__title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--mm-deep-garnet);
+    margin-bottom: var(--space-4);
+  }
+  .combos-why__desc {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    opacity: 0.8;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* ---- TRUST STRIP ---- */
+  .combos-trust {
+    border-top: 1px solid rgba(46,31,26,0.08);
+    border-bottom: 1px solid rgba(46,31,26,0.08);
+    padding: var(--space-5) 0;
+    margin-bottom: var(--space-10);
+  }
+  .combos-trust__row {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+  }
+  .combos-trust__row span {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 500;
+    opacity: 0.6;
+  }
+
+  /* ---- CROSS-SELL ---- */
+  .combos-crosssell {
+    padding-bottom: var(--space-12);
+  }
+  .combos-crosssell__link {
+    font-size: 1rem;
+    color: var(--mm-deep-garnet);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 3px;
+    transition: color 0.25s;
+  }
+  .combos-crosssell__link:hover {
+    color: var(--mm-terracotta-rose);
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 900px) {
+    .combos-featured__inner {
+      grid-template-columns: 1fr;
+    }
+    .combos-featured__image img {
+      aspect-ratio: 16/9;
+    }
+    .combos-featured__content {
+      padding: var(--space-8) var(--space-6);
+    }
+    .combos-grid {
+      grid-template-columns: 1fr;
+    }
+    .combos-hero {
+      padding: 60px 0 50px;
+    }
+  }
+  @media (max-width: 640px) {
+    .combos-featured__actions {
+      flex-direction: column;
+    }
+    .combo-card__actions {
+      flex-direction: column;
+    }
+    .combos-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Combos — Ritual Sets",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Ritual Sets"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Hero Heading",
+      "default": "Designed to work better together"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Hero Description",
+      "default": "Thoughtfully paired formulations for complete, everyday care."
+    },
+    {
+      "type": "header",
+      "content": "Featured Ritual"
+    },
+    {
+      "type": "product",
+      "id": "featured_combo",
+      "label": "Featured Ritual Set Product"
+    },
+    {
+      "type": "text",
+      "id": "featured_title",
+      "label": "Override Product Title",
+      "info": "Leave blank to use the product title"
+    },
+    {
+      "type": "textarea",
+      "id": "featured_benefit",
+      "label": "Featured Ritual Benefit",
+      "default": "Your complete daily ritual — cleanse, restore, and protect in one curated set."
+    },
+    {
+      "type": "header",
+      "content": "Combo Grid"
+    },
+    {
+      "type": "text",
+      "id": "grid_heading",
+      "label": "Grid Section Heading",
+      "default": "All Ritual Sets"
+    },
+    {
+      "type": "text",
+      "id": "grid_subheading",
+      "label": "Grid Section Subheading",
+      "default": "Each pairing is intentional. Each set is complete."
+    },
+    {
+      "type": "header",
+      "content": "Why Ritual Sets?"
+    },
+    {
+      "type": "text",
+      "id": "why_title",
+      "label": "Context Heading",
+      "default": "Why ritual sets?"
+    },
+    {
+      "type": "textarea",
+      "id": "why_desc",
+      "label": "Context Description",
+      "default": "Skin responds better to paired care. Our sets are formulated to work in sequence — each step amplifying the next for deeper, lasting results."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Combos — Ritual Sets"
+    }
+  ]
+}
+{% endschema %}

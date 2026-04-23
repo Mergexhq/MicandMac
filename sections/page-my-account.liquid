@@ -1,67 +1,61 @@
 {% comment %}
   Section: page-my-account
-  Custom account dashboard for Shopify New Customer Accounts.
-  All 4 panels (Orders, Addresses, Wishlist, Details) in one page
-  with smooth JS tab switching — no page reload.
+  Custom account dashboard — works with Shopify New Customer Accounts.
+  Upgraded UI: High contrast, Read/Edit modes, mobile top-tabs.
   URL: /pages/my-account
 {% endcomment %}
 
-{%- unless customer -%}
-  <script>window.location.href = '{{ routes.account_login_url }}';</script>
-{%- endunless -%}
+{% if customer %}
+
+{%- comment -%} ── LOGGED-IN STATE ── {%- endcomment -%}
 
 <div class="account-page" id="AccountPage">
-  <div class="container">
+  <div class="container container--narrow">
     <div class="account-page__layout">
 
       <!-- ══ SIDEBAR ════════════════════════════════════════════════════ -->
       <aside class="account-page__sidebar">
         <nav class="account-nav" aria-label="Account navigation">
 
-          <p class="account-nav__greeting">Hi, <em>{{ customer.first_name }}</em></p>
+          <div class="account-nav__profile">
+            <div class="account-nav__avatar">{{ customer.first_name | slice: 0 | upcase }}{{ customer.last_name | slice: 0 | upcase | default: '' }}</div>
+            <div class="account-nav__user">
+              <p class="account-nav__greeting">{{ customer.first_name }} {{ customer.last_name | default: '' }}</p>
+              <p class="account-nav__email">{{ customer.email }}</p>
+            </div>
+          </div>
           <hr class="account-nav__rule">
 
           <ul class="account-nav__list">
             <li>
-              <button
-                class="account-nav__link is-active"
-                data-tab="orders"
-                aria-selected="true"
-                type="button"
-              >Orders</button>
+              <button class="account-nav__link is-active" data-tab="orders" aria-selected="true" type="button">
+                Orders
+              </button>
             </li>
             <li>
-              <button
-                class="account-nav__link"
-                data-tab="addresses"
-                aria-selected="false"
-                type="button"
-              >Addresses</button>
+              <button class="account-nav__link" data-tab="addresses" aria-selected="false" type="button">
+                Addresses
+              </button>
             </li>
             <li>
-              <button
-                class="account-nav__link"
-                data-tab="wishlist"
-                aria-selected="false"
-                type="button"
-              >Wishlist</button>
+              <button class="account-nav__link" data-tab="wishlist" aria-selected="false" type="button">
+                Wishlist
+              </button>
             </li>
             <li>
-              <button
-                class="account-nav__link"
-                data-tab="details"
-                aria-selected="false"
-                type="button"
-              >Account Details</button>
+              <button class="account-nav__link" data-tab="details" aria-selected="false" type="button">
+                Account Details
+              </button>
             </li>
           </ul>
 
-          <hr class="account-nav__rule">
+          <hr class="account-nav__rule desktop-only">
 
-          <a
-            href="{{ routes.account_logout_url }}"
-            class="account-nav__link account-nav__link--logout"
-          >Log out</a>
+          <div class="account-nav__bottom desktop-only">
+            <a href="{{ routes.account_logout_url }}" class="account-nav__link account-nav__link--logout">
+              Log out
+            </a>
+          </div>
 
         </nav>
       </aside>
@@ -69,13 +63,11 @@
       <!-- ══ MAIN CONTENT ═══════════════════════════════════════════════ -->
       <main class="account-page__main">
 
-        <!-- ─────────────────────────────────────────────────────────────
-             PANEL 1 — ORDERS
-             ───────────────────────────────────────────────────────────── -->
+        <!-- ─── PANEL 1 — ORDERS ──────────────────────────────────────── -->
         <div class="acct-panel is-active" id="panel-orders" role="tabpanel" aria-label="Orders">
 
           <div class="acct-header">
-            <h1 class="acct-header__title">Your orders</h1>
+            <h1 class="acct-header__title">Your Orders</h1>
             {%- if customer.orders.size > 0 -%}
               <p class="acct-header__subtitle">
                 {{ customer.orders.size }} order{% if customer.orders.size != 1 %}s{% endif %} placed
@@ -87,63 +79,47 @@
             <div class="order-list">
               {%- for order in customer.orders -%}
                 <div class="order-card">
-                  <div class="order-card__info">
-                    <p class="order-card__id">Order #{{ order.name }}</p>
-                    <div class="order-card__meta">
-                      <span>{{ order.created_at | date: '%b %d, %Y' }}</span>
-                      <span class="order-card__meta-sep">·</span>
-                      <span>
-                        {{ order.line_items_count }}
-                        item{% if order.line_items_count != 1 %}s{% endif %}
-                      </span>
+                  <div class="order-card__header">
+                    <div>
+                      <p class="order-card__id">Order #{{ order.name }}</p>
+                      <p class="order-card__date">{{ order.created_at | date: '%b %d, %Y' }}</p>
+                    </div>
+                    <div class="order-card__price-area">
+                      <p class="order-card__price">{{ order.total_price | money }}</p>
                     </div>
                   </div>
 
-                  {%- assign f_status = order.fulfillment_status | default: 'unfulfilled' -%}
-                  <span class="order-card__status
-                    {% if f_status == 'fulfilled' %}order-card__status--fulfilled
-                    {% elsif f_status == 'in_progress' %}order-card__status--processing
-                    {% endif %}">
-                    {{ f_status | replace: '_', ' ' | capitalize }}
-                  </span>
-
-                  <div class="order-card__price">
-                    {{ order.total_price | money }}
-                    <small>{{ order.financial_status | replace: '_', ' ' | capitalize }}</small>
+                  <div class="order-card__body">
+                    {%- assign f_status = order.fulfillment_status | default: 'unfulfilled' -%}
+                    <span class="order-card__status {% if f_status == 'fulfilled' %}order-card__status--fulfilled{% elsif f_status == 'in_progress' %}order-card__status--processing{% endif %}">
+                      {{ f_status | replace: '_', ' ' | capitalize }}
+                    </span>
+                    <span class="order-card__items">{{ order.line_items_count }} item{% if order.line_items_count != 1 %}s{% endif %}</span>
                   </div>
-
-                  <a href="{{ order.customer_url }}" class="order-card__cta">View details</a>
+                  
+                  <div class="order-card__footer">
+                    <a href="{{ order.customer_url }}" class="order-card__cta">View details</a>
+                  </div>
                 </div>
               {%- endfor -%}
             </div>
 
           {%- else -%}
             <div class="acct-empty">
-              <div class="acct-empty__icon">
-                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
-                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-                  <line x1="3" y1="6" x2="21" y2="6"/>
-                  <path d="M16 10a4 4 0 01-8 0"/>
-                </svg>
-              </div>
               <h2 class="acct-empty__title">No orders yet</h2>
               <p class="acct-empty__text">When you place an order, it'll appear here.</p>
-              <a href="{{ routes.all_products_collection_url }}" class="btn--outline">
-                Explore products
-              </a>
+              <a href="{{ routes.all_products_collection_url }}" class="btn-outline">Shop All</a>
             </div>
           {%- endif -%}
 
         </div>
 
 
-        <!-- ─────────────────────────────────────────────────────────────
-             PANEL 2 — ADDRESSES
-             ───────────────────────────────────────────────────────────── -->
+        <!-- ─── PANEL 2 — ADDRESSES ───────────────────────────────────── -->
         <div class="acct-panel" id="panel-addresses" role="tabpanel" aria-label="Addresses" hidden>
 
           <div class="acct-header">
-            <h1 class="acct-header__title">Saved addresses</h1>
+            <h1 class="acct-header__title">Saved Addresses</h1>
             {%- if customer.addresses.size > 0 -%}
               <p class="acct-header__subtitle">
                 {{ customer.addresses.size }} address{% if customer.addresses.size != 1 %}es{% endif %} saved
@@ -154,14 +130,18 @@
           {%- if customer.addresses.size > 0 -%}
             <div class="address-grid">
               {%- for address in customer.addresses -%}
-                <div class="address-card {% if address == customer.default_address %}address-card--default{% endif %}">
-                  {%- if address == customer.default_address -%}
-                    <span class="address-card__badge">Default</span>
-                  {%- endif -%}
+                {%- assign is_default = false -%}
+                {%- if address.id == customer.default_address.id -%}
+                  {%- assign is_default = true -%}
+                {%- endif -%}
 
-                  <p class="address-card__label">
-                    {{ address.first_name }} {{ address.last_name }}
-                  </p>
+                <div class="address-card{% if is_default %} address-card--default{% endif %}">
+                  <div class="address-card__header">
+                    <p class="address-card__label">{{ address.first_name }} {{ address.last_name }}</p>
+                    {%- if is_default -%}
+                      <span class="address-card__badge">Default</span>
+                    {%- endif -%}
+                  </div>
 
                   <address>
                     {%- if address.address1 != blank -%}{{ address.address1 }}<br>{%- endif -%}
@@ -174,42 +154,32 @@
                   </address>
 
                   <div class="address-card__actions">
-                    {%- form 'customer_address', address, id: 'DeleteForm-{{ address.id }}' -%}
-                      <input type="hidden" name="_method" value="delete">
-                      <button
-                        type="submit"
-                        class="btn-text btn-text--danger"
-                        onclick="return confirm('Delete this address?')"
-                      >Delete</button>
-                    {%- endform -%}
-
-                    {%- unless address == customer.default_address -%}
-                      {%- form 'customer_address', address, id: 'DefaultForm-{{ address.id }}' -%}
+                    {%- unless is_default -%}
+                      {%- form 'customer_address', address -%}
                         <input type="hidden" name="_method" value="put">
                         <input type="hidden" name="address[default]" value="true">
-                        <button type="submit" class="btn-text">Set as default</button>
+                        <button type="submit" class="btn-text">Make Default</button>
                       {%- endform -%}
                     {%- endunless -%}
+
+                    {%- form 'customer_address', address -%}
+                      <input type="hidden" name="_method" value="delete">
+                      <button type="button" class="btn-text btn-text--danger js-delete-address-btn">Delete</button>
+                    {%- endform -%}
                   </div>
                 </div>
               {%- endfor -%}
             </div>
           {%- else -%}
-            <div class="acct-empty" style="padding: 1.5rem 0 0.5rem;">
-              <div class="acct-empty__icon">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-              </div>
-              <h2 class="acct-empty__title" style="font-size:1.2rem;">No addresses saved</h2>
+            <div class="acct-empty">
+              <h2 class="acct-empty__title">No addresses saved</h2>
               <p class="acct-empty__text">Add a shipping address to speed up checkout.</p>
             </div>
           {%- endif -%}
 
           <!-- Add New Address Form -->
-          <div class="address-form-wrap">
-            <h2 class="address-form-title">+ Add new address</h2>
+          <div class="acct-card address-form-wrap">
+            <h2 class="acct-card__title">Add New Address</h2>
 
             {%- form 'customer_address', customer.new_address, id: 'NewAddressForm' -%}
               {%- if form.errors -%}
@@ -219,71 +189,40 @@
               <div class="form-row">
                 <div class="form-group">
                   <label for="NewFirstName" class="form-label">First name</label>
-                  <input
-                    type="text" id="NewFirstName"
-                    name="address[first_name]"
-                    value="{{ form.first_name | escape }}"
-                    class="form-input"
-                    autocomplete="given-name"
-                  >
+                  <input type="text" id="NewFirstName" name="address[first_name]"
+                    value="{{ form.first_name | escape }}" class="form-input" autocomplete="given-name">
                 </div>
                 <div class="form-group">
                   <label for="NewLastName" class="form-label">Last name</label>
-                  <input
-                    type="text" id="NewLastName"
-                    name="address[last_name]"
-                    value="{{ form.last_name | escape }}"
-                    class="form-input"
-                    autocomplete="family-name"
-                  >
+                  <input type="text" id="NewLastName" name="address[last_name]"
+                    value="{{ form.last_name | escape }}" class="form-input" autocomplete="family-name">
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="NewAddress1" class="form-label">Address</label>
-                <input
-                  type="text" id="NewAddress1"
-                  name="address[address1]"
-                  value="{{ form.address1 | escape }}"
-                  class="form-input"
-                  autocomplete="address-line1"
-                >
+                <input type="text" id="NewAddress1" name="address[address1]"
+                  value="{{ form.address1 | escape }}" class="form-input" autocomplete="address-line1">
               </div>
 
               <div class="form-group">
                 <label for="NewAddress2" class="form-label">
-                  Apartment, suite, etc.
-                  <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span>
+                  Apartment, suite, etc. <span class="form-label-optional">(optional)</span>
                 </label>
-                <input
-                  type="text" id="NewAddress2"
-                  name="address[address2]"
-                  value="{{ form.address2 | escape }}"
-                  class="form-input"
-                  autocomplete="address-line2"
-                >
+                <input type="text" id="NewAddress2" name="address[address2]"
+                  value="{{ form.address2 | escape }}" class="form-input" autocomplete="address-line2">
               </div>
 
               <div class="form-row">
                 <div class="form-group">
                   <label for="NewCity" class="form-label">City</label>
-                  <input
-                    type="text" id="NewCity"
-                    name="address[city]"
-                    value="{{ form.city | escape }}"
-                    class="form-input"
-                    autocomplete="address-level2"
-                  >
+                  <input type="text" id="NewCity" name="address[city]"
+                    value="{{ form.city | escape }}" class="form-input" autocomplete="address-level2">
                 </div>
                 <div class="form-group">
                   <label for="NewZip" class="form-label">ZIP / Postcode</label>
-                  <input
-                    type="text" id="NewZip"
-                    name="address[zip]"
-                    value="{{ form.zip | escape }}"
-                    class="form-input"
-                    autocomplete="postal-code"
-                  >
+                  <input type="text" id="NewZip" name="address[zip]"
+                    value="{{ form.zip | escape }}" class="form-input" autocomplete="postal-code">
                 </div>
               </div>
 
@@ -296,146 +235,128 @@
 
               <div class="form-group">
                 <label for="NewPhone" class="form-label">
-                  Phone
-                  <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span>
+                  Phone <span class="form-label-optional">(optional)</span>
                 </label>
-                <input
-                  type="tel" id="NewPhone"
-                  name="address[phone]"
-                  value="{{ form.phone | escape }}"
-                  class="form-input"
-                  placeholder="+91 XXXXXXXXXX"
-                  autocomplete="tel"
-                >
+                <input type="tel" id="NewPhone" name="address[phone]"
+                  value="{{ form.phone | escape }}" class="form-input" placeholder="+91 XXXXXXXXXX" autocomplete="tel">
               </div>
 
-              <div class="form-group" style="display:flex;align-items:center;gap:0.65rem;margin-bottom:1.5rem;">
-                <input
-                  type="checkbox" id="NewDefault"
-                  name="address[default]"
-                  value="true"
-                  style="width:16px;height:16px;accent-color:var(--color-text-primary);cursor:pointer;"
-                >
-                <label for="NewDefault" style="font-size:0.82rem;color:var(--color-text-secondary);cursor:pointer;">
+              <div class="form-group form-group--checkbox">
+                <input type="checkbox" id="NewDefault" name="address[default]" value="true" class="form-checkbox">
+                <label for="NewDefault" class="form-label-checkbox">
                   Set as default address
                 </label>
               </div>
 
-              <button type="submit" class="btn-save">Save address</button>
+              <button type="submit" class="btn-primary">Save address</button>
             {%- endform -%}
           </div>
 
         </div>
 
 
-        <!-- ─────────────────────────────────────────────────────────────
-             PANEL 3 — WISHLIST
-             ───────────────────────────────────────────────────────────── -->
+        <!-- ─── PANEL 3 — WISHLIST ─────────────────────────────────────── -->
         <div class="acct-panel" id="panel-wishlist" role="tabpanel" aria-label="Wishlist" hidden>
 
           <div class="acct-header">
-            <h1 class="acct-header__title">Saved for later</h1>
+            <h1 class="acct-header__title">Saved for Later</h1>
             <p class="acct-header__subtitle">Products you've set aside</p>
           </div>
 
-          <!--
-            #WishlistGrid & #WishlistEmpty are the IDs that wishlist.ts uses.
-            Do not rename them.
-          -->
+          <!-- wishlist.ts injects .wishlist-card elements into #WishlistGrid -->
           <div class="wishlist-page-grid" id="WishlistGrid">
             <div class="acct-empty" id="WishlistEmpty" style="display:none">
-              <div class="acct-empty__icon">
-                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
-                  <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
-                </svg>
-              </div>
               <h2 class="acct-empty__title">Nothing saved yet</h2>
               <p class="acct-empty__text">Tap the heart on any product to save it here.</p>
-              <a href="{{ routes.all_products_collection_url }}" class="btn--outline">Browse products</a>
+              <a href="{{ routes.all_products_collection_url }}" class="btn-outline">Browse products</a>
             </div>
           </div>
 
         </div>
 
 
-        <!-- ─────────────────────────────────────────────────────────────
-             PANEL 4 — ACCOUNT DETAILS
-             ───────────────────────────────────────────────────────────── -->
+        <!-- ─── PANEL 4 — ACCOUNT DETAILS ─────────────────────────────── -->
         <div class="acct-panel" id="panel-details" role="tabpanel" aria-label="Account details" hidden>
 
-          <div class="acct-header">
-            <h1 class="acct-header__title">Account details</h1>
-            <p class="acct-header__subtitle">Your personal information</p>
+          <div class="acct-header acct-header--split">
+            <div>
+              <h1 class="acct-header__title">Profile Details</h1>
+              <p class="acct-header__subtitle">Manage your personal information</p>
+            </div>
+            <button type="button" class="btn-outline btn-outline--small" id="ToggleEditDetailsBtn">
+              Edit
+            </button>
           </div>
 
-          {%- form 'customer' -%}
-            {%- if form.errors -%}
-              <div class="form-errors">{{ form.errors | default_errors }}</div>
-            {%- endif -%}
+          <!-- READ MODE (Default) -->
+          <div class="acct-card" id="DetailsReadMode">
+            <h2 class="acct-card__subtitle">BASIC INFORMATION</h2>
+            <div class="acct-details-grid">
+              <div class="acct-detail-item">
+                <span class="acct-detail-label">First Name</span>
+                <span class="acct-detail-value">{{ customer.first_name | default: '—' }}</span>
+              </div>
+              <div class="acct-detail-item">
+                <span class="acct-detail-label">Last Name</span>
+                <span class="acct-detail-value">{{ customer.last_name | default: '—' }}</span>
+              </div>
+              <div class="acct-detail-item">
+                <span class="acct-detail-label">Email Address</span>
+                <span class="acct-detail-value">{{ customer.email }}</span>
+              </div>
+              <div class="acct-detail-item">
+                <span class="acct-detail-label">Phone Number</span>
+                <span class="acct-detail-value">{{ customer.phone | default: '—' }}</span>
+              </div>
+            </div>
+          </div>
 
-            <div class="address-form-wrap">
+          <!-- EDIT MODE (Hidden by default) -->
+          <div class="acct-card" id="DetailsEditMode" hidden>
+            <h2 class="acct-card__subtitle">EDIT INFORMATION</h2>
+            {%- form 'customer' -%}
+              {%- if form.errors -%}
+                <div class="form-errors">{{ form.errors | default_errors }}</div>
+              {%- endif -%}
+
               <div class="form-row">
                 <div class="form-group">
                   <label for="CustFirstName" class="form-label">First name</label>
-                  <input
-                    type="text" id="CustFirstName"
-                    name="customer[first_name]"
-                    value="{{ customer.first_name | escape }}"
-                    class="form-input"
-                    autocomplete="given-name"
-                  >
+                  <input type="text" id="CustFirstName" name="customer[first_name]"
+                    value="{{ customer.first_name | escape }}" class="form-input" autocomplete="given-name">
                 </div>
                 <div class="form-group">
                   <label for="CustLastName" class="form-label">Last name</label>
-                  <input
-                    type="text" id="CustLastName"
-                    name="customer[last_name]"
-                    value="{{ customer.last_name | escape }}"
-                    class="form-input"
-                    autocomplete="family-name"
-                  >
+                  <input type="text" id="CustLastName" name="customer[last_name]"
+                    value="{{ customer.last_name | escape }}" class="form-input" autocomplete="family-name">
                 </div>
               </div>
 
-              <div class="form-group">
-                <label for="CustEmail" class="form-label">Email</label>
-                <input
-                  type="email" id="CustEmail"
-                  value="{{ customer.email | escape }}"
-                  class="form-input"
-                  readonly
-                  title="Email cannot be changed here"
-                >
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="CustEmail" class="form-label">Email</label>
+                  <input type="email" id="CustEmail" value="{{ customer.email | escape }}"
+                    class="form-input" readonly title="Email cannot be changed here">
+                </div>
+                <div class="form-group">
+                  <label for="CustPhone" class="form-label">
+                    Phone <span class="form-label-optional">(optional)</span>
+                  </label>
+                  <input type="tel" id="CustPhone" name="customer[phone]"
+                    value="{{ customer.phone | escape }}" class="form-input" placeholder="+91 XXXXXXXXXX" autocomplete="tel">
+                </div>
               </div>
 
-              <div class="form-group">
-                <label for="CustPhone" class="form-label">
-                  Phone
-                  <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span>
-                </label>
-                <input
-                  type="tel" id="CustPhone"
-                  name="customer[phone]"
-                  value="{{ customer.phone | escape }}"
-                  class="form-input"
-                  placeholder="+91 XXXXXXXXXX"
-                  autocomplete="tel"
-                >
+              <div class="form-actions">
+                <button type="submit" class="btn-primary" id="DetailsSaveBtn">Save Changes</button>
+                <button type="button" class="btn-text" id="CancelEditDetailsBtn">Cancel</button>
               </div>
+            {%- endform -%}
+          </div>
 
-              <div style="display:flex;align-items:center;gap:1.5rem;margin-top:0.5rem;">
-                <button type="submit" class="btn-save" id="DetailsSaveBtn">Save changes</button>
-                <a
-                  href="{{ routes.account_logout_url }}"
-                  style="font-size:0.78rem;color:var(--color-text-muted);text-decoration:underline;text-underline-offset:3px;"
-                >Sign out of account</a>
-              </div>
-            </div>
-          {%- endform -%}
-
-          <div class="acct-password-hint">
-            <span>Password or security settings?</span>
-            <a href="/account">Manage in account settings →</a>
+          <div class="acct-security-block">
+            <p>Password or security settings?</p>
+            <a href="/account" class="btn-text">Manage setting natively &rarr;</a>
           </div>
 
         </div>
@@ -445,73 +366,113 @@
   </div>
 </div>
 
-<!-- Micro-feedback toast -->
-<div class="acct-toast" id="AcctToast" role="status" aria-live="polite"></div>
+{% else %}
 
+{%- comment -%} ── GUEST STATE — not logged in ── {%- endcomment -%}
+
+<div class="account-page">
+  <div class="container container--narrow">
+    <div class="acct-guest acct-card">
+      <h1 class="acct-guest__title">Sign in to your account</h1>
+      <p class="acct-guest__text">Access your orders, saved addresses, and wishlist.</p>
+      <a href="{{ routes.account_login_url }}" class="btn-primary" style="display:inline-block;text-decoration:none;">
+        Sign in
+      </a>
+      <p class="acct-guest__alt">
+        Don't have an account?
+        <a href="{{ routes.account_register_url }}">Create one →</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+
+<!-- Custom Confirmation Modal -->
+<div class="acct-modal-overlay" id="ConfirmDeleteModal" hidden>
+  <div class="acct-modal">
+    <h3 class="acct-modal__title">Delete Address</h3>
+    <p class="acct-modal__text">Are you sure you want to delete this address? This action cannot be undone.</p>
+    <div class="acct-modal__actions">
+      <button type="button" class="btn-outline" id="CancelDeleteBtn">Cancel</button>
+      <button type="button" class="btn-primary" style="background:#8B2020;" id="ConfirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="acct-toast" id="AcctToast" role="status" aria-live="polite"></div>
 
 <script>
 (function () {
   'use strict';
 
-  /* ── Elements ───────────────────────────────────────────────────────── */
   const navBtns = document.querySelectorAll('[data-tab]');
   const panels  = document.querySelectorAll('.acct-panel');
   const toast   = document.getElementById('AcctToast');
 
-  /* ── Tab switching ──────────────────────────────────────────────────── */
+  /* ── Tab switching ──────────────────────────────────────── */
   function switchTab(id) {
     panels.forEach(p => {
       const match = p.id === 'panel-' + id;
       p.hidden = !match;
       p.classList.toggle('is-active', match);
     });
-
     navBtns.forEach(b => {
       const active = b.dataset.tab === id;
       b.classList.toggle('is-active', active);
       b.setAttribute('aria-selected', String(active));
+      
+      if(active && window.innerWidth <= 767) {
+        b.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
     });
 
-    /* persist in URL hash so browser back works */
     history.replaceState(null, '', '#' + id);
-
-    /* scroll main to top when switching */
-    document.getElementById('AccountPage')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   navBtns.forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
 
-  /* restore from hash on load */
   const initHash = window.location.hash.slice(1);
   const validIds = ['orders', 'addresses', 'wishlist', 'details'];
   if (initHash && validIds.includes(initHash)) switchTab(initHash);
 
-  /* ── Toast ──────────────────────────────────────────────────────────── */
-  function showToast(msg, duration) {
+  /* ── Account Details: Read/Edit Mode Toggle ─────────────── */
+  const toggleEditBtn = document.getElementById('ToggleEditDetailsBtn');
+  const cancelEditBtn = document.getElementById('CancelEditDetailsBtn');
+  const readMode      = document.getElementById('DetailsReadMode');
+  const editMode      = document.getElementById('DetailsEditMode');
+
+  function setEditMode(isEditing) {
+    if(!readMode || !editMode) return;
+    readMode.hidden = isEditing;
+    editMode.hidden = !isEditing;
+    if(toggleEditBtn) toggleEditBtn.style.display = isEditing ? 'none' : 'inline-flex';
+  }
+
+  toggleEditBtn?.addEventListener('click', () => setEditMode(true));
+  cancelEditBtn?.addEventListener('click', () => setEditMode(false));
+
+  /* ── Toast ──────────────────────────────────────────────── */
+  function showToast(msg, dur) {
     if (!toast) return;
     toast.textContent = msg;
     toast.classList.add('is-visible');
-    setTimeout(() => toast.classList.remove('is-visible'), duration || 3000);
+    setTimeout(() => toast.classList.remove('is-visible'), dur || 3000);
   }
 
-  /* Flash on return after save */
-  if (location.search.includes('customer_updated')) showToast('Details saved successfully.');
+  if (location.search.includes('customer_updated')) showToast('Details saved.');
   if (location.search.includes('address_saved'))    showToast('Address saved.');
 
-  /* Save button feedback */
-  const saveBtn = document.getElementById('DetailsSaveBtn');
-  saveBtn?.closest('form')?.addEventListener('submit', () => showToast('Saving…', 10000));
+  document.getElementById('DetailsSaveBtn')
+    ?.closest('form')
+    ?.addEventListener('submit', () => showToast('Saving…', 10000));
 
-  /* New address form feedback */
-  document.getElementById('NewAddressForm')?.addEventListener('submit', () => {
-    showToast('Saving address…', 10000);
-  });
+  document.getElementById('NewAddressForm')
+    ?.addEventListener('submit', () => showToast('Saving address…', 10000));
 
-  /* ── Wishlist: trigger re-scan when panel opens ─────────────────────── */
-  /* wishlist.ts already runs on DOM ready. When the panel becomes visible
-     via tab switch, the cards are already in the DOM — _checkEmpty handles it. */
+  /* ── Wishlist panel: re-check empty state on open ───────── */
   document.querySelector('[data-tab="wishlist"]')?.addEventListener('click', () => {
-    /* re-trigger empty check in case panel was hidden during initial render */
     setTimeout(() => {
       const grid  = document.getElementById('WishlistGrid');
       const empty = document.getElementById('WishlistEmpty');
@@ -520,9 +481,33 @@
     }, 50);
   });
 
+  /* ── Custom Delete Confirmation ─────────────────────────── */
+  const deleteModal = document.getElementById('ConfirmDeleteModal');
+  const cancelBtn = document.getElementById('CancelDeleteBtn');
+  const confirmBtn = document.getElementById('ConfirmDeleteBtn');
+  let formToSubmit = null;
+
+  document.querySelectorAll('.js-delete-address-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      formToSubmit = e.target.closest('form');
+      if (deleteModal) deleteModal.hidden = false;
+    });
+  });
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      if (deleteModal) deleteModal.hidden = true;
+      formToSubmit = null;
+    });
+  }
+
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', () => {
+      if (formToSubmit) formToSubmit.submit();
+    });
+  }
 })();
 </script>
-
 
 {% schema %}
 {

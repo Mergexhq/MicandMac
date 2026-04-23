@@ -1,0 +1,325 @@
+{% comment %}
+  Section: Curated New Arrivals (Editorial Drop Page)
+{% endcomment %}
+
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
+
+<div class="na-drop-page">
+  <!-- 1. HERO -->
+  <div class="na-hero">
+    <div class="container text-center">
+      <h1 class="na-hero__title">{{ section.settings.title | default: 'New Arrivals' }}</h1>
+      <p class="na-hero__desc">{{ section.settings.description | default: 'The latest additions to your daily care.' }}</p>
+      {% if section.settings.sub_description != blank %}
+        <p class="na-hero__sub">{{ section.settings.sub_description }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- 2. FEATURED DROP -->
+  {%- assign featured_product = section.settings.featured_product -%}
+  {%- if featured_product != blank -%}
+    <div class="na-featured">
+      <div class="container">
+        <div class="na-featured__wrapper">
+          <div class="na-featured__image">
+            <a href="{{ featured_product.url }}">
+              {%- if featured_product.featured_image -%}
+                <img src="{{ featured_product.featured_image | image_url: width: 800 }}" alt="{{ featured_product.title | escape }}" loading="lazy" width="{{ featured_product.featured_image.width }}" height="{{ featured_product.featured_image.height }}">
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'na-featured__img-placeholder' }}
+              {%- endif -%}
+            </a>
+          </div>
+          <div class="na-featured__content">
+            <span class="na-featured__eyebrow">Just Arrived</span>
+            <h2 class="na-featured__title"><a href="{{ featured_product.url }}">{{ featured_product.title | split: '|' | first }}</a></h2>
+            <p class="na-featured__benefit">{{ section.settings.featured_benefit | default: 'Thoughtfully formulated for deeper care and restored balance.' }}</p>
+            <a href="{{ featured_product.url }}" class="btn btn--secondary btn--outline na-featured__btn">View Product &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- 3. NEW ARRIVALS GRID -->
+  <div class="na-grid-section">
+    <div class="container">
+      <div class="na-grid">
+        {%- assign grid_count = 0 -%}
+        {%- for product in collection.products -%}
+          {%- if product.handle == featured_product.handle -%}{%- continue -%}{%- endif -%}
+          {%- if grid_count >= section.settings.grid_limit -%}{%- break -%}{%- endif -%}
+          
+          <div class="na-grid__item">
+            {% render 'product-card', product: product %}
+          </div>
+          {%- assign grid_count = grid_count | plus: 1 -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. WHY IT'S NEW -->
+  <div class="na-context">
+    <div class="container text-center">
+      <h3 class="na-context__title">{{ section.settings.context_title | default: "Why it's new" }}</h3>
+      <p class="na-context__desc">{{ section.settings.context_text | default: "Formulated for deeper hydration and balance. Crafted with intentional ingredients to elevate your daily ritual." }}</p>
+    </div>
+  </div>
+
+  <!-- 5. CROSS-SELL -->
+  <div class="na-cross-sell">
+    <div class="container text-center">
+      <a href="{{ routes.collections_url }}/best-sellers" class="na-cross-sell__link">Explore bestsellers &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .na-drop-page {
+    background-color: var(--color-background, #fff); /* White/light background */
+    color: var(--mm-dark-espresso, #2E1F1A);
+    padding-bottom: var(--space-16);
+  }
+
+  /* Typography Defaults */
+  .na-hero__title, .na-featured__title, .na-context__title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 500;
+  }
+
+  /* 1. HERO */
+  .na-hero {
+    padding-top: 100px;
+    padding-bottom: 60px;
+  }
+  .na-hero__title {
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    color: var(--mm-deep-garnet, #5A2D3A);
+    line-height: 1.1;
+    margin-bottom: var(--space-4);
+  }
+  .na-hero__desc {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-family: var(--font-body);
+    font-weight: 300;
+    max-width: 600px;
+    margin: 0 auto;
+    letter-spacing: 0.02em;
+    opacity: 0.85;
+  }
+  .na-hero__sub {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-top: var(--space-4);
+    opacity: 0.6;
+    font-weight: 500;
+  }
+
+  /* 2. FEATURED DROP */
+  .na-featured {
+    padding-bottom: 80px;
+  }
+  .na-featured__wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12);
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .na-featured__image img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+  }
+  .na-featured__img-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(46,31,26,0.05);
+  }
+  .na-featured__content {
+    padding: var(--space-6) 0;
+  }
+  .na-featured__eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--mm-terracotta-rose, #B56B5D);
+    margin-bottom: var(--space-4);
+    font-weight: 600;
+  }
+  .na-featured__title {
+    font-size: clamp(2rem, 3vw, 2.5rem);
+    margin-bottom: var(--space-4);
+    line-height: 1.2;
+  }
+  .na-featured__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .na-featured__benefit {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: var(--space-8);
+    opacity: 0.8;
+  }
+  .na-featured__btn {
+    padding: 12px 32px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+
+  /* 3. GRID */
+  .na-grid-section {
+    padding-bottom: 80px;
+  }
+  .na-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* 4. CONTEXT */
+  .na-context {
+    padding: 60px 0;
+    border-top: 1px solid rgba(46,31,26,0.1);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .na-context__title {
+    font-size: 2rem;
+    color: var(--mm-deep-garnet);
+    margin-bottom: var(--space-4);
+  }
+  .na-context__desc {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    opacity: 0.8;
+  }
+
+  /* 5. CROSS-SELL */
+  .na-cross-sell {
+    padding-top: 40px;
+  }
+  .na-cross-sell__link {
+    font-size: 1.1rem;
+    color: var(--mm-deep-garnet);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 4px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .na-cross-sell__link:hover {
+    color: var(--mm-terracotta-rose);
+    border-color: var(--mm-terracotta-rose);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .na-featured__wrapper {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+    .na-featured__image img {
+      aspect-ratio: 1/1;
+    }
+    .na-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+    .na-hero {
+      padding-top: 60px;
+      padding-bottom: 40px;
+    }
+    .na-featured__content {
+      text-align: center;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "New Arrivals Drop",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "The latest additions to your daily care."
+    },
+    {
+      "type": "text",
+      "id": "sub_description",
+      "label": "Sub-Description",
+      "default": "Freshly crafted. Thoughtfully selected."
+    },
+    {
+      "type": "header",
+      "content": "Featured Product"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Primary Featured Product"
+    },
+    {
+      "type": "text",
+      "id": "featured_benefit",
+      "label": "Short Benefit Line",
+      "default": "Thoughtfully formulated for deeper care and restored balance."
+    },
+    {
+      "type": "header",
+      "content": "Grid Settings"
+    },
+    {
+      "type": "range",
+      "id": "grid_limit",
+      "label": "Max Grid Products",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Context Section"
+    },
+    {
+      "type": "text",
+      "id": "context_title",
+      "label": "Context Heading",
+      "default": "Why it's new"
+    },
+    {
+      "type": "textarea",
+      "id": "context_text",
+      "label": "Context Description",
+      "default": "Formulated for deeper hydration and balance. Crafted with intentional ingredients to elevate your daily ritual."
+    }
+  ],
+  "presets": [
+    {
+      "name": "New Arrivals Drop"
+    }
+  ]
+}
+{% endschema %}
