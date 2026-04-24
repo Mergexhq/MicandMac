@@ -9,14 +9,6 @@
  */
 {
   "current": {
-    "sections": {
-      "main-cart": {
-        "type": "main-cart",
-        "settings": {
-          "threshold_cents": 99900
-        }
-      }
-    },
     "settings": {
       "checkout_logo_alignment": "center",
       "checkout_accent_color": "#5A2E2E",
@@ -24,6 +16,82 @@
       "checkout_error_color": "#ff6d6d",
       "checkout_background_color": "#F5EDE6",
       "checkout_card_background_color": "#FFFFFF"
+    },
+    "sections": {
+      "main-cart": {
+        "type": "main-cart",
+        "settings": {
+          "threshold_cents": 99900
+        }
+      },
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "bg_color": "#2e1f1a",
+          "text_color": "#d4af37"
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo_width": 160
+        }
+      },
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {}
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "brand_desc": "Artisan-formulated, lab-certified skincare. Born in Coimbatore. Honest ingredients. Gentle results.",
+          "instagram": "",
+          "facebook": "",
+          "youtube": "",
+          "whatsapp": "",
+          "show_newsletter": true,
+          "newsletter_heading": "Get 15% off your first order",
+          "newsletter_sub": "Plus skincare education and early access to new formulas. No spam, ever.",
+          "show_payment_icons": true
+        }
+      }
+    },
+    "content_for_index": [],
+    "blocks": {
+      "2200952712151285029": {
+        "type": "shopify://apps/microsoft-clarity/blocks/brandAgents_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
+      },
+      "2567389343055140935": {
+        "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
+      },
+      "14060646107696862457": {
+        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {}
+      },
+      "246135896087123374": {
+        "type": "shopify://apps/1clickpopup/blocks/main/233742b9-16cb-4f75-9de7-3fe92c29fdff",
+        "disabled": false,
+        "settings": {}
+      },
+      "15683396631634586217": {
+        "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
+        "disabled": true,
+        "settings": {
+          "button_color": "#000000",
+          "secondary_color": "#FFFFFF",
+          "ternary_color": "#6A6A6A",
+          "button_icon": "chat_bubble",
+          "button_text": "chat_with_us",
+          "button_horizontal_position": "bottom_right",
+          "button_vertical_position": "lowest",
+          "greeting_message": ""
+        }
+      }
     }
   }
 }
