@@ -1,0 +1,175 @@
+/* ============================================================
+   Hero Parallax — assets/hero-parallax.css
+   ─────────────────────────────────────────────────────────────
+   The "text behind image" depth illusion:
+     .hero-parallax__text   → z-index 2  (behind the product)
+     .hero-parallax__plant  → z-index 3  (in front of text)
+
+   Customisable tokens are injected as CSS custom properties
+   via an inline style on the <section> element from Liquid.
+   Never put Liquid in a CSS asset file.
+   ============================================================ */
+
+/* ── Section container ────────────────────────────────── */
+.hero-parallax {
+    position: relative;
+    width: 100%;
+    height: var(--hero-height, 100vh);
+    overflow: hidden;
+    background-color: var(--hero-bg, #F3E8E4);
+}
+
+/* ── Shared layer base ────────────────────────────────── */
+.hero-parallax__bg,
+.hero-parallax__text,
+.hero-parallax__plant {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+}
+
+/* ── Layer 1: Background ─────────────────────────────── */
+.hero-parallax__bg {
+    z-index: 1;
+    background-color: var(--hero-bg, #F3E8E4);
+}
+
+.hero-parallax__bg-img {
+    width: 100%;
+    height: 110%;
+    /* slightly oversized so parallax doesn't reveal edges */
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* ── Layer 2: Text — sits BEHIND the product ─────────── */
+.hero-parallax__text {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 2rem;
+    pointer-events: none;
+    /* let clicks fall through to layer 3 / page */
+}
+
+.hero-parallax__heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(3.5rem, 14vw, var(--hero-heading-size, 130px));
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    color: var(--hero-text, #4B2A31);
+    text-transform: uppercase;
+    margin: 0;
+    pointer-events: auto;
+}
+
+.hero-parallax__subheading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(0.875rem, 2vw, 1.1rem);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    margin-top: 1.75rem;
+    opacity: 0.65;
+    color: var(--hero-text, #4B2A31);
+    pointer-events: auto;
+}
+
+.hero-parallax__cta {
+    display: inline-block;
+    margin-top: 2.25rem;
+    padding: 0.9rem 2.4rem;
+    border: 1.5px solid var(--hero-text, #4B2A31);
+    border-radius: 999px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--hero-text, #4B2A31);
+    pointer-events: auto;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 5;
+    /* always clickable over everything */
+}
+
+.hero-parallax__cta:hover {
+    background: var(--hero-text, #4B2A31);
+    color: var(--hero-bg, #F3E8E4);
+    transform: translateY(-2px);
+}
+
+/* ── Layer 3: Product PNG — IN FRONT of text ─────────── */
+.hero-parallax__plant {
+    z-index: 3;
+    pointer-events: none;
+    /* clicks pass through so CTA is still clickable */
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.hero-parallax__plant-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+    display: block;
+}
+
+/* Editor placeholder (shown when no image is uploaded) */
+.hero-parallax__plant-placeholder {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    opacity: 0.4;
+    white-space: nowrap;
+    color: var(--hero-text, #4B2A31);
+    text-align: center;
+}
+
+/* ── Reduced-motion accessibility override ───────────── */
+@media (prefers-reduced-motion: reduce) {
+
+    .hero-parallax__bg,
+    .hero-parallax__text,
+    .hero-parallax__plant {
+        will-change: auto;
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
+/* ── Mobile (touch) — parallax disabled by JS, but   ─── */
+/* ── also freeze in CSS as a safe fallback           ─── */
+@media (max-width: 768px) {
+    .hero-parallax__heading {
+        font-size: clamp(2.75rem, 18vw, 5.5rem);
+    }
+
+    .hero-parallax__subheading {
+        font-size: 0.9rem;
+        margin-top: 1.25rem;
+    }
+
+    .hero-parallax__cta {
+        margin-top: 1.75rem;
+        padding: 0.8rem 2rem;
+    }
+
+    .hero-parallax__bg,
+    .hero-parallax__text,
+    .hero-parallax__plant {
+        transform: none !important;
+    }
+}

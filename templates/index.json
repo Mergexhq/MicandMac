@@ -12,6 +12,8 @@
     "hero": {
       "type": "cinematic-hero",
       "settings": {
+        "background_video": "shopify://files/videos/WhatsApp Video 2026-04-25 at 12.09.38 AM.mp4",
+        "video_url": "",
         "tagline": "FORMULATED FOR LASTING CARE",
         "heading_line1": "Your skin deserves",
         "heading_line2": "more than promises.",
@@ -19,8 +21,7 @@
         "cta_primary_label": "Shop the Collection",
         "cta_primary_url": "/collections/all",
         "cta_secondary_label": "Explore New Arrivals",
-        "cta_secondary_url": "/collections/new-arrivals",
-        "show_scroll_cue": true
+        "cta_secondary_url": "/collections/new-arrivals"
       }
     },
     "ritual_story": {
@@ -179,4 +180,3 @@
     "instagram_grid"
   ]
 }
-
