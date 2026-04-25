@@ -5,14 +5,16 @@
 {% endcomment %}
 
 {%- if section.blocks.size > 0 -%}
+<style>
+  :root { --announcement-height: 30px; }
+</style>
+{%- endif -%}
+
+{%- if section.blocks.size > 0 -%}
   <div
     class="announcement-bar"
     id="AnnouncementBar"
     role="text"
-    style="
-      background: {{ section.settings.bg_color }};
-      color: {{ section.settings.text_color }};
-    "
   >
     <div class="announcement-bar__container container">
       <div class="announcement-bar__slider" style="--total-items: {{ section.blocks.size }};">
@@ -48,14 +50,7 @@
 
 <style>
 .announcement-bar {
-  position: sticky;
-  top: 0;
-  z-index: calc(var(--z-nav) + 2);
   padding-block: 0; /* Managed by item height */
-  font-size: var(--text-xs);
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
   overflow: hidden;
   height: 30px; /* Fixed height for animation stability */
 }
@@ -69,7 +64,7 @@
   flex-direction: column;
   height: 100%;
   {% if section.blocks.size > 1 %}
-    animation: announcement-roll {{ section.blocks.size | times: 3 }}s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation: announcement-roll {{ section.blocks.size | times: 5 }}s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   {% endif %}
 }
 

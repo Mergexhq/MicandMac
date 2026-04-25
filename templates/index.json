@@ -1,16 +1,25 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "the-act-hero",
       "settings": {
-        "heading": "Your skin deserves more than promises.",
         "show_hero_nav": false,
+        "heading": "Your skin deserves more than promises.",
+        "cta_label": "Shop Best Sellers",
+        "cta_url": "/collections/all",
         "mission_title": "Artisan-formulated. Lab-certified.",
         "mission_text": "Every formula is a proprietary Owner's Blend — made in Coimbatore, tested in a lab.",
         "product_tag": "BESTSELLER",
         "product_title": "Donkey Milk Deep Hydration Soap",
-        "cta_label": "Shop Best Sellers",
-        "cta_url": "/collections/all",
         "padding_top": 0,
         "padding_bottom": 0
       }
@@ -21,35 +30,48 @@
     },
     "ritual_story": {
       "type": "ritual-story",
+      "blocks": {
+        "pillar_1": {
+          "type": "pillar",
+          "settings": {
+            "label": "Cold Pressed"
+          }
+        },
+        "pillar_2": {
+          "type": "pillar",
+          "settings": {
+            "label": "Lab Certified"
+          }
+        },
+        "pillar_3": {
+          "type": "pillar",
+          "settings": {
+            "label": "100% Natural"
+          }
+        },
+        "pillar_4": {
+          "type": "pillar",
+          "settings": {
+            "label": "Handmade in India"
+          }
+        }
+      },
+      "block_order": [
+        "pillar_1",
+        "pillar_2",
+        "pillar_3",
+        "pillar_4"
+      ],
       "settings": {
+        "image_position": "left",
         "eyebrow": "A Ritual, Not a Routine",
         "heading": "Crafted to be the best part of your day.",
         "cta_label": "Discover our process",
         "cta_url": "/pages/about",
         "bg_color": "#F5ECD7",
-        "image_position": "left",
         "padding_top": 0,
         "padding_bottom": 0
-      },
-      "blocks": {
-        "pillar_1": {
-          "type": "pillar",
-          "settings": { "label": "Cold Pressed" }
-        },
-        "pillar_2": {
-          "type": "pillar",
-          "settings": { "label": "Lab Certified" }
-        },
-        "pillar_3": {
-          "type": "pillar",
-          "settings": { "label": "100% Natural" }
-        },
-        "pillar_4": {
-          "type": "pillar",
-          "settings": { "label": "Handmade in India" }
-        }
-      },
-      "block_order": ["pillar_1", "pillar_2", "pillar_3", "pillar_4"]
+      }
     },
     "product_spotlight_soap": {
       "type": "product-spotlight",
@@ -89,9 +111,6 @@
         "products_to_show": 4,
         "columns_desktop": 4,
         "show_view_all": true,
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
         "padding_top": 80,
         "padding_bottom": 80
       }
@@ -99,9 +118,9 @@
     "ingredients": {
       "type": "ingredients-story",
       "settings": {
+        "image_position": "left",
         "subheading": "What touches your skin matters",
         "heading": "Ingredients you can actually read.",
-        "image_position": "left",
         "color_scheme": "secondary",
         "padding_top": 80,
         "padding_bottom": 80
