@@ -26,6 +26,18 @@
       },
       "announcement-bar": {
         "type": "announcement-bar",
+        "blocks": {
+          "announcement_NYaeM4": {
+            "type": "announcement",
+            "settings": {
+              "text": "Free Shipping on Orders Over ₹999 + Use Code: WELCOME15",
+              "link": ""
+            }
+          }
+        },
+        "block_order": [
+          "announcement_NYaeM4"
+        ],
         "settings": {
           "bg_color": "#2e1f1a",
           "text_color": "#d4af37"
