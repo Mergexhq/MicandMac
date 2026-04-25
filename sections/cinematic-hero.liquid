@@ -1,0 +1,740 @@
+{%- comment -%}
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  MIC & MAC — CINEMATIC HERO  (v3.0 — rebuilt from scratch)  ║
+  ║                                                              ║
+  ║  Layout: Full-bleed video · left-aligned content block       ║
+  ║  Overlay: Asymmetric gradient — dark left / open right       ║
+  ║  CTAs: Primary pill + Ghost secondary                        ║
+  ║  Fallback: Static image → CSS gradient                       ║
+  ║  Mobile: Center-aligned, stronger overlay, single CTA        ║
+  ╚══════════════════════════════════════════════════════════════╝
+{%- endcomment -%}
+
+{%- style -%}
+/* ── Reset & Scope ───────────────────────────────────────────── */
+.cine-hero *,
+.cine-hero *::before,
+.cine-hero *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Shell ───────────────────────────────────────────────────── */
+.cine-hero {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 560px;
+  max-height: 1000px;
+  overflow: hidden;
+  background: var(--mm-dark-espresso);
+  display: flex;
+  align-items: center;
+}
+
+/* ── Video / Image Layer ─────────────────────────────────────── */
+.cine-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.cine-hero__video,
+.cine-hero__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Subtle slow-zoom on static image fallback */
+.cine-hero__img {
+  animation: cine-zoom 18s ease-in-out infinite alternate;
+}
+
+@keyframes cine-zoom {
+  from { transform: scale(1);    }
+  to   { transform: scale(1.06); }
+}
+
+/* ── Cinematic Overlay ───────────────────────────────────────── */
+/* Left darker (text readable) → fades right (product visible)   */
+.cine-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to right,
+    rgba(20, 10, 10, 0.70) 0%,
+    rgba(20, 10, 10, 0.50) 35%,
+    rgba(20, 10, 10, 0.18) 65%,
+    rgba(20, 10, 10, 0.04) 100%
+  );
+}
+
+/* Additional bottom vignette for depth */
+.cine-hero__overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(20, 10, 10, 0.45) 0%,
+    transparent 40%
+  );
+}
+
+/* ── Content Block ───────────────────────────────────────────── */
+.cine-hero__content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: var(--container-wide, 1440px);
+  margin: 0 auto;
+  padding: 0 var(--space-8, 2rem);
+  padding-top: 80px; /* clear sticky header */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .cine-hero__content {
+    padding: 80px 80px 0;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .cine-hero__content {
+    padding: 80px 120px 0;
+  }
+}
+
+/* ── Tagline ─────────────────────────────────────────────────── */
+.cine-hero__tagline {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.6875rem;          /* 11px */
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--mm-champagne-gold, #D4AF37);
+  margin-bottom: 1.25rem;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: cine-rise 0.7s ease 0.2s forwards;
+}
+
+/* ── Headline ────────────────────────────────────────────────── */
+.cine-hero__heading {
+  font-family: var(--font-display, 'Cormorant Garamond', serif);
+  font-size: clamp(2.4rem, 5.5vw, 4.75rem);
+  font-weight: 300;
+  line-height: 1.07;
+  letter-spacing: -0.01em;
+  color: var(--mm-soft-blush, #F3E8E4);
+  max-width: 560px;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: cine-rise 0.8s ease 0.38s forwards;
+}
+
+/* Italic last word / phrase accent */
+.cine-hero__heading em {
+  font-style: italic;
+  color: var(--mm-champagne-gold, #D4AF37);
+  font-weight: 300;
+}
+
+/* ── Supporting Text ─────────────────────────────────────────── */
+.cine-hero__body {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: clamp(0.9375rem, 1.1vw, 1.0625rem);
+  line-height: 1.72;
+  color: rgba(243, 232, 228, 0.72);
+  max-width: 440px;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: cine-rise 0.7s ease 0.55s forwards;
+}
+
+/* ── CTA Group ───────────────────────────────────────────────── */
+.cine-hero__ctas {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: cine-rise 0.7s ease 0.72s forwards;
+}
+
+/* Primary CTA */
+.cine-hero__cta-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--mm-champagne-gold, #D4AF37);
+  color: var(--mm-dark-espresso, #2E1F1A);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.8125rem;           /* 13px */
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 15px 30px;
+  border-radius: var(--radius-pill, 999px);
+  transition:
+    background 0.25s ease,
+    transform  0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.25s ease;
+  white-space: nowrap;
+}
+
+.cine-hero__cta-primary svg {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex-shrink: 0;
+}
+
+.cine-hero__cta-primary:hover {
+  background: #E0C96A;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 28px rgba(212, 175, 55, 0.35);
+}
+
+.cine-hero__cta-primary:hover svg {
+  transform: translateX(4px);
+}
+
+/* Secondary CTA */
+.cine-hero__cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(243, 232, 228, 0.85);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(243, 232, 228, 0.35);
+  transition: color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.cine-hero__cta-secondary::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--mm-champagne-gold, #D4AF37);
+  transition: width 0.3s ease;
+}
+
+.cine-hero__cta-secondary:hover {
+  color: var(--mm-champagne-gold, #D4AF37);
+  border-color: transparent;
+}
+
+.cine-hero__cta-secondary:hover::after {
+  width: 100%;
+}
+
+/* ── Scroll Cue ──────────────────────────────────────────────── */
+.cine-hero__scroll-cue {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  animation: cine-rise 0.6s ease 1.2s forwards;
+}
+
+.cine-hero__scroll-text {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.625rem;             /* 10px */
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(243, 232, 228, 0.5);
+}
+
+.cine-hero__scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(212, 175, 55, 0.7), transparent);
+  animation: cine-scroll-pulse 2s ease-in-out infinite;
+}
+
+@keyframes cine-scroll-pulse {
+  0%, 100% { opacity: 0.4; transform: scaleY(1);    }
+  50%       { opacity: 1;   transform: scaleY(1.15); }
+}
+
+/* ── Video Control (mute toggle) ─────────────────────────────── */
+.cine-hero__mute-btn {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 2rem;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(243, 232, 228, 0.3);
+  background: rgba(20, 10, 10, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: rgba(243, 232, 228, 0.85);
+  cursor: pointer;
+  display: none;          /* shown by JS when video loads */
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.cine-hero__mute-btn:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.5);
+}
+
+.cine-hero__mute-btn svg {
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+/* ── Entry animations ────────────────────────────────────────── */
+@keyframes cine-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── MOBILE overrides ────────────────────────────────────────── */
+@media screen and (max-width: 767px) {
+  .cine-hero {
+    height: 100svh;
+    min-height: 520px;
+    max-height: 780px;
+    align-items: flex-end;
+  }
+
+  /* Stronger overlay on mobile for readability */
+  .cine-hero__overlay {
+    background: linear-gradient(
+      to top,
+      rgba(20, 10, 10, 0.82) 0%,
+      rgba(20, 10, 10, 0.55) 45%,
+      rgba(20, 10, 10, 0.25) 100%
+    );
+  }
+
+  .cine-hero__overlay::after {
+    display: none;
+  }
+
+  .cine-hero__content {
+    align-items: center;
+    text-align: center;
+    padding: 0 1.5rem 5rem;
+  }
+
+  .cine-hero__heading {
+    font-size: clamp(2rem, 8.5vw, 2.8rem);
+    max-width: 100%;
+  }
+
+  .cine-hero__body {
+    max-width: 100%;
+    font-size: 0.9375rem;
+  }
+
+  .cine-hero__ctas {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* Single full-width primary CTA on mobile */
+  .cine-hero__cta-primary {
+    width: 100%;
+    justify-content: center;
+    padding: 16px 24px;
+  }
+
+  /* Hide secondary CTA on mobile */
+  .cine-hero__cta-secondary {
+    display: none;
+  }
+
+  .cine-hero__scroll-cue {
+    display: none;
+  }
+
+  .cine-hero__mute-btn {
+    bottom: 1.5rem;
+    right: 1.25rem;
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .cine-hero__tagline,
+  .cine-hero__heading,
+  .cine-hero__body,
+  .cine-hero__ctas,
+  .cine-hero__scroll-cue {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .cine-hero__img {
+    animation: none;
+  }
+  .cine-hero__scroll-line {
+    animation: none;
+    opacity: 0.6;
+  }
+}
+{%- endstyle -%}
+
+{%- comment -%} ── HTML ──────────────────────────────────────── {%- endcomment -%}
+<section
+  class="cine-hero"
+  id="CineHero-{{ section.id }}"
+  aria-label="Hero"
+  data-cine-hero
+>
+
+  {%- comment -%} ── MEDIA LAYER ─────────────────────────────── {%- endcomment -%}
+  <div class="cine-hero__media">
+
+    {%- if section.settings.background_video != blank -%}
+      {%- comment -%} Shopify hosted video (uploaded via Files) {%- endcomment -%}
+      <video
+        id="CineHeroVideo-{{ section.id }}"
+        class="cine-hero__video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        aria-hidden="true"
+      >
+        {%- for source in section.settings.background_video.sources -%}
+          <source src="{{ source.url }}" type="{{ source.mime_type }}">
+        {%- endfor -%}
+        {%- comment -%} Image fallback inside <video> {%- endcomment -%}
+        {%- if section.settings.fallback_image != blank -%}
+          <img
+            src="{{ section.settings.fallback_image | image_url: width: 1600 }}"
+            alt=""
+            class="cine-hero__img"
+            width="1600"
+            height="{{ 1600 | divided_by: section.settings.fallback_image.aspect_ratio | round }}"
+            fetchpriority="low"
+          >
+        {%- endif -%}
+      </video>
+
+    {%- elsif section.settings.video_url != blank -%}
+      {%- comment -%} External / CDN-hosted MP4 {%- endcomment -%}
+      <video
+        id="CineHeroVideo-{{ section.id }}"
+        class="cine-hero__video"
+        src="{{ section.settings.video_url }}"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        aria-hidden="true"
+      ></video>
+
+    {%- elsif section.settings.fallback_image != blank -%}
+      {%- comment -%} Static image with slow-zoom animation {%- endcomment -%}
+      <img
+        src="{{ section.settings.fallback_image | image_url: width: 2000 }}"
+        alt="{{ section.settings.fallback_image.alt | escape }}"
+        class="cine-hero__img"
+        width="2000"
+        height="{{ 2000 | divided_by: section.settings.fallback_image.aspect_ratio | round }}"
+        fetchpriority="high"
+        loading="eager"
+      >
+    {%- endif -%}
+
+  </div>
+
+  {%- comment -%} ── CINEMATIC OVERLAY ───────────────────────── {%- endcomment -%}
+  <div class="cine-hero__overlay" aria-hidden="true"></div>
+
+  {%- comment -%} ── CONTENT BLOCK ───────────────────────────── {%- endcomment -%}
+  <div class="cine-hero__content">
+
+    {%- if section.settings.tagline != blank -%}
+      <span class="cine-hero__tagline">{{ section.settings.tagline }}</span>
+    {%- endif -%}
+
+    <h1 class="cine-hero__heading">
+      {%- if section.settings.heading_line1 != blank -%}
+        {{ section.settings.heading_line1 }}
+        {%- if section.settings.heading_line2 != blank -%}<br>
+          <em>{{ section.settings.heading_line2 }}</em>
+        {%- endif -%}
+      {%- else -%}
+        Rituals your skin <em>remembers</em>
+      {%- endif -%}
+    </h1>
+
+    {%- if section.settings.body_text != blank -%}
+      <p class="cine-hero__body">{{ section.settings.body_text }}</p>
+    {%- endif -%}
+
+    <div class="cine-hero__ctas">
+      {%- if section.settings.cta_primary_label != blank -%}
+        <a
+          href="{{ section.settings.cta_primary_url | default: routes.all_products_collection_url }}"
+          class="cine-hero__cta-primary"
+          id="CineHeroCtaPrimary-{{ section.id }}"
+        >
+          {{ section.settings.cta_primary_label }}
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.cta_secondary_label != blank -%}
+        <a
+          href="{{ section.settings.cta_secondary_url | default: '/collections/new-arrivals' }}"
+          class="cine-hero__cta-secondary"
+          id="CineHeroCtaSecondary-{{ section.id }}"
+        >
+          {{ section.settings.cta_secondary_label }}
+        </a>
+      {%- endif -%}
+    </div>
+
+  </div>
+
+  {%- comment -%} ── SCROLL CUE ──────────────────────────────── {%- endcomment -%}
+  {%- if section.settings.show_scroll_cue -%}
+    <div class="cine-hero__scroll-cue" aria-hidden="true">
+      <span class="cine-hero__scroll-line"></span>
+      <span class="cine-hero__scroll-text">Scroll</span>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ── MUTE TOGGLE (shown by JS when video is active) {%- endcomment -%}
+  <button
+    class="cine-hero__mute-btn"
+    id="CineHeroMute-{{ section.id }}"
+    aria-label="Toggle sound"
+    aria-pressed="true"
+    data-hero-id="{{ section.id }}"
+    hidden
+  >
+    {%- comment -%} Muted icon (default state) {%- endcomment -%}
+    <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+    {%- comment -%} Unmuted icon (toggled by JS) {%- endcomment -%}
+    <svg class="icon-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;" aria-hidden="true">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+    </svg>
+  </button>
+
+</section>
+
+{%- comment -%} ── JAVASCRIPT ──────────────────────────────── {%- endcomment -%}
+<script>
+(function () {
+  'use strict';
+
+  var heroId   = {{ section.id | json }};
+  var heroEl   = document.getElementById('CineHero-' + heroId);
+  var videoEl  = document.getElementById('CineHeroVideo-' + heroId);
+  var muteBtn  = document.getElementById('CineHeroMute-' + heroId);
+
+  if (!heroEl) return;
+
+  /* ── 1. Video Tab Visibility (performance) ─────────────────── */
+  if (videoEl) {
+    /* Show mute button */
+    muteBtn && (muteBtn.hidden = false, muteBtn.style.display = 'flex');
+
+    /* Pause video when tab is hidden to save resources */
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        videoEl.pause();
+      } else {
+        videoEl.play().catch(function () {});
+      }
+    });
+
+    /* ── 2. Mute Toggle ──────────────────────────────────────── */
+    if (muteBtn) {
+      var iconMuted = muteBtn.querySelector('.icon-muted');
+      var iconSound = muteBtn.querySelector('.icon-sound');
+
+      muteBtn.addEventListener('click', function () {
+        videoEl.muted = !videoEl.muted;
+        var isMuted = videoEl.muted;
+        muteBtn.setAttribute('aria-pressed', String(isMuted));
+        if (iconMuted) iconMuted.style.display = isMuted ? '' : 'none';
+        if (iconSound) iconSound.style.display = isMuted ? 'none' : '';
+      });
+    }
+
+    /* ── 3. Smart Pause on Scroll ────────────────────────────── */
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var rect = heroEl.getBoundingClientRect();
+        /* If hero is more than 100% off-screen, pause video */
+        if (rect.bottom < -100 || rect.top > window.innerHeight + 100) {
+          if (!videoEl.paused) videoEl.pause();
+        } else {
+          if (videoEl.paused && !document.hidden) videoEl.play().catch(function () {});
+        }
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+
+  /* ── 4. Smooth Cinematic Fade to Next Section ──────────────── */
+  var nextSection = heroEl.nextElementSibling;
+  if (nextSection) {
+    nextSection.style.cssText += 'position:relative;';
+    /* Already handled by section z-stacking — no extra work needed */
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Cinematic Hero",
+  "tag": "section",
+  "class": "section-cine-hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "🎥 Background Media"
+    },
+    {
+      "type": "video",
+      "id": "background_video",
+      "label": "Background video (upload via Files)",
+      "info": "Recommended: MP4 H.264, 720p, < 3 MB, 6–10 sec loop. Takes priority over image."
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "Background video URL (CDN link)",
+      "info": "Paste a direct .mp4 URL. Used if no Shopify video is uploaded above."
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Fallback image",
+      "info": "Shown on slow connections or if no video is set. Use a high-quality JPG at 2000px wide."
+    },
+    {
+      "type": "header",
+      "content": "✍️ Content"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline (small caps above heading)",
+      "default": "FORMULATED FOR LASTING CARE"
+    },
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Headline — Line 1",
+      "default": "Skincare that works,"
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Headline — Line 2 (shown in gold italic)",
+      "default": "every single day"
+    },
+    {
+      "type": "textarea",
+      "id": "body_text",
+      "label": "Supporting text",
+      "default": "Clean, conscious formulations designed to restore balance and elevate your everyday routine."
+    },
+    {
+      "type": "header",
+      "content": "🔗 CTAs"
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_label",
+      "label": "Primary CTA label",
+      "default": "Shop the Collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_url",
+      "label": "Primary CTA link"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "Secondary CTA label (desktop only)",
+      "default": "Explore New Arrivals"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_url",
+      "label": "Secondary CTA link"
+    },
+    {
+      "type": "header",
+      "content": "⚙️ Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_cue",
+      "label": "Show scroll indicator",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cinematic Hero",
+      "settings": {
+        "tagline": "FORMULATED FOR LASTING CARE",
+        "heading_line1": "Skincare that works,",
+        "heading_line2": "every single day",
+        "body_text": "Clean, conscious formulations designed to restore balance and elevate your everyday routine.",
+        "cta_primary_label": "Shop the Collection",
+        "cta_secondary_label": "Explore New Arrivals",
+        "show_scroll_cue": true
+      }
+    }
+  ]
+}
+{% endschema %}
