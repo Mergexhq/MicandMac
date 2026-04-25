@@ -15,12 +15,11 @@
         "background_video": "shopify://files/videos/WhatsApp Video 2026-04-25 at 12.09.38 AM.mp4",
         "video_url": "",
         "tagline": "FORMULATED FOR LASTING CARE",
-        "heading_line1": "Your skin deserves better",
+        "heading_line1": "Your skin deserves",
+        "heading_line2": "more than promises.",
         "body_text": "Clean, conscious formulations designed to restore balance and elevate your everyday routine.",
         "cta_primary_label": "Shop the Collection",
-        "cta_primary_url": "/collections/all",
-        "cta_secondary_label": "Explore New Arrivals",
-        "cta_secondary_url": "/collections/new-arrivals"
+        "cta_primary_url": "/collections/all"
       }
     },
     "ritual_story": {
