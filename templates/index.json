@@ -10,21 +10,17 @@
 {
   "sections": {
     "hero": {
-      "type": "the-act-hero",
+      "type": "cinematic-hero",
       "settings": {
-        "video_url": "",
-        "show_hero_nav": false,
-        "eyebrow": "",
-        "heading": "Your skin deserves more than promises.",
-        "subheading": "",
-        "cta_label": "Shop Best Sellers",
-        "cta_url": "/collections/all",
-        "mission_title": "Artisan-formulated. Lab-certified.",
-        "mission_text": "Every formula is a proprietary Owner's Blend — made in Coimbatore, tested in a lab.",
-        "product_tag": "BESTSELLER",
-        "product_title": "Donkey Milk Deep Hydration Soap",
-        "padding_top": 92,
-        "padding_bottom": 0
+        "tagline": "FORMULATED FOR LASTING CARE",
+        "heading_line1": "Your skin deserves",
+        "heading_line2": "more than promises.",
+        "body_text": "Clean, conscious formulations designed to restore balance and elevate your everyday routine.",
+        "cta_primary_label": "Shop the Collection",
+        "cta_primary_url": "/collections/all",
+        "cta_secondary_label": "Explore New Arrivals",
+        "cta_secondary_url": "/collections/new-arrivals",
+        "show_scroll_cue": true
       }
     },
     "ritual_story": {
@@ -183,3 +179,4 @@
     "instagram_grid"
   ]
 }
+

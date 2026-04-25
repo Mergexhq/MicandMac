@@ -539,7 +539,7 @@
   .site-header__tagline { display: flex; }
   .wishlist-btn { display: flex; }
   .site-header__logo { justify-content: center; }
-  body { padding-top: calc(148px + var(--announcement-height, 0px)); padding-bottom: 0; }
+  body { padding-top: calc(126px + var(--announcement-height, 0px)); padding-bottom: 0; }
   /* Hide all mobile-only elements */
   .mobile-topbar { display: none !important; }
   .mnav { display: none !important; }
