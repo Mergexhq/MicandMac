@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}">
 <head>
+ {%- capture ecom_header_content -%}{%- render 'ecom_header' -%}{%- endcapture -%}{%- unless ecom_header_content contains 'Liquid error' -%}{{ ecom_header_content }}{%- endunless -%}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#4B2A31">
@@ -101,5 +102,5 @@
   <!-- WhatsApp Sticky CTA -->
   {%- render 'whatsapp-sticky' -%}
 
-</body>
+{%- capture ecom_footer_content -%}{%- render 'ecom_footer' -%}{%- endcapture -%}{%- unless ecom_footer_content contains 'Liquid error' -%}{{ ecom_footer_content }}{%- endunless -%}</body>
 </html>
