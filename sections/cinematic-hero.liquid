@@ -48,6 +48,7 @@
   object-fit: cover;
   object-position: center;
   display: block;
+  transform: scale(1.05);
 }
 
 /* Subtle slow-zoom on static image fallback */
@@ -56,34 +57,21 @@
 }
 
 @keyframes cine-zoom {
-  from { transform: scale(1);    }
-  to   { transform: scale(1.06); }
+  from { transform: scale(1.05);    }
+  to   { transform: scale(1.11); }
 }
 
 /* ── Cinematic Overlay ───────────────────────────────────────── */
-/* Left darker (text readable) → fades right (product visible)   */
+/* Left darker (text readable) → transparent right (product fully visible) */
 .cine-hero__overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
   background: linear-gradient(
     to right,
-    rgba(20, 10, 10, 0.70) 0%,
-    rgba(20, 10, 10, 0.50) 35%,
-    rgba(20, 10, 10, 0.18) 65%,
-    rgba(20, 10, 10, 0.04) 100%
-  );
-}
-
-/* Additional bottom vignette for depth */
-.cine-hero__overlay::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(20, 10, 10, 0.45) 0%,
-    transparent 40%
+    rgba(20, 10, 10, 0.85) 0%,
+    rgba(20, 10, 10, 0.65) 40%,
+    transparent 70%
   );
 }
 
@@ -99,17 +87,18 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 0;
+  transform: translateY(-8%);
 }
 
 @media screen and (min-width: 768px) {
   .cine-hero__content {
-    padding: 0 80px;
+    padding: 0 100px;
   }
 }
 
 @media screen and (min-width: 1280px) {
   .cine-hero__content {
-    padding: 0 120px;
+    padding: 0 140px;
   }
 }
 
@@ -168,7 +157,7 @@
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.5rem;
   opacity: 0;
   transform: translateY(14px);
   animation: cine-rise 0.7s ease 0.72s forwards;
@@ -178,19 +167,23 @@
 .cine-hero__cta-primary {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  background: var(--mm-champagne-gold, #D4AF37);
-  color: var(--mm-dark-espresso, #2E1F1A);
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
   font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.8125rem;           /* 13px */
-  font-weight: 700;
-  letter-spacing: 0.07em;
+  font-size: 0.75rem;           /* 12px (smaller) */
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 15px 30px;
+  padding: 12px 24px;         /* smaller padding */
   border-radius: var(--radius-pill, 999px);
   transition:
     background 0.25s ease,
+    border-color 0.25s ease,
     transform  0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
     box-shadow 0.25s ease;
   white-space: nowrap;
@@ -202,86 +195,20 @@
 }
 
 .cine-hero__cta-primary:hover {
-  background: #E0C96A;
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 8px 28px rgba(212, 175, 55, 0.35);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+  color: #FFFFFF;
 }
 
 .cine-hero__cta-primary:hover svg {
   transform: translateX(4px);
 }
 
-/* Secondary CTA */
-.cine-hero__cta-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: rgba(243, 232, 228, 0.85);
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  position: relative;
-  padding-bottom: 2px;
-  border-bottom: 1px solid rgba(243, 232, 228, 0.35);
-  transition: color 0.2s ease, border-color 0.2s ease;
-  white-space: nowrap;
-}
-
-.cine-hero__cta-secondary::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: var(--mm-champagne-gold, #D4AF37);
-  transition: width 0.3s ease;
-}
-
-.cine-hero__cta-secondary:hover {
-  color: var(--mm-champagne-gold, #D4AF37);
-  border-color: transparent;
-}
-
-.cine-hero__cta-secondary:hover::after {
-  width: 100%;
-}
 
 
 
-/* ── Video Control (mute toggle) ─────────────────────────────── */
-.cine-hero__mute-btn {
-  position: absolute;
-  bottom: 2.5rem;
-  right: 2rem;
-  z-index: 10;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid rgba(243, 232, 228, 0.3);
-  background: rgba(20, 10, 10, 0.45);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: rgba(243, 232, 228, 0.85);
-  cursor: pointer;
-  display: none;          /* shown by JS when video loads */
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.cine-hero__mute-btn:hover {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: rgba(212, 175, 55, 0.5);
-}
-
-.cine-hero__mute-btn svg {
-  width: 16px;
-  height: 16px;
-  pointer-events: none;
-}
 
 /* ── Entry animations ────────────────────────────────────────── */
 @keyframes cine-rise {
@@ -304,24 +231,21 @@
   .cine-hero__overlay {
     background: linear-gradient(
       to top,
-      rgba(20, 10, 10, 0.82) 0%,
-      rgba(20, 10, 10, 0.55) 45%,
-      rgba(20, 10, 10, 0.25) 100%
+      rgba(20, 10, 10, 0.90) 0%,
+      rgba(20, 10, 10, 0.65) 45%,
+      rgba(20, 10, 10, 0.35) 100%
     );
-  }
-
-  .cine-hero__overlay::after {
-    display: none;
   }
 
   .cine-hero__content {
     align-items: center;
     text-align: center;
     padding: 0 1.5rem 5rem;
+    transform: translateY(0);
   }
 
   .cine-hero__heading {
-    font-size: clamp(2rem, 8.5vw, 2.8rem);
+    font-size: clamp(1.8rem, 7.5vw, 2.4rem);
     max-width: 100%;
   }
 
@@ -340,19 +264,7 @@
   .cine-hero__cta-primary {
     width: 100%;
     justify-content: center;
-    padding: 16px 24px;
-  }
-
-  /* Hide secondary CTA on mobile */
-  .cine-hero__cta-secondary {
-    display: none;
-  }
-
-
-
-  .cine-hero__mute-btn {
-    bottom: 1.5rem;
-    right: 1.25rem;
+    padding: 14px 20px;
   }
 }
 
@@ -474,40 +386,12 @@
           </svg>
         </a>
       {%- endif -%}
-
-      {%- if section.settings.cta_secondary_label != blank -%}
-        <a
-          href="{{ section.settings.cta_secondary_url | default: '/collections/new-arrivals' }}"
-          class="cine-hero__cta-secondary"
-          id="CineHeroCtaSecondary-{{ section.id }}"
-        >
-          {{ section.settings.cta_secondary_label }}
-        </a>
-      {%- endif -%}
     </div>
 
   </div>
 
 
 
-  {%- comment -%} ── MUTE TOGGLE (shown by JS when video is active) {%- endcomment -%}
-  <button
-    class="cine-hero__mute-btn"
-    id="CineHeroMute-{{ section.id }}"
-    aria-label="Toggle sound"
-    aria-pressed="true"
-    data-hero-id="{{ section.id }}"
-    hidden
-  >
-    {%- comment -%} Muted icon (default state) {%- endcomment -%}
-    <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
-    </svg>
-    {%- comment -%} Unmuted icon (toggled by JS) {%- endcomment -%}
-    <svg class="icon-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;" aria-hidden="true">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-    </svg>
-  </button>
 
 </section>
 
@@ -519,14 +403,11 @@
   var heroId   = {{ section.id | json }};
   var heroEl   = document.getElementById('CineHero-' + heroId);
   var videoEl  = document.getElementById('CineHeroVideo-' + heroId);
-  var muteBtn  = document.getElementById('CineHeroMute-' + heroId);
 
   if (!heroEl) return;
 
   /* ── 1. Video Tab Visibility (performance) ─────────────────── */
   if (videoEl) {
-    /* Show mute button */
-    muteBtn && (muteBtn.hidden = false, muteBtn.style.display = 'flex');
 
     /* Pause video when tab is hidden to save resources */
     document.addEventListener('visibilitychange', function () {
@@ -537,19 +418,7 @@
       }
     });
 
-    /* ── 2. Mute Toggle ──────────────────────────────────────── */
-    if (muteBtn) {
-      var iconMuted = muteBtn.querySelector('.icon-muted');
-      var iconSound = muteBtn.querySelector('.icon-sound');
 
-      muteBtn.addEventListener('click', function () {
-        videoEl.muted = !videoEl.muted;
-        var isMuted = videoEl.muted;
-        muteBtn.setAttribute('aria-pressed', String(isMuted));
-        if (iconMuted) iconMuted.style.display = isMuted ? '' : 'none';
-        if (iconSound) iconSound.style.display = isMuted ? 'none' : '';
-      });
-    }
 
     /* ── 3. Smart Pause on Scroll ────────────────────────────── */
     var ticking = false;
@@ -641,24 +510,13 @@
     {
       "type": "text",
       "id": "cta_primary_label",
-      "label": "Primary CTA label",
+      "label": "CTA label",
       "default": "Shop the Collection"
     },
     {
       "type": "url",
       "id": "cta_primary_url",
-      "label": "Primary CTA link"
-    },
-    {
-      "type": "text",
-      "id": "cta_secondary_label",
-      "label": "Secondary CTA label (desktop only)",
-      "default": "Explore New Arrivals"
-    },
-    {
-      "type": "url",
-      "id": "cta_secondary_url",
-      "label": "Secondary CTA link"
+      "label": "CTA link"
     }
   ],
   "presets": [
@@ -669,8 +527,7 @@
         "heading_line1": "Skincare that works,",
         "heading_line2": "every single day",
         "body_text": "Clean, conscious formulations designed to restore balance and elevate your everyday routine.",
-        "cta_primary_label": "Shop the Collection",
-        "cta_secondary_label": "Explore New Arrivals"
+        "cta_primary_label": "Shop the Collection"
       }
     }
   ]

@@ -190,22 +190,6 @@
         </div>
       {%- endif -%}
 
-      <!-- Stage 6: Brand Paragraph -->
-      {%- if section.settings.brand_text != blank -%}
-      <div class="plp-brand-paragraph section-padding text-center">
-        <div class="container container--narrow">
-          <h2 class="plp-brand-heading">{{ section.settings.brand_heading }}</h2>
-          <div class="plp-brand-text">{{ section.settings.brand_text }}</div>
-        </div>
-      </div>
-      {%- endif -%}
-
-      <!-- Stage 7: Visual Close -->
-      {%- if section.settings.closing_image != blank -%}
-      <div class="plp-visual-close">
-        <img src="{{ section.settings.closing_image | image_url: width: 2500 }}" alt="Closing Aesthetic" width="{{ section.settings.closing_image.width }}" height="{{ section.settings.closing_image.height }}" class="plp-visual-close__img" loading="lazy">
-      </div>
-      {%- endif -%}
     {%- endif -%} <!-- Final Page 1 check -->
 
   {%- endpaginate -%}
@@ -451,30 +435,6 @@
 
   /* Product Card styling now lives in assets/product-card.css */
   
-  /* Brand Paragraph (Stage 6) */
-  .plp-brand-paragraph {
-    background: var(--mm-soft-blush);
-  }
-  .plp-brand-heading {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 2.5rem;
-    color: var(--mm-deep-garnet);
-    margin-bottom: var(--space-4);
-    font-weight: 500;
-  }
-  .plp-brand-text {
-    font-size: 16px;
-    color: var(--mm-dark-espresso);
-    line-height: 1.8;
-  }
-
-  /* Visual Close (Stage 7) */
-  .plp-visual-close__img {
-    width: 100%;
-    height: 70vh;
-    object-fit: cover;
-    display: block;
-  }
 
   /* Responsive Adjustments */
   @media (max-width: 768px) {
@@ -529,24 +489,6 @@
       "id": "quick_links",
       "label": "Quick Scan Categories",
       "info": "Select a menu to show category links below the hero."
-    },
-    {
-      "type": "text",
-      "id": "brand_heading",
-      "label": "Brand Paragraph Heading",
-      "default": "The Art of Wellness"
-    },
-    {
-      "type": "richtext",
-      "id": "brand_text",
-      "label": "Brand Paragraph Text",
-      "default": "<p>Discover the finest artisanal ingredients crafted to restore, nourish, and elevate your daily ritual.</p>"
-    },
-    {
-      "type": "image_picker",
-      "id": "closing_image",
-      "label": "Visual Close Image",
-      "info": "Large aesthetic image to anchor the bottom of the page."
     }
   ]
 }
