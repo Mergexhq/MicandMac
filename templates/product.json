@@ -76,9 +76,7 @@
     },
     "details": {
       "type": "product-details",
-      "settings": {
-        "show_related": true
-      }
+      "settings": {}
     },
     "faq": {
       "type": "faq-accordion",

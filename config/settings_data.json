@@ -27,13 +27,6 @@
       "announcement-bar": {
         "type": "announcement-bar",
         "blocks": {
-          "announcement_ACfa3f": {
-            "type": "announcement",
-            "settings": {
-              "text": "Buy 2 Get 1 Free",
-              "link": ""
-            }
-          },
           "announcement_NYaeM4": {
             "type": "announcement",
             "settings": {
@@ -43,7 +36,6 @@
           }
         },
         "block_order": [
-          "announcement_ACfa3f",
           "announcement_NYaeM4"
         ],
         "settings": {
