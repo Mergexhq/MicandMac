@@ -36,10 +36,7 @@
         Home
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <a href="{{ routes.collections_url }}/combo-offers" class="mnav__primary-link">
-        Combo Offers
-        <span class="mnav__pill">Hot</span>
-      </a>
+
     </div>
 
     <div class="mnav__divider-heavy"></div>
@@ -70,12 +67,7 @@
               <span class="mnav__sub-dot"></span>Lip Care
             </a>
           </li>
-          <li>
-            <a href="{{ routes.collections_url }}/combo-offers" class="mnav__sub-link">
-              <span class="mnav__sub-dot"></span>Combos &amp; Offers
-              <span class="mnav__pill mnav__pill--gold">Hot</span>
-            </a>
-          </li>
+
         </ul>
         <a href="{{ routes.all_products_collection_url }}" class="mnav__view-all">View All Products →</a>
       </div>
@@ -474,11 +466,7 @@
 
           <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
-          <li class="site-nav__item">
-            <a href="{{ routes.collections_url }}/combo-offers" class="site-nav__link{% if request.path contains 'combo' %} is-active{% endif %}">Combos</a>
-          </li>
 
-          <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
           <li class="site-nav__item">
             <a href="/pages/about-us" class="site-nav__link{% if request.path contains 'about' %} is-active{% endif %}">Our Story</a>
