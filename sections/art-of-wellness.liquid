@@ -1,0 +1,216 @@
+{% comment %}
+  Section: The Art of Wellness
+  A testimonial or product paragraph followed by a large product mockup image.
+{% endcomment %}
+
+<div class="art-of-wellness section-padding" style="background-color: {{ section.settings.bg_color }};">
+  <div class="container container--narrow text-center">
+    
+    {%- if section.settings.heading != blank -%}
+      <h2 class="aow-heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.paragraph != blank -%}
+      <div class="aow-paragraph">
+        {{ section.settings.paragraph }}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_stars -%}
+      <div class="aow-stars">
+        {%- for i in (1..5) -%}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+          </svg>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.author_name != blank -%}
+      <div class="aow-author-name">{{ section.settings.author_name }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.author_title != blank -%}
+      <div class="aow-author-title">{{ section.settings.author_title }}</div>
+    {%- endif -%}
+    
+  </div>
+
+  <div class="aow-image-wrap">
+    {%- if section.settings.image != blank -%}
+      <img src="{{ section.settings.image | image_url: width: 2000 }}" 
+           alt="{{ section.settings.image.alt | escape }}" 
+           width="{{ section.settings.image.width }}" 
+           height="{{ section.settings.image.height }}" 
+           class="aow-image" 
+           loading="lazy">
+    {%- else -%}
+      {{ 'collection-1' | placeholder_svg_tag: 'aow-image placeholder-svg' }}
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .art-of-wellness {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  .aow-heading {
+    font-family: var(--font-display, 'Cormorant Garamond', serif);
+    font-size: clamp(2rem, 3vw, 2.5rem);
+    color: var(--mm-deep-garnet, #2e1f1a);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  .aow-paragraph {
+    font-family: var(--font-display, 'Cormorant Garamond', serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: var(--mm-dark-espresso, #2e1f1a);
+    line-height: 1.3;
+    margin-bottom: 30px;
+    font-weight: 400;
+  }
+
+  .aow-paragraph p {
+    margin: 0;
+  }
+
+  .aow-paragraph em, .aow-paragraph i {
+    font-style: italic;
+    font-family: var(--font-display, 'Cormorant Garamond', serif);
+  }
+
+  .aow-paragraph strong, .aow-paragraph b {
+    font-weight: 600;
+  }
+
+  .aow-stars {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 15px;
+    color: var(--mm-dark-espresso, #2e1f1a);
+  }
+
+  .aow-author-name {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--mm-dark-espresso, #2e1f1a);
+    margin-bottom: 4px;
+  }
+
+  .aow-author-title {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 0.85rem;
+    color: var(--mm-dark-espresso, #2e1f1a);
+    opacity: 0.6;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 60px;
+  }
+
+  .aow-image-wrap {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .aow-image {
+    width: 100%;
+    height: auto;
+    max-height: 900px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .aow-image.placeholder-svg {
+    background-color: rgba(0,0,0,0.05);
+  }
+
+  @media (max-width: 768px) {
+    .aow-paragraph {
+      font-size: 1.8rem;
+    }
+    .aow-image-wrap {
+      padding: 0 15px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "The Art of Wellness",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f4f6f3"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Optional small heading above the paragraph"
+    },
+    {
+      "type": "richtext",
+      "id": "paragraph",
+      "label": "Main Paragraph / Quote",
+      "default": "<p>It feels <em>healthier, smoother & more radiant</em> than ever. I love knowing I'm using something natural and effective!</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stars",
+      "label": "Show 5 Stars",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "author_name",
+      "label": "Author Name",
+      "default": "Jennifer K."
+    },
+    {
+      "type": "text",
+      "id": "author_title",
+      "label": "Author Title",
+      "default": "Verified Buyer"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Product Mockup Image"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "The Art of Wellness"
+    }
+  ]
+}
+{% endschema %}
