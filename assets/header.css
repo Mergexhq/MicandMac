@@ -557,8 +557,13 @@
    TRANSPARENT HEADER ON HOMEPAGE
    ============================================ */
 body.template-index {
-  /* Let hero slide under header */
-  padding-top: 30px !important;
+  /* Let hero start from the absolute top so header elements sit in the video itself */
+  padding-top: 0 !important;
+}
+
+/* Make announcement bar transparent when at the top (before scroll) */
+body.template-index:has(.site-header:not(.is-scrolled)) .announcement-bar {
+  background: transparent !important;
 }
 
 /* Desktop Header Transparent State */
