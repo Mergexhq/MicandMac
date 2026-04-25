@@ -48,6 +48,7 @@
   object-fit: cover;
   object-position: center;
   display: block;
+  transform: scale(1.05);
 }
 
 /* Subtle slow-zoom on static image fallback */
@@ -56,8 +57,8 @@
 }
 
 @keyframes cine-zoom {
-  from { transform: scale(1);    }
-  to   { transform: scale(1.06); }
+  from { transform: scale(1.05);    }
+  to   { transform: scale(1.11); }
 }
 
 /* ── Cinematic Overlay ───────────────────────────────────────── */
@@ -68,10 +69,9 @@
   z-index: 1;
   background: linear-gradient(
     to right,
-    rgba(20, 10, 10, 0.70) 0%,
-    rgba(20, 10, 10, 0.50) 35%,
-    rgba(20, 10, 10, 0.18) 65%,
-    rgba(20, 10, 10, 0.04) 100%
+    rgba(20, 10, 10, 0.75) 0%,
+    rgba(20, 10, 10, 0.55) 40%,
+    rgba(20, 10, 10, 0.15) 100%
   );
 }
 
@@ -99,17 +99,18 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 0;
+  transform: translateY(-8%);
 }
 
 @media screen and (min-width: 768px) {
   .cine-hero__content {
-    padding: 0 80px;
+    padding: 0 100px;
   }
 }
 
 @media screen and (min-width: 1280px) {
   .cine-hero__content {
-    padding: 0 120px;
+    padding: 0 140px;
   }
 }
 
@@ -145,7 +146,6 @@
 /* Italic last word / phrase accent */
 .cine-hero__heading em {
   font-style: italic;
-  color: var(--mm-champagne-gold, #D4AF37);
   font-weight: 300;
 }
 
@@ -168,7 +168,7 @@
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.5rem;
   opacity: 0;
   transform: translateY(14px);
   animation: cine-rise 0.7s ease 0.72s forwards;
@@ -216,7 +216,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: rgba(243, 232, 228, 0.85);
+  color: #FFFFFF;
   font-family: var(--font-body, 'Inter', sans-serif);
   font-size: 0.8125rem;
   font-weight: 500;
@@ -224,9 +224,10 @@
   text-decoration: none;
   position: relative;
   padding-bottom: 2px;
-  border-bottom: 1px solid rgba(243, 232, 228, 0.35);
+  border-bottom: 1px solid transparent;
   transition: color 0.2s ease, border-color 0.2s ease;
   white-space: nowrap;
+  margin-left: 0.5rem;
 }
 
 .cine-hero__cta-secondary::after {
@@ -236,12 +237,12 @@
   left: 0;
   width: 0;
   height: 1px;
-  background: var(--mm-champagne-gold, #D4AF37);
+  background: #FFFFFF;
   transition: width 0.3s ease;
 }
 
 .cine-hero__cta-secondary:hover {
-  color: var(--mm-champagne-gold, #D4AF37);
+  color: #FFFFFF;
   border-color: transparent;
 }
 
@@ -274,9 +275,9 @@
   .cine-hero__overlay {
     background: linear-gradient(
       to top,
-      rgba(20, 10, 10, 0.82) 0%,
-      rgba(20, 10, 10, 0.55) 45%,
-      rgba(20, 10, 10, 0.25) 100%
+      rgba(20, 10, 10, 0.90) 0%,
+      rgba(20, 10, 10, 0.65) 45%,
+      rgba(20, 10, 10, 0.35) 100%
     );
   }
 
@@ -288,10 +289,11 @@
     align-items: center;
     text-align: center;
     padding: 0 1.5rem 5rem;
+    transform: translateY(0);
   }
 
   .cine-hero__heading {
-    font-size: clamp(2rem, 8.5vw, 2.8rem);
+    font-size: clamp(1.8rem, 7.5vw, 2.4rem);
     max-width: 100%;
   }
 
@@ -416,11 +418,8 @@
     <h1 class="cine-hero__heading">
       {%- if section.settings.heading_line1 != blank -%}
         {{ section.settings.heading_line1 }}
-        {%- if section.settings.heading_line2 != blank -%}<br>
-          <em>{{ section.settings.heading_line2 }}</em>
-        {%- endif -%}
       {%- else -%}
-        Rituals your skin <em>remembers</em>
+        Your skin deserves better
       {%- endif -%}
     </h1>
 
@@ -553,14 +552,8 @@
     {
       "type": "text",
       "id": "heading_line1",
-      "label": "Headline — Line 1",
-      "default": "Skincare that works,"
-    },
-    {
-      "type": "text",
-      "id": "heading_line2",
-      "label": "Headline — Line 2 (shown in gold italic)",
-      "default": "every single day"
+      "label": "Headline",
+      "default": "Your skin deserves better"
     },
     {
       "type": "textarea",
@@ -600,8 +593,7 @@
       "name": "Cinematic Hero",
       "settings": {
         "tagline": "FORMULATED FOR LASTING CARE",
-        "heading_line1": "Skincare that works,",
-        "heading_line2": "every single day",
+        "heading_line1": "Your skin deserves better",
         "body_text": "Clean, conscious formulations designed to restore balance and elevate your everyday routine.",
         "cta_primary_label": "Shop the Collection",
         "cta_secondary_label": "Explore New Arrivals"
