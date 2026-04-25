@@ -31,6 +31,7 @@
   background: var(--mm-dark-espresso);
   display: flex;
   align-items: center;
+  margin-top: 0 !important;
 }
 
 /* ── Video / Image Layer ─────────────────────────────────────── */
@@ -94,7 +95,6 @@
   max-width: var(--container-wide, 1440px);
   margin: 0 auto;
   padding: 0 var(--space-8, 2rem);
-  padding-top: 80px; /* clear sticky header */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -103,13 +103,13 @@
 
 @media screen and (min-width: 768px) {
   .cine-hero__content {
-    padding: 80px 80px 0;
+    padding: 0 80px;
   }
 }
 
 @media screen and (min-width: 1280px) {
   .cine-hero__content {
-    padding: 80px 120px 0;
+    padding: 0 120px;
   }
 }
 
@@ -249,41 +249,7 @@
   width: 100%;
 }
 
-/* ── Scroll Cue ──────────────────────────────────────────────── */
-.cine-hero__scroll-cue {
-  position: absolute;
-  bottom: 2.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  opacity: 0;
-  animation: cine-rise 0.6s ease 1.2s forwards;
-}
 
-.cine-hero__scroll-text {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.625rem;             /* 10px */
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(243, 232, 228, 0.5);
-}
-
-.cine-hero__scroll-line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, rgba(212, 175, 55, 0.7), transparent);
-  animation: cine-scroll-pulse 2s ease-in-out infinite;
-}
-
-@keyframes cine-scroll-pulse {
-  0%, 100% { opacity: 0.4; transform: scaleY(1);    }
-  50%       { opacity: 1;   transform: scaleY(1.15); }
-}
 
 /* ── Video Control (mute toggle) ─────────────────────────────── */
 .cine-hero__mute-btn {
@@ -382,9 +348,7 @@
     display: none;
   }
 
-  .cine-hero__scroll-cue {
-    display: none;
-  }
+
 
   .cine-hero__mute-btn {
     bottom: 1.5rem;
@@ -398,15 +362,6 @@
   .cine-hero__heading,
   .cine-hero__body,
   .cine-hero__ctas,
-  .cine-hero__scroll-cue {
-    opacity: 1;
-    transform: none;
-    animation: none;
-  }
-  .cine-hero__img {
-    animation: none;
-  }
-  .cine-hero__scroll-line {
     animation: none;
     opacity: 0.6;
   }
@@ -533,13 +488,7 @@
 
   </div>
 
-  {%- comment -%} ── SCROLL CUE ──────────────────────────────── {%- endcomment -%}
-  {%- if section.settings.show_scroll_cue -%}
-    <div class="cine-hero__scroll-cue" aria-hidden="true">
-      <span class="cine-hero__scroll-line"></span>
-      <span class="cine-hero__scroll-text">Scroll</span>
-    </div>
-  {%- endif -%}
+
 
   {%- comment -%} ── MUTE TOGGLE (shown by JS when video is active) {%- endcomment -%}
   <button
@@ -710,16 +659,6 @@
       "type": "url",
       "id": "cta_secondary_url",
       "label": "Secondary CTA link"
-    },
-    {
-      "type": "header",
-      "content": "⚙️ Options"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_scroll_cue",
-      "label": "Show scroll indicator",
-      "default": true
     }
   ],
   "presets": [
@@ -731,8 +670,7 @@
         "heading_line2": "every single day",
         "body_text": "Clean, conscious formulations designed to restore balance and elevate your everyday routine.",
         "cta_primary_label": "Shop the Collection",
-        "cta_secondary_label": "Explore New Arrivals",
-        "show_scroll_cue": true
+        "cta_secondary_label": "Explore New Arrivals"
       }
     }
   ]
