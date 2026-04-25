@@ -552,3 +552,67 @@
   .bottom-dock { display: flex; }
   body { padding-top: calc(60px + var(--announcement-height, 0px)); padding-bottom: 70px; }
 }
+
+/* ============================================
+   TRANSPARENT HEADER ON HOMEPAGE
+   ============================================ */
+body.template-index {
+  /* Let hero slide under header */
+  padding-top: 30px !important;
+}
+
+/* Desktop Header Transparent State */
+body.template-index .site-header:not(.is-scrolled) .site-header__middle,
+body.template-index .site-header:not(.is-scrolled) .site-header__bottom {
+  background: transparent !important;
+}
+body.template-index .site-header:not(.is-scrolled) {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body.template-index .site-header:not(.is-scrolled) .site-header__bottom {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+body.template-index .site-header:not(.is-scrolled) .site-header__logo-text,
+body.template-index .site-header:not(.is-scrolled) .tagline-text,
+body.template-index .site-header:not(.is-scrolled) .site-nav__link,
+body.template-index .site-header:not(.is-scrolled) .site-header__action-btn svg,
+body.template-index .site-header:not(.is-scrolled) .nav-chevron {
+  color: #ffffff !important;
+}
+
+body.template-index .site-header:not(.is-scrolled) .site-header__action-btn svg {
+  stroke: #ffffff !important;
+}
+
+/* Mobile Header Transparent State */
+body.template-index .mobile-topbar:not(.is-scrolled) {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: none !important;
+}
+body.template-index .mobile-topbar:not(.is-scrolled) .mtb__logo span,
+body.template-index .mobile-topbar:not(.is-scrolled) .mtb__btn {
+  color: #ffffff !important;
+}
+body.template-index .mobile-topbar:not(.is-scrolled) .mtb__btn svg {
+  stroke: #ffffff !important;
+}
+body.template-index .mobile-topbar:not(.is-scrolled) .mtb__burger span {
+  background-color: #ffffff !important;
+}
+
+/* Fix cart count styling for white icon */
+body.template-index .site-header:not(.is-scrolled) .cart-count,
+body.template-index .mobile-topbar:not(.is-scrolled) .mtb__cart-badge {
+  background: #ffffff !important;
+  color: var(--mm-dark-espresso) !important;
+}
+
+/* Ensure the white logo PNG is used or logo text is white */
+body.template-index .site-header:not(.is-scrolled) .site-logo-img,
+body.template-index .mobile-topbar:not(.is-scrolled) .mtb__logo img {
+  filter: brightness(0) invert(1) !important;
+}
