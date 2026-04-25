@@ -12,11 +12,28 @@
     "main": {
       "type": "main-collection",
       "settings": {
-        "products_per_page": 16
+        "products_per_page": 16,
+        "quick_links": ""
+      }
+    },
+    "art_of_wellness_qfPmc4": {
+      "type": "art-of-wellness",
+      "name": "The Art of Wellness",
+      "settings": {
+        "bg_color": "#f3e8e4",
+        "heading": "",
+        "paragraph": "<p>It feels <em>healthier, smoother & more radiant</em> than ever. I love knowing I'm using something natural and effective!</p>",
+        "show_stars": true,
+        "author_name": "Jennifer K.",
+        "author_title": "Verified Buyer",
+        "image": "shopify://shop_images/hf_20260425_150555_ba4a4d4e-4964-47fd-ad56-ff1051cec49b.png",
+        "padding_top": 80,
+        "padding_bottom": 80
       }
     }
   },
   "order": [
-    "main"
+    "main",
+    "art_of_wellness_qfPmc4"
   ]
 }
