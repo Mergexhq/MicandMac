@@ -251,37 +251,7 @@
 
 
 
-/* ── Video Control (mute toggle) ─────────────────────────────── */
-.cine-hero__mute-btn {
-  position: absolute;
-  bottom: 2.5rem;
-  right: 2rem;
-  z-index: 10;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid rgba(243, 232, 228, 0.3);
-  background: rgba(20, 10, 10, 0.45);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: rgba(243, 232, 228, 0.85);
-  cursor: pointer;
-  display: none;          /* shown by JS when video loads */
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
 
-.cine-hero__mute-btn:hover {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: rgba(212, 175, 55, 0.5);
-}
-
-.cine-hero__mute-btn svg {
-  width: 16px;
-  height: 16px;
-  pointer-events: none;
-}
 
 /* ── Entry animations ────────────────────────────────────────── */
 @keyframes cine-rise {
@@ -350,10 +320,7 @@
 
 
 
-  .cine-hero__mute-btn {
-    bottom: 1.5rem;
-    right: 1.25rem;
-  }
+
 }
 
 /* ── Reduced motion ──────────────────────────────────────────── */
@@ -490,24 +457,6 @@
 
 
 
-  {%- comment -%} ── MUTE TOGGLE (shown by JS when video is active) {%- endcomment -%}
-  <button
-    class="cine-hero__mute-btn"
-    id="CineHeroMute-{{ section.id }}"
-    aria-label="Toggle sound"
-    aria-pressed="true"
-    data-hero-id="{{ section.id }}"
-    hidden
-  >
-    {%- comment -%} Muted icon (default state) {%- endcomment -%}
-    <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
-    </svg>
-    {%- comment -%} Unmuted icon (toggled by JS) {%- endcomment -%}
-    <svg class="icon-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;" aria-hidden="true">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-    </svg>
-  </button>
 
 </section>
 
@@ -519,14 +468,11 @@
   var heroId   = {{ section.id | json }};
   var heroEl   = document.getElementById('CineHero-' + heroId);
   var videoEl  = document.getElementById('CineHeroVideo-' + heroId);
-  var muteBtn  = document.getElementById('CineHeroMute-' + heroId);
 
   if (!heroEl) return;
 
   /* ── 1. Video Tab Visibility (performance) ─────────────────── */
   if (videoEl) {
-    /* Show mute button */
-    muteBtn && (muteBtn.hidden = false, muteBtn.style.display = 'flex');
 
     /* Pause video when tab is hidden to save resources */
     document.addEventListener('visibilitychange', function () {
@@ -537,19 +483,7 @@
       }
     });
 
-    /* ── 2. Mute Toggle ──────────────────────────────────────── */
-    if (muteBtn) {
-      var iconMuted = muteBtn.querySelector('.icon-muted');
-      var iconSound = muteBtn.querySelector('.icon-sound');
 
-      muteBtn.addEventListener('click', function () {
-        videoEl.muted = !videoEl.muted;
-        var isMuted = videoEl.muted;
-        muteBtn.setAttribute('aria-pressed', String(isMuted));
-        if (iconMuted) iconMuted.style.display = isMuted ? '' : 'none';
-        if (iconSound) iconSound.style.display = isMuted ? 'none' : '';
-      });
-    }
 
     /* ── 3. Smart Pause on Scroll ────────────────────────────── */
     var ticking = false;
