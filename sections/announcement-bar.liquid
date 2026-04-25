@@ -11,6 +11,12 @@
 {%- endif -%}
 
 {%- if section.blocks.size > 0 -%}
+<style>
+  :root { --announcement-height: 30px; }
+</style>
+{%- endif -%}
+
+{%- if section.blocks.size > 0 -%}
   <div
     class="announcement-bar"
     id="AnnouncementBar"
@@ -64,6 +70,7 @@
   flex-direction: column;
   height: 100%;
   {% if section.blocks.size > 1 %}
+    animation: announcement-roll {{ section.blocks.size | times: 5 }}s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     animation: announcement-roll {{ section.blocks.size | times: 5 }}s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   {% endif %}
 }
