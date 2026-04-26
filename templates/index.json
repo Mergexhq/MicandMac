@@ -22,51 +22,17 @@
         "cta_primary_url": "/collections/all"
       }
     },
-    "ritual_story": {
-      "type": "ritual-story",
-      "blocks": {
-        "pillar_1": {
-          "type": "pillar",
-          "settings": {
-            "label": "Cold Pressed"
-          }
-        },
-        "pillar_2": {
-          "type": "pillar",
-          "settings": {
-            "label": "Lab Certified"
-          }
-        },
-        "pillar_3": {
-          "type": "pillar",
-          "settings": {
-            "label": "100% Natural"
-          }
-        },
-        "pillar_4": {
-          "type": "pillar",
-          "settings": {
-            "label": "Handmade in India"
-          }
-        }
-      },
-      "block_order": [
-        "pillar_1",
-        "pillar_2",
-        "pillar_3",
-        "pillar_4"
-      ],
+    "bestsellers": {
+      "type": "featured-collection",
       "settings": {
-        "image_position": "left",
-        "eyebrow": "A Ritual, Not a Routine",
-        "heading": "Crafted to be the best part of your day.",
-        "body_1": "",
-        "body_2": "",
-        "cta_label": "Discover our process",
-        "cta_url": "/pages/about",
-        "bg_color": "#f5ecd7",
-        "padding_top": 0,
-        "padding_bottom": 0
+        "heading": "best sellers",
+        "description": "",
+        "collection": "",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "show_view_all": true,
+        "padding_top": 80,
+        "padding_bottom": 80
       }
     },
     "product_spotlight_soap": {
@@ -93,7 +59,7 @@
         "product": "",
         "badge_label": "New Launch",
         "eyebrow": "Tinted · Natural Colour",
-        "sub_text": "Deeply moisturising · Natural beetroot tint",
+        "sub_text": "Deeply moisturising · Natural beetroot tint · Made for daily use",
         "show_description": false,
         "placeholder_title": "Select a product in the customiser",
         "image_position": "right",
@@ -105,76 +71,64 @@
         "padding_bottom": 0
       }
     },
-    "bestsellers": {
-      "type": "featured-collection",
+    "art_of_wellness": {
+      "type": "art-of-wellness",
       "settings": {
-        "heading": "The ones they keep coming back for",
-        "description": "",
-        "collection": "",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "show_view_all": true,
-        "padding_top": 80,
-        "padding_bottom": 80
+        "bg_color": "#f3e8e4",
+        "heading": "",
+        "paragraph": "<p>Formulated with <em>pure ingredients</em> to deliver <em>smoother texture</em>, a <em>healthy glow</em>, and zero harshness.</p>",
+        "micro_copy": "this is what clean skincare should feel like.",
+        "image": "shopify://shop_images/hf_20260425_150555_ba4a4d4e-4964-47fd-ad56-ff1051cec49b.png",
+        "padding_top": 80
       }
     },
-    "ingredients": {
-      "type": "ingredients-story",
+    "philosophy": {
+      "type": "ritual-story",
+      "blocks": {
+        "pillar_1": {
+          "type": "pillar",
+          "settings": {
+            "label": "Cold Processed"
+          }
+        },
+        "pillar_2": {
+          "type": "pillar",
+          "settings": {
+            "label": "100% Natural"
+          }
+        },
+        "pillar_3": {
+          "type": "pillar",
+          "settings": {
+            "label": "Made for Daily Use"
+          }
+        }
+      },
+      "block_order": [
+        "pillar_1",
+        "pillar_2",
+        "pillar_3"
+      ],
       "settings": {
         "image_position": "left",
-        "badge_text": "",
-        "subheading": "What touches your skin matters",
-        "heading": "Ingredients you can actually read.",
-        "text": "",
-        "button_label": "",
-        "button_link": "",
-        "color_scheme": "secondary",
-        "padding_top": 80,
-        "padding_bottom": 80
-      }
-    },
-    "testimonials": {
-      "type": "testimonials",
-      "settings": {
-        "heading": "10,000+ customers can't all be wrong.",
-        "text": "Don't just take our word for it. Here is what our community is saying.",
-        "color_scheme": "secondary",
-        "padding_top": 80,
-        "padding_bottom": 80
-      }
-    },
-    "brand_story": {
-      "type": "cta-banner",
-      "settings": {
-        "eyebrow": "Our Story",
-        "heading": "Where Nature Meets Clinical Integrity.",
-        "subtext": "Mic & Mac was started to answer one question: why does premium skincare in India always mean Western formulas on Indian skin?",
-        "cta_label": "Meet the Brand",
+        "eyebrow": "Our Philosophy",
+        "heading": "Simple care. Thoughtfully made.",
+        "body_1": "We craft everyday skincare using cold-processed methods and carefully selected ingredients — designed to be gentle, effective, and consistent.",
+        "body_2": "",
+        "cta_label": "Discover our process",
         "cta_url": "/pages/about",
-        "bg_color": "#4a1040",
-        "overlay_opacity": 0.5
-      }
-    },
-    "instagram_grid": {
-      "type": "instagram-feed",
-      "settings": {
-        "heading": "Follow the ritual",
-        "instagram_handle": "micandmacofficial",
-        "instagram_url": "https://www.instagram.com/micandmacofficial/",
-        "padding_top": 80,
+        "bg_color": "#f5ecd7",
+        "padding_top": 0,
         "padding_bottom": 0
       }
     }
   },
   "order": [
     "hero",
-    "ritual_story",
+    "bestsellers",
     "product_spotlight_soap",
     "product_spotlight_lip",
-    "bestsellers",
-    "ingredients",
-    "testimonials",
-    "brand_story",
-    "instagram_grid"
+    "art_of_wellness",
+    "philosophy"
   ]
 }
