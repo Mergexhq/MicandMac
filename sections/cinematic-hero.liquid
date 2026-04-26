@@ -107,7 +107,7 @@
   font-family: var(--font-body, 'Inter', sans-serif);
   font-size: 0.6875rem;          /* 11px */
   font-weight: 600;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--mm-champagne-gold, #D4AF37);
   margin-bottom: 1.25rem;
@@ -119,10 +119,10 @@
 /* ── Headline ────────────────────────────────────────────────── */
 .cine-hero__heading {
   font-family: var(--font-display, 'Cormorant Garamond', serif);
-  font-size: clamp(2.4rem, 5.5vw, 4.75rem);
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
   font-weight: 300;
-  line-height: 1.07;
-  letter-spacing: -0.01em;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
   color: var(--mm-soft-blush, #F3E8E4);
   max-width: 560px;
   margin-bottom: 1.5rem;
@@ -141,11 +141,11 @@
 /* ── Supporting Text ─────────────────────────────────────────── */
 .cine-hero__body {
   font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: clamp(0.9375rem, 1.1vw, 1.0625rem);
-  line-height: 1.72;
+  font-size: 0.9375rem;
+  line-height: 1.65;
   color: rgba(243, 232, 228, 0.72);
-  max-width: 440px;
-  margin-bottom: 2.5rem;
+  max-width: 400px;
+  margin-bottom: 2.25rem;
   opacity: 0;
   transform: translateY(16px);
   animation: cine-rise 0.7s ease 0.55s forwards;
@@ -174,12 +174,12 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #FFFFFF;
   font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.75rem;           /* 12px (smaller) */
+  font-size: 0.75rem;           /* 12px */
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 12px 24px;         /* smaller padding */
+  padding: 11px 24px;
   border-radius: var(--radius-pill, 999px);
   transition:
     background 0.25s ease,
@@ -245,13 +245,13 @@
   }
 
   .cine-hero__heading {
-    font-size: clamp(1.8rem, 7.5vw, 2.4rem);
+    font-size: clamp(1.5rem, 7vw, 2rem);
     max-width: 100%;
   }
 
   .cine-hero__body {
     max-width: 100%;
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
   }
 
   .cine-hero__ctas {
@@ -386,10 +386,6 @@
           </svg>
         </a>
       {%- endif -%}
-    </div>
-
-    <div class="cine-hero__trust" style="margin-top: 2rem; font-family: var(--font-body, 'Inter', sans-serif); font-size: 0.6875rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); opacity: 0; transform: translateY(14px); animation: cine-rise 0.7s ease 0.9s forwards;">
-      100% Natural &nbsp;•&nbsp; Cold Process &nbsp;•&nbsp; Cruelty Free
     </div>
 
   </div>

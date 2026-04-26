@@ -14,6 +14,7 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -27,6 +28,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   /* Offset for fixed header: announcement bar (30px) + logo tier (~76px) + nav tier (~42px) */
   padding-top: 148px;
+  overflow-x: hidden;
 }
 
 img, video {

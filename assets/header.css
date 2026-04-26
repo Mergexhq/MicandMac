@@ -57,6 +57,7 @@
   left: 0;
   right: 0;
   width: 100%;
+  max-width: 100vw;
   z-index: var(--z-nav);
   background: var(--mm-soft-blush);
   transition: box-shadow var(--transition-base), background var(--transition-base);
@@ -228,7 +229,7 @@
 
 /* Separator dot */
 .site-nav__separator {
-  margin: 0 18px;
+  margin: 0 clamp(8px, 1.5vw, 18px);
   display: flex;
   align-items: center;
   justify-content: center;
