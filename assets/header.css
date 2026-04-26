@@ -561,7 +561,7 @@
 
 /* 1. Structural: Always keep header at top and hide announcement bar when not scrolled */
 .template-index:not(.is-scrolled) .site-header {
-  top: 0 !important; /* Sit at very top since announcement bar is hidden */
+  top: 0 !important;
 }
 .template-index:not(.is-scrolled) .announcement-bar {
   display: none !important;
@@ -572,20 +572,7 @@ body.template-index {
   padding-top: 0 !important;
 }
 
-/* 2. Visuals: Transparent ONLY when not hovered */
-.template-index:not(.is-scrolled) .site-header:not(:hover) {
-  background: transparent !important;
-  border: none;
-  box-shadow: none;
-}
-
-.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__middle,
-.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__bottom {
-  background: transparent !important;
-  border-bottom-color: transparent !important;
-}
-
-/* Add smooth transitions to base elements so hover in/out is smooth */
+/* 2. Smooth transitions on all elements */
 .template-index:not(.is-scrolled) .site-header,
 .template-index:not(.is-scrolled) .site-header__middle,
 .template-index:not(.is-scrolled) .site-header__bottom,
@@ -598,24 +585,32 @@ body.template-index {
   transition: all 0.3s ease;
 }
 
-/* Make logo image and text white */
-.template-index:not(.is-scrolled) .site-header:not(:hover) .site-logo-img,
-.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__logo img {
+/* 3. Transparent when NOT scrolled AND megamenu is NOT open */
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) {
+  background: transparent !important;
+  border: none;
+  box-shadow: none;
+}
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__middle,
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__bottom {
+  background: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+/* Logo and text white when transparent */
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-logo-img,
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__logo img {
   filter: brightness(0) invert(1);
 }
-.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__logo-text {
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__logo-text {
   color: #FFFFFF !important;
 }
-
-/* Make tagline, actions and nav links white */
-.template-index:not(.is-scrolled) .site-header:not(:hover) .tagline-text,
-.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__action-btn,
-.template-index:not(.is-scrolled) .site-header:not(:hover) .site-nav__link {
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .tagline-text,
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__action-btn,
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-nav__link {
   color: #FFFFFF !important;
 }
-
-/* Hover state for nav links on transparent bg (if they manage to hover a link without hovering the header... technically impossible, but kept for safety) */
-.template-index:not(.is-scrolled) .site-header:not(:hover) .site-nav__link:hover,
-.template-index:not(.is-scrolled) .site-header:not(:hover) .site-nav__link.is-active {
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-nav__link:hover,
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-nav__link.is-active {
   color: var(--mm-champagne-gold) !important;
 }

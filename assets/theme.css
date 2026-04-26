@@ -147,3 +147,16 @@
 .price--sale {
   color: #c0392b;
 }
+
+/* ─── Hide EComposer WhatsApp widget (we use our own) ─────── */
+[class*="ecom"][class*="whatsapp"],
+[id*="ecom"][id*="whatsapp"],
+.ecom-whatsapp,
+.ecom-whatsapp-btn,
+.ecom-contact-bar,
+/* Catch any other fixed WhatsApp floating button that is NOT ours */
+a[href*="wa.me"]:not(#WASticky),
+a[href*="wa.link"]:not(#WASticky),
+a[href*="api.whatsapp"]:not(#WASticky) {
+  display: none !important;
+}
