@@ -554,3 +554,68 @@
   body { padding-top: calc(60px + var(--announcement-height, 0px)); padding-bottom: 70px; }
 }
 
+
+/* ============================================
+   TRANSPARENT HEADER (HOMEPAGE HERO)
+   ============================================ */
+
+/* 1. Structural: Always keep header at top and hide announcement bar when not scrolled */
+.template-index:not(.is-scrolled) .site-header {
+  top: 0 !important; /* Sit at very top since announcement bar is hidden */
+}
+.template-index:not(.is-scrolled) .announcement-bar {
+  display: none !important;
+  opacity: 0 !important;
+}
+/* Remove body padding so the hero sits behind the transparent header */
+body.template-index {
+  padding-top: 0 !important;
+}
+
+/* 2. Visuals: Transparent ONLY when not hovered */
+.template-index:not(.is-scrolled) .site-header:not(:hover) {
+  background: transparent !important;
+  border: none;
+  box-shadow: none;
+}
+
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__middle,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__bottom {
+  background: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+/* Add smooth transitions to base elements so hover in/out is smooth */
+.template-index:not(.is-scrolled) .site-header,
+.template-index:not(.is-scrolled) .site-header__middle,
+.template-index:not(.is-scrolled) .site-header__bottom,
+.template-index:not(.is-scrolled) .site-logo-img,
+.template-index:not(.is-scrolled) .site-header__logo img,
+.template-index:not(.is-scrolled) .site-header__logo-text,
+.template-index:not(.is-scrolled) .tagline-text,
+.template-index:not(.is-scrolled) .site-header__action-btn,
+.template-index:not(.is-scrolled) .site-nav__link {
+  transition: all 0.3s ease;
+}
+
+/* Make logo image and text white */
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-logo-img,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__logo img {
+  filter: brightness(0) invert(1);
+}
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__logo-text {
+  color: #FFFFFF !important;
+}
+
+/* Make tagline, actions and nav links white */
+.template-index:not(.is-scrolled) .site-header:not(:hover) .tagline-text,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__action-btn,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-nav__link {
+  color: #FFFFFF !important;
+}
+
+/* Hover state for nav links on transparent bg (if they manage to hover a link without hovering the header... technically impossible, but kept for safety) */
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-nav__link:hover,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-nav__link.is-active {
+  color: var(--mm-champagne-gold) !important;
+}

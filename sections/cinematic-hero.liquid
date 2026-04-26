@@ -75,6 +75,19 @@
   );
 }
 
+/* Gradient overlay at the top to ensure the transparent white navbar is always readable */
+.cine-hero__overlay::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: linear-gradient(to bottom, rgba(15, 5, 5, 0.75) 0%, rgba(15, 5, 5, 0) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
 /* ── Content Block ───────────────────────────────────────────── */
 .cine-hero__content {
   position: relative;
@@ -87,7 +100,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 0;
-  transform: translateY(-8%);
+  transform: translateY(8%);
 }
 
 @media screen and (min-width: 768px) {
@@ -240,8 +253,8 @@
   .cine-hero__content {
     align-items: center;
     text-align: center;
-    padding: 0 1.5rem 5rem;
-    transform: translateY(0);
+    padding: 0 1.5rem 2rem;
+    transform: translateY(5%);
   }
 
   .cine-hero__heading {
