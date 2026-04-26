@@ -30,6 +30,24 @@
   background: rgba(243,232,228,0.97);
 }
 
+/* Transparent top bar for homepage hero */
+.template-index:not(.is-scrolled) .mobile-topbar {
+  background: transparent !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  top: 0 !important; /* Ignore hidden announcement bar offset */
+}
+.template-index:not(.is-scrolled) .mtb__logo img {
+  filter: brightness(0) invert(1);
+}
+.template-index:not(.is-scrolled) .mtb__logo span,
+.template-index:not(.is-scrolled) .mtb__btn {
+  color: #FFFFFF !important;
+}
+.template-index:not(.is-scrolled) .mtb__burger span {
+  background: #FFFFFF !important;
+}
+
 /* Burger button */
 .mtb__burger {
   display: flex;

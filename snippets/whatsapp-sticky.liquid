@@ -1,7 +1,6 @@
 {% comment %}
   Snippet: whatsapp-sticky
-  Always-visible WhatsApp CTA button — bottom-right fixed.
-  Shows icon + label on desktop, icon only on mobile.
+  Brand-aligned WhatsApp CTA — Gold color, auto-collapse, and avoids mobile dock.
   Rendered in layout/theme.liquid before </body>
 {% endcomment %}
 
@@ -11,60 +10,76 @@
   id="WASticky"
   target="_blank"
   rel="noopener noreferrer"
-  aria-label="Chat with us on WhatsApp"
+  aria-label="Ask a Skin Expert — WhatsApp"
 >
-  <svg class="wa-sticky__icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-  </svg>
-  <span class="wa-sticky__label">Love Your Body 365</span>
+  <div class="wa-sticky__icon-wrapper">
+    <svg class="wa-sticky__icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </div>
+  <span class="wa-sticky__label">Ask a Skin Expert</span>
 </a>
 
 <style>
 .wa-sticky {
   position: fixed;
-  bottom: 28px;
-  right: 24px;
-  z-index: var(--z-modal);
+  bottom: 40px;
+  right: 0;
+  z-index: var(--z-nav, 100);
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: var(--mm-champagne-gold);
-  color: var(--mm-dark-espresso);
-  padding: 7px 14px 7px 11px;
-  border-radius: var(--radius-pill);
+  gap: 10px;
+  background: var(--mm-champagne-gold, #D4AF37);
+  color: var(--mm-dark-espresso, #2E1F1A);
+  padding: 8px 16px 8px 10px;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   text-decoration: none;
   font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
   letter-spacing: 0.04em;
-  box-shadow: 0 4px 20px rgba(46, 31, 26, 0.25);
-  max-width: 200px;
+  box-shadow: -4px 6px 20px rgba(46, 31, 26, 0.2);
+  /* Use 'all' with a slightly longer duration for a more graceful feel */
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 280px;
   overflow: hidden;
-  transition: max-width 0.7s cubic-bezier(0.25, 1, 0.5, 1),
-              padding 0.7s ease,
-              transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              box-shadow 250ms ease,
-              background 250ms ease;
   white-space: nowrap;
 }
 
 .wa-sticky.wa-collapsed {
-  max-width: 39px;
-  padding: 11px;
+  max-width: 48px;
+  padding-right: 10px;
 }
 
 .wa-sticky.wa-collapsed .wa-sticky__label {
   opacity: 0;
+  visibility: hidden;
 }
 
 .wa-sticky.wa-collapsed:hover {
-  max-width: 200px;
-  padding: 7px 14px 7px 11px;
+  max-width: 280px;
+  padding-right: 16px;
 }
 
 .wa-sticky.wa-collapsed:hover .wa-sticky__label {
   opacity: 1;
-  transition-delay: 0.2s;
+  visibility: visible;
+  transition-delay: 0.15s;
+}
+
+.wa-sticky__icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wa-sticky__icon {
+  width: 20px;
+  height: 20px;
 }
 
 .wa-sticky__label {
@@ -72,31 +87,18 @@
 }
 
 .wa-sticky:hover {
-  background: var(--color-gold-light);
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 8px 28px rgba(46, 31, 26, 0.3);
+  transform: translateX(-4px);
 }
 
-.wa-sticky:active {
-  transform: translateY(-1px) scale(1.01);
-}
-
-.wa-sticky__icon {
-  width: 17px;
-  height: 17px;
-  flex-shrink: 0;
-}
-
-/* Mobile: icon only — no label */
+/* Mobile: Avoid dock */
 @media (max-width: 767px) {
   .wa-sticky {
-    padding: 12px;
-    border-radius: 50%;
-    bottom: 20px;
-    right: 16px;
+    bottom: 100px;
+    font-size: 11px;
+    padding: 7px 14px 7px 8px;
   }
-  .wa-sticky__label {
-    display: none;
+  .wa-sticky.wa-collapsed {
+    max-width: 44px;
   }
 }
 </style>
@@ -106,6 +108,6 @@
     setTimeout(function() {
       var wa = document.getElementById('WASticky');
       if (wa) wa.classList.add('wa-collapsed');
-    }, 3500); // Collapse after 3.5 seconds
+    }, 4000); // Automatically collapse after 4 seconds
   });
 </script>

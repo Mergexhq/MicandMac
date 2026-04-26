@@ -39,7 +39,9 @@
   <div class="container px-4">
     <div class="section-heading text-center" style="margin-bottom: 60px;">
       {%- if section.settings.heading != blank -%}
-        <h2 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2.2rem; font-weight: 500; color: var(--mm-deep-garnet);">{{ section.settings.heading }}</h2>
+        <h2 style="font-family: var(--font-body, 'Inter', sans-serif); font-size: clamp(2rem, 5vw, 2.5rem); font-weight: 400; color: var(--mm-dark-espresso); text-transform: lowercase; letter-spacing: -0.02em;">
+          {{ section.settings.heading }}
+        </h2>
       {%- endif -%}
       {%- if section.settings.description != blank -%}
         <p style="font-size: 11px; color: var(--mm-dark-espresso); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; opacity: 0.6; margin-top: 8px;">{{ section.settings.description }}</p>

@@ -57,6 +57,7 @@
   left: 0;
   right: 0;
   width: 100%;
+  max-width: 100vw;
   z-index: var(--z-nav);
   background: var(--mm-soft-blush);
   transition: box-shadow var(--transition-base), background var(--transition-base);
@@ -228,7 +229,7 @@
 
 /* Separator dot */
 .site-nav__separator {
-  margin: 0 18px;
+  margin: 0 clamp(8px, 1.5vw, 18px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -553,66 +554,68 @@
   body { padding-top: calc(60px + var(--announcement-height, 0px)); padding-bottom: 70px; }
 }
 
+
 /* ============================================
-   TRANSPARENT HEADER ON HOMEPAGE
+   TRANSPARENT HEADER (HOMEPAGE HERO)
    ============================================ */
+
+/* 1. Structural: Always keep header at top and hide announcement bar when not scrolled */
+.template-index:not(.is-scrolled) .site-header {
+  top: 0 !important; /* Sit at very top since announcement bar is hidden */
+}
+.template-index:not(.is-scrolled) .announcement-bar {
+  display: none !important;
+  opacity: 0 !important;
+}
+/* Remove body padding so the hero sits behind the transparent header */
 body.template-index {
-  /* Let hero slide under header */
-  padding-top: 30px !important;
+  padding-top: 0 !important;
 }
 
-/* Desktop Header Transparent State */
-body.template-index .site-header:not(.is-scrolled) .site-header__middle,
-body.template-index .site-header:not(.is-scrolled) .site-header__bottom {
+/* 2. Visuals: Transparent ONLY when not hovered */
+.template-index:not(.is-scrolled) .site-header:not(:hover) {
   background: transparent !important;
+  border: none;
+  box-shadow: none;
 }
-body.template-index .site-header:not(.is-scrolled) {
+
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__middle,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__bottom {
   background: transparent !important;
-  box-shadow: none !important;
+  border-bottom-color: transparent !important;
 }
 
-body.template-index .site-header:not(.is-scrolled) .site-header__bottom {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+/* Add smooth transitions to base elements so hover in/out is smooth */
+.template-index:not(.is-scrolled) .site-header,
+.template-index:not(.is-scrolled) .site-header__middle,
+.template-index:not(.is-scrolled) .site-header__bottom,
+.template-index:not(.is-scrolled) .site-logo-img,
+.template-index:not(.is-scrolled) .site-header__logo img,
+.template-index:not(.is-scrolled) .site-header__logo-text,
+.template-index:not(.is-scrolled) .tagline-text,
+.template-index:not(.is-scrolled) .site-header__action-btn,
+.template-index:not(.is-scrolled) .site-nav__link {
+  transition: all 0.3s ease;
 }
 
-body.template-index .site-header:not(.is-scrolled) .site-header__logo-text,
-body.template-index .site-header:not(.is-scrolled) .tagline-text,
-body.template-index .site-header:not(.is-scrolled) .site-nav__link,
-body.template-index .site-header:not(.is-scrolled) .site-header__action-btn svg,
-body.template-index .site-header:not(.is-scrolled) .nav-chevron {
-  color: #ffffff !important;
+/* Make logo image and text white */
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-logo-img,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__logo img {
+  filter: brightness(0) invert(1);
+}
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__logo-text {
+  color: #FFFFFF !important;
 }
 
-body.template-index .site-header:not(.is-scrolled) .site-header__action-btn svg {
-  stroke: #ffffff !important;
+/* Make tagline, actions and nav links white */
+.template-index:not(.is-scrolled) .site-header:not(:hover) .tagline-text,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__action-btn,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-nav__link {
+  color: #FFFFFF !important;
 }
 
-/* Mobile Header Transparent State */
-body.template-index .mobile-topbar:not(.is-scrolled) {
-  background: transparent !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-  box-shadow: none !important;
-}
-body.template-index .mobile-topbar:not(.is-scrolled) .mtb__logo span,
-body.template-index .mobile-topbar:not(.is-scrolled) .mtb__btn {
-  color: #ffffff !important;
-}
-body.template-index .mobile-topbar:not(.is-scrolled) .mtb__btn svg {
-  stroke: #ffffff !important;
-}
-body.template-index .mobile-topbar:not(.is-scrolled) .mtb__burger span {
-  background-color: #ffffff !important;
-}
-
-/* Fix cart count styling for white icon */
-body.template-index .site-header:not(.is-scrolled) .cart-count,
-body.template-index .mobile-topbar:not(.is-scrolled) .mtb__cart-badge {
-  background: #ffffff !important;
-  color: var(--mm-dark-espresso) !important;
-}
-
-/* Ensure the white logo PNG is used or logo text is white */
-body.template-index .site-header:not(.is-scrolled) .site-logo-img,
-body.template-index .mobile-topbar:not(.is-scrolled) .mtb__logo img {
-  filter: brightness(0) invert(1) !important;
+/* Hover state for nav links on transparent bg (if they manage to hover a link without hovering the header... technically impossible, but kept for safety) */
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-nav__link:hover,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-nav__link.is-active {
+  color: var(--mm-champagne-gold) !important;
 }

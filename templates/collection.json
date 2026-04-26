@@ -15,24 +15,9 @@
         "products_per_page": 16,
         "quick_links": ""
       }
-    },
-    "art_of_wellness_qfPmc4": {
-      "type": "art-of-wellness",
-      "name": "The Art of Wellness",
-      "settings": {
-        "bg_color": "#f3e8e4",
-        "heading": "",
-        "paragraph": "<p>Formulated with <em>pure ingredients</em> to deliver <em>smoother texture</em>, a <em>healthy glow</em>, and zero harshness.</p>",
-        "micro_copy": "this is what clean skincare should feel like.",
-        "image": "shopify://shop_images/hf_20260425_150555_ba4a4d4e-4964-47fd-ad56-ff1051cec49b.png",
-        "padding_top": 80
-      }
     }
   },
   "order": [
-    "main",
-    "art_of_wellness_qfPmc4"
-    "main",
-    "art_of_wellness_qfPmc4"
+    "main"
   ]
 }
