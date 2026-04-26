@@ -100,18 +100,18 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 0;
-  transform: translateY(8%);
+  transform: translateY(15%);
 }
 
 @media screen and (min-width: 768px) {
   .cine-hero__content {
-    padding: 0 100px;
+    padding: 0 60px;
   }
 }
 
 @media screen and (min-width: 1280px) {
   .cine-hero__content {
-    padding: 0 140px;
+    padding: 0 80px;
   }
 }
 
@@ -419,8 +419,12 @@
 
   if (!heroEl) return;
 
-  /* ── 1. Video Tab Visibility (performance) ─────────────────── */
+  /* ── 1. Video Playback Control ───────────────────────────── */
   if (videoEl) {
+    /* Ensure autoplay on load (sometimes attributes aren't enough) */
+    videoEl.play().catch(function (error) {
+      console.warn("Autoplay was prevented by the browser:", error);
+    });
 
     /* Pause video when tab is hidden to save resources */
     document.addEventListener('visibilitychange', function () {
