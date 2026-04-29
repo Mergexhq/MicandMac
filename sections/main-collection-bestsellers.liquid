@@ -1,0 +1,241 @@
+{{ 'components.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bestsellers-page {
+    text-align: center;
+    background-color: var(--color-bg-primary, #fbfaf5); /* Fallback */
+    padding-top: 80px;
+    padding-bottom: 100px;
+  }
+  
+  .bestsellers-header {
+    margin-bottom: 60px;
+  }
+  
+  .bestsellers-title {
+    font-family: var(--font-heading), serif;
+    font-size: 2.5rem;
+    color: var(--color-text-primary, #3b2a2f);
+    margin-bottom: 15px;
+  }
+  
+  .bestsellers-subtitle {
+    font-family: var(--font-body), sans-serif;
+    font-size: 1.1rem;
+    color: var(--color-text-secondary, #5e5e5e);
+  }
+
+  .bestsellers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-bottom: 60px;
+  }
+
+  @media (max-width: 768px) {
+    .bestsellers-grid {
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+  }
+
+  .bc-card {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .bc-image-wrapper {
+    position: relative;
+    background: var(--color-surface, #f4eee6);
+    border-radius: var(--radius-md, 8px);
+    overflow: hidden;
+    margin-bottom: 24px;
+    aspect-ratio: 1 / 1;
+  }
+
+  .bc-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .bc-card:hover .bc-image {
+    transform: scale(1.03);
+  }
+
+  .bc-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: var(--color-bg-primary, #fbfaf5);
+    color: var(--color-text-primary, #3b2a2f);
+    padding: 6px 14px;
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 20px;
+    z-index: 2;
+  }
+
+  .bc-title {
+    font-family: var(--font-heading), serif;
+    font-size: 1.25rem;
+    color: var(--color-text-primary, #3b2a2f);
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+
+  .bc-title a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .bc-type {
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary, #6a6a6a);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 16px 0;
+  }
+
+  .bc-price {
+    font-family: var(--font-body), sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-text-primary, #3b2a2f);
+    margin: 0 0 24px 0;
+  }
+
+  .bc-form {
+    margin-top: auto;
+  }
+
+  .bc-btn {
+    width: 100%;
+    background: var(--color-text-primary, #3b2a2f);
+    color: #fff;
+    border: none;
+    padding: 14px 0;
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    border-radius: var(--radius-sm, 4px);
+  }
+
+  .bc-btn:hover {
+    opacity: 0.8;
+  }
+
+  .bestsellers-trust {
+    margin-bottom: 50px;
+    padding-top: 50px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .bestsellers-trust p {
+    font-family: var(--font-heading), serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--color-text-primary, #3b2a2f);
+    margin: 0;
+  }
+
+  .bestsellers-explore {
+    display: inline-block;
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text-primary, #3b2a2f);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--color-text-primary, #3b2a2f);
+    padding-bottom: 4px;
+    transition: opacity 0.2s ease;
+  }
+
+  .bestsellers-explore:hover {
+    opacity: 0.7;
+  }
+</style>
+
+<section class="bestsellers-page section-padding">
+  <div class="container">
+    
+    <!-- 1. TOP TEXT -->
+    <header class="bestsellers-header">
+      <h1 class="bestsellers-title">Bestsellers</h1>
+      <p class="bestsellers-subtitle">The ones they keep coming back for.</p>
+    </header>
+
+    <!-- 2. PRODUCT GRID -->
+    <div class="bestsellers-grid">
+      {% assign count = 0 %}
+      {% for product in collection.products %}
+        {% if count < 3 %}
+          <div class="bc-card">
+            {% if product.featured_image %}
+              <div class="bc-image-wrapper">
+                <span class="bc-badge">Bestseller</span>
+                <a href="{{ product.url }}">
+                  <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title | escape }}" loading="lazy" width="600" height="600" class="bc-image">
+                </a>
+              </div>
+            {% endif %}
+            
+            <div class="bc-details">
+              <h3 class="bc-title"><a href="{{ product.url }}">{{ product.title | split: '|' | first }}</a></h3>
+              <p class="bc-type">
+                {% if product.metafields.custom.ingredient_1_name != blank %}
+                  {{ product.metafields.custom.ingredient_1_name }} {% if product.metafields.custom.ingredient_2_name != blank %}• {{ product.metafields.custom.ingredient_2_name }}{% endif %}
+                {% else %}
+                  Antioxidant &bull; Glow
+                {% endif %}
+              </p>
+              <p class="bc-price">{{ product.price | money }}</p>
+              
+              <form method="post" action="/cart/add" class="bc-form">
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                <button type="submit" class="bc-btn">Add to Cart</button>
+              </form>
+            </div>
+          </div>
+          {% assign count = count | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+      
+      {% if collection.products.size == 0 %}
+        <p>No bestsellers found.</p>
+      {% endif %}
+    </div>
+
+    <!-- 3. TRUST LINE -->
+    <div class="bestsellers-trust">
+      <p>Customer-loved. Made for daily use.</p>
+    </div>
+
+    <!-- 4. FINAL LINK -->
+    <div class="bestsellers-footer">
+      <a href="{{ routes.all_products_collection_url }}" class="bestsellers-explore">Explore all products &rarr;</a>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bestsellers Collection",
+  "settings": []
+}
+{% endschema %}
