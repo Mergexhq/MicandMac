@@ -1,38 +1,38 @@
 {% comment %}
-  Section: Curated New Arrivals (Editorial Drop Page)
+  Section: Curated Bestsellers (Editorial Page)
   3-part minimal layout: Hero -> Grid -> Soft CTA
 {% endcomment %}
 
 {{ 'product-card.css' | asset_url | stylesheet_tag }}
 
-<div class="na-drop-page">
+<div class="bs-drop-page">
   
   <!-- 1. EDITORIAL HERO -->
-  <div class="na-hero">
+  <div class="bs-hero">
     {%- if section.settings.hero_video != blank -%}
-      {{ section.settings.hero_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, class: 'na-hero__media' }}
+      {{ section.settings.hero_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, class: 'bs-hero__media' }}
     {%- elsif section.settings.hero_image != blank -%}
-      <img src="{{ section.settings.hero_image | image_url: width: 2000 }}" width="{{ section.settings.hero_image.width | default: 2000 }}" height="{{ section.settings.hero_image.height | default: 1000 }}" class="na-hero__media" alt="{{ section.settings.title | escape }}">
+      <img src="{{ section.settings.hero_image | image_url: width: 2000 }}" width="{{ section.settings.hero_image.width | default: 2000 }}" height="{{ section.settings.hero_image.height | default: 1000 }}" class="bs-hero__media" alt="{{ section.settings.title | escape }}">
     {%- else -%}
-      <div class="na-hero__media na-hero__placeholder"></div>
+      <div class="bs-hero__media bs-hero__placeholder"></div>
     {%- endif -%}
     
-    <div class="na-hero__overlay"></div>
+    <div class="bs-hero__overlay"></div>
     
-    <div class="na-hero__content container text-center">
-      <h1 class="na-hero__title">{{ section.settings.title | default: 'New Arrivals' }}</h1>
-      <p class="na-hero__desc">{{ section.settings.description | default: 'Fresh formulations and recent additions crafted for everyday care.' }}</p>
-      <a href="#na-grid" class="btn btn--primary na-hero__btn">{{ section.settings.hero_btn_label | default: 'Explore Latest' }}</a>
+    <div class="bs-hero__content container text-center">
+      <h1 class="bs-hero__title">{{ section.settings.title | default: 'Bestsellers' }}</h1>
+      <p class="bs-hero__desc">{{ section.settings.description | default: 'The products our customers keep coming back for.' }}</p>
+      <a href="#bs-grid" class="btn btn--primary bs-hero__btn">{{ section.settings.hero_btn_label | default: 'Explore Collection' }}</a>
     </div>
   </div>
 
   <!-- 2. PRODUCT GRID -->
-  <div class="na-grid-section" id="na-grid">
+  <div class="bs-grid-section" id="bs-grid">
     <div class="container">
-      <div class="na-grid">
+      <div class="bs-grid">
         {%- for product in collection.products -%}
-          <div class="na-grid__item">
-            {% render 'product-card', product: product %}
+          <div class="bs-grid__item relative">
+            {% render 'product-card', product: product, force_badge: 'Bestseller' %}
           </div>
         {%- else -%}
           <p style="text-align:center; grid-column: 1 / -1; padding: 4rem 0;">No products found in this collection.</p>
@@ -42,37 +42,42 @@
   </div>
 
   <!-- 3. SOFT CTA -->
-  <div class="na-cta">
+  <div class="bs-cta">
     <div class="container text-center">
-      <h2 class="na-cta__title">{{ section.settings.cta_title | default: 'Not sure where to begin?' }}</h2>
-      <p class="na-cta__desc">{{ section.settings.cta_desc | default: 'Explore the products our customers reach for the most.' }}</p>
-      <a href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}" class="btn btn--primary na-cta__btn">
-        {{ section.settings.cta_label | default: 'Shop Bestsellers' }}
-      </a>
+      <h2 class="bs-cta__title">{{ section.settings.cta_title | default: 'Looking for something more specific?' }}</h2>
+      <p class="bs-cta__desc">{{ section.settings.cta_desc | default: 'Explore our complete range of cold-processed soaps and daily lip care.' }}</p>
+      <div class="bs-cta__buttons">
+        <a href="{{ section.settings.cta_url_1 | default: routes.collections_url | append: '/glowing-bars' }}" class="btn btn--primary bs-cta__btn">
+          {{ section.settings.cta_label_1 | default: 'Shop Glowing Bars' }}
+        </a>
+        <a href="{{ section.settings.cta_url_2 | default: routes.collections_url | append: '/lip-care' }}" class="btn bs-cta__btn bs-cta__btn--secondary">
+          {{ section.settings.cta_label_2 | default: 'Explore Lip Care' }}
+        </a>
+      </div>
     </div>
   </div>
 
 </div>
 
 <style>
-  .na-drop-page {
+  .bs-drop-page {
     color: var(--mm-dark-espresso, #2E1F1A);
     /* Inherits background-color from theme body seamlessly */
   }
 
   /* 1. HERO */
-  .na-hero {
+  .bs-hero {
     position: relative;
-    height: 60vh;
+    height: 65vh;
     min-height: 400px;
-    max-height: 650px;
+    max-height: 700px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     margin-bottom: 80px;
   }
-  .na-hero__media {
+  .bs-hero__media {
     position: absolute;
     top: 0;
     left: 0;
@@ -81,33 +86,30 @@
     object-fit: cover;
     z-index: 0;
   }
-  .na-hero__placeholder {
+  .bs-hero__placeholder {
     background-color: var(--mm-dark-espresso, #2E1F1A);
   }
-  .na-hero__overlay {
+  .bs-hero__overlay {
     position: absolute;
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%;
-    background: rgba(46, 31, 26, 0.4); /* Dark overlay to make text pop */
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(46, 31, 26, 0.4); 
     z-index: 1;
   }
-  .na-hero__content {
+  .bs-hero__content {
     position: relative;
     z-index: 2;
     color: #fff;
     max-width: 800px;
   }
-  .na-hero__title {
+  .bs-hero__title {
     font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: clamp(3rem, 5vw, 4.5rem);
     font-weight: 500;
     line-height: 1.1;
     margin-bottom: var(--space-4);
-    color: #fff; /* Override any theme defaults */
+    color: #fff; 
   }
-  .na-hero__desc {
+  .bs-hero__desc {
     font-size: clamp(1rem, 2vw, 1.25rem);
     font-family: var(--font-body);
     font-weight: 300;
@@ -115,7 +117,7 @@
     letter-spacing: 0.02em;
     opacity: 0.9;
   }
-  .na-hero__btn {
+  .bs-hero__btn {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -130,83 +132,113 @@
     text-decoration: none;
     display: inline-block;
   }
-  .na-hero__btn:hover {
+  .bs-hero__btn:hover {
     background: #fff;
     color: var(--mm-dark-espresso, #2E1F1A);
   }
 
   /* 2. GRID */
-  .na-grid-section {
+  .bs-grid-section {
     padding-bottom: 80px;
   }
-  .na-grid {
+  .bs-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-8);
     max-width: 1200px;
     margin: 0 auto;
   }
+  .bs-grid__item {
+    position: relative;
+  }
   
   /* 3. SOFT CTA */
-  .na-cta {
+  .bs-cta {
     padding: 80px 0 100px;
-    border-top: 1px solid rgba(46,31,26,0.05); /* very soft divider */
+    border-top: 1px solid rgba(46,31,26,0.05); 
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 250px;
   }
-  .na-cta__title {
+  .bs-cta__title {
     font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: clamp(2rem, 3vw, 2.5rem);
     font-weight: 500;
     color: var(--mm-deep-garnet, #4B2A31);
     margin-bottom: var(--space-4);
   }
-  .na-cta__desc {
+  .bs-cta__desc {
     font-size: 1.05rem;
     color: var(--mm-dark-espresso, #2E1F1A);
     opacity: 0.8;
     margin-bottom: var(--space-8);
   }
-  .na-cta__btn {
+  .bs-cta__buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .bs-cta__btn {
     padding: 14px 40px;
-    background-color: var(--mm-dark-espresso, #2E1F1A);
-    color: #fff;
-    border: none;
     border-radius: var(--radius-sm, 4px);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-size: 0.85rem;
-    transition: background 0.3s ease, transform 0.2s ease;
+    transition: background 0.3s ease, transform 0.2s ease, border 0.3s ease;
     text-decoration: none;
     display: inline-block;
   }
-  .na-cta__btn:hover {
+  .bs-cta__btn.btn--primary {
+    background-color: var(--mm-dark-espresso, #2E1F1A);
+    color: #fff;
+    border: 1px solid var(--mm-dark-espresso, #2E1F1A);
+  }
+  .bs-cta__btn.btn--primary:hover {
     background-color: var(--mm-deep-garnet, #4B2A31);
+    border-color: var(--mm-deep-garnet, #4B2A31);
+    transform: translateY(-2px);
+  }
+  .bs-cta__btn--secondary {
+    background-color: transparent;
+    color: var(--mm-dark-espresso, #2E1F1A);
+    border: 1px solid var(--mm-dark-espresso, #2E1F1A);
+  }
+  .bs-cta__btn--secondary:hover {
+    background-color: rgba(46,31,26,0.05);
     transform: translateY(-2px);
   }
 
   /* Responsive */
   @media (max-width: 768px) {
-    .na-grid {
-      grid-template-columns: 1fr; /* 1 per row on mobile */
+    .bs-grid {
+      grid-template-columns: 1fr; 
       gap: var(--space-10);
     }
-    .na-hero {
+    .bs-hero {
       height: 50vh;
       min-height: 350px;
       margin-bottom: 40px;
     }
-    .na-cta {
+    .bs-cta {
       padding: 60px 0 80px;
+    }
+    .bs-cta__buttons {
+      flex-direction: column;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+    .bs-cta__btn {
+      width: 100%;
     }
   }
 </style>
 
 {% schema %}
 {
-  "name": "New Arrivals Layout",
+  "name": "Bestsellers Layout",
   "settings": [
     {
       "type": "header",
@@ -216,19 +248,19 @@
       "type": "text",
       "id": "title",
       "label": "Heading",
-      "default": "New Arrivals"
+      "default": "Bestsellers"
     },
     {
       "type": "textarea",
       "id": "description",
       "label": "Description",
-      "default": "Fresh formulations and recent additions crafted for everyday care."
+      "default": "The products our customers keep coming back for."
     },
     {
       "type": "text",
       "id": "hero_btn_label",
       "label": "Button Label",
-      "default": "Explore Latest"
+      "default": "Explore Collection"
     },
     {
       "type": "image_picker",
@@ -244,36 +276,46 @@
     },
     {
       "type": "header",
-      "content": "3. Final Soft CTA"
+      "content": "2. Final Soft CTA"
     },
     {
       "type": "text",
       "id": "cta_title",
       "label": "Heading",
-      "default": "Not sure where to begin?"
+      "default": "Looking for something more specific?"
     },
     {
       "type": "text",
       "id": "cta_desc",
       "label": "Description",
-      "default": "Explore the products our customers reach for the most."
+      "default": "Explore our complete range of cold-processed soaps and daily lip care."
     },
     {
       "type": "text",
-      "id": "cta_label",
-      "label": "Button Label",
-      "default": "Shop Bestsellers"
+      "id": "cta_label_1",
+      "label": "Primary Button Label",
+      "default": "Shop Glowing Bars"
     },
     {
       "type": "url",
-      "id": "cta_url",
-      "label": "Button Link",
-      "info": "We recommend linking to /collections/best-sellers"
+      "id": "cta_url_1",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "text",
+      "id": "cta_label_2",
+      "label": "Secondary Button Label",
+      "default": "Explore Lip Care"
+    },
+    {
+      "type": "url",
+      "id": "cta_url_2",
+      "label": "Secondary Button Link"
     }
   ],
   "presets": [
     {
-      "name": "New Arrivals Layout"
+      "name": "Bestsellers Layout"
     }
   ]
 }

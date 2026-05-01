@@ -10,13 +10,20 @@
 /* ---- ANNOUNCEMENT BAR ---- */
 /* Dark Espresso bg · Champagne Gold text */
 .announcement-bar {
-  background: var(--mm-dark-espresso);
+  background: linear-gradient(to bottom, var(--mm-deep-garnet), var(--mm-dark-espresso));
   color: var(--mm-champagne-gold);
   text-align: center;
   font-size: var(--text-xs);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 500;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 30px;
+  z-index: calc(var(--z-nav) + 5);
 }
 .announcement-bar__link,
 .announcement-bar a {
@@ -46,10 +53,11 @@
 */
 .site-header {
   position: fixed;
-  top: 0;
+  top: var(--announcement-height, 0px); /* Sits below the fixed announcement bar */
   left: 0;
   right: 0;
   width: 100%;
+  max-width: 100vw;
   z-index: var(--z-nav);
   background: var(--mm-soft-blush);
   transition: box-shadow var(--transition-base), background var(--transition-base);
@@ -221,7 +229,7 @@
 
 /* Separator dot */
 .site-nav__separator {
-  margin: 0 18px;
+  margin: 0 clamp(8px, 1.5vw, 18px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -532,7 +540,7 @@
   .site-header__tagline { display: flex; }
   .wishlist-btn { display: flex; }
   .site-header__logo { justify-content: center; }
-  body { padding-top: 148px; padding-bottom: 0; }
+  body { padding-top: calc(126px + var(--announcement-height, 0px)); padding-bottom: 0; }
   /* Hide all mobile-only elements */
   .mobile-topbar { display: none !important; }
   .mnav { display: none !important; }
@@ -543,5 +551,66 @@
   .site-header { display: none !important; }
   .mobile-topbar { display: flex; }
   .bottom-dock { display: flex; }
-  body { padding-top: 60px; padding-bottom: 70px; }
+  body { padding-top: calc(60px + var(--announcement-height, 0px)); padding-bottom: 70px; }
+}
+
+
+/* ============================================
+   TRANSPARENT HEADER (HOMEPAGE HERO)
+   ============================================ */
+
+/* 1. Structural: Always keep header at top and hide announcement bar when not scrolled */
+.template-index:not(.is-scrolled) .site-header {
+  top: 0 !important;
+}
+.template-index:not(.is-scrolled) .announcement-bar {
+  display: none !important;
+  opacity: 0 !important;
+}
+/* Remove body padding so the hero sits behind the transparent header */
+body.template-index {
+  padding-top: 0 !important;
+}
+
+/* 2. Smooth transitions on all elements */
+.template-index:not(.is-scrolled) .site-header,
+.template-index:not(.is-scrolled) .site-header__middle,
+.template-index:not(.is-scrolled) .site-header__bottom,
+.template-index:not(.is-scrolled) .site-logo-img,
+.template-index:not(.is-scrolled) .site-header__logo img,
+.template-index:not(.is-scrolled) .site-header__logo-text,
+.template-index:not(.is-scrolled) .tagline-text,
+.template-index:not(.is-scrolled) .site-header__action-btn,
+.template-index:not(.is-scrolled) .site-nav__link {
+  transition: all 0.3s ease;
+}
+
+/* 3. Transparent when NOT scrolled AND megamenu is NOT open */
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) {
+  background: transparent !important;
+  border: none;
+  box-shadow: none;
+}
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__middle,
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__bottom {
+  background: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+/* Logo and text white when transparent */
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-logo-img,
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__logo img {
+  filter: brightness(0) invert(1);
+}
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__logo-text {
+  color: #FFFFFF !important;
+}
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .tagline-text,
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__action-btn,
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-nav__link {
+  color: #FFFFFF !important;
+}
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-nav__link:hover,
+.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-nav__link.is-active {
+  color: var(--mm-champagne-gold) !important;
 }

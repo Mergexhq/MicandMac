@@ -18,11 +18,11 @@
 
   .ingredients-title {
     text-align: center;
-    font-family: var(--font-heading-family);
+    font-family: var(--font-heading-family, serif);
     font-size: 2.5rem;
-    font-weight: 700;
+    font-weight: 400;
     margin-bottom: 3.5rem;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     color: #111;
   }
 
@@ -47,9 +47,8 @@
     transform: translateY(-4px);
   }
 
-  /* First card receives the premium subtle background highlight */
   .ingredient-card.highlight {
-    background: linear-gradient(160deg, #fffcf5 0%, #f7ebd5 100%);
+    background: transparent;
   }
 
   .ingredient-image-wrapper {
@@ -68,7 +67,6 @@
     transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
-  /* Image zoom interaction */
   .ingredient-card:hover .ingredient-image {
     transform: scale(1.05);
   }
@@ -103,7 +101,6 @@
     align-self: flex-start;
   }
 
-  /* Subtle CTA interaction */
   .ingredient-link::after {
     content: '';
     position: absolute;
@@ -129,7 +126,6 @@
     }
   }
 
-  /* Mobile 2x2 grid */
   @media (max-width: 768px) {
     .ingredients-title {
       font-size: 2rem;
@@ -161,71 +157,94 @@
   }
 {%- endstyle -%}
 
-<div class="ingredients-section-wrapper section-{{ section.id }}-padding">
+{%- liquid
+  assign max_ingredients = section.settings.max_ingredients
+  assign has_any_ingredient = false
+  for i in (1..max_ingredients)
+    assign name_key = 'ingredient_' | append: i | append: '_name'
+    assign ing_name = product.metafields.custom[name_key]
+    if ing_name != blank
+      assign has_any_ingredient = true
+      break
+    endif
+  endfor
+-%}
+
+<div class="ingredients-section-wrapper section-{{ section.id }}-padding" style="padding-left: 2rem; padding-right: 2rem;">
   <div class="page-width">
     {% if section.settings.title != blank %}
       <h2 class="ingredients-title">{{ section.settings.title }}</h2>
     {% endif %}
 
     <div class="ingredients-grid">
-      {% for block in section.blocks %}
-        <div class="ingredient-card {% if forloop.first %}highlight{% endif %}" {{ block.shopify_attributes }}>
-          <div class="ingredient-image-wrapper">
-            {% if block.settings.image != blank %}
-              <img 
-                class="ingredient-image"
-                src="{{ block.settings.image | image_url: width: 500 }}" 
-                alt="{{ block.settings.title | escape }}"
-                loading="lazy"
-                width="500"
-                height="{{ 500 | divided_by: block.settings.image.aspect_ratio | ceil }}"
-              >
-            {% else %}
-               {{ 'image' | placeholder_svg_tag: 'ingredient-image' }}
-            {% endif %}
-          </div>
 
-          {% if block.settings.title != blank %}
-            <h3>{{ block.settings.title }}</h3>
-          {% endif %}
+      {%- if has_any_ingredient -%}
+        {%- for i in (1..max_ingredients) -%}
+          {%- assign name_key  = 'ingredient_' | append: i | append: '_name' -%}
+          {%- assign desc_key  = 'ingredient_' | append: i | append: '_description' -%}
+          {%- assign image_key = 'ingredient_' | append: i | append: '_image' -%}
+          {%- assign link_key  = 'ingredient_' | append: i | append: '_link' -%}
 
-          {% if block.settings.description != blank %}
-            <p>{{ block.settings.description | newline_to_br }}</p>
-          {% endif %}
+          {%- assign ing_name  = product.metafields.custom[name_key] -%}
+          {%- assign ing_desc  = product.metafields.custom[desc_key] -%}
+          {%- assign ing_image = product.metafields.custom[image_key] -%}
+          {%- assign ing_link  = product.metafields.custom[link_key] -%}
 
-          {% if block.settings.link != blank or block.settings.link_label != blank %}
-            <a href="{{ block.settings.link | default: '#' }}" class="ingredient-link">
-              {{ block.settings.link_label | default: 'Learn more →' }}
-            </a>
-          {% endif %}
-        </div>
-      {% endfor %}
+          {%- if ing_name != blank or ing_image != blank -%}
+            <div class="ingredient-card {% if forloop.first %}highlight{% endif %}">
 
-      {%- if section.blocks.size == 0 -%}
-        <!-- Fallback if blocks are empty so we can see the effect immediately -->
+              <div class="ingredient-image-wrapper">
+                {%- if ing_image != blank -%}
+                  <img
+                    class="ingredient-image"
+                    src="{{ ing_image | image_url: width: 500 }}"
+                    alt="{{ ing_name | escape }}"
+                    loading="lazy"
+                    width="500"
+                    height="{{ 500 | divided_by: ing_image.aspect_ratio | ceil }}"
+                  >
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'ingredient-image' }}
+                {%- endif -%}
+              </div>
+
+              {%- if ing_name != blank -%}
+                <h3>{{ ing_name }}</h3>
+              {%- endif -%}
+
+              {%- if ing_desc != blank -%}
+                <p>{{ ing_desc | newline_to_br }}</p>
+              {%- endif -%}
+
+              {%- if ing_link != blank -%}
+                <a href="{{ ing_link }}" class="ingredient-link">read more →</a>
+              {%- endif -%}
+
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+      {%- else -%}
+        {%- comment -%} Placeholder cards shown in Theme Editor before metafields are filled {%- endcomment -%}
         <div class="ingredient-card highlight">
           <div class="ingredient-image-wrapper">{{ 'image' | placeholder_svg_tag: 'ingredient-image' }}</div>
-          <h3>Almond Oil</h3>
-          <p>Cold-pressed from nutrient-rich almonds.<br>Helps soften, smooth, and deeply condition the skin.</p>
-          <a href="#" class="ingredient-link">Learn more →</a>
+          <h3>Ingredient 1</h3>
+          <p>Add this product's ingredients via Shopify Admin → Products → Metafields.</p>
         </div>
         <div class="ingredient-card">
           <div class="ingredient-image-wrapper">{{ 'image' | placeholder_svg_tag: 'ingredient-image' }}</div>
-          <h3>Sunflower Seed Oil</h3>
-          <p>Lightweight and vitamin-rich.<br>Supports hydration without clogging pores.</p>
-          <a href="#" class="ingredient-link">Learn more →</a>
+          <h3>Ingredient 2</h3>
+          <p>Each product can have its own unique ingredients without needing separate templates.</p>
         </div>
         <div class="ingredient-card">
           <div class="ingredient-image-wrapper">{{ 'image' | placeholder_svg_tag: 'ingredient-image' }}</div>
-          <h3>Argan Oil</h3>
-          <p>Rich in essential fatty acids.<br>Helps restore moisture and improve skin texture.</p>
-          <a href="#" class="ingredient-link">Learn more →</a>
+          <h3>Ingredient 3</h3>
+          <p>Set up metafield definitions in Settings → Custom Data → Products.</p>
         </div>
         <div class="ingredient-card">
           <div class="ingredient-image-wrapper">{{ 'image' | placeholder_svg_tag: 'ingredient-image' }}</div>
-          <h3>Avocado Oil</h3>
-          <p>Deeply nourishing and restorative.<br>Supports dry and sensitive skin.</p>
-          <a href="#" class="ingredient-link">Learn more →</a>
+          <h3>Ingredient 4</h3>
+          <p>Use keys like ingredient_1_name, ingredient_1_image in the custom namespace.</p>
         </div>
       {%- endif -%}
 
@@ -235,15 +254,28 @@
 
 {% schema %}
 {
-  "name": "Product ingredients",
+  "name": "Product Ingredients",
   "tag": "section",
   "class": "section",
   "settings": [
+    {
+      "type": "paragraph",
+      "content": "⚡ Ingredients are loaded per-product from metafields. Go to Shopify Admin → Products → [Product] → Metafields to set ingredient_1_name, ingredient_1_image, etc."
+    },
     {
       "type": "text",
       "id": "title",
       "label": "Section Title",
       "default": "Key Ingredients"
+    },
+    {
+      "type": "range",
+      "id": "max_ingredients",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Max ingredients to display",
+      "default": 4
     },
     {
       "type": "range",
@@ -266,74 +298,9 @@
       "default": 80
     }
   ],
-  "blocks": [
-    {
-      "type": "ingredient",
-      "name": "Ingredient",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Ingredient Image"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Ingredient Name"
-        },
-        {
-          "type": "textarea",
-          "id": "description",
-          "label": "Short Description"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Learn More Link"
-        },
-        {
-          "type": "text",
-          "id": "link_label",
-          "label": "Link Label",
-          "default": "Learn more →"
-        }
-      ]
-    }
-  ],
-  "max_blocks": 6,
   "presets": [
     {
-      "name": "Product ingredients",
-      "blocks": [
-        {
-          "type": "ingredient",
-          "settings": {
-            "title": "Almond Oil",
-            "description": "Cold-pressed from nutrient-rich almonds.\nHelps soften, smooth, and deeply condition the skin."
-          }
-        },
-        {
-          "type": "ingredient",
-          "settings": {
-            "title": "Sunflower Seed Oil",
-            "description": "Lightweight and vitamin-rich.\nSupports hydration without clogging pores."
-          }
-        },
-        {
-          "type": "ingredient",
-          "settings": {
-            "title": "Argan Oil",
-            "description": "Rich in essential fatty acids.\nHelps restore moisture and improve skin texture."
-          }
-        },
-        {
-          "type": "ingredient",
-          "settings": {
-            "title": "Avocado Oil",
-            "description": "Deeply nourishing and restorative.\nSupports dry and sensitive skin."
-          }
-        }
-      ]
+      "name": "Product Ingredients"
     }
   ]
 }

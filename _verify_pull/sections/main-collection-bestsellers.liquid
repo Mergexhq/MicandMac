@@ -1,0 +1,290 @@
+<style>
+  .bs-page {
+    background: #fbfaf5;
+    padding: 80px 0 100px;
+    text-align: center;
+    min-height: 60vh;
+  }
+
+  .bs-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Header */
+  .bs-header {
+    margin-bottom: 64px;
+  }
+
+  .bs-eyebrow {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #9b8070;
+    margin-bottom: 16px;
+  }
+
+  .bs-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 5vw, 3.5rem);
+    font-weight: 400;
+    color: #3b2a2f;
+    margin: 0 0 18px;
+    line-height: 1.15;
+  }
+
+  .bs-subtitle {
+    font-family: 'Jost', sans-serif;
+    font-size: 1rem;
+    color: #7a6a6a;
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+
+  /* Grid */
+  .bs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px;
+    margin-bottom: 72px;
+  }
+
+  @media (max-width: 900px) {
+    .bs-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .bs-grid {
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+  }
+
+  /* Card */
+  .bs-card {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bs-card__img-wrap {
+    position: relative;
+    background: #f0e8df;
+    border-radius: 6px;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    margin-bottom: 20px;
+  }
+
+  .bs-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.45s ease;
+  }
+
+  .bs-card:hover .bs-card__img {
+    transform: scale(1.04);
+  }
+
+  .bs-card__badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: #3b2a2f;
+    color: #fbfaf5;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+    z-index: 2;
+  }
+
+  .bs-card__name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #3b2a2f;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 6px;
+  }
+
+  .bs-card__name a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .bs-card__type {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    color: #9b8070;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 14px;
+  }
+
+  .bs-card__price {
+    font-family: 'Jost', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3b2a2f;
+    margin: 0 0 20px;
+  }
+
+  .bs-card__btn {
+    width: 100%;
+    background: #3b2a2f;
+    color: #fbfaf5;
+    border: none;
+    padding: 13px 0;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+    margin-top: auto;
+  }
+
+  .bs-card__btn:hover {
+    background: #5a3f46;
+  }
+
+  /* Divider */
+  .bs-divider {
+    width: 60px;
+    height: 1px;
+    background: #d9cfc9;
+    margin: 0 auto 40px;
+  }
+
+  /* Trust */
+  .bs-trust {
+    margin-bottom: 48px;
+  }
+
+  .bs-trust__text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-style: italic;
+    color: #3b2a2f;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* Explore */
+  .bs-explore {
+    display: inline-block;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #3b2a2f;
+    text-decoration: none;
+    border-bottom: 1px solid #3b2a2f;
+    padding-bottom: 3px;
+    transition: opacity 0.2s;
+  }
+
+  .bs-explore:hover {
+    opacity: 0.6;
+  }
+</style>
+
+<section class="bs-page">
+  <div class="bs-container">
+
+    {%- comment -%} 1. HEADER {%- endcomment -%}
+    <header class="bs-header">
+      <span class="bs-eyebrow">Customer Favourites</span>
+      <h1 class="bs-title">Bestsellers</h1>
+      <p class="bs-subtitle">The ones they keep coming back for.</p>
+    </header>
+
+    {%- comment -%} 2. PRODUCT GRID — top 3 products from collection {%- endcomment -%}
+    <div class="bs-grid">
+      {%- assign shown = 0 -%}
+      {%- for product in collection.products -%}
+        {%- if shown < 3 -%}
+          <div class="bs-card">
+
+            <div class="bs-card__img-wrap">
+              <span class="bs-card__badge">Bestseller</span>
+              <a href="{{ product.url }}">
+                {%- if product.featured_image -%}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 600 }}"
+                    alt="{{ product.title | escape }}"
+                    class="bs-card__img"
+                    loading="lazy"
+                    width="600"
+                    height="600"
+                  >
+                {%- endif -%}
+              </a>
+            </div>
+
+            <h3 class="bs-card__name">
+              <a href="{{ product.url }}">{{ product.title | split: '|' | first | strip }}</a>
+            </h3>
+
+            <p class="bs-card__type">
+              {%- assign key1 = product.metafields.custom.ingredient_1_name -%}
+              {%- assign key2 = product.metafields.custom.ingredient_2_name -%}
+              {%- if key1 != blank -%}
+                {{ key1 }}{% if key2 != blank %} &bull; {{ key2 }}{% endif %}
+              {%- else -%}
+                {{ product.type }}
+              {%- endif -%}
+            </p>
+
+            <p class="bs-card__price">{{ product.price | money }}</p>
+
+            <form method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <button type="submit" class="bs-card__btn">Add to Cart</button>
+            </form>
+
+          </div>
+          {%- assign shown = shown | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if collection.products.size == 0 -%}
+        <p style="grid-column: 1/-1; color: #9b8070;">No bestsellers found. Add products to this collection in your Shopify Admin.</p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} 3. DIVIDER {%- endcomment -%}
+    <div class="bs-divider"></div>
+
+    {%- comment -%} 4. TRUST LINE {%- endcomment -%}
+    <div class="bs-trust">
+      <p class="bs-trust__text">Botanically crafted. Skin-tested. Customer-loved.</p>
+    </div>
+
+    {%- comment -%} 5. EXPLORE LINK {%- endcomment -%}
+    <a href="{{ routes.all_products_collection_url }}" class="bs-explore">Explore all products &rarr;</a>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bestsellers Collection",
+  "settings": []
+}
+{% endschema %}

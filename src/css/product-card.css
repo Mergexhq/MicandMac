@@ -62,30 +62,40 @@
   border-radius: 999px;
 }
 
+/* ---- SAVE (BOOKMARK) BUTTON — sits in action row ---- */
 .pc__wishlist-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 5;
+  position: static;
   background: transparent;
-  border: none;
+  border: 1px solid rgba(46, 31, 26, 0.22);
   color: #2E1F1A;
-  width: 32px;
-  height: 32px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease;
   padding: 0;
+  border-radius: 4px;
+  flex-shrink: 0;
 }
 .pc__wishlist-btn:hover {
-  transform: scale(1.1);
-  color: #5A2D3A;
+  border-color: #2E1F1A;
+}
+/* Active / Saved state — gold */
+.pc__wishlist-btn.is-active,
+.pc__wishlist-btn[data-saved="true"] {
+  border-color: #C9A84C;
+  color: #C9A84C;
+}
+.pc__wishlist-btn.is-active svg,
+.pc__wishlist-btn[data-saved="true"] svg {
+  fill: #C9A84C;
 }
 .pc__wishlist-btn svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
+  transition: fill 0.2s ease;
 }
 
 /* ---- TEXT BLOCK ---- */
@@ -105,12 +115,14 @@
   font-weight: 700;
   color: #2E1F1A;
   text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   margin: 0 0 2px 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: calc(1.15rem * 1.35 * 2); /* Reserve space for 2 lines always */
+  min-height: calc(1.15rem * 1.35 * 2);
 }
 
 .pc__name:hover {
@@ -164,16 +176,22 @@
   color: #7A6F68;
 }
 
-/* ---- CTA — ghost, subtle, refined ---- */
+/* ---- CTA ROW — Add to Bag + Save button side-by-side ---- */
 .pc__form {
   margin-top: auto;
   padding-top: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .pc__atc {
-  display: inline-block;
-  width: 100%;
-  padding: 10px 20px;
+  height: 38px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
   background: transparent;
   border: 1px solid rgba(46, 31, 26, 0.22);
   color: #2E1F1A;

@@ -1,33 +1,70 @@
 {{ 'product-card.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign badge = blank
-  assign is_new = false
-  
-  if product.tags contains 'New' or product.tags contains 'new'
-    assign is_new = true
-  endif
-
-  if product.published_at != blank
-    assign date_created = product.published_at | date: '%s'
-    assign date_now = 'now' | date: '%s'
-    assign diff_seconds = date_now | minus: date_created
-    if diff_seconds <= 1814400
+  if force_badge != blank
+    assign badge = force_badge
+  else
+    assign badge = blank
+    assign is_new = false
+    
+    if product.tags contains 'New' or product.tags contains 'new'
       assign is_new = true
+    endif
+
+    if product.published_at != blank
+      assign date_created = product.published_at | date: '%s'
+      assign date_now = 'now' | date: '%s'
+      assign diff_seconds = date_now | minus: date_created
+      if diff_seconds <= 1814400
+        assign is_new = true
+      endif
+    endif
+
+    if is_new
+      assign badge = 'NEW'
+    elsif product.tags contains 'Bestseller' or product.tags contains 'bestseller'
+      assign badge = 'Bestseller'
+    elsif product.available and product.variants.first.inventory_quantity > 0 and product.variants.first.inventory_quantity < 20
+      assign badge = 'Limited'
     endif
   endif
 
-  if is_new
-    assign badge = 'NEW'
-  elsif product.tags contains 'Bestseller' or product.tags contains 'bestseller'
-    assign badge = 'Bestseller'
-  elsif product.available and product.variants.first.inventory_quantity > 0 and product.variants.first.inventory_quantity < 20
-    assign badge = 'Limited'
-  endif
-
-  assign p_type = product.metafields.custom.process_type | default: 'Cold Process'
-  assign p_benefit = product.metafields.custom.primary_benefit | default: 'Deep Nourishment'
   assign reviews_count = product.metafields.reviews.rating_count | default: 0
+
+  comment
+    Context line priority:
+    1. custom metafield custom.primary_benefit (if set in Shopify admin)
+    2. All real product tags, skipping badge/system tags — shown as "Tag1 • Tag2"
+    3. Hidden if nothing available
+  endcomment
+
+  assign system_tags = 'new,New,NEW,bestseller,Bestseller,BESTSELLER,limited,Limited,LIMITED,sale,Sale,SALE,featured,Featured,FEATURED' | split: ','
+  assign p_benefit = product.metafields.custom.primary_benefit | default: blank
+
+  if p_benefit == blank
+    assign benefit_parts = ''
+    assign benefit_count = 0
+    for tag in product.tags
+      assign tag_is_system = false
+      for sys in system_tags
+        if tag == sys
+          assign tag_is_system = true
+          break
+        endif
+      endfor
+      if tag_is_system == false and benefit_count < 3
+        if benefit_count == 0
+          assign benefit_parts = tag
+        else
+          assign benefit_parts = benefit_parts | append: ' • ' | append: tag
+        endif
+        assign benefit_count = benefit_count | plus: 1
+      endif
+    endfor
+    if benefit_parts != ''
+      assign p_benefit = benefit_parts
+    endif
+  endif
 -%}
 
 <div class="pc" data-product-id="{{ product.id }}">
@@ -37,10 +74,6 @@
     {%- if badge != blank -%}
       <span class="pc__badge">{{ badge }}</span>
     {%- endif -%}
-    
-    <button type="button" class="pc__wishlist-btn" data-wishlist-toggle data-product-handle="{{ product.handle }}" aria-label="Add to wishlist">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-    </button>
     
     {%- if product.featured_image -%}
       <img
@@ -62,7 +95,10 @@
       {{ product.title | escape }}
     </a>
 
-    <p class="pc__context">{{ p_type }} &bull; {{ p_benefit }}</p>
+    {%- if p_benefit != blank -%}
+      <p class="pc__context">{{ p_benefit }}</p>
+    {%- endif -%}
+
 
     <div class="pc__pricing">
       <span class="pc__price">{{ product.price | money }}</span>
@@ -82,6 +118,9 @@
       <input type="hidden" name="id" value="{{ product.variants.first.id }}">
       <button type="submit" class="pc__atc" data-atc data-variant-id="{{ product.variants.first.id }}" {% unless product.available %}disabled{% endunless %}>
         {% if product.available %}Add to Bag{% else %}Sold Out{% endif %}
+      </button>
+      <button type="button" class="pc__wishlist-btn" data-wishlist-toggle data-product-handle="{{ product.handle }}" aria-label="Save for later" title="Save">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
       </button>
     </form>
   </div>

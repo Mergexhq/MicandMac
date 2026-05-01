@@ -1,8 +1,9 @@
 {
   "sections": {
     "main": {
-      "type": "page-about",
-      "settings": {}
+      "type": "main-collection-bestsellers",
+      "settings": {
+      }
     }
   },
   "order": [

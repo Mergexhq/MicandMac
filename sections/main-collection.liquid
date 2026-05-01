@@ -32,11 +32,9 @@
                 <li><a href="{{ link.url }}" class="plp-quick-link {% if link.active %}is-active{% endif %}">{{ link.title }}</a></li>
               {%- endfor -%}
             {%- else -%}
-              {%- assign all_url = routes.all_products_collection_url -%}
-              {%- assign current_tag_list = current_tags | join: ' ' | downcase -%}
-              <li><a href="{{ all_url }}" class="plp-quick-link {% if request.path == all_url and current_tags == blank %}is-active{% endif %}">All</a></li>
-              <li><a href="{{ all_url }}/glowing-bar" class="plp-quick-link {% if current_tag_list contains 'glowing' or current_tag_list contains 'bar' or current_tag_list contains 'soap' %}is-active{% endif %}">Glowing Bars</a></li>
-              <li><a href="{{ all_url }}/lip-care" class="plp-quick-link {% if current_tag_list contains 'lip' %}is-active{% endif %}">Lip Care</a></li>
+              <li><a href="#all" class="plp-quick-link js-filter-btn is-active" data-filter="all">All</a></li>
+              <li><a href="#glowing-bars" class="plp-quick-link js-filter-btn" data-filter="glowing-bars">Glowing Bars</a></li>
+              <li><a href="#lip-care" class="plp-quick-link js-filter-btn" data-filter="lip-care">Lip Care</a></li>
             {%- endif -%}
           </ul>
         </div>
@@ -49,50 +47,74 @@
       {% comment %} Filter bar removed as per minimalist request {% endcomment %}
 
         {%- if collection.products.size > 0 -%}
-          <div class="product-grid" style="row-gap: 60px;">
+          <div class="product-grid js-product-grid" style="row-gap: 60px;">
+            
+            {%- comment -%} PASS 1: Soaps / Glowing Bars {%- endcomment -%}
             {%- for product in collection.products -%}
-              {%- assign is_combo = false -%}
+              {%- assign p_check_tags = product.tags | join: ' ' | downcase -%}
               {%- assign p_check_title = product.title | downcase -%}
               {%- assign p_check_type = product.type | downcase -%}
-              {%- assign p_check_tags = product.tags | join: ' ' | downcase -%}
-              {%- if p_check_title contains 'combo' or p_check_type contains 'combo' or p_check_tags contains 'combo' -%}
-                {%- assign is_combo = true -%}
-              {%- endif -%}
-
-              {%- if is_combo -%}
-                {%- continue -%}
-              {%- endif -%}
-
-              {%- comment -%} Shopify naturally filters collection.products when a tag is in the URL. 
-                  However, we add a safety check just in case we are using custom logic. 
-              {%- endcomment -%}
-              {%- if current_tags.size > 0 -%}
-                {%- assign match = false -%}
-                {%- assign c_tags = current_tags | join: ' ' | downcase -%}
-                {%- assign p_search = product.title | append: ' ' | append: product.type | append: ' ' | append: product.tags | join: ' ' | downcase -%}
-                {%- if c_tags contains 'glowing' or c_tags contains 'bar' -%}
-                  {%- if p_search contains 'soap' or p_search contains 'bar' or p_search contains 'glowing' -%}
-                    {%- assign match = true -%}
-                  {%- endif -%}
-                {%- elsif c_tags contains 'lip' -%}
-                  {%- if p_search contains 'lip' or p_search contains 'balm' -%}
-                    {%- assign match = true -%}
-                  {%- endif -%}
-                {%- else -%}
-                  {%- for tag in current_tags -%}
-                    {%- assign t = tag | downcase -%}
-                    {%- if p_search contains t -%}
-                      {%- assign match = true -%}
-                    {%- endif -%}
-                  {%- endfor -%}
+              {%- if p_check_tags contains 'glowing bars' or p_check_tags contains 'glowing-bar' or p_check_title contains 'soap' or p_check_title contains 'bar' -%}
+                {%- assign is_combo = false -%}
+                {%- if p_check_title contains 'combo' or p_check_type contains 'combo' or p_check_tags contains 'combo' -%}
+                  {%- assign is_combo = true -%}
                 {%- endif -%}
-                {%- if match -%}
+                {%- if is_combo -%}{%- continue -%}{%- endif -%}
+
+                {%- assign p_search = product.title | append: ' ' | append: product.type | append: ' ' | append: p_check_tags | downcase | escape -%}
+                <div class="js-filter-item" data-search="{{ p_search }}">
                   {% render 'product-card', product: product %}
-                {%- endif -%}
-              {%- else -%}
-                {% render 'product-card', product: product %}
+                </div>
               {%- endif -%}
             {%- endfor -%}
+
+            {%- comment -%} PASS 2: Lip Care / Balms {%- endcomment -%}
+            {%- for product in collection.products -%}
+              {%- assign p_check_tags = product.tags | join: ' ' | downcase -%}
+              {%- assign p_check_title = product.title | downcase -%}
+              {%- assign p_check_type = product.type | downcase -%}
+              {%- if p_check_tags contains 'lip care' or p_check_tags contains 'lip-care' or p_check_title contains 'lip' or p_check_title contains 'balm' -%}
+                {%- assign is_combo = false -%}
+                {%- if p_check_title contains 'combo' or p_check_type contains 'combo' or p_check_tags contains 'combo' -%}
+                  {%- assign is_combo = true -%}
+                {%- endif -%}
+                {%- if is_combo -%}{%- continue -%}{%- endif -%}
+
+                {%- assign p_search = product.title | append: ' ' | append: product.type | append: ' ' | append: p_check_tags | downcase | escape -%}
+                <div class="js-filter-item" data-search="{{ p_search }}">
+                  {% render 'product-card', product: product %}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- comment -%} PASS 3: Everything Else {%- endcomment -%}
+            {%- for product in collection.products -%}
+              {%- assign p_check_tags = product.tags | join: ' ' | downcase -%}
+              {%- assign p_check_title = product.title | downcase -%}
+              {%- assign p_check_type = product.type | downcase -%}
+              {%- assign is_soap = false -%}
+              {%- assign is_lip = false -%}
+              {%- if p_check_tags contains 'glowing bars' or p_check_tags contains 'glowing-bar' or p_check_title contains 'soap' or p_check_title contains 'bar' -%}{%- assign is_soap = true -%}{%- endif -%}
+              {%- if p_check_tags contains 'lip care' or p_check_tags contains 'lip-care' or p_check_title contains 'lip' or p_check_title contains 'balm' -%}{%- assign is_lip = true -%}{%- endif -%}
+              
+              {%- unless is_soap or is_lip -%}
+                {%- assign is_combo = false -%}
+                {%- if p_check_title contains 'combo' or p_check_type contains 'combo' or p_check_tags contains 'combo' -%}
+                  {%- assign is_combo = true -%}
+                {%- endif -%}
+                {%- if is_combo -%}{%- continue -%}{%- endif -%}
+
+                {%- assign p_search = product.title | append: ' ' | append: product.type | append: ' ' | append: p_check_tags | downcase | escape -%}
+                <div class="js-filter-item" data-search="{{ p_search }}">
+                  {% render 'product-card', product: product %}
+                </div>
+              {%- endunless -%}
+            {%- endfor -%}
+            
+          </div>
+          <div class="collection-empty text-center js-empty-msg" style="padding: 100px 0; display: none;">
+            <p style="margin-bottom: 20px;">No products found for this filter.</p>
+            <button class="btn btn--secondary js-filter-reset">View All</button>
           </div>
         {%- else -%}
           <div class="collection-empty text-center" style="padding: 100px 0;">
@@ -470,6 +492,84 @@
     }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const filterBtns = document.querySelectorAll('.js-filter-btn');
+    const items = document.querySelectorAll('.js-filter-item');
+    const emptyMsg = document.querySelector('.js-empty-msg');
+    const resetBtn = document.querySelector('.js-filter-reset');
+    
+    if (!filterBtns.length || !items.length) return;
+    
+    // Check hash on load
+    const hash = window.location.hash.replace('#', '');
+    if (hash && ['all', 'glowing-bars', 'lip-care'].includes(hash)) {
+      applyFilter(hash);
+    }
+    
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const filter = this.getAttribute('data-filter');
+        window.history.pushState(null, null, '#' + filter);
+        applyFilter(filter);
+      });
+    });
+    
+    if(resetBtn) {
+      resetBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.history.pushState(null, null, '#all');
+        applyFilter('all');
+      });
+    }
+    
+    function applyFilter(filter) {
+      // Update active state
+      filterBtns.forEach(b => {
+        if (b.getAttribute('data-filter') === filter) {
+          b.classList.add('is-active');
+        } else {
+          b.classList.remove('is-active');
+        }
+      });
+      
+      // Filter items
+      let visibleCount = 0;
+      items.forEach(item => {
+        const search = item.getAttribute('data-search') || '';
+        let show = false;
+        
+        if (filter === 'all') {
+          show = true;
+        } else if (filter === 'glowing-bars') {
+          // Check for explicit tag or fallbacks
+          if (search.includes('glowing bars') || search.includes('soap') || search.includes('bar') || search.includes('glowing')) {
+            show = true;
+          }
+        } else if (filter === 'lip-care') {
+          // Check for explicit tag or fallbacks
+          if (search.includes('lip care') || search.includes('lip') || search.includes('balm')) {
+            show = true;
+          }
+        }
+        
+        if (show) {
+          item.style.display = 'block';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      
+      // Handle empty state
+      if (emptyMsg) {
+        emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+    }
+  });
+</script>
 
 {% schema %}
 {

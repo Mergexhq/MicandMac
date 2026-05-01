@@ -61,13 +61,9 @@
   --color-text-white:       var(--color-text-on-dark);
 
   /* ---- Typography ---- */
-  --font-display: 'Cormorant Garamond', Georgia, serif;  /* Serif — Headings, product names, brand storytelling */
-  --font-script:  'Great Vibes', cursive;                /* Script — First-letter decoration only */
-  --font-body:    'Inter', -apple-system, sans-serif;    /* Sans — All UI, buttons, price, labels, forms */
-
-  /* ---- Semantic font aliases (enforce the hybrid system) ---- */
-  --font-serif: var(--font-display);   /* Emotion: H1/H2, section titles, product names, editorial */
-  --font-sans:  var(--font-body);      /* Function: nav, price, buttons, forms, meta, supporting text */
+  --font-display: 'Cormorant Garamond', Georgia, serif;  /* Headings — luxury serif */
+  --font-script:  'Great Vibes', cursive;                /* First-letter decoration */
+  --font-body:    'DM Sans', -apple-system, sans-serif;  /* UI text — clean sans */
 
   /* ---- Font scale ---- */
   --text-xs:    0.75rem;    /* 12px */

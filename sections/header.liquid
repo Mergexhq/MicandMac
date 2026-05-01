@@ -281,9 +281,9 @@
           </button>
 
           <!-- Wishlist (desktop only) -->
-          <a href="/pages/wishlist" class="site-header__action-btn wishlist-btn" aria-label="Wishlist">
+          <a href="/pages/wishlist" class="site-header__action-btn wishlist-btn" aria-label="Saved items" title="Saved items">
             <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
             </svg>
           </a>
 
@@ -304,8 +304,8 @@
                   My Orders
                 </a>
                 <a href="/pages/my-account#wishlist" class="auth-user-menu__link">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                  Wishlist
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                  Saved Items
                 </a>
                 <a href="/pages/my-account#details" class="auth-user-menu__link">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -379,11 +379,9 @@
               <!-- Right product grid -->
               <div class="mm-panel-grid">
                 {% assign count = 0 %}
-                {% assign mega_products = collections['face-care'].products %}
-                {% if mega_products.size == 0 %}{% assign mega_products = collections.all.products %}{% endif %}
-                {% for product in mega_products %}
-                  {% assign p_title = product.title | downcase %}
-                  {% if p_title contains 'combo' or p_title contains 'duo' or p_title contains 'set' %}{% continue %}{% endif %}
+                {% for product in collections.all.products %}
+                  {% assign p_tags = product.tags | join: ',' | downcase %}
+                  {% unless p_tags contains 'glowing bars' or p_tags contains 'glowing-bar' %}{% continue %}{% endunless %}
                   <a href="{{ product.url }}" class="mm-card">
                     <div class="mm-card__image-wrapper">
                       {% if product.featured_image %}
@@ -423,18 +421,9 @@
               <!-- Right product grid -->
               <div class="mm-panel-grid">
                 {% assign count = 0 %}
-                {% assign mega_products = collections['lip-care'].products %}
-                {% assign fallback = false %}
-                {% if mega_products.size == 0 %}
-                  {% assign mega_products = collections.all.products %}
-                  {% assign fallback = true %}
-                {% endif %}
-                {% for product in mega_products %}
-                  {% if fallback %}
-                    {% assign p_title = product.title | downcase %}
-                    {% assign p_tags = product.tags | join: ',' | downcase %}
-                    {% unless p_title contains 'lip' or p_tags contains 'lip' %}{% continue %}{% endunless %}
-                  {% endif %}
+                {% for product in collections.all.products %}
+                  {% assign p_tags = product.tags | join: ',' | downcase %}
+                  {% unless p_tags contains 'lip care' or p_tags contains 'lip-care' %}{% continue %}{% endunless %}
                   <a href="{{ product.url }}" class="mm-card">
                     <div class="mm-card__image-wrapper">
                       {% if product.featured_image %}
@@ -492,9 +481,9 @@
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
     <span>Shop</span>
   </a>
-  <a href="/pages/wishlist" class="bdock__item{% if request.path contains 'wishlist' %} is-active{% endif %}" aria-label="Wishlist">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-    <span>Wishlist</span>
+  <a href="/pages/wishlist" class="bdock__item{% if request.path contains 'wishlist' %} is-active{% endif %}" aria-label="Saved Items">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+    <span>Saved</span>
   </a>
   <button class="bdock__item" id="CartToggleDock" aria-label="Cart">
     <span class="bdock__cart-wrap">

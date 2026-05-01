@@ -21,8 +21,8 @@
           <img
             src="{{ media | image_url: width: 160 }}"
             alt="{{ media.alt | escape | default: product.title }}"
-            width="76"
-            height="76"
+            width="150"
+            height="150"
             loading="lazy"
           >
         </button>
@@ -100,6 +100,7 @@
 
   thumbs.forEach(function (btn, i) {
     btn.addEventListener('click', function () { goTo(i); });
+    btn.addEventListener('mouseenter', function () { goTo(i); });
   });
 
   // Touch swipe on main image (mobile)

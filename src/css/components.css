@@ -257,6 +257,10 @@
 
 /* ---- PRODUCT CARD ---- */
 /* Styles moved to assets/product-card.css for modularity */
+.product-card__title {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
 
 
 /* ---- SECTION HEADINGS ---- */

@@ -8,25 +8,33 @@
 {% endcomment %}
 
 {%- liquid
-  assign rating = rating | default: 0
+  assign rating_val = 0
+  if rating.value != blank
+    assign rating_val = rating.value | plus: 0
+  elsif rating.rating != blank
+    assign rating_val = rating.rating | plus: 0
+  else
+    assign rating_val = rating | plus: 0
+  endif
+
   assign size   = size   | default: 'sm'
-  assign full   = rating | floor
-  assign remainder = rating | minus: full
+  assign full   = rating_val | floor
+  assign remainder = rating_val | minus: full
   assign has_half = false
   if remainder >= 0.25 and remainder < 0.75
     assign has_half = true
   elsif remainder >= 0.75
     assign full = full | plus: 1
   endif
-  assign empty = 5 | minus: full
+  assign empty_stars = 5 | minus: full
   if has_half
-    assign empty = empty | minus: 1
+    assign empty_stars = empty_stars | minus: 1
   endif
 -%}
 
 <div
   class="star-rating star-rating--{{ size }}"
-  aria-label="{{ rating | round: 1 }} out of 5 stars"
+  aria-label="{{ rating_val | round: 1 }} out of 5 stars"
   role="img"
 >
   {%- comment %} Filled stars {%- endcomment %}
@@ -55,16 +63,16 @@
   {%- endif -%}
 
   {%- comment %} Empty stars {%- endcomment %}
-  {%- if empty > 0 -%}
-    {%- for i in (1..empty) -%}
+  {%- if empty_stars > 0 -%}
+    {%- for i in (1..empty_stars) -%}
       <svg class="star star--empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
       </svg>
     {%- endfor -%}
   {%- endif -%}
 
-  {%- if count != blank and count != nil -%}
-    <span class="star-rating__count">({{ count }})</span>
+  {%- if count != blank and count != nil and count > 0 -%}
+    <span class="star-rating__count">{{ rating_val | round: 1 }} ({{ count }})</span>
   {%- endif -%}
 </div>
 
@@ -73,7 +81,7 @@
   display: inline-flex;
   align-items: center;
   gap: 1px;
-  color: var(--color-gold);
+  color: #111;
   line-height: 1;
 }
 
@@ -86,8 +94,10 @@
 
 .star-rating__count {
   font-size: var(--text-xs);
-  color: var(--color-text-light);
-  margin-left: var(--space-1);
+  color: #5D4037; /* Darker brown */
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 6px;
   font-family: var(--font-body);
 }
 </style>

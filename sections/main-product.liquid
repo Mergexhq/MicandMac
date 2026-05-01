@@ -46,10 +46,10 @@
         <h1 class="pdp__title">{{ product.title | split: '|' | first }}</h1>
 
         <!-- Star rating -->
-        {%- if avg_rating != blank -%}
+        {%- assign review_count_num = review_count | plus: 0 -%}
+        {%- if review_count_num > 0 -%}
           <div class="pdp__rating">
-            {% render 'star-rating', rating: avg_rating, count: review_count, size: 'md' %}
-            <span class="pdp__rating-count">({{ review_count }})</span>
+            {% render 'star-rating', rating: avg_rating, count: review_count_num, size: 'md' %}
           </div>
         {%- endif -%}
 
@@ -69,11 +69,17 @@
         {% render 'product-trust' %}
 
         <!-- Urgency badge -->
-        {%- if product.variants.first.inventory_quantity <= 10 and product.variants.first.inventory_quantity > 0 -%}
-          <div class="pdp__urgency">Only {{ product.variants.first.inventory_quantity }} left</div>
-        {%- else -%}
-          <div class="pdp__urgency">Popular choice</div>
-        {%- endif -%}
+        {%- liquid
+          assign badge_text = "Popular choice"
+          if product.tags contains 'Bestseller' or product.tags contains 'bestseller'
+            assign badge_text = "Bestseller"
+          elsif product.tags contains 'New Arrival' or product.tags contains 'new-arrival' or product.tags contains 'New arrival'
+            assign badge_text = "New Arrival"
+          elsif product.variants.first.inventory_quantity <= 10 and product.variants.first.inventory_quantity > 0
+            assign badge_text = "Only " | append: product.variants.first.inventory_quantity | append: " left"
+          endif
+        -%}
+        <div class="pdp__urgency">{{ badge_text }}</div>
 
         <!-- Product Form (Add to Bag + Buy Now) -->
         {% render 'product-form', product: product, section: section %}
@@ -93,7 +99,7 @@
             assign clean_desc = parts2 | first
           endif
 
-          assign clean_desc = clean_desc | strip | truncatewords: 50
+          assign clean_desc = clean_desc | strip
         -%}
         {%- if clean_desc != blank -%}
           <div class="pdp__description rte" style="margin-top: var(--space-6);">

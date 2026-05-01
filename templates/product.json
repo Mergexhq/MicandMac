@@ -19,57 +19,10 @@
       }
     },
     "ingredients": {
-      "type": "ingredients",
-      "blocks": {
-        "ingredient_C4UbKw": {
-          "type": "ingredient",
-          "settings": {
-            "image": "shopify://shop_images/hf_20260416_083408_d4dc46b9-e3e8-4220-802e-a6772d4d14e1.png",
-            "title": "Charcoal",
-            "description": "activated charcoal powder, fine matte black particles, soft scattered texture, organic irregular shape",
-            "link": "",
-            "link_label": "read more →"
-          }
-        },
-        "ingredient_peTwiq": {
-          "type": "ingredient",
-          "settings": {
-            "image": "shopify://shop_images/hf_20260416_083801_77b1a49d-991b-4b3d-8212-9072167d1d49.png",
-            "title": "Beetroot",
-            "description": "activated charcoal powder, fine matte black particles, soft scattered texture, organic irregular shape",
-            "link": "",
-            "link_label": "read more →"
-          }
-        },
-        "ingredient_nTn6Gi": {
-          "type": "ingredient",
-          "settings": {
-            "image": "shopify://shop_images/hf_20260416_083652_94e6c6eb-a187-4ac2-8bca-fecac6f4597f.png",
-            "title": "Redwine",
-            "description": "activated charcoal powder, fine matte black particles, soft scattered texture, organic irregular shape",
-            "link": "",
-            "link_label": "read more →"
-          }
-        },
-        "ingredient_wdYb4r": {
-          "type": "ingredient",
-          "settings": {
-            "image": "shopify://shop_images/hf_20260416_083623_9569772b-7365-4f7b-8bc2-415c1495181d.png",
-            "title": "Coconut oil",
-            "description": "activated charcoal powder, fine matte black particles, soft scattered texture, organic irregular shape",
-            "link": "",
-            "link_label": "read more →"
-          }
-        }
-      },
-      "block_order": [
-        "ingredient_C4UbKw",
-        "ingredient_peTwiq",
-        "ingredient_nTn6Gi",
-        "ingredient_wdYb4r"
-      ],
+      "type": "product-ingredients",
       "settings": {
         "title": "Key Ingredients",
+        "max_ingredients": 4,
         "padding_top": 80,
         "padding_bottom": 80
       }

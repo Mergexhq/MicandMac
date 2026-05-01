@@ -13,10 +13,10 @@
   justify-content: center;
   gap: var(--space-2);
   padding: 0.875rem 2rem;
-  font-family: var(--font-sans); /* SANS — buttons must always be sans */
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: 500;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   border-radius: var(--radius-pill);
   border: 1.5px solid transparent;
@@ -118,7 +118,6 @@
   align-items: center;
   gap: var(--space-1);
   padding: 0.25rem 0.75rem;
-  font-family: var(--font-sans); /* SANS — badge labels are functional */
   font-size: var(--text-xs);
   font-weight: 500;
   letter-spacing: 0.05em;
@@ -175,7 +174,6 @@
 }
 
 .form-label {
-  font-family: var(--font-sans); /* SANS — form labels are functional */
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--color-text-dark);
@@ -259,6 +257,10 @@
 
 /* ---- PRODUCT CARD ---- */
 /* Styles moved to assets/product-card.css for modularity */
+.product-card__title {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
 
 
 /* ---- SECTION HEADINGS ---- */
