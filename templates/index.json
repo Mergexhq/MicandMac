@@ -35,38 +35,58 @@
         "padding_bottom": 80
       }
     },
-    "product_spotlight_soap": {
-      "type": "product-spotlight",
+    "category_spotlight_soap": {
+      "type": "category-spotlight",
       "settings": {
-        "product": "",
         "badge_label": "Bestseller",
-        "eyebrow": "Cold Pressed · Deep Hydration",
-        "sub_text": "For dry, sensitive & dull skin · Face & body safe",
-        "show_description": false,
-        "placeholder_title": "Select a product in the customiser",
+        "eyebrow": "Cold Pressed · 100% Natural",
+        "heading": "Handcrafted Soaps",
+        "show_stars": true,
+        "rating_value": "4.9",
+        "review_count": "200+",
+        "body_text": "Our cold-pressed soaps are made in small batches using plant-based oils and botanicals — no sulfates, no synthetics, just your skin being genuinely cared for.",
+        "benefit_1": "Gentle on face and body — suitable for daily use",
+        "benefit_2": "Retains natural glycerin for deep moisturisation",
+        "benefit_3": "Free from parabens, SLS & artificial fragrance",
+        "benefit_4": "Handcrafted in small batches for freshness",
+        "cta_primary_label": "Shop Soaps",
+        "cta_primary_url": "/collections/soaps",
+        "cta_secondary_label": "Learn How We Make Them",
+        "cta_secondary_url": "/pages/about",
         "image_position": "left",
-        "image_ratio": "62fr 38fr",
-        "min_height": 600,
         "bg_color": "#fdfaf6",
         "img_bg_color": "#edd9b8",
+        "accent_color": "#B8924A",
+        "glow_color": "#D4AF37",
+        "min_height": 600,
         "padding_top": 0,
         "padding_bottom": 0
       }
     },
-    "product_spotlight_lip": {
-      "type": "product-spotlight",
+    "category_spotlight_lip": {
+      "type": "category-spotlight",
       "settings": {
-        "product": "",
         "badge_label": "New Launch",
-        "eyebrow": "Tinted · Natural Colour",
-        "sub_text": "Deeply moisturising · Natural beetroot tint · Made for daily use",
-        "show_description": false,
-        "placeholder_title": "Select a product in the customiser",
-        "image_position": "right",
-        "image_ratio": "62fr 38fr",
-        "min_height": 600,
+        "eyebrow": "Deeply Moisturising · Natural Tint",
+        "heading": "Nourishing Lip Balms",
+        "show_stars": true,
+        "rating_value": "4.8",
+        "review_count": "150+",
+        "body_text": "Formulated with beeswax, shea butter and natural beetroot pigment — our lip balms restore softness and add a subtle flush of colour, every single day.",
+        "benefit_1": "Natural beetroot tint for effortless everyday colour",
+        "benefit_2": "Beeswax and shea butter seal in moisture for hours",
+        "benefit_3": "No synthetic dyes, petroleum, or artificial flavour",
+        "benefit_4": "Compact and travel-ready — fits every routine",
+        "cta_primary_label": "Shop Lip Balms",
+        "cta_primary_url": "/collections/lip-balms",
+        "cta_secondary_label": "See All Products",
+        "cta_secondary_url": "/collections/all",
+        "image_position": "left",
         "bg_color": "#f5ecd7",
         "img_bg_color": "#e8c8c0",
+        "accent_color": "#C06B5A",
+        "glow_color": "#E8A898",
+        "min_height": 600,
         "padding_top": 0,
         "padding_bottom": 0
       }
@@ -126,8 +146,8 @@
   "order": [
     "hero",
     "bestsellers",
-    "product_spotlight_soap",
-    "product_spotlight_lip",
+    "category_spotlight_soap",
+    "category_spotlight_lip",
     "art_of_wellness",
     "philosophy"
   ]
