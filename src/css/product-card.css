@@ -212,3 +212,56 @@
   opacity: 0.3;
   cursor: not-allowed;
 }
+
+/* ---- MOBILE OVERRIDES ---- */
+@media (max-width: 767px) {
+  .pc__name {
+    font-size: 0.9rem;
+    min-height: calc(0.9rem * 1.35 * 2);
+  }
+
+  .pc__context {
+    font-size: 0.6rem;
+    margin: 0 0 4px 0;
+  }
+
+  .pc__price {
+    font-size: 13px;
+  }
+
+  .pc__mrp {
+    font-size: 11px;
+  }
+
+  .pc__stars {
+    font-size: 0.62rem;
+  }
+
+  .pc__rating-val {
+    font-size: 0.6rem;
+  }
+
+  .pc__atc {
+    font-size: 0.6rem;
+    padding: 0 12px;
+    letter-spacing: 0.06em;
+  }
+
+  .pc__wishlist-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .pc__atc,
+  .pc__wishlist-btn {
+    height: 34px;
+  }
+
+  .pc__media {
+    margin-bottom: 12px;
+  }
+
+  .pc__info {
+    gap: 4px;
+  }
+}

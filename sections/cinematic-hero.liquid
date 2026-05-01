@@ -253,18 +253,28 @@
   .cine-hero__content {
     align-items: center;
     text-align: center;
-    padding: 0 1.5rem 2rem;
-    transform: translateY(5%);
+    padding: 0 1.5rem 1.5rem;
+    transform: translateY(0);
+    width: 100%;
+  }
+
+  .cine-hero__tagline {
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    margin-bottom: 1rem;
   }
 
   .cine-hero__heading {
-    font-size: clamp(1.5rem, 7vw, 2rem);
+    font-size: clamp(1.4rem, 6.5vw, 2rem);
     max-width: 100%;
+    margin-bottom: 1rem;
   }
 
   .cine-hero__body {
-    max-width: 100%;
-    font-size: 0.875rem;
+    max-width: 290px;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    margin: 0 auto 1.5rem;
   }
 
   .cine-hero__ctas {
@@ -275,9 +285,11 @@
 
   /* Single full-width primary CTA on mobile */
   .cine-hero__cta-primary {
-    width: 100%;
+    width: 90%;
+    max-width: 280px;
     justify-content: center;
-    padding: 14px 20px;
+    padding: 10px 16px;
+    font-size: 0.65rem;
   }
 }
 

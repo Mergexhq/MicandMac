@@ -563,61 +563,8 @@
    - Megamenu hover only: bg fills (JS adds .megamenu-active to header)
    - Regular nav links: bg stays transparent on hover
    - On scroll (.is-scrolled on body): solid bg + announcement bar reappears
-   Strategy:
-   - Default: fully transparent over the hero video
-   - Megamenu hover only: bg fills (JS adds .megamenu-active to header)
-   - Regular nav links: bg stays transparent on hover
-   - On scroll (.is-scrolled on body): solid bg + announcement bar reappears
    ============================================ */
 
-/* ── SCROLLED STATE: restore full layout ── */
-/* Header drops back below the announcement bar */
-body.template-index.is-scrolled .site-header {
-  top: var(--announcement-height, 30px) !important;
-  background: var(--mm-soft-blush) !important;
-  box-shadow: 0 4px 15px rgba(46, 31, 26, 0.1);
-}
-body.template-index.is-scrolled .site-header .site-header__middle {
-  background: var(--mm-soft-blush) !important;
-}
-body.template-index.is-scrolled .site-header .site-header__bottom {
-  background: linear-gradient(to bottom, var(--mm-deep-garnet), var(--mm-dark-espresso)) !important;
-}
-/* Announcement bar: reappear on scroll with navbar gradient + gold text */
-body.template-index.is-scrolled .announcement-bar {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  background: linear-gradient(to bottom, var(--mm-deep-garnet), var(--mm-dark-espresso)) !important;
-  color: var(--mm-champagne-gold) !important;
-}
-body.template-index.is-scrolled .announcement-bar .announcement-bar__link,
-body.template-index.is-scrolled .announcement-bar a,
-body.template-index.is-scrolled .announcement-bar span {
-  color: var(--mm-champagne-gold) !important;
-}
-/* Restore logo/icons/text on scroll */
-body.template-index.is-scrolled .site-header .site-logo-img,
-body.template-index.is-scrolled .site-header .site-header__logo img {
-  filter: none !important;
-}
-body.template-index.is-scrolled .site-header .site-header__logo-text {
-  color: var(--mm-deep-garnet) !important;
-}
-body.template-index.is-scrolled .site-header .tagline-text,
-body.template-index.is-scrolled .site-header .site-header__action-btn {
-  color: var(--mm-dark-espresso) !important;
-}
-body.template-index.is-scrolled .site-header .site-nav__link {
-  color: var(--mm-soft-blush) !important;
-}
-body.template-index.is-scrolled .site-header .site-nav__link:hover,
-body.template-index.is-scrolled .site-header .site-nav__link.is-active {
-  color: var(--mm-champagne-gold) !important;
-}
-
-/* ── NON-SCROLLED STATE: transparent hero header ── */
-/* Move header to absolute top (announcement bar hidden) */
-body.template-index:not(.is-scrolled) .site-header {
 /* ── SCROLLED STATE: restore full layout ── */
 /* Header drops back below the announcement bar */
 body.template-index.is-scrolled .site-header {
@@ -670,14 +617,10 @@ body.template-index:not(.is-scrolled) .site-header {
 }
 /* Hide announcement bar in hero state */
 body.template-index:not(.is-scrolled) .announcement-bar {
-/* Hide announcement bar in hero state */
-body.template-index:not(.is-scrolled) .announcement-bar {
   opacity: 0 !important;
   pointer-events: none !important;
   transition: opacity 0.3s ease;
-  transition: opacity 0.3s ease;
 }
-/* No body padding on homepage */
 /* No body padding on homepage */
 body.template-index {
   padding-top: 0 !important;
@@ -693,21 +636,9 @@ body.template-index:not(.is-scrolled) .site-header__logo-text,
 body.template-index:not(.is-scrolled) .tagline-text,
 body.template-index:not(.is-scrolled) .site-header__action-btn,
 body.template-index:not(.is-scrolled) .site-nav__link {
-body.template-index:not(.is-scrolled) .site-header,
-body.template-index:not(.is-scrolled) .site-header__middle,
-body.template-index:not(.is-scrolled) .site-header__bottom,
-body.template-index:not(.is-scrolled) .site-logo-img,
-body.template-index:not(.is-scrolled) .site-header__logo img,
-body.template-index:not(.is-scrolled) .site-header__logo-text,
-body.template-index:not(.is-scrolled) .tagline-text,
-body.template-index:not(.is-scrolled) .site-header__action-btn,
-body.template-index:not(.is-scrolled) .site-nav__link {
   transition: all 0.3s ease;
 }
 
-/* ── DEFAULT TRANSPARENT STATE ──
-   Header is fully transparent; white logo/text/icons */
-body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) {
 /* ── DEFAULT TRANSPARENT STATE ──
    Header is fully transparent; white logo/text/icons */
 body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) {
@@ -716,14 +647,9 @@ body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) {
 }
 body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-header__middle,
 body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-header__bottom {
-body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-header__middle,
-body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-header__bottom {
   background: transparent !important;
   border-bottom-color: transparent !important;
 }
-/* White logo + icons */
-body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-logo-img,
-body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-header__logo img {
 /* White logo + icons */
 body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-logo-img,
 body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-header__logo img {
@@ -732,17 +658,11 @@ body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-h
 body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-header__logo-text,
 body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .tagline-text,
 body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-header__action-btn {
-body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-header__logo-text,
-body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .tagline-text,
-body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-header__action-btn {
   color: #fff !important;
 }
 body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-nav__link {
-body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-nav__link {
   color: #fff !important;
 }
-body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-nav__link:hover,
-body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-nav__link.is-active {
 body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-nav__link:hover,
 body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-nav__link.is-active {
   color: var(--mm-champagne-gold) !important;
@@ -752,47 +672,31 @@ body.template-index:not(.is-scrolled) .site-header:not(.megamenu-active) .site-n
    Only when JS adds .megamenu-active (hovering a mega item)
    does the solid bg fill in. Plain nav links never trigger this. */
 body.template-index:not(.is-scrolled) .site-header.megamenu-active {
-/* ── MEGAMENU ACTIVE STATE ──
-   Only when JS adds .megamenu-active (hovering a mega item)
-   does the solid bg fill in. Plain nav links never trigger this. */
-body.template-index:not(.is-scrolled) .site-header.megamenu-active {
   background: var(--mm-soft-blush) !important;
-  box-shadow: 0 4px 15px rgba(46, 31, 26, 0.08);
   box-shadow: 0 4px 15px rgba(46, 31, 26, 0.08);
 }
 body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-header__middle {
-body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-header__middle {
   background: var(--mm-soft-blush) !important;
 }
-body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-header__bottom {
 body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-header__bottom {
   background: linear-gradient(to bottom, var(--mm-deep-garnet), var(--mm-dark-espresso)) !important;
 }
 body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-logo-img,
 body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-header__logo img {
-body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-logo-img,
-body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-header__logo img {
   filter: none !important;
 }
-body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-header__logo-text {
 body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-header__logo-text {
   color: var(--mm-deep-garnet) !important;
 }
 body.template-index:not(.is-scrolled) .site-header.megamenu-active .tagline-text,
 body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-header__action-btn {
-body.template-index:not(.is-scrolled) .site-header.megamenu-active .tagline-text,
-body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-header__action-btn {
   color: var(--mm-dark-espresso) !important;
 }
-body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-nav__link {
 body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-nav__link {
   color: var(--mm-soft-blush) !important;
 }
 body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-nav__link:hover,
 body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-nav__link.is-active {
-body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-nav__link:hover,
-body.template-index:not(.is-scrolled) .site-header.megamenu-active .site-nav__link.is-active {
   color: var(--mm-champagne-gold) !important;
 }
-
 
