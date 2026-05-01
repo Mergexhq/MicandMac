@@ -285,6 +285,7 @@
             <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
               <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
             </svg>
+            <span class="cart-count wishlist-count is-hidden"></span>
           </a>
 
           <!-- Account (Desktop) — Conditional state -->
@@ -482,7 +483,10 @@
     <span>Shop</span>
   </a>
   <a href="/pages/wishlist" class="bdock__item{% if request.path contains 'wishlist' %} is-active{% endif %}" aria-label="Saved Items">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+    <span class="bdock__cart-wrap">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+      <span class="bdock__badge wishlist-count is-hidden"></span>
+    </span>
     <span>Saved</span>
   </a>
   <button class="bdock__item" id="CartToggleDock" aria-label="Cart">

@@ -83,12 +83,12 @@
   border-color: #2E1F1A;
 }
 /* Active / Saved state — gold */
-.pc__wishlist-btn.is-active,
+.pc__wishlist-btn.is-wishlisted,
 .pc__wishlist-btn[data-saved="true"] {
   border-color: #C9A84C;
   color: #C9A84C;
 }
-.pc__wishlist-btn.is-active svg,
+.pc__wishlist-btn.is-wishlisted svg,
 .pc__wishlist-btn[data-saved="true"] svg {
   fill: #C9A84C;
 }
@@ -142,17 +142,17 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 0 0 4px 0;
+  margin: auto 0 4px 0; /* Changed margin-top to auto to push it to the bottom */
 }
 
 .pc__price {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: #2E1F1A;
 }
 
 .pc__mrp {
-  font-size: 12px;
+  font-size: 14px;
   color: #9E9289;
   text-decoration: line-through;
   font-weight: 400;
@@ -178,7 +178,6 @@
 
 /* ---- CTA ROW — Add to Bag + Save button side-by-side ---- */
 .pc__form {
-  margin-top: auto;
   padding-top: 8px;
   display: flex;
   gap: 8px;

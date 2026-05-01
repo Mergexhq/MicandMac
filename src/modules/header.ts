@@ -48,6 +48,13 @@ export class Header {
     window.addEventListener('scroll', this._scrollBound, { passive: true });
     this._onScroll();
 
+    // Megamenu hover: only fill bg when a mega item is hovered
+    const megaItems = document.querySelectorAll<HTMLElement>('.site-nav__item--mega');
+    megaItems.forEach(item => {
+      item.addEventListener('mouseenter', () => this.header.classList.add('megamenu-active'));
+      item.addEventListener('mouseleave', () => this.header.classList.remove('megamenu-active'));
+    });
+
     // Burger → open mobile nav
     this.burger?.addEventListener('click', () => this._openMobileNav());
 
@@ -73,7 +80,10 @@ export class Header {
   }
 
   private _onScroll(): void {
-    this.header.classList.toggle('is-scrolled', window.scrollY > 40);
+    const scrolled = window.scrollY > 40;
+    this.header.classList.toggle('is-scrolled', scrolled);
+    // Also toggle on body so CSS selectors like body.template-index:not(.is-scrolled) work
+    document.body.classList.toggle('is-scrolled', scrolled);
   }
 
   private _openMobileNav(): void {
