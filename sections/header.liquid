@@ -11,32 +11,55 @@
   All CSS lives in assets/base.css
 {% endcomment %}
 
-<!-- =============================================
-     MOBILE: Sidebar Drawer — Full Screen, Accordion
-     ============================================= -->
+<!--
+  =============================================
+  MOBILE: Sidebar Drawer — Full Screen, Accordion
+  =============================================
+-->
 <div class="mnav" id="MobileNav" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation menu">
-
   <!-- Header: Garnet strip with logo + close -->
   <div class="mnav__head">
-    <a href="{{ routes.root_url }}" class="mnav__logo" onclick="document.getElementById('MobileNav').classList.remove('is-open')">
+    <a
+      href="{{ routes.root_url }}"
+      class="mnav__logo"
+      onclick="document.getElementById('MobileNav').classList.remove('is-open')"
+    >
       <img src="{{ 'MicandMac_Monogram.webp' | asset_url }}" alt="Mic &amp; Mac" width="24" height="24">
       <span>MIC &amp; MAC</span>
     </a>
     <button class="mnav__close" id="MNavClose" aria-label="Close menu">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
     </button>
   </div>
 
   <!-- Scrollable body: all sections sequential -->
   <div class="mnav__body">
-
     <!-- ── Primary links ── -->
     <div class="mnav__primary">
       <a href="{{ routes.root_url }}" class="mnav__primary-link{% if request.path == '/' %} is-active{% endif %}">
         Home
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
       </a>
-
     </div>
 
     <div class="mnav__divider-heavy"></div>
@@ -48,7 +71,18 @@
           <span class="mnav__acc-eyebrow">CATEGORY</span>
           Shop
         </span>
-        <svg class="mnav__acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        <svg
+          class="mnav__acc-chevron"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
       </button>
       <div class="mnav__accordion-body" data-body>
         <ul class="mnav__sub-links">
@@ -67,7 +101,6 @@
               <span class="mnav__sub-dot"></span>Lip Care
             </a>
           </li>
-
         </ul>
         <a href="{{ routes.all_products_collection_url }}" class="mnav__view-all">View All Products →</a>
       </div>
@@ -81,13 +114,17 @@
       <ul class="mnav__flat-links">
         <li>
           <a href="{{ routes.collections_url }}/best-sellers" class="mnav__flat-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
             Bestsellers
           </a>
         </li>
         <li>
           <a href="{{ routes.collections_url }}/new-arrivals" class="mnav__flat-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
             New Arrivals
             <span class="mnav__pill mnav__pill--gold">New</span>
           </a>
@@ -116,37 +153,58 @@
           <span class="mnav__acc-eyebrow">HELP</span>
           Support
         </span>
-        <svg class="mnav__acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        <svg
+          class="mnav__acc-chevron"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
       </button>
       <div class="mnav__accordion-body mnav__accordion-body--closed" data-body>
         <ul class="mnav__sub-links">
           <li>
             <a href="/pages/track-order" class="mnav__sub-link">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
               Track Order
             </a>
           </li>
           <li>
             <a href="/pages/shipping-policy" class="mnav__sub-link">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+              </svg>
               Shipping Policy
             </a>
           </li>
           <li>
             <a href="/pages/returns" class="mnav__sub-link">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/>
+              </svg>
               Returns &amp; Refunds
             </a>
           </li>
           <li>
             <a href="/pages/faq" class="mnav__sub-link">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/>
+              </svg>
               FAQ
             </a>
           </li>
           <li>
             <a href="/pages/contact-us" class="mnav__sub-link">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
               Contact Us
             </a>
           </li>
@@ -160,16 +218,40 @@
     <div class="mnav__group">
       <p class="mnav__group-label">CONNECT</p>
       <div class="mnav__social-row">
-        <a href="https://instagram.com/micandmac" class="mnav__social-btn" target="_blank" rel="noopener" aria-label="Instagram">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        <a
+          href="https://instagram.com/micandmac"
+          class="mnav__social-btn"
+          target="_blank"
+          rel="noopener"
+          aria-label="Instagram"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
           <span>Instagram</span>
         </a>
-        <a href="https://wa.me/919999999999" class="mnav__social-btn" target="_blank" rel="noopener" aria-label="WhatsApp">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <a
+          href="https://wa.me/919999999999"
+          class="mnav__social-btn"
+          target="_blank"
+          rel="noopener"
+          aria-label="WhatsApp"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+          </svg>
           <span>WhatsApp</span>
         </a>
-        <a href="https://youtube.com/@micandmac" class="mnav__social-btn" target="_blank" rel="noopener" aria-label="YouTube">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+        <a
+          href="https://youtube.com/@micandmac"
+          class="mnav__social-btn"
+          target="_blank"
+          rel="noopener"
+          aria-label="YouTube"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+          </svg>
           <span>YouTube</span>
         </a>
       </div>
@@ -179,33 +261,38 @@
 
     <!-- ── Brand quote ── -->
     <div class="mnav__brand-quote">
-      <p>"Artisan-formulated. Lab-certified.<br>Made in Coimbatore."</p>
+      <p>
+        "Artisan-formulated. Lab-certified.<br>
+        Made in Coimbatore."
+      </p>
     </div>
 
     <!-- bottom spacer so last item clears dock -->
     <div style="height: 24px;"></div>
-
-  </div><!-- /mnav__body -->
+  </div>
+  <!-- /mnav__body -->
 
   <!-- Footer: Account actions pinned at bottom -->
   <div class="mnav__footer">
     <a href="{{ routes.account_login_url }}" class="mnav__footer-btn mnav__footer-btn--primary">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
       Sign In
     </a>
-    <a href="{{ routes.account_register_url }}" class="mnav__footer-btn">
-      Create Account
-    </a>
+    <a href="{{ routes.account_register_url }}" class="mnav__footer-btn"> Create Account </a>
   </div>
-
-</div><!-- /mnav -->
+</div>
+<!-- /mnav -->
 
 <!-- Overlay -->
 <div class="overlay" id="SiteOverlay"></div>
 
-<!-- =============================================
-     MOBILE: Top Bar (mobile only, ≤1023px)
-     ============================================= -->
+<!--
+  =============================================
+  MOBILE: Top Bar (mobile only, ≤1023px)
+  =============================================
+-->
 <div class="mobile-topbar" id="MobileTopBar">
   <!-- Left: Hamburger -->
   <button class="mtb__burger" id="NavToggle" aria-label="Open navigation" aria-expanded="false">
@@ -221,10 +308,30 @@
   <!-- Right: Search + Cart -->
   <div class="mtb__actions">
     <button class="mtb__btn" id="SearchToggleMobile" aria-label="Search">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      >
+        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+      </svg>
     </button>
     <button class="mtb__btn mtb__cart" id="CartToggleMobile" aria-label="Cart">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      >
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
       {%- if cart.item_count > 0 -%}
         <span class="mtb__cart-badge" id="MtbCartCount">{{ cart.item_count }}</span>
       {%- else -%}
@@ -234,17 +341,16 @@
   </div>
 </div>
 
-
-<!-- =============================================
-     DESKTOP: Full Header (≥1024px)
-     ============================================= -->
+<!--
+  =============================================
+  DESKTOP: Full Header (≥1024px)
+  =============================================
+-->
 <header class="site-header" id="SiteHeader">
-
   <!-- Tier 2: Logo strip (Soft Blush bg) -->
   <div class="site-header__middle">
     <div class="container container--fluid">
       <div class="site-header__inner">
-
         <!-- Left: Tagline (desktop only) -->
         <div class="site-header__tagline">
           <span class="tagline-text">LOVE YOUR SKIN. EVERY DAY. 365.</span>
@@ -264,7 +370,13 @@
               >
             {%- else -%}
               <div style="display: flex; align-items: center; gap: 10px;">
-                <img src="{{ 'MicandMac_Monogram.webp' | asset_url }}" alt="Mic &amp; Mac Monogram" width="36" height="36" style="object-fit: contain;">
+                <img
+                  src="{{ 'MicandMac_Monogram.webp' | asset_url }}"
+                  alt="Mic &amp; Mac Monogram"
+                  width="36"
+                  height="36"
+                  style="object-fit: contain;"
+                >
                 <span class="site-header__logo-text" style="margin-top: 4px;">MIC &amp; MAC</span>
               </div>
             {%- endif -%}
@@ -275,16 +387,38 @@
         <div class="site-header__actions">
           <!-- Search -->
           <button class="site-header__action-btn" id="SearchToggle" aria-label="Search">
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+            <svg
+              width="21"
+              height="21"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.3"
+              stroke-linecap="round"
+            >
               <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
             </svg>
           </button>
 
           <!-- Wishlist (desktop only) -->
-          <a href="/pages/wishlist" class="site-header__action-btn wishlist-btn" aria-label="Saved items" title="Saved items">
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+          <a
+            href="/pages/wishlist"
+            class="site-header__action-btn wishlist-btn"
+            aria-label="Saved items"
+            title="Saved items"
+          >
+            <svg
+              width="21"
+              height="21"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.3"
+              stroke-linecap="round"
+            >
               <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
             </svg>
+            <span class="cart-count wishlist-count is-hidden"></span>
             <span class="cart-count wishlist-count is-hidden"></span>
           </a>
 
@@ -293,7 +427,15 @@
             <!-- Logged-in: hover dropdown -->
             <div class="auth-user-menu">
               <button class="site-header__action-btn auth-user-menu__btn" aria-label="Account">
-                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+                <svg
+                  width="21"
+                  height="21"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.3"
+                  stroke-linecap="round"
+                >
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                   <circle cx="12" cy="7" r="4"/>
                 </svg>
@@ -301,20 +443,28 @@
               <div class="auth-user-menu__dropdown">
                 <p class="auth-user-menu__greeting">Hi, {{ customer.first_name }} ♡</p>
                 <a href="/pages/my-account" class="auth-user-menu__link">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="3"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="3"/>
+                  </svg>
                   My Orders
                 </a>
                 <a href="/pages/my-account#wishlist" class="auth-user-menu__link">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                  </svg>
                   Saved Items
                 </a>
                 <a href="/pages/my-account#details" class="auth-user-menu__link">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>
+                  </svg>
                   Account Details
                 </a>
                 <div class="auth-user-menu__divider"></div>
                 <a href="{{ routes.account_logout_url }}" class="auth-user-menu__link auth-user-menu__link--logout">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                  </svg>
                   Logout
                 </a>
               </div>
@@ -322,7 +472,15 @@
           {%- else -%}
             <!-- Guest: opens auth modal -->
             <button class="site-header__action-btn" data-auth-toggle aria-label="Sign in">
-              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+              <svg
+                width="21"
+                height="21"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.3"
+                stroke-linecap="round"
+              >
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
               </svg>
@@ -331,7 +489,15 @@
 
           <!-- Cart -->
           <button class="site-header__action-btn site-header__cart" id="CartToggle" aria-label="Cart">
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+            <svg
+              width="21"
+              height="21"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.3"
+              stroke-linecap="round"
+            >
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
               <line x1="3" y1="6" x2="21" y2="6"/>
               <path d="M16 10a4 4 0 0 1-8 0"/>
@@ -343,7 +509,6 @@
             {%- endif -%}
           </button>
         </div>
-
       </div>
     </div>
   </div>
@@ -353,40 +518,66 @@
     <div class="container">
       <nav class="site-nav" aria-label="Main navigation">
         <ul class="site-nav__list">
-
           <li class="site-nav__item">
-            <a href="{{ routes.all_products_collection_url }}" class="site-nav__link site-nav__link--white{% if request.path == '/collections/all' %} is-active{% endif %}">All Products</a>
+            <a
+              href="{{ routes.all_products_collection_url }}"
+              class="site-nav__link site-nav__link--white{% if request.path == '/collections/all' %} is-active{% endif %}"
+              >All Products</a
+            >
           </li>
 
           <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
           <li class="site-nav__item site-nav__item--mega">
-            <a href="{{ routes.all_products_collection_url }}/glowing-bar" class="site-nav__link{% if current_tags contains 'glowing-bar' %} is-active{% endif %}">
+            <a
+              href="{{ routes.all_products_collection_url }}/glowing-bar"
+              class="site-nav__link{% if current_tags contains 'glowing-bar' %} is-active{% endif %}"
+            >
               Glowing Bars
-              <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <svg
+                class="nav-chevron"
+                width="10"
+                height="10"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
                 <path d="M6 9l6 6 6-6"/>
               </svg>
             </a>
             <div class="site-nav__dropdown site-nav__megamenu--full">
               <div class="site-nav__dropdown-bridge"></div>
-              
+
               <!-- Left descriptive panel -->
               <div class="mm-panel-left">
                 <div class="mm-panel-title">Glowing Bars</div>
-                <div class="mm-panel-desc">Artisan formulated bars crafted from pure botanical ingredients to restore skin's natural balance.</div>
+                <div class="mm-panel-desc">
+                  Artisan formulated bars crafted from pure botanical ingredients to restore skin's natural balance.
+                </div>
                 <a href="{{ routes.all_products_collection_url }}/glowing-bar" class="mm-view-all">Shop All Bars</a>
               </div>
-              
+
               <!-- Right product grid -->
               <div class="mm-panel-grid">
                 {% assign count = 0 %}
                 {% for product in collections.all.products %}
                   {% assign p_tags = product.tags | join: ',' | downcase %}
-                  {% unless p_tags contains 'glowing bars' or p_tags contains 'glowing-bar' %}{% continue %}{% endunless %}
+                  {% unless p_tags contains 'glowing bars' or p_tags contains 'glowing-bar' -%}
+                    {%- continue -%}
+                  {%- endunless %}
                   <a href="{{ product.url }}" class="mm-card">
                     <div class="mm-card__image-wrapper">
                       {% if product.featured_image %}
-                        <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" class="mm-card__image" loading="lazy" width="400" height="400">
+                        <img
+                          src="{{ product.featured_image | image_url: width: 400 }}"
+                          alt="{{ product.title | escape }}"
+                          class="mm-card__image"
+                          loading="lazy"
+                          width="400"
+                          height="400"
+                        >
                       {% else %}
                         {{ 'product-1' | placeholder_svg_tag: 'mm-card__image' }}
                       {% endif %}
@@ -403,22 +594,36 @@
           <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
           <li class="site-nav__item site-nav__item--mega">
-            <a href="{{ routes.all_products_collection_url }}/lip-care" class="site-nav__link{% if current_tags contains 'lip-care' %} is-active{% endif %}">
+            <a
+              href="{{ routes.all_products_collection_url }}/lip-care"
+              class="site-nav__link{% if current_tags contains 'lip-care' %} is-active{% endif %}"
+            >
               Lip Care
-              <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <svg
+                class="nav-chevron"
+                width="10"
+                height="10"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
                 <path d="M6 9l6 6 6-6"/>
               </svg>
             </a>
             <div class="site-nav__dropdown site-nav__megamenu--full">
               <div class="site-nav__dropdown-bridge"></div>
-              
+
               <!-- Left descriptive panel -->
               <div class="mm-panel-left">
                 <div class="mm-panel-title">Lip Care</div>
-                <div class="mm-panel-desc">Hydrating balms and restorative scrubs for perfectly nourished, soft lips.</div>
+                <div class="mm-panel-desc">
+                  Hydrating balms and restorative scrubs for perfectly nourished, soft lips.
+                </div>
                 <a href="{{ routes.all_products_collection_url }}/lip-care" class="mm-view-all">Shop Lip Care</a>
               </div>
-              
+
               <!-- Right product grid -->
               <div class="mm-panel-grid">
                 {% assign count = 0 %}
@@ -428,7 +633,14 @@
                   <a href="{{ product.url }}" class="mm-card">
                     <div class="mm-card__image-wrapper">
                       {% if product.featured_image %}
-                        <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" class="mm-card__image" loading="lazy" width="400" height="400">
+                        <img
+                          src="{{ product.featured_image | image_url: width: 400 }}"
+                          alt="{{ product.title | escape }}"
+                          class="mm-card__image"
+                          loading="lazy"
+                          width="400"
+                          height="400"
+                        >
                       {% else %}
                         {{ 'product-2' | placeholder_svg_tag: 'mm-card__image' }}
                       {% endif %}
@@ -445,53 +657,126 @@
           <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
           <li class="site-nav__item">
-            <a href="{{ routes.collections_url }}/new-arrivals" class="site-nav__link{% if request.path contains 'new-arrivals' %} is-active{% endif %}">New Arrivals</a>
+            <a
+              href="{{ routes.collections_url }}/new-arrivals"
+              class="site-nav__link{% if request.path contains 'new-arrivals' %} is-active{% endif %}"
+              >New Arrivals</a
+            >
           </li>
 
           <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
           <li class="site-nav__item">
-            <a href="{{ routes.collections_url }}/bestsellers" class="site-nav__link{% if request.path contains 'bestsellers' %} is-active{% endif %}">Bestsellers</a>
+            <a
+              href="{{ routes.collections_url }}/bestsellers"
+              class="site-nav__link{% if request.path contains 'bestsellers' %} is-active{% endif %}"
+              >Bestsellers</a
+            >
           </li>
 
           <li class="site-nav__separator" aria-hidden="true"><span></span></li>
 
-
-
           <li class="site-nav__item">
-            <a href="/pages/about-us" class="site-nav__link{% if request.path contains 'about' %} is-active{% endif %}">Our Story</a>
+            <a href="/pages/about-us" class="site-nav__link{% if request.path contains 'about' %} is-active{% endif %}"
+              >Our Story</a
+            >
           </li>
-
         </ul>
       </nav>
     </div>
   </div>
-
 </header>
 
-
-<!-- =============================================
-     MOBILE: Bottom Dock
-     ============================================= -->
+<!--
+  =============================================
+  MOBILE: Bottom Dock
+  =============================================
+-->
 <nav class="bottom-dock" id="BottomDock" aria-label="Mobile navigation">
-  <a href="{{ routes.root_url }}" class="bdock__item{% if request.path == '/' %} is-active{% endif %}" aria-label="Home">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+  <a
+    href="{{ routes.root_url }}"
+    class="bdock__item{% if request.path == '/' %} is-active{% endif %}"
+    aria-label="Home"
+  >
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+    >
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
     <span>Home</span>
   </a>
-  <a href="{{ routes.all_products_collection_url }}" class="bdock__item{% if request.path contains 'collections' %} is-active{% endif %}" aria-label="Shop">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+  <a
+    href="{{ routes.all_products_collection_url }}"
+    class="bdock__item{% if request.path contains 'collections' %} is-active{% endif %}"
+    aria-label="Shop"
+  >
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+    >
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+    </svg>
     <span>Shop</span>
   </a>
-  <a href="/pages/wishlist" class="bdock__item{% if request.path contains 'wishlist' %} is-active{% endif %}" aria-label="Saved Items">
+  <a
+    href="/pages/wishlist"
+    class="bdock__item{% if request.path contains 'wishlist' %} is-active{% endif %}"
+    aria-label="Saved Items"
+  >
     <span class="bdock__cart-wrap">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      >
+        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+      </svg>
+      <span class="bdock__badge wishlist-count is-hidden"></span>
+    </span>
+    <span class="bdock__cart-wrap">
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      >
+        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+      </svg>
       <span class="bdock__badge wishlist-count is-hidden"></span>
     </span>
     <span>Saved</span>
   </a>
   <button class="bdock__item" id="CartToggleDock" aria-label="Cart">
     <span class="bdock__cart-wrap">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      >
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
       {%- if cart.item_count > 0 -%}
         <span class="bdock__badge" id="DockCartCount">{{ cart.item_count }}</span>
       {%- else -%}
@@ -501,18 +786,41 @@
     <span>Cart</span>
   </button>
   {%- if customer -%}
-    <a href="/pages/my-account" class="bdock__item{% if request.path contains 'my-account' %} is-active{% endif %}" aria-label="Account">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <a
+      href="/pages/my-account"
+      class="bdock__item{% if request.path contains 'my-account' %} is-active{% endif %}"
+      aria-label="Account"
+    >
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      >
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
       <span>Account</span>
     </a>
   {%- else -%}
     <button class="bdock__item" data-auth-toggle aria-label="Sign in">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      >
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
       <span>Sign in</span>
     </button>
   {%- endif -%}
 </nav>
-
 
 {% schema %}
 {
