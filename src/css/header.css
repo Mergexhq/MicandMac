@@ -64,8 +64,7 @@
 }
 .site-header.is-scrolled {
   box-shadow: 0 4px 15px rgba(46, 31, 26, 0.1);
-  background: rgba(243, 232, 228, 0.98);
-  backdrop-filter: blur(8px);
+  background: var(--mm-soft-blush);
 }
 
 /* Middle tier: Logo strip */
@@ -557,9 +556,12 @@
 
 /* ============================================
    TRANSPARENT HEADER (HOMEPAGE HERO)
+   Only on homepage (.template-index). Header becomes
+   transparent over the hero until the user scrolls.
+   On hover of any nav item, the solid bg shows.
    ============================================ */
 
-/* 1. Structural: Always keep header at top and hide announcement bar when not scrolled */
+/* 1. Structural: header at top:0 on homepage, hide announcement bar when not scrolled */
 .template-index:not(.is-scrolled) .site-header {
   top: 0 !important;
 }
@@ -572,7 +574,7 @@ body.template-index {
   padding-top: 0 !important;
 }
 
-/* 2. Smooth transitions on all elements */
+/* 2. Smooth transitions */
 .template-index:not(.is-scrolled) .site-header,
 .template-index:not(.is-scrolled) .site-header__middle,
 .template-index:not(.is-scrolled) .site-header__bottom,
@@ -585,32 +587,64 @@ body.template-index {
   transition: all 0.3s ease;
 }
 
-/* 3. Transparent when NOT scrolled AND megamenu is NOT open */
-.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) {
+/* 3. Transparent ONLY when not scrolled AND no nav item is hovered */
+.template-index:not(.is-scrolled) .site-header {
   background: transparent !important;
   border: none;
   box-shadow: none;
 }
-.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__middle,
-.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__bottom {
+.template-index:not(.is-scrolled) .site-header .site-header__middle,
+.template-index:not(.is-scrolled) .site-header .site-header__bottom {
   background: transparent !important;
   border-bottom-color: transparent !important;
 }
 
-/* Logo and text white when transparent */
-.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-logo-img,
-.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__logo img {
+/* 4. When ANY nav item is hovered — show solid bg, NOT transparent */
+.template-index:not(.is-scrolled) .site-header:hover {
+  background: var(--mm-soft-blush) !important;
+}
+.template-index:not(.is-scrolled) .site-header:hover .site-header__middle {
+  background: var(--mm-soft-blush) !important;
+}
+.template-index:not(.is-scrolled) .site-header:hover .site-header__bottom {
+  background: linear-gradient(to bottom, var(--mm-deep-garnet), var(--mm-dark-espresso)) !important;
+}
+/* Revert logo/text/icons colors when header is hovered */
+.template-index:not(.is-scrolled) .site-header:hover .site-logo-img,
+.template-index:not(.is-scrolled) .site-header:hover .site-header__logo img {
+  filter: none !important;
+}
+.template-index:not(.is-scrolled) .site-header:hover .site-header__logo-text {
+  color: var(--mm-deep-garnet) !important;
+}
+.template-index:not(.is-scrolled) .site-header:hover .tagline-text {
+  color: var(--mm-dark-espresso) !important;
+}
+.template-index:not(.is-scrolled) .site-header:hover .site-header__action-btn {
+  color: var(--mm-deep-garnet) !important;
+}
+.template-index:not(.is-scrolled) .site-header:hover .site-nav__link {
+  color: var(--mm-soft-blush) !important;
+}
+.template-index:not(.is-scrolled) .site-header:hover .site-nav__link:hover,
+.template-index:not(.is-scrolled) .site-header:hover .site-nav__link.is-active {
+  color: var(--mm-champagne-gold) !important;
+}
+
+/* 5. When NOT hovered — white text/icons over hero video */
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-logo-img,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__logo img {
   filter: brightness(0) invert(1);
 }
-.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__logo-text {
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__logo-text {
   color: #FFFFFF !important;
 }
-.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .tagline-text,
-.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-header__action-btn,
-.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-nav__link {
+.template-index:not(.is-scrolled) .site-header:not(:hover) .tagline-text,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-header__action-btn,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-nav__link {
   color: #FFFFFF !important;
 }
-.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-nav__link:hover,
-.template-index:not(.is-scrolled) .site-header:not(.has-megamenu-open) .site-nav__link.is-active {
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-nav__link:hover,
+.template-index:not(.is-scrolled) .site-header:not(:hover) .site-nav__link.is-active {
   color: var(--mm-champagne-gold) !important;
 }
