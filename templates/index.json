@@ -38,7 +38,7 @@
     "category_spotlight_soap": {
       "type": "category-spotlight",
       "settings": {
-        "image": "shopify://shop_images/hf_20260501_182926_0bfbc6aa-5295-46fa-9f42-41cc2c0c22ed.png",
+        "image": "shopify://shop_images/soap.png",
         "badge_label": "Bestseller",
         "eyebrow": "Cold Pressed · 100% Natural",
         "heading": "Handcrafted Soaps",
@@ -67,7 +67,7 @@
     "category_spotlight_lip": {
       "type": "category-spotlight",
       "settings": {
-        "image": "shopify://shop_images/hf_20260501_165057_56db7fbe-737c-499b-89ba-090696189abe_1.png",
+        "image": "shopify://shop_images/lipbalm.png",
         "badge_label": "New Launch",
         "eyebrow": "Deeply Moisturising · Natural Tint",
         "heading": "Nourishing Lip Balms",
