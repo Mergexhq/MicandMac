@@ -49,19 +49,7 @@
   }
 }
 
-/* Subtle warm glow overlay on image */
-.cat-spot-{{ section.id }} .cs__img-col::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at 60% 50%,
-    {{ section.settings.glow_color | default: 'rgba(212,175,55,0.18)' }} 0%,
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: 2;
-}
+/* Removed glow overlay per request */
 
 .cat-spot-{{ section.id }} .cs__img-col img {
   width: 100%;
