@@ -38,7 +38,7 @@
     "category_spotlight_soap": {
       "type": "category-spotlight",
       "settings": {
-        "image": "shopify://shop_images/hf_20260501_182926_0bfbc6aa-5295-46fa-9f42-41cc2c0c22ed.png",
+        "image": "shopify://shop_images/soap.png",
         "badge_label": "Bestseller",
         "eyebrow": "Cold Pressed · 100% Natural",
         "heading": "Handcrafted Soaps",
@@ -54,9 +54,10 @@
         "cta_primary_url": "/collections/soaps",
         "cta_secondary_label": "Learn How We Make Them",
         "cta_secondary_url": "/pages/about",
+        "show_bottom_fade": true,
         "image_position": "left",
         "bg_color": "#f3e8e4",
-        "img_bg_color": "#edd9b8",
+        "img_bg_color": "#f3e8e4",
         "accent_color": "#b8924a",
         "glow_color": "#d4af37",
         "min_height": 600,
@@ -67,7 +68,7 @@
     "category_spotlight_lip": {
       "type": "category-spotlight",
       "settings": {
-        "image": "shopify://shop_images/hf_20260501_165057_56db7fbe-737c-499b-89ba-090696189abe_1.png",
+        "image": "shopify://shop_images/lipbalm.png",
         "badge_label": "New Launch",
         "eyebrow": "Deeply Moisturising · Natural Tint",
         "heading": "Nourishing Lip Balms",
@@ -83,9 +84,10 @@
         "cta_primary_url": "/collections/lip-balms",
         "cta_secondary_label": "See All Products",
         "cta_secondary_url": "/collections/all",
+        "show_bottom_fade": true,
         "image_position": "left",
         "bg_color": "#f3e8e4",
-        "img_bg_color": "#e8c8c0",
+        "img_bg_color": "#f3e8e4",
         "accent_color": "#c06b5a",
         "glow_color": "#e8a898",
         "min_height": 600,
