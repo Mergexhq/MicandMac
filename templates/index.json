@@ -42,7 +42,7 @@
         "badge_label": "Bestseller",
         "eyebrow": "Cold Pressed · 100% Natural",
         "heading": "Handcrafted Soaps",
-        "show_stars": true,
+        "show_stars": false,
         "rating_value": "4.9",
         "review_count": "200+",
         "body_text": "Our cold-pressed soaps are made in small batches using plant-based oils and botanicals — no sulfates, no synthetics, just your skin being genuinely cared for.",
@@ -72,7 +72,7 @@
         "badge_label": "New Launch",
         "eyebrow": "Deeply Moisturising · Natural Tint",
         "heading": "Nourishing Lip Balms",
-        "show_stars": true,
+        "show_stars": false,
         "rating_value": "4.8",
         "review_count": "150+",
         "body_text": "Formulated with beeswax, shea butter and natural beetroot pigment — our lip balms restore softness and add a subtle flush of colour, every single day.",
@@ -141,7 +141,7 @@
         "body_2": "",
         "cta_label": "Discover our process",
         "cta_url": "/pages/about",
-        "bg_color": "#f5ecd7",
+        "bg_color": "#f3e8e4",
         "padding_top": 0,
         "padding_bottom": 0
       }
@@ -152,7 +152,7 @@
     "bestsellers",
     "category_spotlight_soap",
     "category_spotlight_lip",
-    "art_of_wellness",
-    "philosophy"
+    "philosophy",
+    "art_of_wellness"
   ]
 }

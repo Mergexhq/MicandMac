@@ -26,7 +26,9 @@
 /* Gallery column stays sticky — content column scrolls */
 .pdp__gallery {
   position: sticky;
-  top: calc(148px + var(--space-6));
+  top: 100px;
+  align-self: start;
+  margin-left: -20px;
 }
 
 /* Breadcrumb eyebrow */
@@ -204,19 +206,15 @@
 
 .product-gallery__thumb {
   flex-shrink: 0;
-  width: 76px;
-  height: 76px;
+  width: 100px;
+  height: 100px;
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 2px solid transparent;
   cursor: pointer;
   background: var(--color-beige);
   padding: 0;
-  transition: border-color var(--transition-fast), transform var(--transition-fast);
-}
-
-.product-gallery__thumb:hover {
-  transform: translateY(-2px);
+  transition: border-color var(--transition-fast);
 }
 
 .product-gallery__thumb.is-active {
@@ -257,11 +255,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.product-gallery__main:hover .product-gallery__img {
-  transform: scale(1.05);
 }
 
 .product-gallery__video {
@@ -286,8 +279,8 @@
 /* Mobile tweaks */
 @media (max-width: 767px) {
   .product-gallery__thumb {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
   }
 
   .product-gallery__img {
@@ -543,7 +536,6 @@
 
 .pdp-benefits {
   padding: var(--space-16) 0;
-  border-top: 1px solid var(--color-border-default);
 }
 
 .pdp-benefits__eyebrow {
@@ -1134,6 +1126,7 @@
 
   .pdp__gallery {
     position: static;
+    align-self: auto;
   }
 
   .product-form__actions-row {

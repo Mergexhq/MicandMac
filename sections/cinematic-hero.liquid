@@ -41,22 +41,6 @@
   z-index: 0;
 }
 
-/* ── Loading Veil ────────────────────────────────────────────── */
-/* Covers the hero with the dark bg colour, then fades out after ~3s */
-.cine-hero__veil {
-  position: absolute;
-  inset: 0;
-  z-index: 20;
-  background: var(--mm-dark-espresso);
-  pointer-events: none;
-  animation: cine-veil-out 0.9s ease 2.4s forwards;
-  opacity: 1;
-}
-
-@keyframes cine-veil-out {
-  from { opacity: 1; }
-  to   { opacity: 0; visibility: hidden; }
-}
 
 .cine-hero__video,
 .cine-hero__img {
@@ -390,8 +374,6 @@
 
   </div>
 
-  {%- comment -%} ── LOADING VEIL ────────────────────────────── {%- endcomment -%}
-  <div class="cine-hero__veil" aria-hidden="true"></div>
 
   {%- comment -%} ── CINEMATIC OVERLAY ───────────────────────── {%- endcomment -%}
   <div class="cine-hero__overlay" aria-hidden="true"></div>

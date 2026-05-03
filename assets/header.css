@@ -405,6 +405,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
 }
 .mm-card__price {
   font-family: var(--font-body);

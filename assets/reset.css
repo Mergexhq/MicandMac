@@ -14,7 +14,9 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  overflow-x: hidden;
+  /* overflow-x: clip prevents horizontal scroll without creating a new scroll container.
+     overflow-x: hidden BREAKS position:sticky — do NOT use it. */
+  overflow-x: clip;
 }
 
 body {
@@ -28,7 +30,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   /* Offset for fixed header: announcement bar (30px) + logo tier (~76px) + nav tier (~42px) */
   padding-top: 148px;
-  overflow-x: hidden;
+  /* Do NOT set overflow-x: hidden on body — it breaks position:sticky.
+     Horizontal overflow is already prevented by html { overflow-x: clip } above. */
 }
 
 img, video {
